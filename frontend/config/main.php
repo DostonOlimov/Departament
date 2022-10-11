@@ -15,6 +15,7 @@ return [
     'bootstrap' => ['log'],
     'language' => 'uz',
     'controllerNamespace' => 'frontend\controllers',
+
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -39,6 +40,7 @@ return [
                 ],
             ],
         ],
+
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

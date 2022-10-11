@@ -135,7 +135,7 @@ class ControlController extends Controller
         $post = $this->request->post();
         if ($model->load($post)) {
 
-//            VarDumper::dump($post,12,true);die;
+//            VarDumper ::dump($post,12,true);die;
             unset($products[1]);
             unset($pro_primary[1]);
             $products = Model::createMultiple(PrimaryDataForm::classname(), $products);
