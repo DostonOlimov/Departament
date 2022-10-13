@@ -62,13 +62,17 @@ class Company extends \yii\db\ActiveRecord
             'id' => 'ID',
             'control_instruction_id' => 'Control Instruction ID',
             'region_id' => 'Hudud',
-            'name' => 'XYUS nomi',
-            'inn' => 'XYUS inn',
+            'name' => 'XYuS nomi',
+            'inn' => 'XYuS inn',
             'soogu' => 'Kod SOOGU',
-            'type' => 'XYUS faoliyat turi',
-            'phone' => 'XYUS tel',
-            'link' => 'XYUS manziliga havola',
-            'address' => 'XYUS yuridik manzil',
+            'thsht' =>'THSHT',
+            'ifut' => 'IFUT',
+            'mhobt' =>'MHOBT',
+            'ownername' => 'Tashkilot rahbari',
+            'type' => 'XYuS faoliyat turi',
+            'phone' => 'XYuS telefon raqami',
+            'link' => 'XYuS manziliga havola',
+            'address' => 'XYuS yuridik manzil',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -76,6 +80,20 @@ class Company extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getINN($inn)
+    {
+        $url_name = "https://orginfo.uz/search/founders?q=200357143";
+
+        $ch_session = curl_init();
+
+        curl_setopt($ch_session, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($ch_session, CURLOPT_URL, $url_name);
+
+        $result_url = curl_exec($ch_session);
+        var_dump(explode("\n", $result_url));
+
+    }
     public function getPhoneNumber()
     {
         return '(' . substr($this->phone,0, 2) . ')-' . substr($this->phone,2,3) . '-' .

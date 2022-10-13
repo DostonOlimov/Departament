@@ -20,6 +20,7 @@ class m221011_053741_add_type_column_to_control_instructions extends Migration
         $this->addColumn('control_instructions', 'checkup_duration_finish_date',$this->integer()->notNull());
         $this->addColumn('control_instructions', 'might_be_breakdown_letter',$this->integer()->notNull());
         $this->addColumn('control_instructions', 'checkup_subject',$this->integer()->notNull());
+
     }
 
     /**

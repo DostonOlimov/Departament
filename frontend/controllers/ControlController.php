@@ -68,6 +68,7 @@ class ControlController extends Controller
         $model = new Instruction();
 
         if ($model->load($this->request->post()) && $model->validate()) {
+
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $model->save(false);
@@ -85,6 +86,8 @@ class ControlController extends Controller
                 $transaction->rollBack();
                 throw $e;
             }
+        } else{
+
         }
 
         return $this->render('instruction', [
@@ -102,11 +105,12 @@ class ControlController extends Controller
     public function actionCompany($instruction_id)
     {
         $model = new Company();
+
         $model->control_instruction_id = $instruction_id;
 
-        if ($model->load($this->request->post()) && $model->save()) {
+        /*if ($model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['primary-data', 'company_id' => $model->id]);
-        }
+        }*/
 
         return $this->render('company', [
             'model' => $model,

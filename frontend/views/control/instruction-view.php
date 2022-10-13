@@ -32,20 +32,39 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                 [
                     'attribute' => 'base',
                     'value' => function ($model) {
-                        return Instruction::getType($model->base);
+                        return Instruction::getBase($model->base);
                     }
                 ],
+                    [
+                        'attribute' => 'type',
+                        'value' => function ($model) {
+                            return Instruction::getType($model->type);
+                        }
+                    ],
                 'letter_date',
                 'letter_number',
                 'command_date',
                 'command_number',
                 'checkup_begin_date',
+                'might_be_breakdown_letter',
+                'who_send_letter',
+                'code',
+                [
+                    'attribute' => 'Tekshiruv predmeti',
+                    'value' => function ($model) {
+                        return Instruction::getSubject($model->checkup_subject);
+                    }
+                ],
                 [
                     'attribute' => 'checkup_finish_date',
                     'value' => function(Instruction $model) {
                         return $model->checkup_finish_date ? $model->checkup_finish_date : '';
                     }
                 ],
+                'checkup_duration_start_date',
+                'checkup_duration_finish_date',
+                'real_checkup_date',
+                'checkup_duration',
                 [
                     'label' => 'Inspektorlar',
                     'value' => function ($model) {

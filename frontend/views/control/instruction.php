@@ -28,8 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin() ?>
 
     <div class="row">
-        <div class="col-sm-12">
-            <?= $form->field($model, 'base')->dropDownList(Instruction::getType()) ?>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'base')->dropDownList(Instruction::getBase()) ?>
+        </div>
+
+        <div class="col-sm-6">
+            <?= $form->field($model, 'type')->dropDownList(Instruction::getType()) ?>
         </div>
     </div>
     <div class="row">
@@ -37,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'command_date')->widget(DatePicker::className()) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'command_number')->textInput() ?>
+            <?= $form->field($model, 'command_number')->textInput(['type' => 'text']) ?>
         </div>
     </div>
     <div class="row">
@@ -45,15 +49,58 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'letter_date')->widget(DatePicker::className()) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'letter_number')->textInput() ?>
+            <?= $form->field($model, 'letter_number')->textInput(['type'=>'text']) ?>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="form-group field-instruction-checkup_begin_date">
-                <label class="control-label" for="instruction-checkup_begin_date">Tekshiruv boshlangan sana</label>
-                <input type="text" id="instruction-checkup_begin_date" class="form-control krajee-datepicker" name="Instruction[checkup_begin_date]" value="<?= Yii::$app->formatter->asDate(time(), 'M/dd/yyyy') ?>" data-datepicker-source="instruction-checkup_begin_date" data-datepicker-type="1" data-krajee-kvdatepicker="kvDatepicker_00000000" readonly>
+            <?= $form->field($model, 'checkup_begin_date')->widget(DatePicker::className()) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'checkup_finish_date')->widget(DatePicker::className()) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'checkup_duration_start_date')->widget(DatePicker::className()) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'checkup_duration_finish_date')->widget(DatePicker::className()) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'real_checkup_date')->widget(DatePicker::className()) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'checkup_duration')->dropDownList(Instruction::getDuration()) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <?= $form->field($model, 'checkup_subject')->dropDownList(Instruction::getSubject()) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'code')->widget(\yii\widgets\MaskedInput::className(), [
+                'mask' => '999-999-999']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <!--  <div class="col-sm-6">
+           <div class="form-group field-instruction-checkup_begin_date">
+                <label  class="control-label" for="instruction-checkup_begin_date">Tekshiruv boshlangan sana</label>
+                <input type="text" id="instruction-checkup_begin_date" class="form-control krajee-datepicker" name="Instruction[checkup_begin_date]"
+                       value="<?php //Yii::$app->formatter->asDate(time(), 'M/dd/yyyy') ?>" data-datepicker-source="instruction-checkup_begin_date"
+                       data-datepicker-type="1" data-krajee-kvdatepicker="kvDatepicker_00000000" readonly>
             </div>
+        </div>-->
+        <div class="col-sm-6">
+            <?= $form->field($model, 'might_be_breakdown_letter')->TextArea() ?>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'employers')->widget(Select2::class, [
