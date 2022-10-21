@@ -28,8 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'name',
                 'inn',
                 'soogu',
+                'ifut',
+                'mhobt',
+                'thsht',
                 'address',
                 'type',
+                'ownername',
                 [
                     'attribute' => 'phone',
                     'value' => function (Company $model) {

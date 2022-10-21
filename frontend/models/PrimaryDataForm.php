@@ -6,6 +6,7 @@ use common\models\control\ProductType;
 use common\models\ProgramType;
 use Yii;
 use yii\base\Model;
+use common\models\Countries;
 use yii\helpers\VarDumper;
 
 class PrimaryDataForm extends Model
@@ -22,6 +23,20 @@ class PrimaryDataForm extends Model
     public $invalid;
 
     public $product_type_id;
+    public $product_type_parent_id;
+    public $product_purpose;
+    public $made_country;
+    public $product_measure;
+    public $group_id;
+    public $class_id;
+    public $position_id;
+    public $under_position_id;
+    public $mandatory_certification_id;
+    public $residue_amount;
+    public $residue_quantity;
+    public $year_quantity;
+    public $year_amount;
+    public $potency;
     public $nd;
     public $nd_type;
     public $number_blank;
@@ -29,6 +44,7 @@ class PrimaryDataForm extends Model
     public $date_from;
     public $date_to;
     public $product_name;
+
 
     public function rules()
     {
@@ -40,10 +56,10 @@ class PrimaryDataForm extends Model
             }, 'whenClient' => "function (attribute, value) {
                 return $('#category').val() == 1;
             }"],
-            [['type', 'category'], 'integer'],
+            [['type', 'category','made_country','product_mesure','product_purpose'], 'integer'],
             [['nd'], 'safe'],
             [['measurement', 'compared', 'invalid', 'number_blank', 'number_reestr', 'date_from', 'date_to', 'product_name'], 'string'],
-            [['product_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_id' => 'id']],
+            [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['made_country' => 'id']],
 
         ];
     }
@@ -66,14 +82,35 @@ class PrimaryDataForm extends Model
             'compared' => 'Qiyoslangan O\'.V soni',
             'invalid' => 'Yaroqsiz O\'.V soni',
 
-            'product_type_id' => 'Mahsulot turi',
-            'nd' => 'Mahsulot normativ hujjatlari',
-            'nd_type' => 'Normativ hujjat toifalari',
+            'product_purpose' => 'Namuna tanlab olish maqsadi',
+            'product_type_parent_id' => 'Mahsulot soha turi',
+            'product_measure' => 'Mahsulot o\'lchov birligi',
+            'made_country' => 'Mahsulot ishlab chiqarilgan mamlakat',
+            'residue_amount' => 'Mahsulot qoldiq miqdori',
+            'residue_quantity' => 'Qoldiq mahsulot summasi',
+            'year_quantity' => 'Mahsulot yillik summasi',
+            'year_amount' => 'Mahsulot yillik qoldiq miqdori',
+            'mandatory_certification_id' => 'Majburiy sertifikatlashtirish mavjudligi',
+            'potency' => 'Ishlab chiqarish quvvati',
+            'group_id' => 'Mahsulot guruhi',
+            'class_id' => 'Mahsulot sinfi',
+            'position_id' => 'Mahsulot positsiyasi',
+            'under_position_id' => 'Mahsulot positsiya osti',
             'number_blank' => 'Blank raqami',
             'number_reestr' => 'Reesstr raqami',
             'date_from' => 'Berilgan sana',
             'date_to' => 'Amal qilish muddati',
-            'product_name' => 'Mahsulot nomi',
+            'product_name' => 'Mahsulot nomi,brendi va hokazolar',
         ];
     }
+
+    public static function getCity($parent_id) {
+        $data=ProductType::find()
+            ->where(['id'=>$parent_id])
+            ->select(['id','name AS name'])->asArray()->all();
+
+        return $data;
+    }
+
+
 }

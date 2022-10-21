@@ -25,8 +25,7 @@
         "kartik-v/yii2-widget-datepicker": "1.4.x-dev",
         "phpoffice/phpspreadsheet": "^1.8",
         "almasaeed2010/adminlte": "dev-master",
-        "kartik-v/yii2-date-range": "dev-master",
-        "kartik-v/yii2-widget-depdrop": "dev-master"
+        "kartik-v/yii2-date-range": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -37,13 +36,9 @@
         "codeception/module-yii2": "^1.0",
         "codeception/module-filesystem": "^1.0",
         "codeception/verify": "~0.5.0 || ~1.1.0"
-
     },
     "config": {
         "process-timeout": 1800,
-        "platform": {
-            "php": "7.4"
-        },
         "fxp-asset": {
             "enabled": false
         },

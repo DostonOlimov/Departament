@@ -8,6 +8,7 @@
 use common\models\control\PrimaryData;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
+use common\models\NdType;
 use yii\widgets\ActiveForm;
 
 //$this->title = 'Birlamchi ma`lumotlar';
@@ -26,8 +27,8 @@ use yii\widgets\ActiveForm;
     'model' => $pro_primary[0],
     'formId' => 'dynamic-form',
     'formFields' => [
-        'product_name',
-        'product_date',
+        'name',
+        'type_id',
     ],
 ]); ?>
     <table class="table table-bordered">
@@ -39,10 +40,10 @@ use yii\widgets\ActiveForm;
                 <td class="vcenter">
                     <div class="row">
                         <div class="col-sm-6">
-                            <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]product_name")->textInput() ?>
+                            <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]type_id")->dropDownList(ArrayHelper::map(NdType::find()->all(), 'id', 'name')) ?>
                         </div>
                         <div class="col-sm-6">
-                            <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]product_date")->input('date') ?>
+                            <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]name")->textInput() ?>
                         </div>
                     </div>
                 </td>

@@ -40,9 +40,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(Region::find()->all(), 'id', 'name')) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'soogu')->widget(MaskedInput::className(), [
-                'mask' => '99999'
-            ]) ?>
+            <?= $form->field($model, 'soogu')->textInput() ?>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <?= $form->field($model, 'ifut')->textInput();?>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <?= $form->field($model, 'mhobt')->textInput();?>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <?= $form->field($model, 'thsht')->textInput();?>
         </div>
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'type')->textInput() ?>
@@ -55,7 +62,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'address')->textInput() ?>
         </div>
+        <div class="col-md-6 col-sm-12">
+            <?= $form->field($model, 'ownername')->textInput();?>
+        </div>
     </div>
+
     <div class="col-12">
         <input type="submit" class="btn btn-info br-btn" value="Saqlash">
     </div>

@@ -11,6 +11,7 @@ use common\models\control\InstructionSearch;
 use common\models\control\InstructionUser;
 use common\models\control\Measure;
 use common\models\control\PrimaryData;
+use common\models\control\ProductType;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryOvSearch;
 use common\models\control\PrimaryProduct;
@@ -54,6 +55,7 @@ class ControlController extends Controller
 
     public function actionIndex()
     {
+
         $searchModel = new InstructionSearch(Yii::$app->user->id);
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -105,12 +107,11 @@ class ControlController extends Controller
     public function actionCompany($instruction_id)
     {
         $model = new Company();
-
         $model->control_instruction_id = $instruction_id;
 
-        /*if ($model->load($this->request->post()) && $model->save()) {
+        if ($model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['primary-data', 'company_id' => $model->id]);
-        }*/
+        }
 
         return $this->render('company', [
             'model' => $model,
@@ -133,15 +134,15 @@ class ControlController extends Controller
 
         $products[1] = new PrimaryDataForm();
         $products[1]->category = PrimaryDataForm::CATEGORY_PRODUCT;
-        $pro_primary[0] = [new ProPrimaryData];
-        $pro_primary[1] = [new ProPrimaryData];
+       // $pro_primary[0] = [new ProPrimaryData];
+      //  $pro_primary[1] = [new ProPrimaryData];
 
         $post = $this->request->post();
         if ($model->load($post)) {
 
 //            VarDumper ::dump($post,12,true);die;
             unset($products[1]);
-            unset($pro_primary[1]);
+          //  unset($pro_primary[1]);
             $products = Model::createMultiple(PrimaryDataForm::classname(), $products);
             Model::loadMultiple($products, $this->request->post());
 
@@ -193,9 +194,100 @@ class ControlController extends Controller
         return $this->render('primary-data', [
             'model' => $model,
             'products' => $products,
-            'pro_primary' => $pro_primary,
+            //'pro_primary' => $pro_primary,
         ]);
     }
+
+    // select category using parent id
+    public function actionSubcat() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = ProductType::find()->where(['group_id' => $cat_id])->all();
+                // the getSubCatList function will query the database based on the
+                // cat_id and return an array like below:
+                // [
+                //    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
+                //    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
+                // ]
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+    public function actionListsgroup($id) {
+        $countPosts = ProductType::find()
+            ->where([ 'group_id'=>1,'parent_id'=>$id])
+            ->count();
+        $posts = ProductType::find()
+            ->where(['group_id'=>1,'parent_id'=>$id])
+            ->orderBy('id DESC')
+            ->all();
+        if($countPosts>0) {
+            foreach($posts as $post){
+                echo "<option value='".$post->id."'>".$post->name."</option>";
+            }
+        }
+        else{
+            echo "<option>---</option>";
+        }
+    }
+    public function actionListclass($id) {
+        $countPosts = ProductType::find()
+            ->where(['group_id' => $id,'class_id'=>2])
+            ->count();
+        $posts = ProductType::find()
+            ->where(['group_id' => $id,'class_id'=>2])
+            ->orderBy('id DESC')
+            ->all();
+        if($countPosts>0) {
+            foreach($posts as $post){
+                echo "<option value='".$post->id."'>".$post->name."</option>";
+            }
+        }
+        else{
+            echo "<option>---</option>";
+        }
+    }
+    public function actionListsposition($id) {
+        $countPosts = ProductType::find()
+            ->where(['class_id' => $id,'position_id' => 3])
+            ->count();
+        $posts = ProductType::find()
+            ->where(['class_id' => $id,'position_id' =>3])
+            ->orderBy('id DESC')
+            ->all();
+        if($countPosts>0) {
+            foreach($posts as $post){
+                echo "<option value='".$post->id."'>".$post->name."</option>";
+            }
+        }
+        else{
+            echo "<option>---</option>";
+        }
+    }
+    public function actionListsupnderposition($id) {
+        $countPosts = ProductType::find()
+            ->where(['position_id' => $id,'under_position_id'=>4])
+            ->count();
+        $posts = ProductType::find()
+            ->where(['position_id' => $id,'under_position_id'=>4])
+            ->orderBy('id DESC')
+            ->all();
+        if($countPosts>0) {
+            foreach($posts as $post){
+                echo "<option value='".$post->id."'>".$post->name."</option>";
+            }
+        }
+        else{
+            echo "<option>---</option>";
+        }
+    }
+
 
     public function actionPrimaryDataView($id)
     {

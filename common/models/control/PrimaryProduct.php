@@ -3,6 +3,7 @@
 namespace common\models\control;
 
 use common\models\ProgramType;
+use common\models\Countries;
 use Yii;
 
 /**
@@ -25,6 +26,17 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    const   MEASURE1 = 1;
+    const   MEASURE2 = 2;
+    const   MEASURE3 = 3;
+    const   MEASURE4 = 4;
+    const   MEASURE5 = 5;
+
+    const  PURPOSE1 = 1;
+    const  PURPOSE2 = 2;
+    const  PURPOSE3 = 3;
+
+
     public static function tableName()
     {
         return 'control_primary_product';
@@ -34,11 +46,17 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     {
         return [
             [['control_primary_data_id'], 'required'],
-            [['control_primary_data_id', 'product_type_id'], 'integer'],
-            [['nd', 'nd_type'], 'safe'],
-            [['number_blank', 'number_reestr', 'date_from', 'date_to', 'product_name'], 'string', 'max' => 255],
+            [['control_primary_data_id', 'product_type_id','product_type_parent_id','group_id','class_id','position_id','under_position_id','product_measure','select_of_exsamle_purpose','made_country'], 'integer'],
+            [['residue_quantity','residue_amount','potency','year_amount','year_quantity', 'product_name'], 'string', 'max' => 255],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::className(), 'targetAttribute' => ['control_primary_data_id' => 'id']],
             [['product_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_id' => 'id']],
+            [['product_type_parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_parent_id' => 'parent_id']],
+            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['group_id' => 'group_id']],
+            [['class_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['class_id' => 'class_id']],
+            [['potion_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['potion_id' => 'parent_id']],
+            [['under_potion_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['under_potion_id' => 'under_parent_id']],
+            [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['made_country' => 'id']]
+
         ];
     }
 
@@ -52,6 +70,40 @@ class PrimaryProduct extends \yii\db\ActiveRecord
         $this->date_to = strtotime($this->date_to);
 
         return true;
+    }
+
+    public static function getMeasure($type = null)
+    {
+        $arr = [
+
+            self::MEASURE3 => 'Uzunlik(m)',
+            self::MEASURE2 => 'Og\'irlik(kg)',
+            self::MEASURE1 => 'Dona',
+            self::MEASURE4 => 'Yuza(m2)',
+            self::MEASURE5 => 'Hajm(m3)',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
+
+    public static function getPurpose($type = null)
+    {
+        $arr = [
+
+            self::PURPOSE1 => 'Tashqi ko\'rinish va markirovkasi bo\'yicha tekshiruv',
+            self::PURPOSE2 => 'Sinov laboratoriyasida tekshirish',
+            self::PURPOSE3 => 'Hujjat tahlili',
+       ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
     }
 
     public function afterFind()

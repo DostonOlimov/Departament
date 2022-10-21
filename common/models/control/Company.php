@@ -48,9 +48,9 @@ class Company extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_instruction_id', 'region_id', 'inn', 'soogu', 'phone', 'name', 'type', 'address'], 'required'],
-            [['control_instruction_id', 'region_id', 'inn', 'soogu'], 'integer'],
-            [['name', 'type', 'link', 'address', 'phone'], 'string', 'max' => 255],
+            [['control_instruction_id', 'region_id', 'inn',  'phone', 'name', 'type','ownername', 'address'], 'required'],
+            [['control_instruction_id', 'region_id', 'inn', ], 'integer'],
+            [['name', 'type', 'link', 'address', 'phone','soogu','thsht','ownername','mhobt','ifut'], 'string', 'max' => 255],
             [['control_instruction_id'], 'exist', 'skipOnError' => true, 'targetClass' => Instruction::className(), 'targetAttribute' => ['control_instruction_id' => 'id']],
             [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::className(), 'targetAttribute' => ['region_id' => 'id']],
         ];
@@ -63,16 +63,16 @@ class Company extends \yii\db\ActiveRecord
             'control_instruction_id' => 'Control Instruction ID',
             'region_id' => 'Hudud',
             'name' => 'XYuS nomi',
-            'inn' => 'XYuS inn',
-            'soogu' => 'Kod SOOGU',
-            'thsht' =>'THSHT',
-            'ifut' => 'IFUT',
-            'mhobt' =>'MHOBT',
-            'ownername' => 'Tashkilot rahbari',
-            'type' => 'XYuS faoliyat turi',
-            'phone' => 'XYuS telefon raqami',
-            'link' => 'XYuS manziliga havola',
-            'address' => 'XYuS yuridik manzil',
+            'inn' => 'XYUS STIR(Soliq to’lovchining identifikatsion raqami)',
+            'soogu' => 'DBIBT(Davlat boshqaruvi idoralarini belgilash tizimi)',
+            'thsht' =>'THSHT(Tashkiliy-huquqiy shakllar tasniflagichi)',
+            'ifut' => 'IFUT(Iqtisodiy faoliyat turlari umumdavlat tasniflagichi)',
+            'mhobt' =>'MHOBT(Ma\'muriy-hududiy ob‘yektlarni belgilash tizimi)',
+            'ownername' => 'Tashkilot rahbari FISH',
+            'type' => 'XYUS faoliyat turi',
+            'phone' => 'XYUS telefon raqami',
+            'link' => 'XYUS manziliga havola',
+            'address' => 'XYUS yuridik manzil',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -82,16 +82,6 @@ class Company extends \yii\db\ActiveRecord
 
     public function getINN($inn)
     {
-        $url_name = "https://orginfo.uz/search/founders?q=200357143";
-
-        $ch_session = curl_init();
-
-        curl_setopt($ch_session, CURLOPT_RETURNTRANSFER, 1);
-
-        curl_setopt($ch_session, CURLOPT_URL, $url_name);
-
-        $result_url = curl_exec($ch_session);
-        var_dump(explode("\n", $result_url));
 
     }
     public function getPhoneNumber()
