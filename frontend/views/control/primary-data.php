@@ -8,19 +8,17 @@
 use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
-use common\models\control\ProductType;
-use common\models\control\ControlPrimaryProductNd;
-use common\models\Nd;
-use common\models\NdType;
+use common\models\types\ProductSector;
+use common\models\control\PrimaryProductNd;
 use common\models\Countries;
-use frontend\models\PrimaryDataForm;
+use kartik\date\DatePicker;
 use frontend\widgets\Steps;
-use kartik\select2\Select2;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
+use kartik\money\MaskMoney;
 use yii\helpers\Html;
 
 $this->title = 'Birlamchi ma`lumotlar';
@@ -50,68 +48,34 @@ $this->params['breadcrumbs'][] = $this->title;
                         'min' => 1, // 0 or 1 (default 1)
                         'insertButton' => '.add-item', // css class
                         'deleteButton' => '.remove-item', // css class
-                        'model' => $products[0],
+                        'model' => $ov[0],
                         'formId' => 'dynamic-form',
                         'formFields' => [
-                            'category',
                             'type',
                             'measurement',
                             'compared',
                             'invalid',
-                            'product_type_id',
-                            'product_type_parent_id',
-                            'made_country',
-                            'product_measure',
-                            'product_purpose',
-                            'select_of_exsamle_purpose',
-                            'mandatory_certificate_id',
-                            'product_name',
-                            'nd',
-                            'nd_type',
-                            'number_blank',
-                            'number_reestr',
-                            'date_from',
-                            'date_to',
+
                         ],
                     ]); ?>
 
                     <div class="container-items">
-                        <h4>Tashkilotga oid malumotlar</h4>
+                        <h3 style="color:black;">Tashkilotga oid malumotlar</h3>
                         <hr>
                         <div class="row">
                             <div class="col-sm-6">
-                                <?= $form->field($model, 'smt')->dropDownList([
-                                    0 => 'joriy etilgan',
-                                    1 => 'joriy etilmagan'
-                                ]) ?>
+                                <?= $form->field($model, 'smt')->dropDownList(PrimaryData::getSMT(),['prompt'=>'Tanlash...']) ?>
                             </div>
 
                             <div class="col-sm-6">
-                                <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab()) ?>
+                                <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab(),['prompt'=>'Tanlash...']) ?>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <?php //$form->field($model, 'residue_quantity')->textInput() ?>
-                            </div>
-                            <div class="col-sm-6">
-                                <?php // $form->field($model, 'residue_amount')->textInput() ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <?php // $form->field($model, 'year_quantity')->textInput() ?>
-                            </div>
-                            <div class="col-sm-6">
-                                <?php //$form->field($model, 'year_amount')->textInput() ?>
-                            </div>
-                        </div>
-                        <h4>Tashkolotda mavjud o'lchov vositalari haqida ma'lumot</h4>
+                        <h3 style="color:black;">Tashkolotda mavjud o'lchov vositalari haqida ma'lumot</h3>
                         <hr>
                         <?php
-                        //var_dump(ArrayHelper::map(ProductType::find()->where(['parent_id' => 0])->all(), 'id', 'name',)
-                        foreach ($products as $i => $stan):
+                        foreach ($ov as $i => $stan):
                             if ($i == 1) {
                                 continue;
                             } ?>
@@ -129,65 +93,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-3 categoriya" style="display: none;">
-
-                                            <?= $form->field($stan, "[{$i}]category")->dropDownList(PrimaryDataForm::categoryList(), ['onchange' => 'handleChange(event)']) ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]product_type_id")->dropDownList(ArrayHelper::map(ProductType::find()->where(['parent_id' => 0])->all(), 'id', 'name',)
-                                            ,['id'=>'id', 'prompt'=>'Select category']) ?>
-                                        </div>
-
-                                        <div class="col-md-6 col-lg-3" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]made_country")->dropDownList(ArrayHelper::map(Countries::find()->all(), 'id', 'name',)
-                                                ) ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3" style="display: none">
-                                        <?= $form->field($stan, 'product_measure')->dropDownList(PrimaryProduct::getMeasure()) ?>
-                                        </div>
-                                    <div class="col-md-6 col-lg-3" style="display: none">
-                                    <?= $form->field($stan, 'product_purpose')->dropDownList(PrimaryProduct::getPurpose()) ?>
-                                    </div>
-                                        <div class="col-md-6 col-lg-3" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]product_name")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 renderForm" style="display: none">
-                                            <?php
-                                           /* echo $this->render('_form_primary', [
-                                                'form' => $form,
-                                                'primaryIndex' => $i,
-                                                'pro_primary' => !isset($pro_primary[$i]) ? [new ProPrimaryData] : $pro_primary[$i],
-                                            ]) */?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]nd_type")->dropDownList(ArrayHelper::map(NdType::find()->all(), 'id', 'name')) ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]number_blank")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]number_reestr")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]date_from")->input('date') ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3" style="display: none">
-                                            <?= $form->field($stan, "[{$i}]date_to")->input('date') ?>
-                                        </div>
-
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]type")->dropDownList(PrimaryOv::getType()) ?>
+                                            <?= $form->field($stan, "[{$i}]type")->dropDownList(PrimaryOv::getType(),['prompt'=>'Tanlash...']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]measurement")->textInput() ?>
+                                            <?= $form->field($stan, "[{$i}]measurement")->textInput(['type' => 'number']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]compared")->textInput() ?>
+                                            <?= $form->field($stan, "[{$i}]compared")->textInput(['type' => 'number']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]invalid")->textInput() ?>
+                                            <?= $form->field($stan, "[{$i}]invalid")->textInput(['type' => 'number']) ?>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -198,56 +115,53 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
-        <h4>Tashkilotda tekshiruv davrida realizatsiya qilingan mahsulotlar haqida ma'lumot</h4>
+        <h3 style="color:black;">Tashkilotda tekshiruv davrida realizatsiya qilingan mahsulotlar haqida ma'lumot</h3>
         <hr class="mt-3 mb-3">
         <div class="row mt-3">
             <div class="box box-default" style="display: inline-block">
                 <div class="panel-body">
                     <?php DynamicFormWidget::begin([
-                        'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-                        'widgetBody' => '.container-items', // required: css class selector
-                        'widgetItem' => '.item', // required: css class
+                        'widgetContainer' => 'dynamicform_wrapper_2', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+                        'widgetBody' => '.container-items_2', // required: css class selector
+                        'widgetItem' => '.item_2', // required: css class
 //                        'limit' => 7, // the maximum times, an element can be cloned (default 999)
                         'min' => 1, // 0 or 1 (default 1)
-                        'insertButton' => '.add-item', // css class
-                        'deleteButton' => '.remove-item', // css class
-                        'model' => $products[0],
+                        'insertButton' => '.add-item_2', // css class
+                        'deleteButton' => '.remove-item_2', // css class
+                        'model' => $product[0],
                         'formId' => 'dynamic-form',
                         'formFields' => [
-                            'category',
-                            'type',
-                            'measurement',
-                            'compared',
-                            'invalid',
-                            'product_type_id',
-                            'product_type_parent_id',
+                            'sector_id',
+                            'group',
+                            'position',
+                            'subposition',
+                            'class',
                             'made_country',
                             'product_measure',
                             'product_purpose',
                             'select_of_exsamle_purpose',
                             'mandatory_certificate_id',
                             'product_name',
-                            'nd',
-                            'nd_type',
-                            'number_blank',
-                            'number_reestr',
-                            'date_from',
-                            'date_to',
+                            'residue_quantity',
+                            'residue_amount',
+                            'year_amount',
+                            'year_quantity',
+                            'potency',
                         ],
                     ]); ?>
 
-                    <div class="container-items">
-                        <?php foreach ($products as $i => $stan):
-                            $stan->category = PrimaryDataForm::CATEGORY_PRODUCT;
-                            if ($i == 0) {
-                                continue;
-                            }
+                    <div class="container-items_2">
+                        <?php foreach ($product as $i => $stan):
+                           // $stan->category = PrimaryDataForm::CATEGORY_PRODUCT;
+                            if ($i == 1) {
+                               continue;
+                             }
                             ?>
-                            <div class="item panel panel-default item-product itemlar">
+                            <div class="item_2 panel panel-default item-product itemlar">
                                 <div class="panel-heading">
                                     <div class="pull-right">
-                                        <button type="button" class="add-item btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
-                                        <button type="button" class="remove-item btn btn-danger btn-xs" id="removeBtn"><i class="fa fa-minus"></i></button>
+                                        <button type="button" class="add-item_2 btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                                        <button type="button" class="remove-item_2 btn btn-danger btn-xs" id="removeBtn"><i class="fa fa-minus"></i></button>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -255,100 +169,65 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="row">
                                         <div class="col-md-3 categoriya" style="display: none;">
                                             <?php
-                                            echo $form->field($stan, "[{$i}]category")->dropDownList(PrimaryDataForm::categoryList()) ?>
+
+                                           // echo $form->field($stan, "[{$i}]category")->dropDownList(PrimaryDataForm::categoryList())
+                                            ?>
                                         </div>
-
-                                        <div class="col-md-6 col-lg-3 ">
-                                        <?php $dataCategory=ArrayHelper::map(ProductType::find()->where(['parent_id' => 0])->asArray()->all(), 'id', 'name');
-
-                                        echo $form->field($stan, 'product_type_parent_id')->dropDownList($dataCategory);
-
-                                        // Child # 1
-                                        echo $form->field($stan, 'group_id')->widget(DepDrop::classname(), [
-                                            'data' => [2 => 'Music'], // ensure at least the preselected value is available
-                                            'pluginOptions'=>[
-                                                'depends'=>[Html::getInputId($stan, 'product_type_parent_id')], // the id for cat attribute
-                                                'placeholder'=>'Select...',
-                                                'url'=>Url::to(['/site/subcat'])
-                                            ]
-                                        ]);
-
-                                        ?>
-
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]sector_id")->dropDownList(ArrayHelper::map(ProductSector::find()->orderBy('name', 'ASC')->asArray()->all(), 'id', 'name'),['prompt'=>'Tanlash...']) ?>
                                         </div>
-                                      <?=  $form->field($stan, 'product_type_parent_id')->dropDownList($dataCategory,
-                                          ['prompt'=>'---',
-                                              'id'=>'name',
-                                              'onchange'=>'
-                                        $.post( "'.Yii::$app->urlManager->createUrl('control/listsgroup?id=').'"+$(this).val(), function( data ) {
-                                        $( "select#name" ).html( data );
-                                        });']
-                                      );?>
-                                        <div class="col-md-6 col-lg-3 ">
-                                        <?php
-                                        $dataPost=[];
-                                        echo $form->field($stan, 'group_id')
-                                        ->dropDownList(
-                                        $dataPost,
-                                        ['prompt'=>'---','id'=>'name',
-                                            'onchange'=>'
-                                        $.post( "'.Yii::$app->urlManager->createUrl('control/listsclass?id=').'"+$(this).val(), function( data ) {
-                                        $( "select#name" ).html( data );
-                                        });']
-                                        );?></div>
-                                            <div class="col-md-6 col-lg-3 ">
-                                                <?php
-                                                $dataPost=[];
-                                                echo $form->field($stan, 'class_id')
-                                                    ->dropDownList(
-                                                        $dataPost,
-                                                        ['prompt'=>'---','id'=>'name',
-                                                            'onchange'=>'
-                                        $.post( "'.Yii::$app->urlManager->createUrl('control/listsposition?id=').'"+$(this).val(), function( data ) {
-                                        $( "select#name" ).html( data );
-                                        });']
-                                                    );?>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3 ">
-                                                <?php
-                                                $dataPost=[];
-                                                echo $form->field($stan, 'under_position_id')
-                                                    ->dropDownList(
-                                                        $dataPost,
-                                                        ['prompt'=>'---','id'=>'name',
-                                                            'onchange'=>'
-                                        $.post( "'.Yii::$app->urlManager->createUrl('control/listsunderposition?id=').'"+$(this).val(), function( data ) {
-                                        $( "select#name" ).html( data );
-                                        });']
-                                                    );?>
-                                            </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?php
+                                            echo $form->field($stan, "[{$i}]group")->widget(DepDrop::classname(), [
 
-                                            <div class="col-md-6 col-lg-3 ">
-                                                <?php
-                                                $dataPost=[];
-                                                echo $form->field($stan, 'position_id')
-                                                    ->dropDownList(
-                                                        $dataPost,
-                                                        ['prompt'=>'---','id'=>'name',
-                                                            'onchange'=>'
-                                        $.post( "'.Yii::$app->urlManager->createUrl('control/lists-under-position?id=').'"+$(this).val(), function( data ) {
-                                        $( "select#name" ).html( data );
-                                        });']
-                                                    );?>
-                                            </div>
+                                                'pluginOptions'=>[
+                                                    'depends'=>[Html::getInputId($stan, "[{$i}]sector_id")], // the id for cat attribute
+                                                    'placeholder'=>'Tanlash...',
+                                                    'url'=>Url::to(['/control/group'])
+                                                ]
+                                            ]);?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?php
+                                            echo $form->field($stan, "[{$i}]class")->widget(DepDrop::classname(), [
 
+                                                'pluginOptions'=>[
+                                                    'depends'=>[Html::getInputId($stan, "[{$i}]group")], // the id for cat attribute
+                                                    'placeholder'=>'Tanlash...',
+                                                    'url'=>Url::to(['/control/class'])
+                                                ]
+                                            ]);?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?php
+                                            echo $form->field($stan, "[{$i}]position")->widget(DepDrop::classname(), [
 
+                                                'pluginOptions'=>[
+                                                    'depends'=>[Html::getInputId($stan, "[{$i}]class")], // the id for cat attribute
+                                                    'placeholder'=>'Tanlash...',
+                                                    'url'=>Url::to(['/control/position'])
+                                                ]
+                                            ]);?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?php
+                                            echo $form->field($stan, "[{$i}]subposition")->widget(DepDrop::classname(), [
+
+                                                'pluginOptions'=>[
+                                                    'depends'=>[Html::getInputId($stan, "[{$i}]position")], // the id for cat attribute
+                                                    'placeholder'=>'Tanlash...',
+                                                    'url'=>Url::to(['/control/subposition'])
+                                                ]
+                                            ]);?>
+                                        </div>
                                             <div class="col-md-6 col-lg-3 ">
                                             <?= $form->field($stan, "[{$i}]product_name")->textInput() ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3" >
-                                            <?= $form->field($stan, "[{$i}]made_country")->dropDownList(ArrayHelper::map(Countries::find()->all(), 'id', 'name',)) ?>
+                                            <?= $form->field($stan, "[{$i}]made_country")->dropDownList(ArrayHelper::map(Countries::find()->all(), 'id', 'name',),['prompt'=>'Tanlash...']) ?>
                                         </div>
-                                    <div class="col-md-6 col-lg-3">
-                                    <?= $form->field($stan, 'product_measure')->dropDownList(PrimaryProduct::getMeasure()) ?>
-                                     </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, 'product_purpose')->dropDownList(PrimaryProduct::getPurpose()) ?>
+                                            <?= $form->field($stan, "[{$i}]select_of_exsamle_purpose")->dropDownList(PrimaryProduct::getPurpose(),['prompt'=>'Tanlash...']) ?>
                                         </div>
 
                                        <div class="col-md-6 col-lg-6  renderForm">
@@ -356,45 +235,64 @@ $this->params['breadcrumbs'][] = $this->title;
                                             echo $this->render('_form_primary', [
                                                 'form' => $form,
                                                 'primaryIndex' => $i,
-                                                'pro_primary' => !isset($pro_primary[$i]) ? [new ControlPrimaryProductNd] : $pro_primary[$i],
-                                            ]) ?>
+                                                'pro_primary' => !isset($pro_primary[$i]) ? [new PrimaryProductNd] : $pro_primary[$i],
+                                            ])
+                                            ?>
                                         </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]residue_quantity")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]residue_amount")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]year_amount")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]year_quantity")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]potency")->textInput() ?>
-                                        </div>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-md-6 col-lg-12">
-                                            <?= $form->field($stan, 'mandatory_certification_id')->radioList( [0=>'mavjud', 1 => 'mavjud emas', ] );?>
 
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]number_blank")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]number_reestr")->textInput() ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <?= $form->field($stan, "[{$i}]date_from")->input('date') ?>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]product_measure")->dropDownList(PrimaryProduct::getMeasure(),['prompt'=>'Tanlash...']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]date_to")->input('date') ?>
+                                            <?= $form->field($stan, "[{$i}]residue_quantity")->widget(MaskMoney::classname(), [
+                                                 'pluginOptions' => [
+                                            'prefix' => 'SUMMA : ',
+                                            'suffix' => ' so\'m',
+                                            'allowNegative' => false ]
+                                            ]); ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]residue_amount")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]year_amount")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]year_quantity")->widget(MaskMoney::classname(), [
+                                                'pluginOptions' => [
+                                            'prefix' => 'SUMMA : ',
+                                            'suffix' => ' so\'m',
+                                            'allowNegative' => false
+                                            ]
+                                            ]);  ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]potency")->textInput() ?>
                                         </div>
 
-                                 </div>
+
+                                    <h4 style="color:black;>
+            <i class="glyphicon glyphicon-envelope" ></i> Majburiy Sertifikatlashtirish
+                                    <button type="button" onclick="myFunction(this)" class=" add-item3 btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> Majburiy</button>
+                                    </h4>
+
+                                        <div class="pull-right">
+                                            <button type="button"  onclick = "myFunction1(this)" class="remove-item3 btn btn-danger btn-xs mandatory" style="display: none">
+                                                <i class="glyphicon glyphicon-minus" ></i>Majburiy emas</button>
+                                        </div>
+                                    <div class="col-sm-3 mandatory"  style="display: none">
+                                        <?= $form->field($stan, "[{$i}]number_reestr")->textInput() ?>
+                                    </div>
+                                    <div class="col-sm-3 mandatory" style="display: none">
+                                        <?= $form->field($stan, "[{$i}]number_blank")->textInput() ?>
+                                    </div>  <div class="col-sm-3  mandatory" style="display: none">
+                                        <?= $form->field($stan, "[{$i}]date_to")->widget(DatePicker::className()) ?>
+                                    </div>
+                                    <div class="mandatory col-sm-3 " style="display: none">
+                                        <?= $form->field($stan, "[{$i}]date_from")->widget(DatePicker::className()) ?>
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -404,15 +302,48 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
-        <div class="col-12">
+
+
+        <div class="col-12" style="margin-top:15px">
             <input type="submit" class="btn btn-info br-btn" value="Saqlash">
         </div>
         <?php ActiveForm::end() ?>
 
     </div>
-    <script src="/js/jquery.js"></script>
+<script>
+    function myFunction(button) {
 
+        obj = findParent(button, 'panel-body');
+
+       var collection =  obj.getElementsByClassName("mandatory");
+       for (var i=0;i<collection.length;i++)
+       {
+           collection[i].style.display = 'inline-block';
+       }
+
+    }
+
+    function findParent(elem, className){
+        if (elem.parentNode.classList.contains(className)){
+            return elem.parentNode;
+        }
+
+        return findParent(elem.parentNode,className);
+
+    }
+    function myFunction1(button) {
+        obj = findParent(button, 'panel-body');
+
+        var collection =  obj.getElementsByClassName("mandatory");
+        for (var i=0;i<collection.length;i++)
+        {
+            collection[i].style.display = 'none';
+        }
+
+    }
+</script>
 <?php
+
 $this->registerJs("	
 	
 	$('.dynamicform_wrapper').on('beforeInsert', function(e, item) {

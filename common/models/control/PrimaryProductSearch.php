@@ -22,8 +22,8 @@ class PrimaryProductSearch extends PrimaryProduct
     public function rules()
     {
         return [
-            [['id', 'control_primary_data_id', 'date_from', 'date_to'], 'integer'],
-            [['product_type_id', 'nd', 'nd_type', 'number_blank', 'number_reestr'], 'safe'],
+            [['id', 'control_primary_data_id', 'made_country','product_measure','select_of_exsamle_purpose'], 'integer'],
+            [['product_type_id', 'product_name', 'residue_quantity', 'residue_amount', 'year_quantity','year_amount','potency'], 'safe'],
         ];
     }
 
@@ -65,15 +65,16 @@ class PrimaryProductSearch extends PrimaryProduct
         $query->andFilterWhere([
             'id' => $this->id,
             'control_primary_data_id' => $this->control_primary_data_id,
-            'date_from' => $this->date_from,
-            'date_to' => $this->date_to,
+            'made_country' => $this->made_country,
+            'product_measure' => $this->product_measure,
         ]);
 
         $query->andFilterWhere(['like', 'product_type_id', $this->product_type_id])
-            ->andFilterWhere(['like', 'nd', $this->nd])
-            ->andFilterWhere(['like', 'nd_type', $this->nd_type])
-            ->andFilterWhere(['like', 'number_blank', $this->number_blank])
-            ->andFilterWhere(['like', 'number_reestr', $this->number_reestr]);
+            ->andFilterWhere(['like', 'year_amount', $this->year_amount])
+            ->andFilterWhere(['like', 'year_quantity', $this->year_quantity])
+            ->andFilterWhere(['like', 'potency', $this->potency])
+            ->andFilterWhere(['like', 'residue_amount', $this->residue_amount])
+            ->andFilterWhere(['like', 'residue_quantity', $this->residue_quantity]);
 
         return $dataProvider;
     }

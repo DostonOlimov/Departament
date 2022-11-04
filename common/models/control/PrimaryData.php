@@ -28,6 +28,9 @@ class PrimaryData extends \yii\db\ActiveRecord
     const LABORATORY_CONTRACT = 2;
     const LABORATORY_NOT = 3;
 
+    const SMT_HAVE = 0;
+    const SMT_NO = 1;
+
     public static function tableName()
     {
         return 'control_primary_data';
@@ -36,7 +39,7 @@ class PrimaryData extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_company_id', 'laboratory'], 'required'],
+            [['control_company_id', 'laboratory','smt'], 'required'],
             [['control_company_id', 'laboratory', 'smt'], 'integer'],
             [['control_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['control_company_id' => 'id']],
         ];
@@ -82,6 +85,21 @@ class PrimaryData extends \yii\db\ActiveRecord
             self::LABORATORY_HAVE => 'Sinov laboratoriyasi mavjud',
             self::LABORATORY_CONTRACT => 'Shartnoma asosida',
             self::LABORATORY_NOT => 'Sinov laboratoriyasi mavjud emas',
+        ];
+
+        if ($lab === null) {
+            return $arr;
+        }
+
+        return $arr[$lab];
+    }
+
+    public static function getSMT($lab = null)
+    {
+        $arr = [
+            self::SMT_HAVE => 'Joriy etilgan',
+            self::SMT_NO => 'Joriy etilmagan ',
+
         ];
 
         if ($lab === null) {

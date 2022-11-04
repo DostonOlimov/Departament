@@ -3,7 +3,10 @@
 namespace common\models\control;
 
 use Yii;
-
+use common\models\types\ProductGroup;
+use common\models\types\ProductClass;
+use common\models\types\ProductPosition;
+use common\models\types\ProductSubposition;
 /**
  * This is the model class for table "product_types".
  *
@@ -29,22 +32,22 @@ class ProductType extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['parent_id','group_id','class_id','position_id','under_position_id'], 'integer'],
+            [['code','position','class','group','sector'], 'string'],
             [['name'], 'string', 'max' => 255],
         ];
     }
     //search by name
-    public function searchByName($name)
+    public function searchByName(string $name):array
     {
-        $query = ProductType::find()
+        return ProductType::find()
             ->where(['name' => trim($name)])
             ->one();
-        return $query;
+
     }
     // insert product types
     Public function readData()
     {
-        $inputFileName = realpath(Yii::$app->basePath ).DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'excel'.DIRECTORY_SEPARATOR.'tessst.xlsx';
+        $inputFileName = realpath(Yii::$app->basePath) . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'excel' . DIRECTORY_SEPARATOR . 'classifier (7).xlsx';
 
         try {
 
@@ -54,97 +57,67 @@ class ProductType extends \yii\db\ActiveRecord
             $spreadsheet = $reader->load($inputFileName);
 
             $data = $spreadsheet->getSheet(0)->toArray();
-            $data1 = array_unique($data,SORT_REGULAR);
-            $parent_category=[];
-            foreach ($data1 as $key => $value)
-            {
-           $parent_category[] = $value[0];
+            $data1 = array_unique($data, SORT_REGULAR);
+
+            foreach ($data1 as $key => $value) {
+                $code[] = $value[0];
+                $group[] = $value[1];
+                $class[] = $value[3];
+                $position[] = $value[5];
+                $subposition[] =$value[7];
+
             }
-            $parent_category_unique = array_unique($parent_category);
-            foreach ($parent_category_unique as $item)
-            {
-                if ($item and !$this->searchByName($item))
-                {
-                   $obj = new ProductType();
-                    $obj->name = $item;
-                    $obj->save();
+            $gr = new ProductGroup();
+            foreach (array_unique($group) as $key => $item) {
+                if ($item and !($gr->searchbyName(substr($code[$key],0,3)))) {
+                    $gr1 = new ProductGroup();
+                    $gr1->name = $item;
+                    $gr1->kode = substr($code[$key],0,3);
+                    $gr1->sector_id =1;
+                    $gr1->save();
+
                 }
             }
-            foreach ($data1 as $item)
-                {
-                    if($item[1] and  $this->searchByName($item[0]) and  !$this->searchByName($item[1]))
-                    {
-
-                       $obj = new ProductType();
-                       $obj->name = $item[1];
-                       $obj->parent_id = $this->searchByName($item[0])->id;
-                       $obj->save();
+                $gr = new ProductClass();
+                foreach (array_unique($class) as $key => $item) {
+                    if ($item and !($gr->searchbyName(substr($code[$key],0,5))))  {
+                        $gr1 = new ProductClass();
+                        $gr1->name = $item;
+                        $gr1->kode = substr($code[$key],0,5);
+                        $gr1->save();
                     }
 
                 }
-            foreach ($data1 as $item)
-            {
-                if($item[2] and  $this->searchByName($item[1]) and  !$this->searchByName($item[2]))
-                {
 
-                    $obj = new ProductType();
-                    $obj->name = $item[2];
-                    $obj->parent_id = $this->searchByName($item[1])->parent_id;
-                    $obj->group_id = $this->searchByName($item[1])->id;
-                    $obj->save();
+                $gr = new ProductPosition();
+                foreach (array_unique($position) as $key => $item) {
+                    if ($item and !($gr->searchbyName(substr($code[$key],0,8)))) {
+                        $gr1 = new ProductPosition();
+                        $gr1->name = $item;
+                        $gr1->kode =substr($code[$key],0,8);
+                        $gr1->save();
+                    }
+
                 }
 
-            }
-            foreach ($data1 as $item)
-            {
-                if($item[3] and  $this->searchByName($item[2]) and  !$this->searchByName($item[3]))
-                {
+                $gr = new ProductSubposition();
+                foreach (array_unique($subposition) as $key => $item) {
+                    if ($item and !($gr->searchbyName(substr($code[$key],0,11)))) {
+                        $gr1 = new ProductSubposition();
+                        $gr1->name = $item;
+                        $gr1->kode = substr($code[$key],0,11);
+                         $gr1->save();
+                    }
 
-                    $obj = new ProductType();
-                    $obj->name = $item[3];
-                    $obj->parent_id = $this->searchByName($item[2])->parent_id;
-                    $obj->group_id = $this->searchByName($item[2])->group_id;
-                    $obj->class_id = $this->searchByName($item[2])->id;
-                    $obj->save();
                 }
 
-            }
-            foreach ($data1 as $item)
-            {
-                if($item[4] and  $this->searchByName($item[3]) and  !$this->searchByName($item[4]))
-                {
-
-                    $obj = new ProductType();
-                    $obj->name = $item[4];
-                    $obj->parent_id = $this->searchByName($item[3])->parent_id;
-                    $obj->group_id = $this->searchByName($item[3])->group_id;
-                    $obj->class_id = $this->searchByName($item[3])->class_id;
-                    $obj->position_id = $this->searchByName($item[3])->id;
-                    $obj->save();
-                }
 
             }
-            foreach ($data1 as $item)
-            {
-                if($item[5] and  $this->searchByName($item[4]) and  !$this->searchByName($item[5]))
-                {
-
-                    $obj = new ProductType();
-                    $obj->name = $item[5];
-                    $obj->parent_id = $this->searchByName($item[4])->parent_id;
-                    $obj->group_id = $this->searchByName($item[4])->group_id;
-                    $obj->class_id = $this->searchByName($item[4])->class_id;
-                    $obj->position_id = $this->searchByName($item[4])->position_id;
-                    $obj->under_position_id = $this->searchByName($item[4])->id;
-                    $obj->save();
-                }
-
+        catch
+            (\Exception $exception) {
+                print_r($exception->getMessage() . $exception->getFile());
+                exit();
             }
-          //  print_r($searchName);
-         } catch (\Exception $exception) {
-             print_r($exception->getMessage() . $exception->getFile());
-             exit();
-         }
 
     }
 

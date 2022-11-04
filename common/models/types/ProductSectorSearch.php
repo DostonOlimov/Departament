@@ -1,15 +1,15 @@
 <?php
 
-namespace common\models\control;
+namespace common\models\types;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\control\PrimaryData;
+use common\models\types\ProductSector;
 
 /**
- * PrimaryDataSearch represents the model behind the search form of `common\models\control\PrimaryData`.
+ * ProductSectorSearch represents the model behind the search form of `common\models\types\ProductSector`.
  */
-class PrimaryDataSearch extends PrimaryData
+class ProductSectorSearch extends ProductSector
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class PrimaryDataSearch extends PrimaryData
     public function rules()
     {
         return [
-            [['id', 'control_company_id', 'created_by', 'updated_by', 'created_at', 'updated_at','laboratory','smt'], 'integer'],
-            [['labaratory','smt'], 'safe'],
+            [['id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class PrimaryDataSearch extends PrimaryData
      */
     public function search($params)
     {
-        $query = PrimaryData::find();
+        $query = ProductSector::find();
 
         // add conditions that should always apply here
 
@@ -59,17 +59,9 @@ class PrimaryDataSearch extends PrimaryData
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'control_company_id' => $this->control_company_id,
-            'labaratoriya' => $this->labaratoriya,
-            'smt' => $this->smt,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'laboratory', $this->laboratory])
-            ->andFilterWhere(['like', 'smt', $this->smt]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

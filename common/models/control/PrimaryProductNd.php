@@ -3,6 +3,8 @@
 namespace common\models\control;
 
 use Yii;
+use common\models\control\PrimaryProduct;
+use common\models\NdType;
 
 /**
  * This is the model class for table "control_primary_product_nd".
@@ -12,9 +14,10 @@ use Yii;
  * @property string|null $name
  * @property int|null $type_id
  *
- * @property ControlPrimaryProduct $controlPrimaryProduct
+ * @property PrimaryProduct $controlPrimaryProduct
+ * @property NdType $controlPrimaryProduct0
  */
-class ControlPrimaryProductNd extends \yii\db\ActiveRecord
+class PrimaryProductNd extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -32,7 +35,8 @@ class ControlPrimaryProductNd extends \yii\db\ActiveRecord
         return [
             [['control_primary_product_id', 'type_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['control_primary_product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ControlPrimaryProduct::class, 'targetAttribute' => ['control_primary_product_id' => 'id']],
+            [['control_primary_product_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryProduct::class, 'targetAttribute' => ['control_primary_product_id' => 'id']],
+            [['control_primary_product_id'], 'exist', 'skipOnError' => true, 'targetClass' => NdType::class, 'targetAttribute' => ['control_primary_product_id' => 'id']],
         ];
     }
 
@@ -45,7 +49,7 @@ class ControlPrimaryProductNd extends \yii\db\ActiveRecord
             'id' => 'ID',
             'control_primary_product_id' => 'Control Primary Product ID',
             'name' => 'Hujjat nomi',
-            'type_id' => 'Mahsulotga oid reglament yoki meyoriy hujjat turi',
+            'type_id' => 'Hujjat turi',
         ];
     }
 
@@ -56,6 +60,16 @@ class ControlPrimaryProductNd extends \yii\db\ActiveRecord
      */
     public function getControlPrimaryProduct()
     {
-        return $this->hasOne(ControlPrimaryProduct::class, ['id' => 'control_primary_product_id']);
+        return $this->hasOne(PrimaryProduct::class, ['id' => 'control_primary_product_id']);
+    }
+
+    /**
+     * Gets query for [[ControlPrimaryProduct0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getControlPrimaryProduct0()
+    {
+        return $this->hasOne(NdType::class, ['id' => 'control_primary_product_id']);
     }
 }

@@ -30,7 +30,7 @@ class PrimaryOv extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_primary_data_id', 'type', 'measurement', 'compared', 'invalid'], 'required'],
+            [[ 'type', 'measurement', 'compared', 'invalid'], 'required'],
             [['control_primary_data_id', 'type'], 'integer'],
             [['measurement', 'compared', 'invalid'], 'string', 'max' => 255],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::className(), 'targetAttribute' => ['control_primary_data_id' => 'id']],

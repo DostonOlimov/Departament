@@ -14,6 +14,21 @@ class PrimaryDataForm extends Model
     const CATEGORY_OV = 1;
     const CATEGORY_PRODUCT = 2;
 
+    /**
+     * {@inheritdoc}
+     */
+    const   MEASURE1 = 1;
+    const   MEASURE2 = 2;
+    const   MEASURE3 = 3;
+    const   MEASURE4 = 4;
+    const   MEASURE5 = 5;
+
+    const  PURPOSE1 = 1;
+    const  PURPOSE2 = 2;
+    const  PURPOSE3 = 3;
+
+
+
     public $id;
     public $category;
 
@@ -23,43 +38,46 @@ class PrimaryDataForm extends Model
     public $invalid;
 
     public $product_type_id;
-    public $product_type_parent_id;
-    public $product_purpose;
+    public $product_name;
     public $made_country;
     public $product_measure;
-    public $group_id;
-    public $class_id;
-    public $position_id;
-    public $under_position_id;
-    public $mandatory_certification_id;
+    public $select_of_exsamle_purpose;
     public $residue_amount;
     public $residue_quantity;
     public $year_quantity;
     public $year_amount;
     public $potency;
-    public $nd;
+
+    public $sector_id;
+    public $group;
+    public $subposition;
+    public $class;
+    public $position;
+
     public $nd_type;
+    public $nd_name;
+
     public $number_blank;
     public $number_reestr;
     public $date_from;
     public $date_to;
-    public $product_name;
+
 
 
     public function rules()
     {
         return [
-//            [['type', 'measurement', 'compared', 'invalid'], 'required'],
+          [['type', 'measurement', 'compared', 'invalid',], 'required'],
 
-            [['type', 'measurement', 'compared', 'invalid'], 'required', 'when' => function ($model) {
+           [['type', 'measurement', 'compared', 'invalid'],
+                'required','when' => function ($model) {
                 return $model->category == self::CATEGORY_OV;
-            }, 'whenClient' => "function (attribute, value) {
+              }, 'whenClient' => "function (attribute, value) {
                 return $('#category').val() == 1;
             }"],
-            [['type', 'category','made_country','product_mesure','product_purpose'], 'integer'],
+            [['type', 'category','made_country','product_measure','select_of_exsamle_purpose','subposition','sector_id','group','class','position',], 'integer'],
             [['nd'], 'safe'],
-            [['measurement', 'compared', 'invalid', 'number_blank', 'number_reestr', 'date_from', 'date_to', 'product_name'], 'string'],
-            [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['made_country' => 'id']],
+            [['measurement', 'compared', 'invalid', 'product_name','number_blank','number_blank'], 'string'],
 
         ];
     }
@@ -82,8 +100,9 @@ class PrimaryDataForm extends Model
             'compared' => 'Qiyoslangan O\'.V soni',
             'invalid' => 'Yaroqsiz O\'.V soni',
 
-            'product_purpose' => 'Namuna tanlab olish maqsadi',
-            'product_type_parent_id' => 'Mahsulot soha turi',
+            'select_of_exsamle_purpose' => 'Namuna tanlab olish maqsadi',
+            'sector_id' => 'Mahsulot soha turi',
+            'product_type_id' => 'Mahsulotning turi',
             'product_measure' => 'Mahsulot o\'lchov birligi',
             'made_country' => 'Mahsulot ishlab chiqarilgan mamlakat',
             'residue_amount' => 'Mahsulot qoldiq miqdori',
@@ -92,24 +111,58 @@ class PrimaryDataForm extends Model
             'year_amount' => 'Mahsulot yillik qoldiq miqdori',
             'mandatory_certification_id' => 'Majburiy sertifikatlashtirish mavjudligi',
             'potency' => 'Ishlab chiqarish quvvati',
-            'group_id' => 'Mahsulot guruhi',
-            'class_id' => 'Mahsulot sinfi',
-            'position_id' => 'Mahsulot positsiyasi',
-            'under_position_id' => 'Mahsulot positsiya osti',
-            'number_blank' => 'Blank raqami',
-            'number_reestr' => 'Reesstr raqami',
-            'date_from' => 'Berilgan sana',
-            'date_to' => 'Amal qilish muddati',
+            'group' => 'Mahsulot guruhi',
+            'class' => 'Mahsulot sinfi',
+            'subposition' => 'Mahsulot pozitsiya osti',
+            'position' => 'Mahsulot positsiyasi',
+            'type_name' => 'Mahsulot turi',
             'product_name' => 'Mahsulot nomi,brendi va hokazolar',
         ];
     }
+    public static function getMeasure($type = null)
+    {
+        $arr = [
 
-    public static function getCity($parent_id) {
-        $data=ProductType::find()
-            ->where(['id'=>$parent_id])
-            ->select(['id','name AS name'])->asArray()->all();
+            self::MEASURE3 => 'Uzunlik(m)',
+            self::MEASURE2 => 'Og\'irlik(kg)',
+            self::MEASURE1 => 'Dona',
+            self::MEASURE4 => 'Yuza(m2)',
+            self::MEASURE5 => 'Hajm(m3)',
+        ];
 
-        return $data;
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
+
+    public static function getPurpose($type = null)
+    {
+        $arr = [
+
+            self::PURPOSE1 => 'Tashqi ko\'rinish va markirovkasi bo\'yicha tekshiruv',
+            self::PURPOSE2 => 'Sinov laboratoriyasida tekshirish',
+            self::PURPOSE3 => 'Hujjat tahlili',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
+    /**
+     * @param int $parent_id
+     * @return array
+     */
+    public static function getCity(int $parent_id): array
+    {
+        return ProductType::find()
+            ->where(['id' => $parent_id])
+            ->select(['id', 'name AS name'])
+            ->asArray()
+            ->all();
     }
 
 

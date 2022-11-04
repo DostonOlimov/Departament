@@ -2,8 +2,11 @@
 
 namespace common\models\control;
 
-use common\models\ProgramType;
 use common\models\Countries;
+use common\models\control\PrimaryProductNd;
+use common\models\control\ProductType;
+use common\models\control\PrimaryData;
+use common\models\types\ProductSubposition;
 use Yii;
 
 /**
@@ -11,15 +14,24 @@ use Yii;
  *
  * @property int $id
  * @property int $control_primary_data_id
- * @property string|null $product_type
- * @property string|null $nd
- * @property string|null $nd_type
+ * @property string|null $product_type_id
+ * @property string|null $product_name
+ * @property int|null $made_country
+ * @property int $product_measure
+ * @property int $select_of_exsamle_purpose
+ * @property string|null $residue_amount
+ * @property string|null $residue_quantity
+ * @property string|null $potency
+ * @property string|null $year_amount
+ * @property string|null $year_quantity
  * @property string|null $number_blank
  * @property string|null $number_reestr
  * @property int|null $date_from
  * @property int|null $date_to
  *
  * @property PrimaryData $controlPrimaryData
+ * @property PrimaryProductNd[] $controlPrimaryProductNds
+ * @property Countries $madeCountry
  */
 class PrimaryProduct extends \yii\db\ActiveRecord
 {
@@ -36,27 +48,32 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     const  PURPOSE2 = 2;
     const  PURPOSE3 = 3;
 
+    public $sector_id;
+    public $group;
+    public $subposition;
+    public $class;
+    public $position;
+
+    /**
+     * {@inheritdoc}
+     */
 
     public static function tableName()
     {
         return 'control_primary_product';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['control_primary_data_id'], 'required'],
-            [['control_primary_data_id', 'product_type_id','product_type_parent_id','group_id','class_id','position_id','under_position_id','product_measure','select_of_exsamle_purpose','made_country'], 'integer'],
-            [['residue_quantity','residue_amount','potency','year_amount','year_quantity', 'product_name'], 'string', 'max' => 255],
-            [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::className(), 'targetAttribute' => ['control_primary_data_id' => 'id']],
-            [['product_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_id' => 'id']],
-            [['product_type_parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_parent_id' => 'parent_id']],
-            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['group_id' => 'group_id']],
-            [['class_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['class_id' => 'class_id']],
-            [['potion_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['potion_id' => 'parent_id']],
-            [['under_potion_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['under_potion_id' => 'under_parent_id']],
-            [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['made_country' => 'id']]
-
+            [[ 'product_measure', 'made_country','select_of_exsamle_purpose','residue_quantity','year_quantity','year_amount','residue_amount'], 'required'],
+            [['control_primary_data_id','product_name', 'made_country', 'product_measure', 'select_of_exsamle_purpose','sector_id'], 'integer'],
+            [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'date_to','date_from','year_quantity', 'number_blank', 'number_reestr'], 'string', 'max' => 255],
+            [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
+            [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::class, 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
     }
 
@@ -68,19 +85,22 @@ class PrimaryProduct extends \yii\db\ActiveRecord
 
         $this->date_from = strtotime($this->date_from);
         $this->date_to = strtotime($this->date_to);
+      //  $this->code= preg_replace('/[^0-9]+/', '', $this->code);
+        // $this->checkup_finish_date = strtotime($this->checkup_finish_date);
 
         return true;
     }
+
 
     public static function getMeasure($type = null)
     {
         $arr = [
 
-            self::MEASURE3 => 'Uzunlik(m)',
-            self::MEASURE2 => 'Og\'irlik(kg)',
-            self::MEASURE1 => 'Dona',
-            self::MEASURE4 => 'Yuza(m2)',
-            self::MEASURE5 => 'Hajm(m3)',
+            self::MEASURE3 => '(m)',
+            self::MEASURE2 => '(kg)',
+            self::MEASURE1 => 'dona',
+            self::MEASURE4 => '(m2)',
+            self::MEASURE5 => '(m3)',
         ];
 
         if ($type === null) {
@@ -97,7 +117,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             self::PURPOSE1 => 'Tashqi ko\'rinish va markirovkasi bo\'yicha tekshiruv',
             self::PURPOSE2 => 'Sinov laboratoriyasida tekshirish',
             self::PURPOSE3 => 'Hujjat tahlili',
-       ];
+        ];
 
         if ($type === null) {
             return $arr;
@@ -108,9 +128,8 @@ class PrimaryProduct extends \yii\db\ActiveRecord
 
     public function afterFind()
     {
-        $this->date_from = $this->date_from ? Yii::$app->formatter->asDate($this->date_from, 'M/dd/yyy') : '';
-        $this->date_to = $this->date_to ? Yii::$app->formatter->asDate($this->date_to, 'M/dd/yyy') : '';
-
+        $this->date_from = $this->date_from ? Yii::$app->formatter->asDate($this->date_from, 'M/dd/yyyy') : $this->date_from;
+        $this->date_to = $this->date_to ? Yii::$app->formatter->asDate($this->date_to, 'M/dd/yyyy') : $this->date_to;
         parent::afterFind(); // TODO: Change the autogenerated stub
     }
 
@@ -121,22 +140,50 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             'control_primary_data_id' => 'Control Primary Data ID',
             'product_type_id' => 'Mahsulot turi',
             'product_name' => 'Mahsulot nomi',
-            'nd' => 'Mahsulot normativ hujjatlari',
-            'nd_type' => 'Normativ hujjat toifalari',
-            'number_blank' => 'Blank raqami',
-            'number_reestr' => 'Reesstr raqami',
-            'date_from' => 'Berilgan sana',
-            'date_to' => 'Amal qilish muddati',
+            'sector_id' => 'Mahsulot soha turi',
+            'group' => 'Mahsulot guruhi',
+            'class' => 'Mahsulot sinfi',
+            'position' => 'Mahsulot pozitsiyasi',
+            'subposition' => 'Mahsulot pozitsiya osti',
+            'made_country' => 'Mahsulot ishlab chiqarilgan mamlakat',
+            'product_measure' => 'Mahsulot o\'lchov birligi',
+            'select_of_exsamle_purpose' => 'Namuna tanlab olish maqsadi ',
+            'potency' => 'Ishlab chiqarish quvvati',
+            'residue_quantity' => 'Mahsulot qoldiq summasi',
+            'residue_amount' => 'Mahsulot qoldiq miqdori',
+            'year_quantity' => 'yillik summasi',
+            'year_amount' => 'yillik miqdori'
         ];
     }
+
 
     /**
      * Gets query for [[ControlPrimaryData]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPrimaryData()
+    public function getControlPrimaryData()
     {
-        return $this->hasOne(PrimaryData::className(), ['id' => 'control_primary_data_id']);
+        return $this->hasOne(PrimaryData::class, ['id' => 'control_primary_data_id']);
+    }
+
+    /**
+     * Gets query for [[ControlPrimaryProductNds]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getControlPrimaryProductNds()
+    {
+        return $this->hasMany(PrimaryProductNd::class, ['control_primary_product_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[MadeCountry]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMadeCountry()
+    {
+        return $this->hasOne(Countries::class, ['id' => 'made_country']);
     }
 }

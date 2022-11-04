@@ -40,22 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
-                'buttonOptions' => [
-                    'class' => 'text-primary'
-                ],
-                /*'buttons' => [
-                    'view' => function ($url, $model) {
-                        return Html::a('', $url);
-                    },
-                ],*/
-                'urlCreator' => function ($action, $searchmodel, $key, $index) {
-                    if ($action === 'view') {
-                        $url = Url::to(['view', 'id' => $searchmodel->id]);
-                        return $url;
-                    }
-                }
+                'class' => 'yii\grid\SerialColumn',
             ],
             [
                 'attribute' => 'name',

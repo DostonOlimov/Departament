@@ -17,11 +17,15 @@ use common\models\control\PrimaryOvSearch;
 use common\models\control\PrimaryProduct;
 use common\models\control\Laboratory;
 use common\models\control\PrimaryProductSearch;
-use common\models\control\ProPrimaryData;
+use common\models\control\PrimaryProductNd;
+use common\models\types\ProductGroup;
+use common\models\types\ProductPosition;
+use common\models\types\ProductSubposition;
+use common\models\types\ProductClass;
 use common\models\Model;
 use Exception;
-use frontend\models\PrimaryDataForm;
 use Yii;
+use yii\helpers\Json;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -68,7 +72,6 @@ class ControlController extends Controller
     public function actionInstruction()
     {
         $model = new Instruction();
-
         if ($model->load($this->request->post()) && $model->validate()) {
 
             $transaction = Yii::$app->db->beginTransaction();
@@ -127,63 +130,81 @@ class ControlController extends Controller
 
     public function actionPrimaryData($company_id)
     {
+
         $model = new PrimaryData();
+
         $model->control_company_id = $company_id;
+        $products = [new PrimaryProduct];
+        $ovs = [new PrimaryOv];
 
-        $products = [new PrimaryDataForm];
 
-        $products[1] = new PrimaryDataForm();
-        $products[1]->category = PrimaryDataForm::CATEGORY_PRODUCT;
-       // $pro_primary[0] = [new ProPrimaryData];
-      //  $pro_primary[1] = [new ProPrimaryData];
+          $pro_primary[0] = [new PrimaryProductNd];
+          $pro_primary[1] = [new PrimaryProductNd];
 
         $post = $this->request->post();
         if ($model->load($post)) {
+         //   VarDumper::dump($model,12,true);die;
 
-//            VarDumper ::dump($post,12,true);die;
-            unset($products[1]);
-          //  unset($pro_primary[1]);
-            $products = Model::createMultiple(PrimaryDataForm::classname(), $products);
+           unset($products[1]);
+           unset($pro_primary[1]);
+
+
+            $products = Model::createMultiple(PrimaryProduct::classname());
             Model::loadMultiple($products, $this->request->post());
+            $ovs = Model::createMultiple(PrimaryOv::classname());
+            Model::loadMultiple($ovs, Yii::$app->request->post());
 
-            $valid = $model->validate() && Model::validateMultiple($products);
+            $valid = $model->validate() && Model::validateMultiple($products) && Model::validateMultiple($ovs);
+if(Model::validateMultiple($products)){
+    echo 'something';
+}
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     $model->save(false);
-                    foreach ($products as $key => $product) {
 
-                        if ($product->category == PrimaryDataForm::CATEGORY_OV) {
-                            $ov = new PrimaryOv();
-                            $ov->control_primary_data_id = $model->id;
-                            $ov->type = $product->type;
-                            $ov->measurement = $product->measurement;
-                            $ov->compared = $product->compared;
-                            $ov->invalid = $product->invalid;
-                            $ov->save(false);
-                        } else {
-                            if ($product->product_type_id || $product->product_name || $product->nd || $product->number_blank || $product->number_reestr || $product->date_from || $product->date_to) {
+                    foreach ($ovs as $key => $ov) {
+
+                            $ov1 = new PrimaryOv();
+                            $ov1->control_primary_data_id = $model->id;
+                            $ov1->type = $ov->type;
+                            $ov1->measurement = $ov->measurement;
+                            $ov1->compared = $ov->compared;
+                            $ov1->invalid = $ov->invalid;
+                            $ov1->save(false);
+                        }
+                foreach ($products as $key => $product)
+                {
+
                                 $prod = new PrimaryProduct();
                                 $prod->control_primary_data_id = $model->id;
-                                $prod->product_type_id = $product->product_type_id;
+                                $prod->product_type_id = $product->subposition;
                                 $prod->product_name = $product->product_name;
-                                $prod->nd = $product->nd ? implode(',', $product->nd) : null;
-                                $prod->number_blank = $product->number_blank;
+                               // $prod->nd = $product->nd ? implode(',', $product->nd) : null;
+                                $prod->residue_quantity = $product->residue_quantity;
+                                $prod->residue_amount = $product->residue_amount;
+                                $prod->year_quantity = $product->year_quantity;
+                                $prod->year_amount = $product->year_amount;
+                                $prod->potency = $product->potency;
+                                $prod->made_country = $product->made_country;
+                                $prod->product_measure = $product->product_measure;
                                 $prod->number_reestr = $product->number_reestr;
+                                $prod->number_blank = $product->number_reestr;
                                 $prod->date_from = $product->date_from;
                                 $prod->date_to = $product->date_to;
+                                $prod->select_of_exsamle_purpose = $product->select_of_exsamle_purpose;
+
                                 $prod->save(false);
-                                foreach ($post['ProPrimaryData'][$key] as $proData) {
-                                    $pro = new ProPrimaryData();
-                                    $pro->control_primary_id = $prod->id;
-                                    $pro->product_name = $proData['product_name'];
-                                    $pro->product_date = $proData['product_date'];
-                                    $pro->save(false);
+                                foreach ($post['PrimaryProductNd'][$key] as $proData) {
+                                    $pro = new PrimaryProductNd();
+                                    $pro->control_primary_product_id = $prod->id;
+                                    $pro->name = $proData['name'];
+                                    $pro->type_id = $proData['type_id'];
+
+                                   $pro->save(false);
                                 }
                             }
-                        }
-                    }
-                    $transaction->commit();
+            $transaction->commit();
                     return $this->redirect(['identification', 'company_id' => $company_id]);
                 } catch (Exception $e) {
                     $transaction->rollBack();
@@ -191,102 +212,87 @@ class ControlController extends Controller
                 }
             }
         }
+
         return $this->render('primary-data', [
             'model' => $model,
-            'products' => $products,
-            //'pro_primary' => $pro_primary,
+           'pro_primary' => $pro_primary,
+            'product' => $products,
+            'ov' =>$ovs,
+
+
         ]);
     }
 
-    // select category using parent id
-    public function actionSubcat() {
+    public function actionGroup():array {
         $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $cat_id = $parents[0];
-                $out = ProductType::find()->where(['group_id' => $cat_id])->all();
-                // the getSubCatList function will query the database based on the
-                // cat_id and return an array like below:
-                // [
-                //    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
-                //    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
-                // ]
-                echo Json::encode(['output'=>$out, 'selected'=>'']);
-                return;
-            }
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0];
+            $out = ProductGroup::find()
+                ->where(['sector_id' => $cat_id])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
         }
-        echo Json::encode(['output'=>'', 'selected'=>'']);
+        return  ['output'=>'', 'selected'=>''];
     }
 
-    public function actionListsgroup($id) {
-        $countPosts = ProductType::find()
-            ->where([ 'group_id'=>1,'parent_id'=>$id])
-            ->count();
-        $posts = ProductType::find()
-            ->where(['group_id'=>1,'parent_id'=>$id])
-            ->orderBy('id DESC')
-            ->all();
-        if($countPosts>0) {
-            foreach($posts as $post){
-                echo "<option value='".$post->id."'>".$post->name."</option>";
-            }
+
+    public function actionClass():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+                $cat_id = $parents[0].'%';
+                $out = ProductClass::find()
+                    ->where(['like', 'kode', $cat_id, false])
+                    ->select(['kode as id','name'])
+                    ->orderBy('name', 'ASC')
+                    ->asArray()
+                    ->all();
+                return ['output'=>$out, 'selected'=>''];
         }
-        else{
-            echo "<option>---</option>";
-        }
+       return  ['output'=>'', 'selected'=>''];
     }
-    public function actionListclass($id) {
-        $countPosts = ProductType::find()
-            ->where(['group_id' => $id,'class_id'=>2])
-            ->count();
-        $posts = ProductType::find()
-            ->where(['group_id' => $id,'class_id'=>2])
-            ->orderBy('id DESC')
-            ->all();
-        if($countPosts>0) {
-            foreach($posts as $post){
-                echo "<option value='".$post->id."'>".$post->name."</option>";
-            }
+
+
+    public function actionPosition() :array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductPosition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
         }
-        else{
-            echo "<option>---</option>";
-        }
+        return  ['output'=>'', 'selected'=>''];
     }
-    public function actionListsposition($id) {
-        $countPosts = ProductType::find()
-            ->where(['class_id' => $id,'position_id' => 3])
-            ->count();
-        $posts = ProductType::find()
-            ->where(['class_id' => $id,'position_id' =>3])
-            ->orderBy('id DESC')
-            ->all();
-        if($countPosts>0) {
-            foreach($posts as $post){
-                echo "<option value='".$post->id."'>".$post->name."</option>";
-            }
+
+    public function actionSubposition():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductSubposition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
         }
-        else{
-            echo "<option>---</option>";
-        }
+        return  ['output'=>'', 'selected'=>''];
     }
-    public function actionListsupnderposition($id) {
-        $countPosts = ProductType::find()
-            ->where(['position_id' => $id,'under_position_id'=>4])
-            ->count();
-        $posts = ProductType::find()
-            ->where(['position_id' => $id,'under_position_id'=>4])
-            ->orderBy('id DESC')
-            ->all();
-        if($countPosts>0) {
-            foreach($posts as $post){
-                echo "<option value='".$post->id."'>".$post->name."</option>";
-            }
-        }
-        else{
-            echo "<option>---</option>";
-        }
-    }
+
 
 
     public function actionPrimaryDataView($id)

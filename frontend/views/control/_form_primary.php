@@ -35,8 +35,9 @@ use yii\widgets\ActiveForm;
         <thead>
         </thead>
         <tbody class="container-rooms">
+        <h5 style="color:black;">Mahsulotga oid texnik regalament yoki meyoriy hujjat(lar)</h5>
         <?php foreach ($pro_primary as $indexRoom => $modelRoom): ?>
-            <tr class="room-item">
+            <tr class="room-item ">
                 <td class="vcenter">
                     <div class="row">
                         <div class="col-sm-6">

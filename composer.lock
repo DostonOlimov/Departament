@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8f9c57a5a23e95eaa3f0370bd1d12b1",
+    "content-hash": "bfd2a4ecfe3c7366cca182f1e7d9f9c3",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -76,7 +76,7 @@
             "version": "3.6.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "3711efedf0ca2e998cd0417324f717f2e0b828ec"
             },
             "dist": {
@@ -634,6 +634,66 @@
                 "source": "https://github.com/kartik-v/yii2-krajee-base/tree/v3.0.5"
             },
             "time": "2022-06-01T14:05:39+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-money",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-money.git",
+                "reference": "9b636534a1935942621a86a7f765d34d86be6b29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-money/zipball/9b636534a1935942621a86a7f765d34d86be6b29",
+                "reference": "9b636534a1935942621a86a7f765d34d86be6b29",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": ">=2.0.0"
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\money\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An advanced money mask input for Yii 2.0 based on jquery maskmoney plugin styled for Bootstrap 3.",
+            "homepage": "https://github.com/kartik-v/yii2-money",
+            "keywords": [
+                "bootstrap",
+                "bootstrap 3",
+                "currency",
+                "extension",
+                "format",
+                "jquery",
+                "mask",
+                "money",
+                "widget",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/kartik-v/yii2-money/issues",
+                "source": "https://github.com/kartik-v/yii2-money/tree/master"
+            },
+            "time": "2019-05-25T07:25:45+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-datepicker",
@@ -2445,12 +2505,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "ea931f37d0522bd1e462de9631a381ed365bed9c"
+                "reference": "4b84701bf976d9666a6af2ea640d921e3f21bde4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea931f37d0522bd1e462de9631a381ed365bed9c",
-                "reference": "ea931f37d0522bd1e462de9631a381ed365bed9c",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/4b84701bf976d9666a6af2ea640d921e3f21bde4",
+                "reference": "4b84701bf976d9666a6af2ea640d921e3f21bde4",
                 "shasum": ""
             },
             "require": {
@@ -2560,7 +2620,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-16T10:14:01+00:00"
+            "time": "2022-10-26T11:59:25+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap4",
@@ -3547,12 +3607,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "69568e4293f4fa993f3b0e51c9723e1e17c41379"
+                "reference": "67c26b443f348a51926030c83481b85718457d3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/69568e4293f4fa993f3b0e51c9723e1e17c41379",
-                "reference": "69568e4293f4fa993f3b0e51c9723e1e17c41379",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/67c26b443f348a51926030c83481b85718457d3d",
+                "reference": "67c26b443f348a51926030c83481b85718457d3d",
                 "shasum": ""
             },
             "require": {
@@ -3643,7 +3703,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.4.1"
+                "source": "https://github.com/guzzle/psr7/tree/2.4.3"
             },
             "funding": [
                 {
@@ -3659,7 +3719,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-28T14:45:39+00:00"
+            "time": "2022-10-26T14:07:24+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -4185,12 +4245,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "0a9fd6814ef923cf8cfb37cd9d39706a4c49f571"
+                "reference": "38f5390ad2b579095feebee534b94059062055ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0a9fd6814ef923cf8cfb37cd9d39706a4c49f571",
-                "reference": "0a9fd6814ef923cf8cfb37cd9d39706a4c49f571",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/38f5390ad2b579095feebee534b94059062055ae",
+                "reference": "38f5390ad2b579095feebee534b94059062055ae",
                 "shasum": ""
             },
             "require": {
@@ -4274,7 +4334,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-17T06:29:49+00:00"
+            "time": "2022-10-19T10:44:39+00:00"
         },
         {
             "name": "psr/container",
@@ -5234,12 +5294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "ae0727b4b524bebd61096c967d130bd12d6c0f22"
+                "reference": "ea59bb0edfaf9f28d18d8791410ee0355f317669"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/ae0727b4b524bebd61096c967d130bd12d6c0f22",
-                "reference": "ae0727b4b524bebd61096c967d130bd12d6c0f22",
+                "url": "https://api.github.com/repos/symfony/console/zipball/ea59bb0edfaf9f28d18d8791410ee0355f317669",
+                "reference": "ea59bb0edfaf9f28d18d8791410ee0355f317669",
                 "shasum": ""
             },
             "require": {
@@ -5325,7 +5385,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-18T13:11:10+00:00"
+            "time": "2022-10-26T21:41:52+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

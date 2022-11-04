@@ -7,10 +7,14 @@
 use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
-use common\models\control\ProPrimaryData;
+use common\models\control\PrimaryProductNd;
+use common\models\control\MandatoryCertification;
+use common\models\types\ProductSubposition;
+use common\models\Countries;
 use frontend\widgets\Steps;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
+use common\models\NdType;
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,12 +27,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'control_instruction_id' => $model->controlCompany->control_instruction_id,
         'control_company_id' => $model->control_company_id,
     ]) ?>
-
     <div class="col-6">
+    <h3>Korxona haqida</h3>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            [
+                'attribute' => 'laboratory',
+                'value' => function ($model) {
+                    return PrimaryData::getLab($model->laboratory);
+                }
+
+            ],
+            [
+                'attribute' => 'smt',
+                'value' => function ($model) {
+                    return PrimaryData::getSMT($model->smt);
+                }
+
+            ],
+        ],
+    ]) ?>
+
+
         <h3>O'lchov vositalari</h3>
         <?php
         //\yii\helpers\VarDumper::dump(PrimaryOv::findOne(['control_primary_data_id' => $model->id]),12,true);die;
-        if (PrimaryOv::findOne(['control_primary_data_id' => $model->id])) {
+        if ($ovs = PrimaryOv::findAll(['control_primary_data_id' => $model->id])) {
+
             echo GridView::widget([
                 'dataProvider' => $dataOv,
 //                    'filterModel' => $searchOv,
@@ -51,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <hr>
         <?php
-        if (PrimaryProduct::findOne(['control_primary_data_id' => $model->id])) {
+        if ($product = PrimaryProduct::findAll(['control_primary_data_id' => $model->id])) {
             echo "<h3>Mahsulot</h3>";
             echo GridView::widget([
                 'dataProvider' => $dataProduct,
@@ -59,39 +85,95 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerRowOptions' => ['style' => 'background-color: #198754;'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'product_type_id',
-                    'number_blank',
-                    'number_reestr',
-                    'product_name',
-                    'nd_type',
-                    'date_from',
-                    'date_to',
                     [
-                        'label' => 'Normativ hujjat nomi sanasi',
-                        'value' => function($model) {
-                            $data = ProPrimaryData::find()->where(['control_primary_id' => $model->id])->all();
+                        'label' => 'Mahsulot turi',
+                        'value' => function($pro) {
+                            $data = ProductSubposition::find()->where(['kode' => $pro->product_type_id])->one();
+                            if($data){
+                                return $result = '<span>' . $data->name. '</span><br>';
+                            }
+                            return 'aniqlanmadi';
+                        },
+                        'format' => 'raw'
+                    ],
+                    'product_name',
+                    [
+                        'label' => 'Mahsulot ishlab chiqarilgan mamlakat',
+                        'value' => function($pro) {
+                            $data = Countries::find()->where(['id' => $pro->made_country])->one();
+                            $result = '<span>' . $data->name. '</span><br>';
+                            return $result;
+                        },
+                        'format' => 'raw'
+                    ],
+                    [
+                        'attribute' => 'Mahsulot o\'lchov birligi',
+                        'value' => function ($pro) {
+                            return PrimaryProduct::getMeasure($pro->product_measure);
+                        }
+                    ],
+                    [
+                        'attribute' => 'Namuna tanlab olish maqsadi',
+                        'value' => function ($pro) {
+                            return PrimaryProduct::getPurpose($pro->select_of_exsamle_purpose);
+                        }
+                    ],
+                    [
+                        'attribute' => 'residue_quantity',
+                        'value' => function ($pro) {
+                            return $pro->residue_quantity . ' so\'m';
+                        }
+
+                    ],
+                    [
+                        'attribute' => 'residue_amount',
+                        'value' => function ($pro) {
+                            $mesure = PrimaryProduct::getMeasure($pro->product_measure);
+                            return $pro->residue_amount . ' '.$mesure;
+                        }
+
+                    ],
+                    [
+                        'attribute' => 'year_quantity',
+                        'value' => function ($pro) {
+                            return $pro->year_quantity . ' so\'m';
+                        }
+
+                    ],
+                    [
+                        'attribute' => 'year_amount',
+                        'value' => function ($pro) {
+                            $mesure = PrimaryProduct::getMeasure($pro->product_measure);
+                            return $pro->year_amount . ' '.$mesure;
+                        }
+
+                    ],
+                    'potency',
+
+                    [
+                        'label' => 'Normativ hujjat(lar) turi va nomi',
+                        'value' => function($pro) {
+                            $data = PrimaryProductNd::find()->where(['control_primary_product_id' => $pro->id])->all();
                             $result = '';
                             foreach ($data as $da) {
-                                $result .= '<span>' . $da->product_name . '(' . $da-> product_date . ')' . '</span><br>';
+                                $type = NdType::find()->where(['id' => $da->type_id])->one();
+                                $result .= '<span>' . $type->name . '  ' . $da-> name . ',' . '</span><br>';
                             }
                             return $result;
                         },
                         'format' => 'raw'
-                    ]
+                    ],
+                    'number_reestr',
+                    'number_blank',
+                    'date_to',
+                    'date_from',
                 ],
             ]);
+
         }
         ?>
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'residue_quantity',
-                'residue_amount',
-                'year_quantity',
-                'year_amount',
-                'potency',
-            ],
-        ]) ?>
+
+
     </div>
 
 </div>

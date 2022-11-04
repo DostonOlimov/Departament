@@ -22,8 +22,8 @@ class PrimaryProductSearch extends PrimaryProduct
     public function rules()
     {
         return [
-            [['id', 'control_primary_data_id', 'date_from', 'date_to', 'product_type_id'], 'integer'],
-            [['nd', 'nd_type', 'number_blank', 'number_reestr', 'product_name'], 'safe'],
+            [['id', 'control_primary_data_id', 'made_country', 'product_measure','select_of_exsamle_purpose'], 'integer'],
+            [['product_type_id', 'product_name', 'residue_amount', 'residue_amount', 'residue_quantity','year_amount','year_quantity','potency'], 'safe'],
         ];
     }
 
