@@ -1,20 +1,21 @@
 <?php
-
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap4\ActiveForm */
-/* @var $model Identification */
-
-
 use common\models\control\Company;
-use common\models\control\Identification;
+use common\models\control\PrimaryProduct;
+use common\models\control\ControlProductCertification;
 use frontend\widgets\Steps;
 use kartik\file\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
+use yii\helpers\VarDumper;
 
 $this->title = 'Korxona';
 $this->params['breadcrumbs'][] = $this->title;
+/*foreach ($certificates as $key => $stan){
 
+    VarDumper::dump($certificates[$key]['product_id'],12,true);
+}
+die();*/
 ?>
 
 <div class="page1-1 row">
@@ -34,63 +35,170 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'dynamic-form'
         ]
         ]) ?>
-
-
-    <div class="row">
-        <div class="box box-default" style="display: inline-block">
-            <div class="panel-body">
-                <?php DynamicFormWidget::begin([
-                    'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-                    'widgetBody' => '.container-items', // required: css class selector
-                    'widgetItem' => '.item', // required: css class
-//                        'limit' => 7, // the maximum times, an element can be cloned (default 999)
-                    'min' => 1, // 0 or 1 (default 1)
-                    'insertButton' => '.add-item', // css class
-                    'deleteButton' => '.remove-item', // css class
-                    'model' => $model[0],
-                    'formId' => 'dynamic-form',
-                    'formFields' => [
-                        'file',
-                        'identification',
-                    ],
-                ]); ?>
-
-                <div class="container-items"><!-- widgetContainer -->
-                    <?php foreach ($model as $i => $stan): ?>
-                        <div class="item panel panel-default item-product"><!-- widgetBody -->
-                            <div class="panel-heading">
-                                <div class="pull-right">
-                                    <button type="button" class="add-item btn btn-success btn-xs"><i
-                                                class="fa fa-plus"></i></button>
-                                    <button type="button" class="remove-item btn btn-danger btn-xs"><i
-                                                class="fa fa-minus"></i></button>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <?= $form->field($stan, "[{$i}]file")->input('file') ?>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <?= $form->field($stan, "[{$i}]identification")->textarea() ?>
-                                    </div>
-                                </div>
-
-                            </div>
+<div>
+    <i class="fa fa-toggle-right" id = "open1" onclick=openPanel(); style="font-size:24px;color:blue;"></i> 
+    <i class="fa fa-toggle-down " id = "close1" onclick=closePanel(); style="font-size:24px;color:blue; display:none;" ></i> 
+    <h4 style = 'color:black; display:inline;'>Tashqi ko’rinish bayonnomasi</h4>
+    <div class="row" id = "content1" style = "display:none">
+        <?php foreach ($model as $key => $stan) :?>        
+                     <div class="col-md-6 col-lg-9">
+                        <label>Mahsulot nomi:</label>
+                            <label class="form-control" readonly><?= $stan['product_name'] ?></label>
+                        <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
                         </div>
+                        <div class="col-md-6 col-lg-4">
+                            <?= $form->field($stan, "[{$key}]quality")->radioList( 
+                                [1=>'Sifatli', 0 => 'Sifatsiz'], );?>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <?= $form->field($stan, "[{$key}]description")->textarea() ?>
+                        </div>   
                     <?php endforeach; ?>
-                </div>
-                <?php DynamicFormWidget::end(); ?>
+                    </div>
+</div>
+<div style = "padding-top:20px">
+        <i class="fa fa-toggle-right" id = "open2" onclick=openPanel2(); style="font-size:24px;color:blue;"></i> 
+        <i class="fa fa-toggle-down " id = "close2" onclick=closePanel2(); style="font-size:24px;color:blue; display:none;" ></i> 
+        <h4 style = 'color:black;display:inline;'>Sinov labalatoriyasi xulosasi</h4>
+       
+        <div class="row" id="content2" style = "display:none">
+        <?php foreach ($labs as $key => $stan) :?>        
+                     <div class="col-md-6 col-lg-9">
+                        <label>Mahsulot nomi:</label>
+                            <label class="form-control" readonly><?= $stan['product_name'] ?></label>
+                        <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
+                     </div>
+                        <div class="col-md-6 col-lg-4">
+                            <?= $form->field($stan, "[{$key}]quality")->radioList( 
+                                [1=>'Sifatli', 0 => 'Sifatsiz',2=>'Tekshirish jarayonida'], );?>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <?= $form->field($stan, "[{$key}]description")->textarea() ?>
+                        </div>   
+                    <?php endforeach; ?>
             </div>
         </div>
+<div style = "padding-top:20px">
+    <i class="fa fa-toggle-right" id = "open3" onclick=openPanel3(); style="font-size:24px;color:blue;"></i> 
+    <i class="fa fa-toggle-down " id = "close3" onclick=closePanel3(); style="font-size:24px;color:blue; display:none;" ></i> 
+    <h4 style = "color:black;display:inline;">Majburiy sertifikatlashtirish</h4>
+    <div id = "content3" class = "row" style = "display:none">
+        <?php foreach ($certificates as $key => $stan) :?>        
+                  <div class="row">
+                     <div class="col-md-6 col-lg-9">
+                        <label>Mahsulot nomi:</label>
+                        <label class="form-control" readonly><?= $stan['product_name'] ?></label>
+                     </div>
+                </div>   
+                <?php for($i = 0; $i < $stan['certificate']; $i++) :?> 
+                    <div class="row">
+                        <?php if ($i == 0) :?>
+                        <div class="col-md-6 col-lg-6">   
+                            <?= $form->field($stan[$i], "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
+                        </div>
+                        <div class="col-md-6 col-lg-6">  
+                            <?= $form->field($stan[$i], "[{$key}]certificate")->hiddenInput(['value'=> $stan['certificate']])->label(false);?>  
+                        </div>       
+                        <div class="col-md-6 col-lg-6">
+                            <?= $form->field($stan[$i], "[{$key}]amount")->textInput(['type'=>'number']) ?>
+                        </div> 
+                        <div class="col-md-6 col-lg-6">
+                            <?= $form->field($stan[$i], "[{$key}]quantity")->textInput(['type'=>'number']) ?>
+                        </div> 
+                        <?php endif; ?>
+                        <div><h4><?=$i+1?>-sertifikat</h4></div>  
+                         <div> 
+                            <?= $form->field($stan[$i], "[{$key}][{$i}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
+                         </div> 
+                         <div class="col-md-6 col-lg-4">
+                            <?= $form->field($stan[$i], "[{$key}][{$i}]number_reestr")->textInput(['type' => 'number']) ?>
+                         </div> 
+                         <div class="col-md-6 col-lg-4">
+                            <?= $form->field($stan[$i], "[{$key}][{$i}]date_to")->textInput(['type'=>'date']) ?>
+                        </div> 
+                        <div class="col-md-6 col-lg-4">
+                            <?= $form->field($stan[$i], "[{$key}][{$i}]date_from")->textInput(['type'=>'date']) ?>
+                        </div> 
+                    </div> 
+                    <?php endfor; ?>
+                <?php endforeach; ?>
+            </div>
     </div>
-
-    <div class="col-12">
+    <div class="col-12" style = "padding-top:20px">
         <input type="submit" class="btn btn-info br-btn" value="Saqlash">
     </div>
 
     <?php ActiveForm::end() ?>
 
 </div>
+<script>
+    function openPanel() {
+
+var  item1 = document.getElementById('open1');
+var  item2 = document.getElementById('close1');
+var item3 = document.getElementById('content1');
+
+item1.style.display = 'none';
+item2.style.display = 'inline';
+item3.style.display = 'flex'
+
+
+}
+function closePanel() {
+
+var  item1 = document.getElementById('open1');
+var  item2 = document.getElementById('close1');
+var item3 = document.getElementById('content1');
+
+item1.style.display = 'inline';
+item2.style.display = 'none';
+item3.style.display = 'none'
+
+}
+function openPanel2() {
+
+var  item1 = document.getElementById('open2');
+var  item2 = document.getElementById('close2');
+var item3 = document.getElementById('content2');
+
+item1.style.display = 'none';
+item2.style.display = 'inline';
+item3.style.display = 'flex'
+
+}
+function closePanel2() {
+
+var  item1 = document.getElementById('open2');
+var  item2 = document.getElementById('close2');
+var item3 = document.getElementById('content2');
+
+item1.style.display = 'inline';
+item2.style.display = 'none';
+item3.style.display = 'none'
+
+}
+function openPanel3() {
+
+var  item1 = document.getElementById('open3');
+var  item2 = document.getElementById('close3');
+var item3 = document.getElementById('content3');
+
+item1.style.display = 'none';
+item2.style.display = 'inline';
+item3.style.display = 'flex'
+
+
+}
+function closePanel3() {
+
+var  item1 = document.getElementById('open3');
+var  item2 = document.getElementById('close3');
+var item3 = document.getElementById('content3');
+
+item1.style.display = 'inline';
+item2.style.display = 'none';
+item3.style.display = 'none'
+
+}
+</script>
 

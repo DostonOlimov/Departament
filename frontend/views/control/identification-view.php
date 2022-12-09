@@ -4,9 +4,11 @@
 /* @var $model Identification */
 
 use common\models\control\Company;
-use common\models\control\Identification;
+use common\models\control\ControlProductLabaratoryChecking;
+use common\models\control\ControlProductCertification;
 use frontend\widgets\Steps;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,29 +21,96 @@ $this->params['breadcrumbs'][] = $this->title;
         'control_instruction_id' => Company::findOne($id) ? Company::findOne($id)->control_instruction_id : null,
         'control_company_id' => $id,
     ]) ?>
-
-    <div class="col-6">
+     <div class="col-6">
+     <h4 style = 'color:blue;'>Tashqi ko’rinish bayonnomasi</h4>
         <?php
-        if ($model)
-            foreach ($model as $mod) {
+        if ($products)
+            foreach ($products as $key => $mod) {
                 echo DetailView::widget([
                     'model' => $mod,
                     'attributes' => [
 //            'id',
+                       'product_name:text',
                         [
-                            'attribute' => 'file',
-                            'value' => function (Identification $model) {
-                                $model->img = $model->file;
-                                return $model->img ? '<a class="btn btn-info" target="_blank" href="' . $model->getUploadedFileUrl('img') . '" >Yuklash</a>' : '';
-                            },
-                            'format' => 'raw'
+                            'attribute' => 'quality',
+                            'value' => function ($mod) {
+                                if($mod){return 'Sifatli';}
+                                else {return 'Sifatsiz';}
+                            }
                         ],
-                        'identification:text',
+                        'description:text',
+                        [
+                            'attribute' => 'cer_amount',
+                            'value' => function ($mod) {
+                                if($mod){return $mod->cer_amount;}
+                                else {return 'ko\'rsatilmagan';}
+                            }
+                        ],
+                        [
+                            'attribute' => 'cer_quantity',
+                            'value' => function ($mod) {
+                                if($mod){return $mod->cer_amount;}
+                                else {return 'ko\'rsatilmagan';}
+                            }
+                        ],
+                      
+                        
                     ],
                 ]) ;
             }
 
         ?>
-    </div>
+    <h4 style = 'color:blue;'>Sinov labalatoriyasi xulosasi</h4>
+    <?php 
+         foreach ($products as $key => $value) 
+         {
+          $labs = ControlProductLabaratoryChecking::findOne(['product_id' => $value->id]);
+          if ($labs){
+         
+           
+            $labs->product_name = $value->product_name;
+            echo DetailView::widget([
+                'model' => $labs,
+                'attributes' => [
+//            'id',
+                    'product_name:text',             
+                    [
+                        'attribute' => 'quality',
+                        'value' => function ($labs) {
+                            if($labs){return 'Sifatli';}
+                            else {return 'Sifatsiz';}
+                        }
+                    ],
+                    'description:text',
+                ],
+            ]) ;
+        }
+      
+    }
+?>
+  <h4 style = 'color:blue;'>Majburiy sertifikatlashtirish</h4>
+    <?php 
+     foreach ($products as $key => $value) 
+        {
+            $cer = ControlProductCertification::findAll(['product_id' => $value->id]);
+           
+        if ($cer)
+        foreach ($cer as $key => $mod) {
+            $mod->product_name = $value->product_name;
+            echo DetailView::widget([
+                'model' => $mod,
+                'attributes' => [
+//            'id',
+                    'product_name:text',
+                    'number_reestr:text',
+                    'date_to:text',
+                    'date_from:text',
+                ],
+            ]) ;
+        }
 
+    }
+   
+?> 
+    </div>
 </div>

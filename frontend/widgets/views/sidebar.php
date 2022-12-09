@@ -4,6 +4,8 @@
 
 use common\models\control\Company;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
+use common\models\control\PrimaryProduct;
 
 $action = Yii::$app->controller->action->id;
 
@@ -36,12 +38,25 @@ if ($control_company_id) {
 
     $hrefPrimary = $controlCompany->primaryData ? Url::to(['/control/primary-data-view', 'id' => $controlCompany->primaryData->id]) : Url::to(['/control/primary-data', 'company_id' => $control_company_id]);
     $classPrimary = ($action == 'primary-data' || $action == 'primary-data-view') ? 'active' : ($control_company_id ? 'actived' : 'disabled');
-
-    $hrefIdentification = $controlCompany->identification ? Url::to(['/control/identification-view', 'id' => $control_company_id]) : Url::to(['/control/identification', 'company_id' => $control_company_id]);
+    $identification = false;
+    if($controlCompany->primaryData)
+    {
+        $primaryData = PrimaryProduct::findAll(['control_primary_data_id' => $controlCompany->primaryData->id ]);
+        foreach($primaryData as $key => $value) 
+        {
+            $identification = false;
+            if($value->quality !== null)
+            {
+               $identification = true;
+            }
+        }
+    }
+  
+    $hrefIdentification = $identification ? Url::to(['/control/identification-view', 'id' => $control_company_id]) : Url::to(['/control/identification', 'company_id' => $control_company_id]);
     $classIdentification = ($action == 'identification' || $action == 'identification-view') ? 'active' : ($controlCompany->primaryData ? 'actived' : 'disabled');
 
     $hrefLab = $controlCompany->laboratory ? Url::to(['/control/laboratory-view', 'id' => $controlCompany->laboratory->id]) : Url::to(['/control/laboratory', 'company_id' => $control_company_id]);
-    $classLab = ($action == 'laboratory' || $action == 'laboratory-view') ? 'active' : ($controlCompany->identification ? 'actived' : 'disabled');
+    $classLab = ($action == 'laboratory' || $action == 'laboratory-view') ? 'active' : ($identification ? 'actived' : 'disabled');
 
     $hrefDef = $controlCompany->defect ? Url::to(['/control/defect-view', 'id' => $controlCompany->defect->id]) : Url::to(['/control/defect', 'company_id' => $control_company_id]);
     $classDef = ($action == 'defect' || $action == 'defect-view') ? 'active' : ($controlCompany->laboratory ? 'actived' : 'disabled');

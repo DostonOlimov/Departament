@@ -100,7 +100,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>-->
         <div class="col-sm-6">
-            <?= $form->field($model, 'might_be_breakdown_letter')->TextArea() ?>
+            <label>Ijrochi:</label>
+            <label class="form-control" readonly><?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname : 'Inspektor F.I.О' ?></label>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'employers')->widget(Select2::class, [
@@ -111,12 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <label>Ijrochi:</label>
-            <label class="form-control" readonly><?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname : 'Inspektor F.I.О' ?></label>
-        </div>
-    </div>
+
     <div class="col-12">
         <input type="submit" class="btn btn-info br-btn" value="Saqlash">
     </div>

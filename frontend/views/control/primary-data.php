@@ -10,6 +10,7 @@ use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
 use common\models\types\ProductSector;
 use common\models\control\PrimaryProductNd;
+use common\models\control\ControlProductCertification;
 use common\models\Countries;
 use kartik\date\DatePicker;
 use frontend\widgets\Steps;
@@ -36,8 +37,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'dynamic-form',
             'enableClientValidation' => false,
         ]) ?>
+        
+            <i class="fa fa-toggle-right" id = "open1" onclick=openPanel(); style="font-size:24px;color:blue;"></i> 
+            <i class="fa fa-toggle-down " id = "close1" onclick=closePanel(); style="font-size:24px;color:blue; display:none;" ></i> 
+            <h3 style="color:black; display:inline;" >Tashkilotga oid malumotlar</h3>
+                <hr>
+                        <div class="row" id="content1" style="display: none;">
+                            <div class="col-sm-6">
+                                <?= $form->field($model, 'smt')->dropDownList(PrimaryData::getSMT(),['prompt'=>'Tanlash...']) ?>
+                            </div>
 
-        <div class="row">
+                            <div class="col-sm-6">
+                                <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab(),['prompt'=>'Tanlash...']) ?>
+                            </div>
+                        </div>
+    
+            <i class="fa fa-toggle-right" id = "open2" onclick=openPanel2(); style="font-size:24px;color:blue;"></i> 
+            <i class="fa fa-toggle-down " id = "close2" onclick=closePanel2(); style="font-size:24px;color:blue; display:none;" ></i> 
+            <h3 style="color:black;display:inline;">Tashkolotda mavjud o'lchov vositalari haqida ma'lumot</h3>
+                <hr>
+        <div class="row" id="content2" style="display: none;" >
             <div class="box box-default" style="display: inline-block">
                 <div class="panel-body">
                     <?php DynamicFormWidget::begin([
@@ -58,30 +77,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         ],
                     ]); ?>
-
-                    <div class="container-items">
-                        <h3 style="color:black;">Tashkilotga oid malumotlar</h3>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <?= $form->field($model, 'smt')->dropDownList(PrimaryData::getSMT(),['prompt'=>'Tanlash...']) ?>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab(),['prompt'=>'Tanlash...']) ?>
-                            </div>
-                        </div>
-
-                        <h3 style="color:black;">Tashkolotda mavjud o'lchov vositalari haqida ma'lumot</h3>
-                        <hr>
+                <div class="container-items">        
                         <?php
                         foreach ($ov as $i => $stan):
                             if ($i == 1) {
                                 continue;
                             } ?>
-                            <div class="item panel panel-default item-product itemlar">
-                                <div class="panel-heading">
-
+                           
+                            <div class="item panel panel-default item-product itemlar"  >
+                                <div class="panel-heading" >
+                 
                                     <div class="pull-right">
                                         <button type="button" class="add-item btn btn-success btn-xs">
                                             <i class="fa fa-plus"></i></button>
@@ -92,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="row">
+                                    <div class="row ">
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]type")->dropDownList(PrimaryOv::getType(),['prompt'=>'Tanlash...']) ?>
                                         </div>
@@ -108,16 +113,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </div>
                                 </div>
                             </div>
+                          
                         <?php endforeach; ?>
                     </div>
                     <?php DynamicFormWidget::end(); ?>
                 </div>
             </div>
         </div>
-
-        <h3 style="color:black;">Tashkilotda tekshiruv davrida realizatsiya qilingan mahsulotlar haqida ma'lumot</h3>
-        <hr class="mt-3 mb-3">
-        <div class="row mt-3">
+        <i class="fa fa-toggle-right" id = "open3" onclick=openPanel3(); style="font-size:24px;color:blue;"></i> 
+        <i class="fa fa-toggle-down " id = "close3" onclick=closePanel3(); style="font-size:24px;color:blue; display:none;" ></i> 
+        <h3 style="color:black;display:inline;">Tashkilotda tekshiruv davrida realizatsiya qilingan mahsulotlar haqida ma'lumot</h3>
+        <hr>
+        <div class="row mt-3" id="content3" style="display: none;">
             <div class="box box-default" style="display: inline-block">
                 <div class="panel-body">
                     <?php DynamicFormWidget::begin([
@@ -226,10 +233,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="col-md-6 col-lg-3" >
                                             <?= $form->field($stan, "[{$i}]made_country")->dropDownList(ArrayHelper::map(Countries::find()->all(), 'id', 'name',),['prompt'=>'Tanlash...']) ?>
                                         </div>
+                                    
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]select_of_exsamle_purpose")->dropDownList(PrimaryProduct::getPurpose(),['prompt'=>'Tanlash...']) ?>
+                                    
+                                        <?= $form->field($stan, "[{$i}]labaratory_checking")->radioList( [1=>'taqdim etilgan', 0 => 'taqdim etilmagan'] );?>
                                         </div>
-
+                                    
                                        <div class="col-md-6 col-lg-6  renderForm">
                                             <?php
                                             echo $this->render('_form_primary', [
@@ -270,28 +279,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]potency")->textInput() ?>
                                         </div>
-
-
-                                    <h4 style="color:black;>
-            <i class="glyphicon glyphicon-envelope" ></i> Majburiy Sertifikatlashtirish
-                                    <button type="button" onclick="myFunction(this)" class=" add-item3 btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> Majburiy</button>
+                                   
+                                        <div class="col-md-6 col-lg-3">
+                                    <?= $form->field($stan, "[{$i}]certification")->textInput(['type' => 'number']) ?>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3">
+                                     <?= $form->field($stan, "[{$i}]photo")->fileInput() ?>
+                                    </div>
+                                   
+                                   <!-- <button type="button" onclick="myFunction(this)" class=" add-item3 btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> Majburiy</button>
                                     </h4>
 
                                         <div class="pull-right">
                                             <button type="button"  onclick = "myFunction1(this)" class="remove-item3 btn btn-danger btn-xs mandatory" style="display: none">
                                                 <i class="glyphicon glyphicon-minus" ></i>Majburiy emas</button>
-                                        </div>
-                                    <div class="col-sm-3 mandatory"  style="display: none">
-                                        <?= $form->field($stan, "[{$i}]number_reestr")->textInput() ?>
-                                    </div>
-                                    <div class="col-sm-3 mandatory" style="display: none">
-                                        <?= $form->field($stan, "[{$i}]number_blank")->textInput() ?>
-                                    </div>  <div class="col-sm-3  mandatory" style="display: none">
-                                        <?= $form->field($stan, "[{$i}]date_to")->widget(DatePicker::className()) ?>
-                                    </div>
-                                    <div class="mandatory col-sm-3 " style="display: none">
-                                        <?= $form->field($stan, "[{$i}]date_from")->widget(DatePicker::className()) ?>
-                                    </div>
+                                        </div>-->
+                                   
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +313,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end() ?>
 
     </div>
-<script>
+<script >
     function myFunction(button) {
 
         obj = findParent(button, 'panel-body');
@@ -322,6 +325,74 @@ $this->params['breadcrumbs'][] = $this->title;
        }
 
     }
+function openPanel() {
+
+    var  item1 = document.getElementById('open1');
+    var  item2 = document.getElementById('close1');
+    var item3 = document.getElementById('content1');
+   
+    item1.style.display = 'none';
+    item2.style.display = 'inline';
+    item3.style.display = 'flex'
+
+
+}
+function closePanel() {
+
+    var  item1 = document.getElementById('open1');
+    var  item2 = document.getElementById('close1');
+    var item3 = document.getElementById('content1');
+   
+    item1.style.display = 'inline';
+    item2.style.display = 'none';
+    item3.style.display = 'none'
+
+}
+function openPanel2() {
+
+var  item1 = document.getElementById('open2');
+var  item2 = document.getElementById('close2');
+var item3 = document.getElementById('content2');
+
+item1.style.display = 'none';
+item2.style.display = 'inline';
+item3.style.display = 'flex'
+
+}
+function closePanel2() {
+
+var  item1 = document.getElementById('open2');
+var  item2 = document.getElementById('close2');
+var item3 = document.getElementById('content2');
+
+item1.style.display = 'inline';
+item2.style.display = 'none';
+item3.style.display = 'none'
+
+}
+function openPanel3() {
+
+var  item1 = document.getElementById('open3');
+var  item2 = document.getElementById('close3');
+var item3 = document.getElementById('content3');
+
+item1.style.display = 'none';
+item2.style.display = 'inline';
+item3.style.display = 'flex'
+
+
+}
+function closePanel3() {
+
+var  item1 = document.getElementById('open3');
+var  item2 = document.getElementById('close3');
+var item3 = document.getElementById('content3');
+
+item1.style.display = 'inline';
+item2.style.display = 'none';
+item3.style.display = 'none'
+
+}
 
     function findParent(elem, className){
         if (elem.parentNode.classList.contains(className)){
@@ -341,6 +412,7 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
     }
+   
 </script>
 <?php
 

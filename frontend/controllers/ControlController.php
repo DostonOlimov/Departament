@@ -5,13 +5,13 @@ namespace frontend\controllers;
 use common\models\control\Caution;
 use common\models\control\Company;
 use common\models\control\Defect;
-use common\models\control\Identification;
+use common\models\control\ControlProductCertification;
+use common\models\control\ControlProductLabaratoryChecking;
 use common\models\control\Instruction;
 use common\models\control\InstructionSearch;
 use common\models\control\InstructionUser;
 use common\models\control\Measure;
 use common\models\control\PrimaryData;
-use common\models\control\ProductType;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryOvSearch;
 use common\models\control\PrimaryProduct;
@@ -23,6 +23,7 @@ use common\models\types\ProductPosition;
 use common\models\types\ProductSubposition;
 use common\models\types\ProductClass;
 use common\models\Model;
+use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
 use yii\helpers\Json;
@@ -72,8 +73,9 @@ class ControlController extends Controller
     public function actionInstruction()
     {
         $model = new Instruction();
+       
         if ($model->load($this->request->post()) && $model->validate()) {
-
+           
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $model->save(false);
@@ -131,6 +133,7 @@ class ControlController extends Controller
     public function actionPrimaryData($company_id)
     {
 
+
         $model = new PrimaryData();
 
         $model->control_company_id = $company_id;
@@ -143,11 +146,10 @@ class ControlController extends Controller
 
         $post = $this->request->post();
         if ($model->load($post)) {
-         //   VarDumper::dump($model,12,true);die;
+      //    VarDumper::dump($model,12,true);die;
 
            unset($products[1]);
            unset($pro_primary[1]);
-
 
             $products = Model::createMultiple(PrimaryProduct::classname());
             Model::loadMultiple($products, $this->request->post());
@@ -155,11 +157,10 @@ class ControlController extends Controller
             Model::loadMultiple($ovs, Yii::$app->request->post());
 
             $valid = $model->validate() && Model::validateMultiple($products) && Model::validateMultiple($ovs);
-if(Model::validateMultiple($products)){
-    echo 'something';
-}
+                       
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
+               $arrayImage = [];
                 try {
                     $model->save(false);
 
@@ -188,13 +189,17 @@ if(Model::validateMultiple($products)){
                                 $prod->potency = $product->potency;
                                 $prod->made_country = $product->made_country;
                                 $prod->product_measure = $product->product_measure;
-                                $prod->number_reestr = $product->number_reestr;
-                                $prod->number_blank = $product->number_reestr;
-                                $prod->date_from = $product->date_from;
-                                $prod->date_to = $product->date_to;
-                                $prod->select_of_exsamle_purpose = $product->select_of_exsamle_purpose;
-
-                                $prod->save(false);
+                                $prod->labaratory_checking = $product->labaratory_checking;
+                                $prod->certification = $product->certification;
+                                $prod->Image = UploadedFile::getInstance($product, "[{$key}]photo");
+                                if($prod->Image)
+                                {
+                               if( $prod->upload($model->id,$key))
+                               {
+                                $arrayImage[] = $prod->photo;
+                               }
+                                }
+                      $prod->save(false);
                                 foreach ($post['PrimaryProductNd'][$key] as $proData) {
                                     $pro = new PrimaryProductNd();
                                     $pro->control_primary_product_id = $prod->id;
@@ -205,8 +210,13 @@ if(Model::validateMultiple($products)){
                                 }
                             }
             $transaction->commit();
-                    return $this->redirect(['identification', 'company_id' => $company_id]);
+                    return $this->redirect(['identification','company_id' => $company_id]);
                 } catch (Exception $e) {
+                    foreach ($arrayImage as $image) {
+                        $folder = Yii::getAlias('@frontend') . '/web/uploads/images';
+                        @unlink($folder.'/'.$image);
+                    }
+                   
                     $transaction->rollBack();
                     throw $e;
                 }
@@ -218,8 +228,7 @@ if(Model::validateMultiple($products)){
            'pro_primary' => $pro_primary,
             'product' => $products,
             'ov' =>$ovs,
-
-
+            'company_id' => $company_id
         ]);
     }
 
@@ -314,32 +323,107 @@ if(Model::validateMultiple($products)){
 
     public function actionIdentification($company_id)
     {
-        $model = [new Identification];
-
-        if (Yii::$app->request->post()) {
-
-            $model = Model::createMultiple(Identification::classname(), $model);
-            Model::loadMultiple($model, $this->request->post());
-
-            foreach ($model as $index => $modelOptionValue) {
-                $modelOptionValue->img = \yii\web\UploadedFile::getInstance($modelOptionValue, "[{$index}]file");
-                if ($modelOptionValue->img) {
-                    $modelOptionValue->file = $modelOptionValue->img->name;
-                }
+       $id = PrimaryData::find()
+            ->where(['control_company_id' => $company_id])
+            ->one();
+        $products = PrimaryProduct::find()
+            ->where(['control_primary_data_id' => $id->id])
+            ->all();
+        foreach($products as $key => $value) 
+            {   
+                $model[$key] = new PrimaryIdentification();
+                $model[$key]['product_id'] = $value['id'];
+                $model[$key]['product_name'] = $value['product_name'];
+            }
+            
+        $labs = [];
+        $products_lab = PrimaryProduct::find()
+            ->where(['control_primary_data_id' => $id->id])
+            ->andWhere(['labaratory_checking'=>1])
+            ->all();
+        foreach($products_lab as $key => $value) 
+            {   
+                $labs[$key] = new ControlProductLabaratoryChecking;
+                $labs[$key]['product_id'] = $value['id'];
+                $labs[$key]['product_name'] = $value['product_name'];        
             }
 
-            if (Model::validateMultiple($model)) {
+        $certificates = [];
+        $products_certificate = PrimaryProduct::find()
+            ->where(['control_primary_data_id' => $id->id])
+            ->andWhere(['>=', 'certification', 1])
+            ->all();
+        foreach($products_certificate as $key => $value) 
+        { 
+            $certificates[$key]['product_id'] = $value['id'];
+            $certificates[$key]['product_name'] = $value['product_name'];
+            $certificates[$key]['certificate'] = $value['certification']; 
+            for($i = 0; $i < $value['certification']; $i++)
+            {
+                $certificates[$key][$i] = new ControlProductCertification;
+            }           
+        }
+        
+        if (Yii::$app->request->post()) {
+           
+             $model = Model::createMultiple(PrimaryIdentification::classname());
+             Model::loadMultiple($model, $this->request->post());
+
+             $labs = Model::createMultiple(ControlProductLabaratoryChecking::classname());
+             Model::loadMultiple($labs, $this->request->post());
+             
+            $valid = Model::validateMultiple($model) && Model::validateMultiple($labs);
+            if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
-                    foreach ($model as $key => $product) {
-
-//                        if ($product->file) {
-                        $product->control_company_id = $company_id;
-                        $product->save(false);
-//                        }
+                    foreach ($model as $key => $value) 
+                    {
+                      $product = PrimaryProduct::find()
+                        ->where(['id' => $value->product_id])
+                        ->one();
+                       $product->description = $value->description;
+                       $product->quality = $value->quality;
+                       $product->save();
                     }
+                    foreach ($labs as $key => $value) 
+                    {
+                      $lab = new ControlProductLabaratoryChecking;
+                      $lab->product_id = $value->product_id;
+                      $lab->description = $value->description;
+                      $lab->quality = $value->quality;
+                      $lab->save();
+                    }
+                if(Yii::$app->request->post('ControlProductCertification'))
+                   {
+                   foreach (Yii::$app->request->post('ControlProductCertification') as $key => $value) 
+                    {
+                        
+                      $productt = PrimaryProduct::find()
+                         ->where(['id' => $value['product_id']])
+                         ->one();
+                    
+                       $productt->cer_amount = $value['amount'];
+                       $productt->cer_quantity = $value['quantity'];
+                       $productt->save();
+                       for($i=0 ; $i < $value['certificate']; $i++)
+                       {
+                        
+
+                        $cer = new ControlProductCertification;
+                        $cer->product_id  = $value[$i]['product_id'];
+                        $cer->number_reestr = $value[$i]['number_reestr'];
+                        $cer->date_to = $value[$i]['date_to'];
+                        $cer->date_from = $value[$i]['date_from'];
+                       
+                        if($cer->validate()){
+                         $cer->save();
+                        }
+                    }
+                 }
+                }
+                
                     $transaction->commit();
-                    return $this->redirect(['laboratory', 'company_id' => $company_id]);
+                    return $this->redirect(['laboratory', 'company_id' => $company_id,]);
                 } catch (Exception $e) {
                     $transaction->rollBack();
                     throw $e;
@@ -349,14 +433,19 @@ if(Model::validateMultiple($products)){
 
         return $this->render('identification', [
             'model' => $model,
+            'certificates' => $certificates,
+            'labs' => $labs,
             'company_id' => $company_id,
-        ]);
+         ]);
     }
 
     public function actionIdentificationView($id)
     {
+        $primaryDataId = PrimaryData::findOne(['control_company_id' => $id])->id;
+        $products = PrimaryProduct::find()->where(['control_primary_data_id' => $primaryDataId])->all();
+
         return $this->render('identification-view', [
-            'model' => Identification::find()->where(['control_company_id' => $id])->all(),
+            'products' => $products,
             'id' => $id
         ]);
     }

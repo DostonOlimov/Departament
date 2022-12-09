@@ -22,9 +22,9 @@ class PrimaryProductSearch extends PrimaryProduct
     public function rules()
     {
         return [
-            [['id', 'control_primary_data_id', 'made_country','product_measure','select_of_exsamle_purpose'], 'integer'],
-            [['product_type_id', 'product_name', 'residue_quantity', 'residue_amount', 'year_quantity','year_amount','potency'], 'safe'],
-        ];
+            [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality'], 'integer'],
+            [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity'], 'string', 'max' => 255],
+            [['description'],'string'],   ];
     }
 
     /**
@@ -67,6 +67,9 @@ class PrimaryProductSearch extends PrimaryProduct
             'control_primary_data_id' => $this->control_primary_data_id,
             'made_country' => $this->made_country,
             'product_measure' => $this->product_measure,
+            'labaratory_checking' => $this->labaratory_checking,
+            'certification' => $this->certification,
+            'quality' => $this->quality
         ]);
 
         $query->andFilterWhere(['like', 'product_type_id', $this->product_type_id])

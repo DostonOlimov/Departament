@@ -13,6 +13,7 @@ use common\models\types\ProductSubposition;
 use common\models\Countries;
 use frontend\widgets\Steps;
 use yii\grid\GridView;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 use common\models\NdType;
 
@@ -106,18 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'format' => 'raw'
                     ],
-                    [
-                        'attribute' => 'Mahsulot o\'lchov birligi',
-                        'value' => function ($pro) {
-                            return PrimaryProduct::getMeasure($pro->product_measure);
-                        }
-                    ],
-                    [
-                        'attribute' => 'Namuna tanlab olish maqsadi',
-                        'value' => function ($pro) {
-                            return PrimaryProduct::getPurpose($pro->select_of_exsamle_purpose);
-                        }
-                    ],
+                 
                     [
                         'attribute' => 'residue_quantity',
                         'value' => function ($pro) {
@@ -163,10 +153,36 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'format' => 'raw'
                     ],
-                    'number_reestr',
-                    'number_blank',
-                    'date_to',
-                    'date_from',
+                    [
+                        'label' => 'Mahsulot rasmi',
+                        'value' => function($pro) {
+                            if($pro->photo){
+                                return $result = '<img src="../../../web/uploads/images/3160_eti.jpg'. '" alt="Italian Trulli">';
+                            }
+                            return 'rasm yo\'q';
+                        },
+                        'format' => 'raw'
+                    ],
+                    
+        [
+
+            'attribute' => 'img',
+
+            'format' => 'html',
+
+            'label' => 'ImageColumnLable',
+
+            'value' => function ($pro) {
+                return yii\helpers\Url::base().'/uploads/images/';
+
+                return Html::img(Yii::getAlias('@frontend') . '/web/uploads/images/'. $pro['photo'],
+
+                    ['width' => '60px']);
+
+            },
+
+        ],
+                  
                 ],
             ]);
 
@@ -175,5 +191,5 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     </div>
-
+   
 </div>

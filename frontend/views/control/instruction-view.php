@@ -46,7 +46,6 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                 'command_date',
                 'command_number',
                 'checkup_begin_date',
-                'might_be_breakdown_letter',
                 'who_send_letter',
                 'code',
                 [

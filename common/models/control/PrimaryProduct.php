@@ -7,6 +7,8 @@ use common\models\control\PrimaryProductNd;
 use common\models\control\ProductType;
 use common\models\control\PrimaryData;
 use common\models\types\ProductSubposition;
+use yii\helpers\Url;
+use yii\web\UploadedFile;
 use Yii;
 
 /**
@@ -18,7 +20,6 @@ use Yii;
  * @property string|null $product_name
  * @property int|null $made_country
  * @property int $product_measure
- * @property int $select_of_exsamle_purpose
  * @property string|null $residue_amount
  * @property string|null $residue_quantity
  * @property string|null $potency
@@ -45,8 +46,8 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     const   MEASURE5 = 5;
 
     const  PURPOSE1 = 1;
-    const  PURPOSE2 = 2;
-    const  PURPOSE3 = 3;
+    const  PURPOSE2 = 10;
+    const  PURPOSE3 = 11;
 
     public $sector_id;
     public $group;
@@ -54,6 +55,8 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public $class;
     public $position;
 
+    public $Image;
+ 
     /**
      * {@inheritdoc}
      */
@@ -69,9 +72,11 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','select_of_exsamle_purpose','residue_quantity','year_quantity','year_amount','residue_amount'], 'required'],
-            [['control_primary_data_id','product_name', 'made_country', 'product_measure', 'select_of_exsamle_purpose','sector_id'], 'integer'],
-            [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'date_to','date_from','year_quantity', 'number_blank', 'number_reestr'], 'string', 'max' => 255],
+            [[ 'product_measure', 'made_country','residue_quantity','year_quantity','year_amount','residue_amount','labaratory_checking','certification',], 'required'],
+            [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality'], 'integer'],
+            [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity'], 'string', 'max' => 255],
+            ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],
+            [['Image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::class, 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
@@ -82,11 +87,11 @@ class PrimaryProduct extends \yii\db\ActiveRecord
         if (!parent::beforeSave($insert)) {
             return false;
         }
-
-        $this->date_from = strtotime($this->date_from);
-        $this->date_to = strtotime($this->date_to);
-      //  $this->code= preg_replace('/[^0-9]+/', '', $this->code);
-        // $this->checkup_finish_date = strtotime($this->checkup_finish_date);
+     /*  $this->date_to= preg_replace('/[^0-9]+/', '', $this->date_to);
+       $this->date_from= preg_replace('/[^0-9]+/', '', $this->date_from);
+       $this->date_from = strtotime($this->date_from);
+       $this->date_to = strtotime($this->date_to);
+        $this->checkup_finish_date = strtotime($this->checkup_finish_date);*/
 
         return true;
     }
@@ -116,7 +121,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
 
             self::PURPOSE1 => 'Tashqi ko\'rinish va markirovkasi bo\'yicha tekshiruv',
             self::PURPOSE2 => 'Sinov laboratoriyasida tekshirish',
-            self::PURPOSE3 => 'Hujjat tahlili',
+            self::PURPOSE3 => 'Tashqi ko\'rinish va markirovkasi bo\'yicha tekshiruv va Sinov laboratoriyasida tekshirish',
         ];
 
         if ($type === null) {
@@ -126,10 +131,24 @@ class PrimaryProduct extends \yii\db\ActiveRecord
         return $arr[$type];
     }
 
+    public function upload(int $data_id,int $key) {
+
+        if (true) {
+           
+           $path =  Url::to('@frontend/web/uploads/images/'). $data_id.$key.'_'.$this->Image->name;
+        
+            $this->Image->saveAs($path);
+            $this->photo = $data_id.$key.'_'.$this->Image->name;
+            return true;
+        } else {
+            return false;
+        }		
+    }
     public function afterFind()
     {
-        $this->date_from = $this->date_from ? Yii::$app->formatter->asDate($this->date_from, 'M/dd/yyyy') : $this->date_from;
+       /* $this->date_from = $this->date_from ? Yii::$app->formatter->asDate($this->date_from, 'M/dd/yyyy') : $this->date_from;
         $this->date_to = $this->date_to ? Yii::$app->formatter->asDate($this->date_to, 'M/dd/yyyy') : $this->date_to;
+        */
         parent::afterFind(); // TODO: Change the autogenerated stub
     }
 
@@ -147,12 +166,19 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             'subposition' => 'Mahsulot pozitsiya osti',
             'made_country' => 'Mahsulot ishlab chiqarilgan mamlakat',
             'product_measure' => 'Mahsulot o\'lchov birligi',
-            'select_of_exsamle_purpose' => 'Namuna tanlab olish maqsadi ',
             'potency' => 'Ishlab chiqarish quvvati',
             'residue_quantity' => 'Mahsulot qoldiq summasi',
             'residue_amount' => 'Mahsulot qoldiq miqdori',
             'year_quantity' => 'yillik summasi',
-            'year_amount' => 'yillik miqdori'
+            'year_amount' => 'yillik miqdori',
+            'appearance_marking' => 'Tashqi ko’rinish va markirovkasi bo’yicha tekshirish',
+            'labaratory_checking' => 'Sinov labaratoriyasida tekshirish',
+            'certification' => 'Mahsulotning sertifikatlari soni',
+            'quality' => 'Mahsulot sifati',
+            'description' => 'Izoh',
+            'cer_amount' =>'Sertifikatsiz realizatsiya qilingan mahsulot qiymati',
+            'cer_quantity' =>'Sertifikatsiz realizatsiya qilingan mahsulot summasi',
+
         ];
     }
 

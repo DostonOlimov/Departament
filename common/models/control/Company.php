@@ -144,7 +144,7 @@ class Company extends \yii\db\ActiveRecord
 
     public function getIdentification()
     {
-        return $this->hasOne(Identification::className(), ['control_company_id' => 'id']);
+      return  $this->hasOne(PrimaryData::className(), ['control_company_id' => 'id']);
     }
 
     public function getLaboratory()

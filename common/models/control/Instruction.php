@@ -34,7 +34,6 @@ use yii\helpers\VarDumper;
  *  @property int $real_checkup_date
  *  @property int $checkup_duration_start_date
  *  @property int $checkup_duration_finish_date
- *  @property int $might_be_breakdown_letter
  *  @property int $checkup_subject
  */
 class Instruction extends \yii\db\ActiveRecord
@@ -88,7 +87,7 @@ class Instruction extends \yii\db\ActiveRecord
             [['general_status'], 'default', 'value' => self::GENERAL_STATUS_IN_PROCESS],
             [['employers'], 'safe'],
             [['base', 'type', 'code', 'letter_date', 'command_date','checkup_subject', 'letter_number', 'command_number','checkup_begin_date', 'checkup_finish_date',
-                'checkup_duration_finish_date','checkup_duration_start_date','might_be_breakdown_letter','real_checkup_date','checkup_duration'], 'required'],
+                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','checkup_duration'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date', 'checkup_finish_date',
                 'checkup_duration_finish_date','code','checkup_duration_start_date','real_checkup_date','who_send_letter'], 'string', 'max' => 255],
         ];
