@@ -211,7 +211,7 @@ return [
         'supervisor',
     ],
     72 => [
-        'inspector',
         'supervisor',
+        'inspector',
     ],
 ];

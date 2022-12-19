@@ -25,6 +25,8 @@ use yiidreamteam\upload\FileUploadBehavior;
  */
 class Laboratory extends \yii\db\ActiveRecord
 {
+    public $finish_dalolatnoma;
+    public $out_dalolatnoma;
     /**
      * {@inheritdoc}
      */
@@ -39,12 +41,36 @@ class Laboratory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_company_id', 'finish_dalolatnoma'], 'required'],
+            [['control_company_id','dalolatnoma','out_bayonnoma'], 'required'],
             [['control_company_id'], 'integer'],
+           // ['finish_dalolatnoma','validateFinish'],
+         //  [['finish_dalolatnoma'],'validateEither', ['other' => ['phone']]],
+           ['finish_dalolatnoma', 'validateEither', 'params' => ['other' => 'out_dalolatnoma']],
             [['dalolatnoma', 'bayonnoma', 'finish_dalolatnoma', 'out_bayonnoma', 'out_dalolatnoma'], 'file'],
         ];
     }
-
+    public function validateEither($attribute, $params)
+{
+    $field1 = $this->getAttributeLabel($attribute);
+    $field2 = $this->getAttributeLabel($params['other']);
+    if (is_null($this->finish_dalolatnoma) && is_null($this->{$params['other']})) {
+        $this->addError($attribute, 'ss');
+    }
+}
+   /* public function validateValidator() {
+        var_dump($this->out_dalolatnoma);die(); 
+       
+    }
+    public function validateFinish($attribute, $params, $validator)
+    {
+   //  var_dump($attribute);die(); 
+        if (is_null($this->finish_dalolatnoma)) {
+            //die;
+            $this->addError($attribute, 'Oraliq yoki yakuniy dalolatnomadan biri yuklanishi shart.');
+        }
+    }
+*/
+   
     /**
      * {@inheritdoc}
      */

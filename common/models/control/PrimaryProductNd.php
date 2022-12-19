@@ -34,9 +34,9 @@ class PrimaryProductNd extends \yii\db\ActiveRecord
     {
         return [
             [['control_primary_product_id', 'type_id'], 'integer'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
             [['control_primary_product_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryProduct::class, 'targetAttribute' => ['control_primary_product_id' => 'id']],
-            [['control_primary_product_id'], 'exist', 'skipOnError' => true, 'targetClass' => NdType::class, 'targetAttribute' => ['control_primary_product_id' => 'id']],
         ];
     }
 
@@ -63,13 +63,5 @@ class PrimaryProductNd extends \yii\db\ActiveRecord
         return $this->hasOne(PrimaryProduct::class, ['id' => 'control_primary_product_id']);
     }
 
-    /**
-     * Gets query for [[ControlPrimaryProduct0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getControlPrimaryProduct0()
-    {
-        return $this->hasOne(NdType::class, ['id' => 'control_primary_product_id']);
-    }
+   
 }

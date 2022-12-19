@@ -8,7 +8,7 @@ use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
 use common\models\control\PrimaryProductNd;
-use common\models\control\MandatoryCertification;
+use common\models\control\ControlProductCertification;;
 use common\models\types\ProductSubposition;
 use common\models\Countries;
 use frontend\widgets\Steps;
@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3>Korxona haqida</h3>
     <?= DetailView::widget([
         'model' => $model,
+        
         'attributes' => [
             [
                 'attribute' => 'laboratory',
@@ -78,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <hr>
         <?php
+        echo $model->id;
         if ($product = PrimaryProduct::findAll(['control_primary_data_id' => $model->id])) {
             echo "<h3>Mahsulot</h3>";
             echo GridView::widget([
@@ -139,6 +141,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     ],
                     'potency',
+                    
+                    [
+                        'label' => 'Mahsulotning majburiy sertifikat reestr raqam(lar)i',
+                        'value' => function($pro) {
+                            $data = ControlProductCertification::find()->where(['product_id' => $pro->id])->all();
+                           
+                            $result = '';
+                            foreach ($data as $da) {
+                                
+                                $result .= '<span>' . $da->number_reestr  . ',</span><br>';
+                            }
+                            return $result;
+                        },
+                        'format' => 'raw'
+                    ],
 
                     [
                         'label' => 'Normativ hujjat(lar) turi va nomi',
@@ -147,7 +164,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $result = '';
                             foreach ($data as $da) {
                                 $type = NdType::find()->where(['id' => $da->type_id])->one();
-                                $result .= '<span>' . $type->name . '  ' . $da-> name . ',' . '</span><br>';
+                                $result .= '<span>' . $type->name . ' - ' . $da-> name . ',' . '</span><br>';
                             }
                             return $result;
                         },

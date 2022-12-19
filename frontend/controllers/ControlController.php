@@ -23,6 +23,7 @@ use common\models\types\ProductPosition;
 use common\models\types\ProductSubposition;
 use common\models\types\ProductClass;
 use common\models\Model;
+use common\models\Codetnved;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
@@ -133,23 +134,40 @@ class ControlController extends Controller
     public function actionPrimaryData($company_id)
     {
 
-
-        $model = new PrimaryData();
-
-        $model->control_company_id = $company_id;
-        $products = [new PrimaryProduct];
-        $ovs = [new PrimaryOv];
-
+        $model = PrimaryData::findOne(['control_company_id' => $company_id]);
+        $t = false;
+        if(!$model){
+            $model = new PrimaryData();
+            $model->control_company_id = $company_id;
+            $products = [new PrimaryProduct];
+            $ovs = [new PrimaryOv];
 
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
 
+          $pro_cer[0] = [new ControlProductCertification];
+          $pro_cer[1] = [new ControlProductCertification];
+        }
+        else
+        {
+            $t = true;
+            $model->control_company_id = $company_id;
+            $products = [new PrimaryProduct];
+            $ovs = [new PrimaryOv];
+
+          $pro_primary[0] = [new PrimaryProductNd];
+          $pro_primary[1] = [new PrimaryProductNd];
+
+          $pro_cer[0] = [new ControlProductCertification];
+          $pro_cer[1] = [new ControlProductCertification];
+        }
         $post = $this->request->post();
         if ($model->load($post)) {
       //    VarDumper::dump($model,12,true);die;
 
            unset($products[1]);
            unset($pro_primary[1]);
+           unset($pro_cer[1]);
 
             $products = Model::createMultiple(PrimaryProduct::classname());
             Model::loadMultiple($products, $this->request->post());
@@ -163,9 +181,16 @@ class ControlController extends Controller
                $arrayImage = [];
                 try {
                     $model->save(false);
-
-                    foreach ($ovs as $key => $ov) {
-
+               //     VarDumper::dump($model,12,true);
+                    foreach ($ovs as $key_ov1 => $ov) {
+                            if($t)
+                            {
+                            $old_ovs = PrimaryOv::findAll(['control_primary_data_id' => $model->id]);
+                            foreach ($old_ovs as $key_ov2 => $old_ov)
+                                { 
+                                   $old_ov->delete();
+                                }
+                            }
                             $ov1 = new PrimaryOv();
                             $ov1->control_primary_data_id = $model->id;
                             $ov1->type = $ov->type;
@@ -174,9 +199,36 @@ class ControlController extends Controller
                             $ov1->invalid = $ov->invalid;
                             $ov1->save(false);
                         }
-                foreach ($products as $key => $product)
+                        
+                $id = [];
+                foreach ($products as $key_p1 => $product)
                 {
-
+                  if($t)
+                    { 
+                        $old_pro = PrimaryProduct::findAll(['control_primary_data_id' => $model->id]);        
+                        foreach ($old_pro as $key_p2 => $old)
+                        {   
+                            if($old_nds = PrimaryProductNd::findAll(['control_primary_product_id' => $old->id]))
+                            { 
+                                foreach ($old_nds as $key_nd => $old_nd)
+                                { 
+                                   $old_nd->delete();
+                                }    
+                            } 
+                            if($old_cers = ControlProductCertification::findAll(['product_id' => $old->id]))
+                            { 
+                                foreach ($old_cers as $key_cer => $old_cer)
+                                { 
+                                   $old_cer->delete();
+                                }    
+                            }        
+                            if($old->photo){
+                                $folder = Yii::getAlias('@frontend') . '/web/uploads/images';
+                                @unlink($folder.'/'.$old->photo);
+                            }
+                            $old->delete();
+                        }       
+                    }
                                 $prod = new PrimaryProduct();
                                 $prod->control_primary_data_id = $model->id;
                                 $prod->product_type_id = $product->subposition;
@@ -191,24 +243,48 @@ class ControlController extends Controller
                                 $prod->product_measure = $product->product_measure;
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
-                                $prod->Image = UploadedFile::getInstance($product, "[{$key}]photo");
+                                $prod->Image = UploadedFile::getInstance($product, "[{$key_p1}]photo");
                                 if($prod->Image)
                                 {
-                               if( $prod->upload($model->id,$key))
+                                 if( $prod->upload($model->id,$key_p1))
+                                     {
+                                        $arrayImage[] = $prod->photo;
+                                    }
+                                }
+                            $prod->save(false);
+                            $id[$key_p1] = $prod->id; 
+                           
+                }         
+                        foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
+                            {
+                               foreach($proData as $k2 => $v)
                                {
-                                $arrayImage[] = $prod->photo;
+                               
+                              $pro = new PrimaryProductNd();
+                                $pro->control_primary_product_id = $id[$k1];
+                                $pro->name = $v['name'];
+                                $pro->type_id = $v['type_id'];
+                                if($pro->validate()){
+                                    $pro->save(false);
+                                }
                                }
-                                }
-                      $prod->save(false);
-                                foreach ($post['PrimaryProductNd'][$key] as $proData) {
-                                    $pro = new PrimaryProductNd();
-                                    $pro->control_primary_product_id = $prod->id;
-                                    $pro->name = $proData['name'];
-                                    $pro->type_id = $proData['type_id'];
-
-                                   $pro->save(false);
-                                }
                             }
+                        if(isset($post['ControlProductCertification']))
+                            {
+                            foreach ($post['ControlProductCertification'] as  $key_c1 => $proCer) 
+                             {
+                               foreach($proCer as $key_c2 => $v)
+                               {
+                                $pro1 = new ControlProductCertification();
+                                $pro1->product_id = $id[$key_c1];
+                                $pro1->number_reestr = $v['number_reestr'];
+                                $pro1->date_to = $v['date_to'];
+                                $pro1->date_from = $v['date_from'];
+
+                                $pro1->save(false);
+                               }
+                            }
+                        }
             $transaction->commit();
                     return $this->redirect(['identification','company_id' => $company_id]);
                 } catch (Exception $e) {
@@ -225,12 +301,19 @@ class ControlController extends Controller
 
         return $this->render('primary-data', [
             'model' => $model,
-           'pro_primary' => $pro_primary,
+            'pro_primary' => $pro_primary,
+            'pro_cer' => $pro_cer,
             'product' => $products,
             'ov' =>$ovs,
             'company_id' => $company_id
         ]);
     }
+    public function actionCodeTnVed($term)
+	{
+    
+		$kodtnved = Codetnved::find()->select(['kod as id', 'concat(kod, " - ", name) as text'])->where('kod like "%'.$term.'%" or name like "%'.$term.'%"')->asArray()->all();
+		return json_encode($kodtnved);
+	}
 
     public function actionGroup():array {
         $out = [];
@@ -334,6 +417,7 @@ class ControlController extends Controller
                 $model[$key] = new PrimaryIdentification();
                 $model[$key]['product_id'] = $value['id'];
                 $model[$key]['product_name'] = $value['product_name'];
+                $model[$key]['certification'] = $value['certification'];
             }
             
         $labs = [];
@@ -345,7 +429,8 @@ class ControlController extends Controller
             {   
                 $labs[$key] = new ControlProductLabaratoryChecking;
                 $labs[$key]['product_id'] = $value['id'];
-                $labs[$key]['product_name'] = $value['product_name'];        
+                $labs[$key]['product_name'] = $value['product_name'];
+                        
             }
 
         $certificates = [];
@@ -454,13 +539,14 @@ class ControlController extends Controller
     {
         $model = new Laboratory();
         $model->control_company_id = $company_id;
-
+      
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['defect', 'company_id' => $company_id]);
         }
 
         return $this->render('laboratory', [
             'model' => $model,
+            
         ]);
     }
 
@@ -485,14 +571,17 @@ class ControlController extends Controller
     {
         $model = new Defect();
         $model->control_company_id = $company_id;
-
+       
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $typeRes = '';
-            foreach ($model->type as $type) {
+            $types = $model->type;
+            foreach ( $types as $key => $type) {
                 $typeRes .= '.' . $type;
             }
             $model->type = $typeRes;
-            if ($model->type == '.4') {
+          
+            if ($model->type == '.4') 
+            {
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     $model->save(false);
@@ -507,9 +596,11 @@ class ControlController extends Controller
                     throw $e;
                 }
             }
-            if ($model->save()) {
+            if ($model->save()) 
+            {
                 return $this->redirect(['caution', 'company_id' => $company_id]);
             }
+            
         }
         return $this->render('defect', [
             'model' => $model,

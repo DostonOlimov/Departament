@@ -19,25 +19,18 @@ class PrimaryIdentification extends Model
     public $description;
     public $product_name;
     public $name;
-
-   /* public $labaratory_quality;
-    public $labaratory_description;
-
-    public $certificate_quality;
-    public $number_reestr;
-    public $date_from;
-    public $date_to;
-    public $position;
+    public $breaking_certification;
+    public $quantity;
     public $amount;
-    public $quantity;*/
+    public $certification;
 
     public function rules()
     {
         return [
             [[ 'quality',], 'required'],
-            [['id', 'product_id','labaratory_checking','quality',], 'integer'],
+            [['id', 'product_id','labaratory_checking','quality','breaking_certification'], 'integer'],
             [['description', 'name', ], 'string'],
-
+            
         ];
     }
 
@@ -54,8 +47,10 @@ class PrimaryIdentification extends Model
             'number_reestr' => 'Sertifikat raqami',
             'date_to' => 'Berilgan sanasi',
             'date_from' => 'Amal qilish mudati',
-            'amount' => 'Mahsulot qoldiq summasi',
-            'quantity' => 'Mahsulot qoldiq miqdori',
+            'amount' => 'Sertifikatsiz realizatsiya qilingan mahsulot summasi',
+            'quantity' => 'Sertifikatsiz realizatsiya qilingan mahsulot miqdori',
+            'breaking_certification' => 'Sertifikatlashtirish talabi buzilgan',
+
           
         ];
     }

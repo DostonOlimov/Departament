@@ -4,7 +4,7 @@ namespace common\models\control;
 
 use common\models\Countries;
 use common\models\control\PrimaryProductNd;
-use common\models\control\ProductType;
+use common\models\Codetnved;
 use common\models\control\PrimaryData;
 use common\models\types\ProductSubposition;
 use yii\helpers\Url;
@@ -54,6 +54,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public $subposition;
     public $class;
     public $position;
+    public $exsist_certificate;
 
     public $Image;
  
@@ -72,9 +73,9 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','residue_quantity','year_quantity','year_amount','residue_amount','labaratory_checking','certification',], 'required'],
+            [[ 'product_measure', 'made_country','residue_quantity','year_quantity','year_amount','residue_amount','labaratory_checking','certification','exsist_certificate'], 'required'],
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality'], 'integer'],
-            [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity'], 'string', 'max' => 255],
+            [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity','codetnved'], 'string', 'max' => 255],
             ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],
             [['Image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
@@ -173,11 +174,12 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             'year_amount' => 'yillik miqdori',
             'appearance_marking' => 'Tashqi ko’rinish va markirovkasi bo’yicha tekshirish',
             'labaratory_checking' => 'Sinov labaratoriyasida tekshirish',
-            'certification' => 'Mahsulotning sertifikatlari soni',
+            'certification' => 'Mahsulotning majburiy sertifikatlashtirishga tushishi',
             'quality' => 'Mahsulot sifati',
             'description' => 'Izoh',
             'cer_amount' =>'Sertifikatsiz realizatsiya qilingan mahsulot qiymati',
             'cer_quantity' =>'Sertifikatsiz realizatsiya qilingan mahsulot summasi',
+            'exsist_certificate' =>'Mahsulotning sertifikat(lar)i'
 
         ];
     }

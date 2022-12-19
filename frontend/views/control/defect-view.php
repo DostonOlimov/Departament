@@ -39,10 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw'
                 ],
                 'description:text',
-                'compliance_quantity',
-                'compliance_cost',
-                'tex_cost',
-                'tex_quantity',
             ],
         ]) ?>
     </div>

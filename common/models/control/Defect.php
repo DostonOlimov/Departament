@@ -40,7 +40,7 @@ class Defect extends \yii\db\ActiveRecord
             [['control_company_id', 'type', 'description'], 'required'],
             [['control_company_id'], 'integer'],
             [['type'], 'safe'],
-            [['description', 'compliance_quantity', 'compliance_cost', 'tex_quantity', 'tex_cost'], 'string'],
+            [['description'], 'string'],
             [['control_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['control_company_id' => 'id']],
         ];
     }
@@ -51,10 +51,6 @@ class Defect extends \yii\db\ActiveRecord
             'id' => 'ID',
             'control_company_id' => 'Control Company ID',
             'type' => 'Kamchiliklar',
-            'compliance_quantity' => 'Muvofiqlik sertifikatsiz realizatsiya qilingan mahsulotlar miqdori',
-            'compliance_cost' => 'Muvofiqlik sertifikatsiz realizatsiya qilingan mahsulotlar summasi',
-            'tex_cost' => 'Amaldagi texnik reglament va normativ hujjatlar talablariga nomuvofiq mahsulotlar miqdori',
-            'tex_quantity' => 'Amaldagi texnik reglament va normativ hujjatlar talablariga nomuvofiq mahsulotlar summasi',
             'description' => 'Izoh',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',

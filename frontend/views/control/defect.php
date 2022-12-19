@@ -24,34 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin() ?>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="font-size:24px">
             <?= $form->field($model, 'type')->checkboxList(Defect::typeList(), [
                 'onclick' => 'typeChange(event)',
+                'class' => 'row'
             ]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style = "font-size:24px">
             <?= $form->field($model, 'description')->textarea() ?>
-        </div>
-    </div>
-    <div class="row">
-        <label class="text-black">Muvofiqlik sertifikatsiz realizatsiya qilingan mahsulotlar</label>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'compliance_quantity')->textInput(['placeholder' => "miqdori.."])->label(false) ?>
-        </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'compliance_cost')->textInput(['placeholder' => "summasi.."])->label(false) ?>
-        </div>
-    </div>
-    <div class="row">
-        <label class="text-black">Amaldagi texnik reglament va normativ hujjatlar talablariga nomuvofiq mahsulotlar</label>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'tex_quantity')->textInput(['placeholder' => "miqdori.."])->label(false) ?>
-        </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'tex_cost')->textInput(['placeholder' => "summasi.."])->label(false) ?>
         </div>
     </div>
 
