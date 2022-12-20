@@ -28,8 +28,8 @@ class PrimaryIdentification extends Model
     {
         return [
             [[ 'quality',], 'required'],
-            [['id', 'product_id','labaratory_checking','quality','breaking_certification'], 'integer'],
-            [['description', 'name', ], 'string'],
+            [['id', 'product_id','labaratory_checking','quality','breaking_certification','amount','quantity'], 'integer'],
+            [['description', 'name','product_name' ], 'string'],
             
         ];
     }

@@ -35,11 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <i class="fa fa-toggle-right" id = "open1" onclick=openPanel(); style="font-size:24px;color:blue;display:none;"></i> 
     <i class="fa fa-toggle-down " id = "close1" onclick=closePanel(); style="font-size:24px;color:blue; " ></i> 
     <h4 style = 'color:black; display:inline;'>Tashqi ko’rinish bayonnomasi</h4>
-    <div class="row panel-body" id = "content1" >
-        <?php foreach ($model as $key => $stan) :?>        
+    <div class="row" id = "content1" >
+        <?php foreach ($model as $key => $stan) :?>
+            <div class="panel-body">        
                      <div class="col-md-6 col-lg-12">
                         <label>Mahsulot nomi:</label>
-                            <label class="form-control" readonly><?= $stan['product_name'] ?></label>
+                            <label class="form-control" style = "background-color:rgb(57, 71, 227); color:white;" readonly><?= $stan['product_name'] ?></label>
                         <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
                         </div>
                         <div class="col-md-6 col-lg-4">
@@ -63,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div> 
                         </div>  
                         <?php endif ;?>
+                     </div>
                     <?php endforeach; ?>
                     </div>
 </div>
@@ -75,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($labs as $key => $stan) :?>        
                      <div class="col-md-6 col-lg-12">
                         <label>Mahsulot nomi:</label>
-                            <label class="form-control" readonly><?= $stan['product_name'] ?></label>
+                            <label class="form-control" style = "background-color:rgb(57, 71, 227); color:white;" readonly><?= $stan['product_name'] ?></label>
                         <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
                      </div>
                         <div class="col-md-6 col-lg-4">

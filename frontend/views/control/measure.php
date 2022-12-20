@@ -13,8 +13,14 @@ use yii\widgets\MaskedInput;
 $this->title = 'Ko\'rsatilgan ta`sir choralar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-
+<style>
+    .label{
+        font-size: 25px;
+        color:black;
+        padding:10px;
+        width:540px;
+    }
+</style>
     <div class="page1-1 row ">
 
 
@@ -40,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <hr>
                 <div id="titleOv" style="color: #000;"></div>
                 <?= $form->field($model, 'ov_date')->widget(DatePicker::className()) ?>
-                <?= $form->field($model, 'ov_quantity')->textInput() ?>
+                <?= $form->field($model, 'ov_quantity')->textInput(['type'=>'number']) ?>
                 <?= $form->field($model, 'ov_name')->textInput() ?>
             </div>
             <div class="col-sm-6 col-lg-6">
@@ -51,13 +57,49 @@ $this->params['breadcrumbs'][] = $this->title;
                     'mask' => 'AA9999999'
                 ]) ?>
                 <?= $form->field($model, 'fine_amount')->textInput() ?>
+                <div class = "row" id = "mjtk" style="display:none">
+                <label>MJtK moddasi</label>
+                <div class="col-sm-4">
+                <?= $form->field($model, 'm212')->dropDownList([0 => '- - -',1=>'1-qismi', 2 => '2-qismi',3=>'3-qismi',4=>'4-qismi'],);?>
+                </div>
+                <div class="col-sm-4">
+                <?= $form->field($model, 'm213')->dropDownList([0 => '- - -',1=>'1-qismi', 2 => '2-qismi']);?>
+                </div>
+                <div class="col-sm-4">
+                <?= $form->field($model, 'm214')->dropDownList([0 => '- - -',1=>'1-qismi', 2 => '2-qismi']);?>
+                </div>
+                <table style="color:black;">
+                <tr><td class = "label">Tushuntirish xati</td><td><?= $form->field($model, 'explanation_letter')->fileInput()->label(false) ?></td></tr>
+                <tr><td class = "label">Talabnoma</td><td><?= $form->field($model, 'claim')->fileInput()->label(false) ?></td></tr>
+                <tr><td class = "label">Sud xati</td><td><?= $form->field($model, 'court_letter')->fileInput()->label(false) ?></td></tr>
+                </table>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-6">
+            <hr>
+                <div id="titleEco" style="color: #000;"></div>
+                <?= $form->field($model, 'first_warn_date')->widget(DatePicker::className()) ?>
+                <?= $form->field($model, 'warn_number')->textInput(['type' => 'number']) ?>
+                <?= $form->field($model, 'eco_date')->widget(DatePicker::className())  ?>
+                <?= $form->field($model, 'eco_number')->textInput(['type' => 'number']) ?>
+                <?= $form->field($model, 'eco_quantity')->textInput() ?>
+                <?= $form->field($model, 'eco_amount')->textInput() ?>
             </div>
             <div class="col-sm-12 col-lg-6">
                 <hr>
-                <div id="titleRe" style="color: #000;"></div>
-                <?= $form->field($model, 'date')->widget(DatePicker::className()) ?>
-                <?= $form->field($model, 'quantity')->textInput() ?>
-                <?= $form->field($model, 'amount')->textInput() ?>
+                <div id="titleRe" style="color: #000;"> </div>
+                <?= $form->field($model, 'realization_date')->widget(DatePicker::className()) ?>
+                <?= $form->field($model, 'realization_number')->widget(DatePicker::className()) ?>
+                <div class="row" id="products" style="display:none;" >
+        <?php foreach ($products as $key => $stan) :?>        
+                        <label>Mahsulot nomi:</label>
+                            <label class="form-control" style = "background-color:rgb(57, 71, 227); color:white;" readonly><?= $stan['product_name'] ?></label>
+                        <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
+                        <?= $form->field($stan, "[{$key}]amount")->textInput(['type'=>'number']) ?>
+                        <?= $form->field($stan, "[{$key}]quantity")->textInput(['type'=>'number']) ?>
+                    
+                    <?php endforeach; ?>
+            </div>
             </div>
         </div>
         <div class="col-6 mt-4">
@@ -68,23 +110,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </div>
     <script>
-        const showing = (a,b,c) => {
+        const showing = (a,b,c,d,e,f) => {
             $(`.field-measure-${a}`).show()
             $(`.field-measure-${b}`).show()
             $(`.field-measure-${c}`).show()
+            $(`.field-measure-${d}`).show()
+            $(`.field-measure-${e}`).show()
+            $(`.field-measure-${f}`).show()
         }
-        const removing = (a,b,c) => {
+        const removing = (a,b,c,d,e,f) => {
             $(`.field-measure-${a}`).hide()
             $(`.field-measure-${b}`).hide()
             $(`.field-measure-${c}`).hide()
+            $(`.field-measure-${d}`).hide()
+            $(`.field-measure-${e}`).hide()
+            $(`.field-measure-${f}`).hide()
         }
-        const MJ = (s) => s ?  showing('person', 'number_passport', 'fine_amount'): removing('person', 'number_passport', 'fine_amount')
+        const MJ = (s) => s ?  showing('person', 'number_passport', 'fine_amount',): removing('person', 'number_passport', 'fine_amount')
         const OV = (s) => s ?   showing('ov_date', 'ov_quantity', 'ov_name'):  removing('ov_date', 'ov_quantity', 'ov_name')
-        const Three = (s) => s ?    showing('date', 'quantity', 'amount'):  removing('date', 'quantity', 'amount')
+        const Three = (s) => s ?   showing('realization_date','realization_number'):  removing('realization_date','realization_number')
+        const Eco = (s) => s ?   showing('first_warn_date', 'warn_number', 'eco_date','eco_number','eco_quantity','eco_amount'):  removing('first_warn_date', 'warn_number', 'eco_date','eco_number','eco_quantity','eco_amount')
 
         function inputGenerate(event) {
             let val = event.target.value , checked = event.target.checked
-            const threeChange = (child) => event.path[2].children[child].children[0].checked
+           // alert(event.path[2].children[child].children[0].checked)
+           // const threeChange = (child) => event.path[2].children[child].children[0].checked
             if (checked && val == 1) {
 
                 let node = document.createElement("span");
@@ -107,7 +157,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 let personText = document.createTextNode("Jarimaga tortilgan shaxs.");         // Create a text node
                 person.appendChild(personText);                              // Append the text to <li>
                 document.getElementById("titlePerson").appendChild(person);
+
+                let mj = document.getElementById("mjtk");
+                mj.style.display="flex";
                 MJ(1)
+            }
+            if(checked===false && val==3)
+            {
+                let mj = document.getElementById("mjtk");
+                mj.style.display="none";
             }
 
             if (checked && val== 2) {
@@ -116,10 +174,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 let reText = document.createTextNode("Realizatsiyani taqiqlash. ");         // Create a text node
                 re2.appendChild(reText);                              // Append the text to <li>
                 document.getElementById("titleRe").appendChild(re2);
+
+                let mj = document.getElementById("products");
+                mj.style.display="flex";
+                Three(true)
             }
 
             if(checked===false && val==2){
                 $("#span2").remove();
+                let mj = document.getElementById("products");
+                mj.style.display="none";
+                Three(false)
             }
 
             if (checked && val== 4) {
@@ -127,14 +192,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 re4.setAttribute("id", "span4");// Create a <li> node
                 let re4Text = document.createTextNode("Iqtisodiy jarima. ");         // Create a text node
                 re4.appendChild(re4Text);                              // Append the text to <li>
-                document.getElementById("titleRe").appendChild(re4);
+                document.getElementById("titleEco").appendChild(re4);
+                Eco(true)
             }
 
             if(checked===false && val==4){
                 $("#span4").remove();
+                Eco(false)
             }
 
-            if (checked && val== 5) {
+          /*  if (checked && val== 5) {
                 let re5 = document.createElement("span");
                 re5.setAttribute("id", "span5");// Create a <li> node
                 let re5Text = document.createTextNode("Savdodan chiqarish. ");         // Create a text node
@@ -144,18 +211,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
             if(checked===false && val==5){
                 $("#span5").remove();
-            }
+            }*/
 
             if (checked === false && val == 3) {
                 $("#span3").remove();
                 MJ(0)
             }
-            if (checked && val != 3 && val != 1) {
+         /*   if (checked && val != 3 && val != 1) {
                 Three(true)
             }
             if (threeChange(1) === false && threeChange(3) === false && threeChange(4) === false ) {
                 Three(false)
-            }
+            }*/
         }
     </script>
 <?php
@@ -163,12 +230,20 @@ $this->registerJs('
     $(".field-measure-person").hide()
     $(".field-measure-number_passport").hide()
     $(".field-measure-fine_amount").hide()
-    $(".field-measure-date").hide()
-    $(".field-measure-quantity").hide()
-    $(".field-measure-amount").hide()
+    
+    $(".field-measure-first_warn_date").hide()
+    $(".field-measure-warn_number").hide()
+    $(".field-measure-eco_date").hide()
+    $(".field-measure-eco_number").hide()
+    $(".field-measure-eco_quantity").hide()
+    $(".field-measure-eco_amount").hide()
+
     $(".field-measure-ov_date").hide()
     $(".field-measure-ov_quantity").hide()
     $(".field-measure-ov_name").hide()
+
+    $(".field-measure-realization_date").hide()
+    $(".field-measure-realization_number").hide()
 ');
 
-?>
+?>  

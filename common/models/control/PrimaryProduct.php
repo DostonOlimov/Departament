@@ -73,7 +73,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','residue_quantity','year_quantity','year_amount','residue_amount','labaratory_checking','certification','exsist_certificate'], 'required'],
+            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate'], 'required'],
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality'], 'integer'],
             [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity','codetnved'], 'string', 'max' => 255],
             ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],

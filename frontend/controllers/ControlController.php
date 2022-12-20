@@ -24,6 +24,7 @@ use common\models\types\ProductSubposition;
 use common\models\types\ProductClass;
 use common\models\Model;
 use common\models\Codetnved;
+use common\models\control\ControlProductMeasures;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
@@ -461,13 +462,20 @@ class ControlController extends Controller
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
+                    
                     foreach ($model as $key => $value) 
                     {
                       $product = PrimaryProduct::find()
                         ->where(['id' => $value->product_id])
                         ->one();
+                       
                        $product->description = $value->description;
                        $product->quality = $value->quality;
+                       if($value->breaking_certification == 0)
+                       {
+                        $product->cer_quantity = $value->quantity;
+                        $product->cer_amount = $value->amount;
+                       }
                        $product->save();
                     }
                     foreach ($labs as $key => $value) 
@@ -665,8 +673,22 @@ class ControlController extends Controller
     {
         $model = new Measure();
         $model->control_company_id = $company_id;
+        $id = PrimaryData::find()
+            ->where(['control_company_id' => $company_id])
+            ->one();
+        $products = PrimaryProduct::find()
+            ->where(['control_primary_data_id' => $id->id])
+            ->all();
+        foreach($products as $key => $value) 
+            {   
+                $re_product[$key] = new ControlProductMeasures();
+                $re_product[$key]['product_id'] = $value['id'];
+                $re_product[$key]['product_name'] = $value['product_name'];
+            }
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+           
             if ($model->type) {
+               
                 $model->type = implode(",", $model->type);
             }
             $transaction = Yii::$app->db->beginTransaction();
@@ -683,8 +705,10 @@ class ControlController extends Controller
                 throw $e;
             }
         }
+       
         return $this->render('measure', [
             'model' => $model,
+            'products' => $re_product,
         ]);
     }
 

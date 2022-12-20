@@ -3,6 +3,9 @@
 namespace common\models\control;
 
 use common\models\User;
+use common\models\control\PrimaryProduct;
+use common\models\control\PrimaryData;
+use common\models\control\ControlProductLabaratoryChecking;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yiidreamteam\upload\FileUploadBehavior;
@@ -27,6 +30,7 @@ class Laboratory extends \yii\db\ActiveRecord
 {
     public $finish_dalolatnoma;
     public $out_dalolatnoma;
+    private $quality = true;
     /**
      * {@inheritdoc}
      */
@@ -34,7 +38,7 @@ class Laboratory extends \yii\db\ActiveRecord
     {
         return 'laboratories';
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -43,33 +47,38 @@ class Laboratory extends \yii\db\ActiveRecord
         return [
             [['control_company_id','dalolatnoma','out_bayonnoma'], 'required'],
             [['control_company_id'], 'integer'],
-           // ['finish_dalolatnoma','validateFinish'],
-         //  [['finish_dalolatnoma'],'validateEither', ['other' => ['phone']]],
-           ['finish_dalolatnoma', 'validateEither', 'params' => ['other' => 'out_dalolatnoma']],
+           /* ['finish_dalolatnoma', 'required', 'when' => function ($model) {
+                return $model->getQuality($this->control_company_id) === false;
+            },'message'=>'{attribute} ni kiritib bo\'lmaydi.'],*/
+            ['finish_dalolatnoma', 'required', 'when' => function ($model) {
+                return $model->out_dalolatnoma == '';
+            }, 'whenClient' => "function (attribute, value) {
+                return $('#out_dalolatnoma').val() == '';
+            }"],
+            ['out_dalolatnoma', 'required', 'when' => function ($model) {
+                return $model->finish_dalolatnoma == '';
+            }, 'whenClient' => "function (attribute, value) {
+                return $('#finish_dalolatnoma').val() == '';
+            }"],
             [['dalolatnoma', 'bayonnoma', 'finish_dalolatnoma', 'out_bayonnoma', 'out_dalolatnoma'], 'file'],
         ];
     }
-    public function validateEither($attribute, $params)
-{
-    $field1 = $this->getAttributeLabel($attribute);
-    $field2 = $this->getAttributeLabel($params['other']);
-    if (is_null($this->finish_dalolatnoma) && is_null($this->{$params['other']})) {
-        $this->addError($attribute, 'ss');
-    }
-}
-   /* public function validateValidator() {
-        var_dump($this->out_dalolatnoma);die(); 
-       
-    }
-    public function validateFinish($attribute, $params, $validator)
+  
+    public function getQuality($company_id)
     {
-   //  var_dump($attribute);die(); 
-        if (is_null($this->finish_dalolatnoma)) {
-            //die;
-            $this->addError($attribute, 'Oraliq yoki yakuniy dalolatnomadan biri yuklanishi shart.');
+        $data = PrimaryData::FindOne(['control_company_id' => $company_id]);
+        $products = PrimaryProduct::FindAll(['control_primary_data_id' => $data->id]);
+        foreach($products as $product)
+        {
+            $lab = ControlProductLabaratoryChecking::FindOne(['product_id' => $product->id]);
+            if($lab->quality == 2)
+            {
+                $this->quality = false;
+            }
+            
         }
+        return $this->quality;
     }
-*/
    
     /**
      * {@inheritdoc}
