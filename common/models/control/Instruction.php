@@ -73,7 +73,7 @@ class Instruction extends \yii\db\ActiveRecord
 
     public $employers;
     public $admin;
-
+    public $subject;
 
     public static function tableName()
     {
@@ -83,10 +83,12 @@ class Instruction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['base', 'type','checkup_subject','checkup_duration','general_status',], 'integer'],
+            [['base', 'type','checkup_duration','general_status',], 'integer'],
             [['general_status'], 'default', 'value' => self::GENERAL_STATUS_IN_PROCESS],
-            [['employers'], 'safe'],
-            [['base', 'type', 'code', 'letter_date','checkup_subject', 'letter_number','checkup_begin_date', 'checkup_finish_date',
+            [['employers','checkup_subject'], 'safe'],
+            ['code','unique'],
+           // [ 'code', 'unique', 'targetClass' => 'common\models\control\Instruction', 'message' => 'This username is already been taken.' ],
+            [['base', 'type', 'code', 'letter_date', 'letter_number','checkup_begin_date',
                 'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','real_checkup_date','checkup_duration'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date', 'checkup_finish_date',
                 'checkup_duration_finish_date','code','checkup_duration_start_date','real_checkup_date','who_send_letter'], 'string', 'max' => 255],
@@ -223,7 +225,7 @@ class Instruction extends \yii\db\ActiveRecord
             'checkup_begin_date' => 'Tekshiruv boshlangan sana',
             'checkup_finish_date' => 'Tekshiruv tugatilgan sana',
             'checkup_duration' => 'Tekshiruv muddati',
-            'real_checkup_date' => 'Haqiqiy tekshiruv boshlanish sanasi',
+            'real_checkup_date' => 'Tekshiruv haqiqatda boshlanish sanasi',
             'checkup_duration_start_date' => 'Tekshiruv davri boshlanish sanasi',
             'checkup_duration_finish_date' => 'Tekshiruv davri tugatilish sanasi',
             'might_be_breakdown_letter' => 'Buzilishi mumkin bo\'lgan normativ hujjat',

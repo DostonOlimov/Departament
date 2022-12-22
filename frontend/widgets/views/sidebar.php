@@ -61,12 +61,12 @@ if ($control_company_id) {
     $hrefDef = $controlCompany->defect ? Url::to(['/control/defect-view', 'id' => $controlCompany->defect->id]) : Url::to(['/control/defect', 'company_id' => $control_company_id]);
     $classDef = ($action == 'defect' || $action == 'defect-view') ? 'active' : ($controlCompany->laboratory ? 'actived' : 'disabled');
 
-    $hrefCaution = $controlCompany->caution ? Url::to(['/control/caution-view', 'id' => $control_company_id]) : Url::to(['/control/caution', 'company_id' => $control_company_id]);
+  /*  $hrefCaution = $controlCompany->caution ? Url::to(['/control/caution-view', 'id' => $control_company_id]) : Url::to(['/control/caution', 'company_id' => $control_company_id]);
     $classCaution = ($action == 'caution' || $action == 'caution-view') ? 'active' : ($controlCompany->defect ? 'actived' : 'disabled');
     $classCaution = $controlCompany->defect ? ($controlCompany->defect->type == ".4" ? 'disabled' : $classCaution) : $classCaution;
-
+    */
     $hrefMeasure = $controlCompany->measure ? Url::to(['/control/measure-view', 'id' => $controlCompany->measure->id]) : Url::to(['/control/measure', 'company_id' => $control_company_id]);
-    $classMeasure = ($action == 'measure' || $action == 'measure-view') ? 'active' : ($controlCompany->caution ? 'actived' : 'disabled');
+    $classMeasure = ($action == 'measure' || $action == 'measure-view') ? 'active' : ($controlCompany->defect ? 'actived' : 'disabled');
     $classMeasure = $controlCompany->defect ? ($controlCompany->defect->type == ".4" ? 'disabled' : $classMeasure) : $classMeasure;
 }
 ?>
@@ -79,6 +79,5 @@ if ($control_company_id) {
     <a href="<?= $hrefIdentification ?>" class="list-group-item list-group-item-action <?= $classIdentification ?> ">Mahsulotning tashqi ko'rinishi va<br> markirovkasi bo'yicha ma'lumot (identifikatsiya)</a>
     <a href="<?= $hrefLab ?>" class="list-group-item  list-group-item-action <?= $classLab ?> ">Na'muna olish va labaratoriya natijalari </a>
     <a href="<?= $hrefDef ?>" class="list-group-item  list-group-item-action <?= $classDef ?> ">Aniqlangan kamchiliklar </a>
-    <a href="<?= $hrefCaution ?>" class="list-group-item  list-group-item-action <?= $classCaution ?> ">Ko'rsatmalar </a>
     <a href="<?= $hrefMeasure ?>" class="list-group-item  list-group-item-action <?= $classMeasure ?> ">Ko'rilgan ta'sir choralar </a>
 </div>

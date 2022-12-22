@@ -49,7 +49,7 @@ class Laboratory extends \yii\db\ActiveRecord
             [['control_company_id'], 'integer'],
            /* ['finish_dalolatnoma', 'required', 'when' => function ($model) {
                 return $model->getQuality($this->control_company_id) === false;
-            },'message'=>'{attribute} ni kiritib bo\'lmaydi.'],*/
+            },'message'=>'{attribute} ni kiritib bo\'lmaydi.'],
             ['finish_dalolatnoma', 'required', 'when' => function ($model) {
                 return $model->out_dalolatnoma == '';
             }, 'whenClient' => "function (attribute, value) {
@@ -59,7 +59,7 @@ class Laboratory extends \yii\db\ActiveRecord
                 return $model->finish_dalolatnoma == '';
             }, 'whenClient' => "function (attribute, value) {
                 return $('#finish_dalolatnoma').val() == '';
-            }"],
+            }"],*/
             [['dalolatnoma', 'bayonnoma', 'finish_dalolatnoma', 'out_bayonnoma', 'out_dalolatnoma'], 'file'],
         ];
     }

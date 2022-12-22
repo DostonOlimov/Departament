@@ -89,15 +89,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 <hr>
                 <div id="titleRe" style="color: #000;"> </div>
                 <?= $form->field($model, 'realization_date')->widget(DatePicker::className()) ?>
-                <?= $form->field($model, 'realization_number')->widget(DatePicker::className()) ?>
+                <?= $form->field($model, 'realization_number')->textInput(['type'=>'number']) ?>
                 <div class="row" id="products" style="display:none;" >
-        <?php foreach ($products as $key => $stan) :?>        
+        <?php foreach ($products as $key => $stan) :?> 
+            <div class="panel-body"> 
+                    <div class="pull-right">
+                        <button type="button" onclick="plusPro(this)" class="add-item_2 btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                        <button type="button" onclick="minusPro(this)" class="remove-item_2 btn btn-danger btn-xs" id="removeBtn"><i class="fa fa-minus"></i></button>
+                     </div>  
+                     <div class = "products"> 
+                        <div class = "row">   
                         <label>Mahsulot nomi:</label>
-                            <label class="form-control" style = "background-color:rgb(57, 71, 227); color:white;" readonly><?= $stan['product_name'] ?></label>
+                        <label class="form-control" style = "background-color:rgb(57, 71, 227); color:white;" readonly><?= $stan['product_name'] ?></label>
                         <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
                         <?= $form->field($stan, "[{$key}]amount")->textInput(['type'=>'number']) ?>
                         <?= $form->field($stan, "[{$key}]quantity")->textInput(['type'=>'number']) ?>
-                    
+                        </div>
+                    </div>
+                 </div>
                     <?php endforeach; ?>
             </div>
             </div>
@@ -224,6 +233,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 Three(false)
             }*/
         }
+function findParent(elem, className){
+        if (elem.parentNode.classList.contains(className)){
+            return elem.parentNode;
+        }
+
+        return findParent(elem.parentNode,className);
+
+    }
+ function plusPro(e) {
+        obj = findParent(e, 'panel-body');  
+        var collection =  obj.getElementsByClassName("products");
+        for (var i=0;i<collection.length;i++)
+        {
+            collection[i].style.display = 'flex';
+        }
+        }
+function minusPro(e){
+    obj = findParent(e, 'panel-body'); 
+            let inputs = obj.getElementsByClassName('products');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].style.display = 'none';
+            }
+    }
     </script>
 <?php
 $this->registerJs('

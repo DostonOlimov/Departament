@@ -33,7 +33,7 @@ class ControlProductMeasures extends \yii\db\ActiveRecord
         return [
             [['product_id'], 'required'],
             [['product_id', 'amount', 'quantity'], 'integer'],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ControlPrimaryProduct::class, 'targetAttribute' => ['product_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryProduct::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -57,6 +57,6 @@ class ControlProductMeasures extends \yii\db\ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(ControlPrimaryProduct::class, ['id' => 'product_id']);
+        return $this->hasOne(PrimaryProduct::class, ['id' => 'product_id']);
     }
 }

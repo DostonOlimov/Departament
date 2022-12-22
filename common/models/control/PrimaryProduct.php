@@ -6,6 +6,9 @@ use common\models\Countries;
 use common\models\control\PrimaryProductNd;
 use common\models\Codetnved;
 use common\models\control\PrimaryData;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yiidreamteam\upload\ImageUploadBehavior;
 use common\models\types\ProductSubposition;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
@@ -73,11 +76,11 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate'], 'required'],
+            [[ 'product_measure', 'made_country','labaratory_checking','certification'], 'required'],
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality'], 'integer'],
             [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity','codetnved'], 'string', 'max' => 255],
             ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],
-            [['Image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['Image'], 'image', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::class, 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
@@ -132,18 +135,25 @@ class PrimaryProduct extends \yii\db\ActiveRecord
         return $arr[$type];
     }
 
-    public function upload(int $data_id,int $key) {
-
-        if (true) {
-           
-           $path =  Url::to('@frontend/web/uploads/images/'). $data_id.$key.'_'.$this->Image->name;
-        
-            $this->Image->saveAs($path);
-            $this->photo = $data_id.$key.'_'.$this->Image->name;
-            return true;
-        } else {
-            return false;
-        }		
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => ImageUploadBehavior::class,
+                'attribute' => 'photo',
+                'createThumbsOnRequest' => true,
+                'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
+                'thumbPath' => '@frontend/web/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@url/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbs' => [
+                    'xs' => ['width' => 64, 'height' => 48],
+                    'sm' => ['width' => 120, 'height' => 67],
+                    'md' => ['width' => 240, 'height' => 135],
+                    'lg' => ['width' => 960, 'height' => 540],
+                ],
+            ],
+        ];
     }
     public function afterFind()
     {

@@ -76,8 +76,16 @@ class ControlController extends Controller
     {
         $model = new Instruction();
        
-        if ($model->load($this->request->post()) && $model->validate()) {
-           
+        if ($model->load($this->request->post()) ) {
+            if($model->validate())
+            {
+            $typeRes = '';
+            $subject = $model->checkup_subject;
+            foreach ( $subject as $key => $type) {
+                $typeRes .= $type.'.';
+            }
+
+            $model->checkup_subject = $typeRes;
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $model->save(false);
@@ -95,9 +103,12 @@ class ControlController extends Controller
                 $transaction->rollBack();
                 throw $e;
             }
-        } else{
-
+        } 
+        else
+        {
+            return $model->getErrors();
         }
+    }
 
         return $this->render('instruction', [
             'model' => $model,
@@ -245,15 +256,11 @@ class ControlController extends Controller
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
                                 $prod->Image = UploadedFile::getInstance($product, "[{$key_p1}]photo");
-                                if($prod->Image)
-                                {
-                                 if( $prod->upload($model->id,$key_p1))
-                                     {
-                                        $arrayImage[] = $prod->photo;
-                                    }
+                                if ($prod->Image) {
+                                    $prod->photo = $prod->Image->name;
                                 }
-                            $prod->save(false);
-                            $id[$key_p1] = $prod->id; 
+                                $prod->save(false);
+                                $id[$key_p1] = $prod->id; 
                            
                 }         
                         foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
@@ -270,7 +277,7 @@ class ControlController extends Controller
                                 }
                                }
                             }
-                        if(isset($post['ControlProductCertification']))
+                        if($post['ControlProductCertification'])
                             {
                             foreach ($post['ControlProductCertification'] as  $key_c1 => $proCer) 
                              {
@@ -281,8 +288,9 @@ class ControlController extends Controller
                                 $pro1->number_reestr = $v['number_reestr'];
                                 $pro1->date_to = $v['date_to'];
                                 $pro1->date_from = $v['date_from'];
-
+                                if($pro1->validate()){
                                 $pro1->save(false);
+                                }
                                }
                             }
                         }
@@ -465,18 +473,21 @@ class ControlController extends Controller
                     
                     foreach ($model as $key => $value) 
                     {
-                      $product = PrimaryProduct::find()
+                      $pro_pr = PrimaryProduct::find()
                         ->where(['id' => $value->product_id])
                         ->one();
-                       
-                       $product->description = $value->description;
-                       $product->quality = $value->quality;
+                       $pro_pr->description = $value->description;
+                       $pro_pr->quality = (int)$value->quality;
                        if($value->breaking_certification == 0)
                        {
-                        $product->cer_quantity = $value->quantity;
-                        $product->cer_amount = $value->amount;
+                        $pro_pr->cer_quantity = $value->quantity;
+                        $pro_pr->cer_amount = $value->amount;
                        }
-                       $product->save();
+                       if($pro_pr->validate())
+                       {
+                        $pro_pr->save(false);
+                       }
+                      
                     }
                     foreach ($labs as $key => $value) 
                     {
@@ -486,6 +497,7 @@ class ControlController extends Controller
                       $lab->quality = $value->quality;
                       $lab->save();
                     }
+
                 if(Yii::$app->request->post('ControlProductCertification'))
                    {
                    foreach (Yii::$app->request->post('ControlProductCertification') as $key => $value) 
@@ -606,7 +618,7 @@ class ControlController extends Controller
             }
             if ($model->save()) 
             {
-                return $this->redirect(['caution', 'company_id' => $company_id]);
+                return $this->redirect(['measure', 'company_id' => $company_id]);
             }
             
         }
@@ -686,18 +698,34 @@ class ControlController extends Controller
                 $re_product[$key]['product_name'] = $value['product_name'];
             }
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-           
+
             if ($model->type) {
                
                 $model->type = implode(",", $model->type);
             }
             $transaction = Yii::$app->db->beginTransaction();
             try {
+              
+
+                $model->band_mjtk = ','.$model->m212.','.$model->m213.','.$model->m214;
                 $model->save(false);
+                //VarDumper::dump($model,12,true);die;
                 $ins = Instruction::findOne($model->controlCompany->control_instruction_id);
-                $ins->checkup_finish_date = Yii::$app->formatter->asDate(time(), 'M/dd/yyyy');
+               // $ins->checkup_finish_date = Yii::$app->formatter->asDate(time(), 'M/dd/yyyy');
                 $ins->general_status = Instruction::GENERAL_STATUS_SEND;
                 $ins->save(false);
+                if(Yii::$app->request->post('ControlProductMeasures'))
+                {
+                    foreach(Yii::$app->request->post('ControlProductMeasures') as $key => $value)
+                    {
+                        $vv = new ControlProductMeasures();
+                        $vv->product_id = $value['product_id'];
+                        $vv->amount = $value['amount'];
+                        $vv->quantity = $value['quantity'];
+                        $vv->save();
+                    }
+                }
+               // VarDumper::dump($vv,12,true);die;
                 $transaction->commit();
                 return $this->redirect(['/control/measure-view', 'id' => $model->id]);
             } catch (Exception $e) {

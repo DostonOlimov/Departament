@@ -1,6 +1,4 @@
 <?php
-
-
 use common\models\control\InstructionUser;
 use common\models\control\Instruction;
 use common\models\User;
@@ -37,6 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="row">
+    <div class="col-sm-6">
+            <?= $form->field($model, 'code')->widget(\yii\widgets\MaskedInput::className(), [
+                'mask' => '999-999-999']) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-6">
             <?= $form->field($model, 'command_date')->widget(DatePicker::className()) ?>
         </div>
@@ -57,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'checkup_begin_date')->widget(DatePicker::className()) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'checkup_finish_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'real_checkup_date')->widget(DatePicker::className()) ?>
         </div>
     </div>
     <div class="row">
@@ -69,8 +76,13 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'real_checkup_date')->widget(DatePicker::className()) ?>
+    <div class="col-sm-6">
+            <?= $form->field($model, 'employers')->widget(Select2::class, [
+                'data' => Instruction::getUsers(),
+                'language' => 'uz',
+                'options' => ['multiple' => true],
+                'showToggleAll' => false,
+            ]) ?>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'checkup_duration')->dropDownList(Instruction::getDuration()) ?>
@@ -78,38 +90,13 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'checkup_subject')->dropDownList(Instruction::getSubject()) ?>
+            <?= $form->field($model, 'checkup_subject')->checkboxList(Instruction::getSubject() );?>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
-        </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'code')->widget(\yii\widgets\MaskedInput::className(), [
-                'mask' => '999-999-999']) ?>
-        </div>
-    </div>
-    <div class="row">
-        <!--  <div class="col-sm-6">
-           <div class="form-group field-instruction-checkup_begin_date">
-                <label  class="control-label" for="instruction-checkup_begin_date">Tekshiruv boshlangan sana</label>
-                <input type="text" id="instruction-checkup_begin_date" class="form-control krajee-datepicker" name="Instruction[checkup_begin_date]"
-                       value="<?php //Yii::$app->formatter->asDate(time(), 'M/dd/yyyy') ?>" data-datepicker-source="instruction-checkup_begin_date"
-                       data-datepicker-type="1" data-krajee-kvdatepicker="kvDatepicker_00000000" readonly>
-            </div>
-        </div>-->
-        <div class="col-sm-6">
+        <div class="col-sm-9">
             <label>Ijrochi:</label>
             <label class="form-control" readonly><?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname : 'Inspektor F.I.О' ?></label>
-        </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'employers')->widget(Select2::class, [
-                'data' => Instruction::getUsers(),
-                'language' => 'uz',
-                'options' => ['multiple' => true],
-                'showToggleAll' => false,
-            ]) ?>
         </div>
     </div>
 

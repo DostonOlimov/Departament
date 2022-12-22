@@ -40,16 +40,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(Region::find()->all(), 'id', 'name')) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'soogu')->textInput() ?>
+            <?= $form->field($model, 'soogu')->textInput(['type' => 'number']) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'ifut')->textInput();?>
+            <?= $form->field($model, 'ifut')->textInput(['type' => 'number']);?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'mhobt')->textInput();?>
+            <?= $form->field($model, 'mhobt')->textInput(['type' => 'number']);?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'thsht')->textInput();?>
+            <?= $form->field($model, 'thsht')->textInput(['type' => 'number']);?>
         </div>
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'type')->textInput() ?>

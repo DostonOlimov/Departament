@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'residue_quantity',
                         'value' => function ($pro) {
-                            return $pro->residue_quantity . ' so\'m';
+                            return $pro->residue_quantity ? $pro->residue_quantity . ' so\'m' : '';
                         }
 
                     ],
@@ -121,14 +121,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'residue_amount',
                         'value' => function ($pro) {
                             $mesure = PrimaryProduct::getMeasure($pro->product_measure);
-                            return $pro->residue_amount . ' '.$mesure;
+                            return $pro->residue_amount ? $pro->residue_amount. ' '.$mesure : '';
                         }
 
                     ],
                     [
                         'attribute' => 'year_quantity',
                         'value' => function ($pro) {
-                            return $pro->year_quantity . ' so\'m';
+                            return $pro->year_quantity ? $pro->year_quantity . ' so\'m' : '';
                         }
 
                     ],
@@ -136,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'year_amount',
                         'value' => function ($pro) {
                             $mesure = PrimaryProduct::getMeasure($pro->product_measure);
-                            return $pro->year_amount . ' '.$mesure;
+                            return $pro->year_amount ? $pro->year_amount. ' '.$mesure:'';
                         }
 
                     ],

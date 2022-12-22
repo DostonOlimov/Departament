@@ -51,13 +51,23 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                 [
                     'attribute' => 'Tekshiruv predmeti',
                     'value' => function ($model) {
-                        return Instruction::getSubject($model->checkup_subject);
+                        
+                        $result = '';
+                        $model->checkup_subject = explode('.', substr($model->checkup_subject, 0));
+                      //  \yii\helpers\VarDumper::dump($model->checkup_subject);die;
+                        foreach ($model->checkup_subject as $key => $type) {
+                            $t=$key+1;
+                            if($type){
+                            $result .= $t.' - '. Instruction::getSubject($type) . "; ";
+                            }
+                        }
+                        return $result;
                     }
                 ],
                 [
                     'attribute' => 'checkup_finish_date',
                     'value' => function(Instruction $model) {
-                        return $model->checkup_finish_date ? $model->checkup_finish_date : '';
+                        return $model->checkup_finish_date ? $model->checkup_finish_date : 'Yakunlanmagan';
                     }
                 ],
                 'checkup_duration_start_date',
