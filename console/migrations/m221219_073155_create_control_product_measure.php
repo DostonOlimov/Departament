@@ -20,7 +20,7 @@ class m221219_073155_create_control_product_measure extends Migration
         ]);
        
         $this->createIndex('index-control_product_measures-product_id', 'control_product_measures', 'product_id');
-        $this->addForeignKey('fkey-control_product_measures-control_primary_product', 'control_product_measures ', 'product_id', 'control_primary_product', 'id', 'RESTRICT', 'RESTRICT');
+        $this->addForeignKey('fkey-control_product_measures-control_primary_product', 'control_product_measures', 'product_id', 'control_primary_product', 'id', 'RESTRICT', 'RESTRICT');
   
     }
 

@@ -20,7 +20,7 @@ class m221030_161140_add_new_foreign_key_primary_producut extends Migration
         $this->dropColumn('control_primary_product' , 'sector_id');
 
        // $this->createIndex('index-control_primary_product-product_type_id', 'control_primary_product', 'product_type_id');
-        $this->addForeignKey('fkey-control_primary_product-product_type_id', 'control_primary_product', 'product_type_id', 'product_subposition', 'id', 'RESTRICT', 'RESTRICT');
+       // $this->addForeignKey('fkey-control_primary_product-product_type_id', 'control_primary_product', 'product_type_id', 'product_subposition', 'id', 'RESTRICT', 'RESTRICT');
 
         $this->createIndex('index-control_primary_product_nd-control_primary_product_id', 'control_primary_product_nd', 'control_primary_product_id');
         $this->addForeignKey('fkey-control_primary_product_nd-control_primary_product_id', 'control_primary_product_nd', 'control_primary_product_id', 'control_primary_product', 'id', 'RESTRICT', 'RESTRICT');

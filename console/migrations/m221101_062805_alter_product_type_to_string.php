@@ -12,7 +12,7 @@ class m221101_062805_alter_product_type_to_string extends Migration
      */
     public function safeUp()
     {
-        $this->dropForeignKey('fkey-control_primary_product-product_type_id', 'control_primary_product');
+      //  $this->dropForeignKey('fkey-control_primary_product-product_type_id', 'control_primary_product');
         $this->dropForeignKey('fkey-control_primary_product_nd-nd_type', 'control_primary_product_nd');
         $this->alterColumn('control_primary_product', 'product_type_id',$this->string());
       //  $this->addForeignKey('fkey-control_primary_product-product_type_id', 'control_primary_product', 'product_type_id', 'product_subposition', 'id', 'RESTRICT', 'RESTRICT');
