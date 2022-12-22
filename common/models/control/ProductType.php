@@ -47,7 +47,7 @@ class ProductType extends \yii\db\ActiveRecord
     // insert product types
     Public function readData()
     {
-        $inputFileName = realpath(Yii::$app->basePath) . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'excel' . DIRECTORY_SEPARATOR . 'classifier (7).xlsx';
+        $inputFileName = realpath(Yii::$app->basePath) . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'excel' . DIRECTORY_SEPARATOR . 'type1.xlsx';
 
         try {
 
@@ -58,32 +58,36 @@ class ProductType extends \yii\db\ActiveRecord
 
             $data = $spreadsheet->getSheet(0)->toArray();
             $data1 = array_unique($data, SORT_REGULAR);
-
+ 
             foreach ($data1 as $key => $value) {
-                $code[] = $value[0];
-                $group[] = $value[1];
-                $class[] = $value[3];
-                $position[] = $value[5];
-                $subposition[] =$value[7];
+                $code_group[] =  substr($value[0], 0,3);
+                $group[] =  substr($value[0], 4,);
+                $code_class[] = substr($value[1], 0,5);
+                $class[] = substr($value[1], 6,);
+                $code_position[] = substr($value[2], 0,8);
+                $position[] = substr($value[2], 9,);
+                $code_sub[] = substr($value[3], 0,11);
+                $subposition[] = substr($value[3], 12,);
 
             }
+           
             $gr = new ProductGroup();
             foreach (array_unique($group) as $key => $item) {
-                if ($item and !($gr->searchbyName(substr($code[$key],0,3)))) {
+                if ($item and !($gr->searchbyName($code_group[$key]))) {
                     $gr1 = new ProductGroup();
                     $gr1->name = $item;
-                    $gr1->kode = substr($code[$key],0,3);
+                    $gr1->kode =$code_group[$key];
                     $gr1->sector_id =1;
-                    $gr1->save();
+                   $gr1->save();
 
                 }
             }
                 $gr = new ProductClass();
                 foreach (array_unique($class) as $key => $item) {
-                    if ($item and !($gr->searchbyName(substr($code[$key],0,5))))  {
+                    if ($item and !($gr->searchbyName($code_class[$key])))  {
                         $gr1 = new ProductClass();
                         $gr1->name = $item;
-                        $gr1->kode = substr($code[$key],0,5);
+                        $gr1->kode = $code_class[$key];
                         $gr1->save();
                     }
 
@@ -91,10 +95,10 @@ class ProductType extends \yii\db\ActiveRecord
 
                 $gr = new ProductPosition();
                 foreach (array_unique($position) as $key => $item) {
-                    if ($item and !($gr->searchbyName(substr($code[$key],0,8)))) {
+                    if ($item and !($gr->searchbyName($code_position[$key]))) {
                         $gr1 = new ProductPosition();
                         $gr1->name = $item;
-                        $gr1->kode =substr($code[$key],0,8);
+                        $gr1->kode =$code_position[$key];
                         $gr1->save();
                     }
 
@@ -102,10 +106,10 @@ class ProductType extends \yii\db\ActiveRecord
 
                 $gr = new ProductSubposition();
                 foreach (array_unique($subposition) as $key => $item) {
-                    if ($item and !($gr->searchbyName(substr($code[$key],0,11)))) {
+                    if ($item and !($gr->searchbyName($code_sub[$key]))) {
                         $gr1 = new ProductSubposition();
                         $gr1->name = $item;
-                        $gr1->kode = substr($code[$key],0,11);
+                        $gr1->kode = $code_sub[$key];
                          $gr1->save();
                     }
 
