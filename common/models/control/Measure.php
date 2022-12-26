@@ -45,6 +45,7 @@ use yii\helpers\VarDumper;
 class Measure extends \yii\db\ActiveRecord
 {
     public $typeChange;
+    public $finish_date;
 
     const TYPE_INSTRUMENT = 1;
     const TYPE_REALIZATION = 2;
@@ -55,9 +56,6 @@ class Measure extends \yii\db\ActiveRecord
     public $m212;
     public $m213;
     public $m214;
-    public $q212;
-    public $q213;
-    public $q214;
     /**
      * {@inheritdoc}
      */
@@ -74,7 +72,7 @@ class Measure extends \yii\db\ActiveRecord
         return [
             [['control_company_id', ], 'required'],
             [['m212','m213','m214','control_company_id', 'ov_quantity',  'realization_number', 'fine_amount',  'warn_number', 'eco_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [[ 'realization_date', 'ov_date','first_warn_date','ov_name', 'person', 'number_passport', 'band_mjtk','eco_date',  'eco_quantity', 'eco_amount',], 'string', 'max' => 255],
+            [[ 'realization_date', 'ov_date','first_warn_date','ov_name', 'person', 'number_passport', 'band_mjtk','eco_date',  'eco_quantity', 'eco_amount','finish_date'], 'string', 'max' => 255],
             [['claim', 'court_letter', 'explanation_letter',],'file'],
             [['type'],'safe'],
             [['control_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::class, 'targetAttribute' => ['control_company_id' => 'id']],
@@ -138,6 +136,7 @@ class Measure extends \yii\db\ActiveRecord
             'm212' =>'212-modda',
             'm213' =>'213-modda',
             'm214' =>'214-modda',
+            'finish_date' => 'Tekshiruv haqiqatda yakunlangan sana',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',

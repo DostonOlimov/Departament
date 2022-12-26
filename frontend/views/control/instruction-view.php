@@ -47,7 +47,6 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                 'command_number',
                 'checkup_begin_date',
                 'who_send_letter',
-                'code',
                 [
                     'attribute' => 'Tekshiruv predmeti',
                     'value' => function ($model) {

@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'finish_dalolatnoma',
                     'value' => function (Laboratory $model) {
-                        return $model->finish_dalolatnoma ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('finish_dalolatnoma') . '" download>Yuklash</a>' : '';
+                        return $model->finish_dalolatnoma ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('finish_dalolatnoma') . '" download>Yuklash</a>' : LaboratoryHelper::getForm($model->id, 'finish_dalolatnoma');
                     },
                     'format' => 'raw'
                 ],

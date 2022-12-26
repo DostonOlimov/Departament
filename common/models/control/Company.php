@@ -63,7 +63,7 @@ class Company extends \yii\db\ActiveRecord
             'control_instruction_id' => 'Control Instruction ID',
             'region_id' => 'Hudud',
             'name' => 'XYuS nomi',
-            'inn' => 'XYUS STIR(Soliq to’lovchining identifikatsion raqami)',
+            'inn' => 'XYUS STIRi(Soliq to’lovchining identifikatsion raqami)',
             'soogu' => 'DBIBT(Davlat boshqaruvi idoralarini belgilash tizimi)',
             'thsht' =>'THSHT(Tashkiliy-huquqiy shakllar tasniflagichi)',
             'ifut' => 'IFUT(Iqtisodiy faoliyat turlari umumdavlat tasniflagichi)',

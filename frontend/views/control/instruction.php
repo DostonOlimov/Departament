@@ -35,15 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="row">
-    <div class="col-sm-6">
-            <?= $form->field($model, 'code')->widget(\yii\widgets\MaskedInput::className(), [
-                'mask' => '999-999-999']) ?>
-        </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-sm-6">
             <?= $form->field($model, 'command_date')->widget(DatePicker::className()) ?>
         </div>
@@ -56,7 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'letter_date')->widget(DatePicker::className()) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'letter_number')->textInput(['type'=>'text']) ?>
+            <?= $form->field($model, 'letter_number')->widget(\yii\widgets\MaskedInput::className(), [
+                'mask' => '999-999-999']) ?>
         </div>
     </div>
     <div class="row">
@@ -77,12 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
     <div class="col-sm-6">
-            <?= $form->field($model, 'employers')->widget(Select2::class, [
-                'data' => Instruction::getUsers(),
-                'language' => 'uz',
-                'options' => ['multiple' => true],
-                'showToggleAll' => false,
-            ]) ?>
+            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'checkup_duration')->dropDownList(Instruction::getDuration()) ?>
@@ -90,13 +77,26 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'checkup_subject')->checkboxList(Instruction::getSubject() );?>
+            <?= $form->field($model, 'checkup_subject')->widget(Select2::class, [
+                'data' => Instruction::getSubject(),
+                'language' => 'uz',
+                'options' => ['multiple' => true],
+                'showToggleAll' => false,
+            ]) ?>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             <label>Ijrochi:</label>
             <label class="form-control" readonly><?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname : 'Inspektor F.I.О' ?></label>
+        </div>
+    <div class="col-sm-6">
+            <?= $form->field($model, 'employers')->widget(Select2::class, [
+                'data' => Instruction::getUsers(),
+                'language' => 'uz',
+                'options' => ['multiple' => true],
+                'showToggleAll' => false,
+            ]) ?>
         </div>
     </div>
 

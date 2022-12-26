@@ -25,8 +25,6 @@ use common\models\types\ProductClass;
 use common\models\Model;
 use common\models\Codetnved;
 use common\models\control\ControlProductMeasures;
-use common\models\ProgramType;
-use common\models\control\ProductType;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
@@ -76,20 +74,19 @@ class ControlController extends Controller
 
     public function actionInstruction()
     {
-        $tt = new ProductType();
-        $tt->readData();
-        die();
-        $model = new Instruction();
        
+        $model = new Instruction();
+        
         if ($model->load($this->request->post()) ) {
+            
             if($model->validate())
             {
+               
             $typeRes = '';
             $subject = $model->checkup_subject;
             foreach ( $subject as $key => $type) {
                 $typeRes .= $type.'.';
             }
-
             $model->checkup_subject = $typeRes;
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -109,12 +106,8 @@ class ControlController extends Controller
                 throw $e;
             }
         } 
-        else
-        {
-            return $model->getErrors();
-        }
+       
     }
-
         return $this->render('instruction', [
             'model' => $model,
         ]);
@@ -260,6 +253,7 @@ class ControlController extends Controller
                                 $prod->product_measure = $product->product_measure;
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
+                                $prod->codetnved = $product->codetnved;
                                 $prod->Image = UploadedFile::getInstance($product, "[{$key_p1}]photo");
                                 if ($prod->Image) {
                                     $prod->photo = $prod->Image->name;
@@ -483,6 +477,7 @@ class ControlController extends Controller
                         ->one();
                        $pro_pr->description = $value->description;
                        $pro_pr->quality = (int)$value->quality;
+                       $pro_pr->exsist_certificate = 1;
                        if($value->breaking_certification == 0)
                        {
                         $pro_pr->cer_quantity = $value->quantity;
@@ -523,8 +518,7 @@ class ControlController extends Controller
                         $cer->product_id  = $value[$i]['product_id'];
                         $cer->number_reestr = $value[$i]['number_reestr'];
                         $cer->date_to = $value[$i]['date_to'];
-                        $cer->date_from = $value[$i]['date_from'];
-                       
+                        $cer->date_from = $value[$i]['date_from']; 
                         if($cer->validate()){
                          $cer->save();
                         }
@@ -560,13 +554,35 @@ class ControlController extends Controller
         ]);
     }
 
+    public function actionUpdateIdentification($id, $attribute)
+    {
+        $model = ControlProductLabaratoryChecking::findOne($id);
+        $data = PrimaryProduct::findOne($model->product_id);
+        $company = PrimaryData::findOne($data->control_primary_data_id);
+        $model->$attribute = $_POST['quality'];
+        $model->validate();
+        $model->save();
+        return $this->redirect(['identification-view', 'id' => $company->control_company_id]);
+
+    }
+
     public function actionLaboratory($company_id)
     {
+        
         $model = new Laboratory();
         $model->control_company_id = $company_id;
-      
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['defect', 'company_id' => $company_id]);
+        
+        if ($model->load(Yii::$app->request->post()) &&  $model->save()) {
+            if($model->finish_dalolatnoma){
+                return $this->redirect(['defect', 'company_id' => $company_id]);
+            }
+            else{
+                return $this->render('laboratory-view', [
+                    'model' => $model,
+                    
+                ]);
+            }
+           
         }
 
         return $this->render('laboratory', [
@@ -596,7 +612,7 @@ class ControlController extends Controller
     {
         $model = new Defect();
         $model->control_company_id = $company_id;
-       
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $typeRes = '';
             $types = $model->type;
@@ -702,6 +718,7 @@ class ControlController extends Controller
                 $re_product[$key]['product_id'] = $value['id'];
                 $re_product[$key]['product_name'] = $value['product_name'];
             }
+            
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             if ($model->type) {
@@ -716,7 +733,7 @@ class ControlController extends Controller
                 $model->save(false);
                 //VarDumper::dump($model,12,true);die;
                 $ins = Instruction::findOne($model->controlCompany->control_instruction_id);
-               // $ins->checkup_finish_date = Yii::$app->formatter->asDate(time(), 'M/dd/yyyy');
+                $ins->checkup_finish_date = $model->finish_date;
                 $ins->general_status = Instruction::GENERAL_STATUS_SEND;
                 $ins->save(false);
                 if(Yii::$app->request->post('ControlProductMeasures'))

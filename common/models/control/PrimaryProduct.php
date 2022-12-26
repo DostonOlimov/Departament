@@ -76,11 +76,11 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','labaratory_checking','certification'], 'required'],
+            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate'], 'required'],
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality'], 'integer'],
             [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity','codetnved'], 'string', 'max' => 255],
             ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],
-            [['Image'], 'image', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['photo'], 'image', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::class, 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
@@ -138,14 +138,31 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
+           // TimestampBehavior::class,
+           // BlameableBehavior::class,
+            [
+                'class' => ImageUploadBehavior::class,
+                'attribute' => 'Image',
+                'createThumbsOnRequest' => true,
+                'filePath' => '@frontend/web/app-images/store/[[attribute_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@url/app-images/store/[[attribute_id]]/[[filename]].[[extension]]',
+                'thumbPath' => '@frontend/web/app-images/cache/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@url/app-images/cache/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbs' => [
+                    'xs' => ['width' => 64, 'height' => 48],
+                    'sm' => ['width' => 120, 'height' => 67],
+                    'md' => ['width' => 240, 'height' => 135],
+                    'lg' => ['width' => 960, 'height' => 540],
+                ],
+            ],
             [
                 'class' => ImageUploadBehavior::class,
                 'attribute' => 'photo',
                 'createThumbsOnRequest' => true,
-                'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
-                'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
-                'thumbPath' => '@frontend/web/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbUrl' => '@url/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'filePath' => '@frontend/web/app-images/store/[[attribute_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@url/app-images/store/[[attribute_id]]/[[filename]].[[extension]]',
+                'thumbPath' => '@frontend/web/app-images/cache/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@url/app-images/cache/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
                 'thumbs' => [
                     'xs' => ['width' => 64, 'height' => 48],
                     'sm' => ['width' => 120, 'height' => 67],
@@ -180,16 +197,18 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             'potency' => 'Ishlab chiqarish quvvati',
             'residue_quantity' => 'Mahsulot qoldiq summasi',
             'residue_amount' => 'Mahsulot qoldiq miqdori',
-            'year_quantity' => 'yillik summasi',
-            'year_amount' => 'yillik miqdori',
+            'year_quantity' => 'Mahsulotning yillik summasi',
+            'year_amount' => 'Mahsulotning yillik miqdori',
             'appearance_marking' => 'Tashqi ko’rinish va markirovkasi bo’yicha tekshirish',
-            'labaratory_checking' => 'Sinov labaratoriyasida tekshirish',
+            'labaratory_checking' => 'Sinov labaratoriyasiga berilganligi',
             'certification' => 'Mahsulotning majburiy sertifikatlashtirishga tushishi',
             'quality' => 'Mahsulot sifati',
             'description' => 'Izoh',
             'cer_amount' =>'Sertifikatsiz realizatsiya qilingan mahsulot qiymati',
             'cer_quantity' =>'Sertifikatsiz realizatsiya qilingan mahsulot summasi',
-            'exsist_certificate' =>'Mahsulotning sertifikat(lar)i'
+            'exsist_certificate' =>'Mahsulotning sertifikat(lar)i',
+            'codetnved' => 'Mahsulotning TN VED kodi',
+            'photo' =>'Mahsulotning rasmi',
 
         ];
     }

@@ -28,9 +28,7 @@ use yiidreamteam\upload\FileUploadBehavior;
  */
 class Laboratory extends \yii\db\ActiveRecord
 {
-    public $finish_dalolatnoma;
-    public $out_dalolatnoma;
-    private $quality = true;
+    private $quality = [] ;
     /**
      * {@inheritdoc}
      */
@@ -47,6 +45,7 @@ class Laboratory extends \yii\db\ActiveRecord
         return [
             [['control_company_id','dalolatnoma','out_bayonnoma'], 'required'],
             [['control_company_id'], 'integer'],
+            [['comment'],'string'],
            /* ['finish_dalolatnoma', 'required', 'when' => function ($model) {
                 return $model->getQuality($this->control_company_id) === false;
             },'message'=>'{attribute} ni kiritib bo\'lmaydi.'],
@@ -73,7 +72,7 @@ class Laboratory extends \yii\db\ActiveRecord
             $lab = ControlProductLabaratoryChecking::FindOne(['product_id' => $product->id]);
             if($lab->quality == 2)
             {
-                $this->quality = false;
+                $this->quality[] = $lab->quality;
             }
             
         }
@@ -92,6 +91,7 @@ class Laboratory extends \yii\db\ActiveRecord
             'out_bayonnoma' => 'Tashqi ko\'rinish bayonnomasi',
             'out_dalolatnoma' => 'Oraliq dalolatnoma',
             'finish_dalolatnoma' => 'Yakuniy dalolatnoma',
+            'comment' => 'Izoh',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',

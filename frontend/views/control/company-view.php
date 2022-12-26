@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'inn',
                 'soogu',
                 'ifut',
-                'mhobt',
                 'thsht',
                 'address',
                 'type',

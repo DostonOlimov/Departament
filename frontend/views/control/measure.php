@@ -33,6 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
 
         <div class="row">
+            <div class="col-sm-6">
+                <?= $form->field($model, 'finish_date')->textInput(['type' => 'date']) ?>
+            </div>
             <div class="col-sm-12 col-lg-12">
                 <?= $form->field($model, 'type')->checkboxList(Measure::typeList(), [
                     'onchange' => "inputGenerate(event)"

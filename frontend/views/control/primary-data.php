@@ -21,6 +21,7 @@ use kartik\money\MaskMoney;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\MaskedInput;
 
 $this->title = 'Birlamchi ma`lumotlar';
 $this->params['breadcrumbs'][] = $this->title;
@@ -37,6 +38,9 @@ $codetnved = [];
         <?php $form = ActiveForm::begin([
             'id' => 'dynamic-form',
             'enableClientValidation' => false,
+            'options' => [
+                'enctype' => 'multipart/form-data',
+            ]
         ]) ?>
         
             <i class="fa fa-toggle-right" id = "open1" onclick=openPanel(); style="font-size:24px;color:blue;display:none;"></i> 
@@ -195,10 +199,7 @@ $codetnved = [];
                                             <?= $form->field($stan, "[{$i}]sector_id")->dropDownList(ArrayHelper::map(ProductSector::find()->orderBy('name', 'ASC')->asArray()->all(), 'id', 'name'),['prompt'=>'- - -']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?php
-                                            
-                                            echo $form->field($stan, "[{$i}]group")->widget(DepDrop::classname(), [
-
+                                            <?= $form->field($stan, "[{$i}]group")->widget(DepDrop::classname(), [
                                                 'pluginOptions'=>[
                                                     'depends'=>[Html::getInputId($stan, "[{$i}]sector_id")], // the id for cat attribute
                                                     'placeholder'=>'- - -',
@@ -207,9 +208,7 @@ $codetnved = [];
                                             ]);?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?php
-                                            echo $form->field($stan, "[{$i}]class")->widget(DepDrop::classname(), [
-
+                                            <?= $form->field($stan, "[{$i}]class")->widget(DepDrop::classname(), [
                                                 'pluginOptions'=>[
                                                     'depends'=>[Html::getInputId($stan, "[{$i}]group")], // the id for cat attribute
                                                     'placeholder'=>'- - -',
@@ -218,9 +217,7 @@ $codetnved = [];
                                             ]);?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?php
-                                            echo $form->field($stan, "[{$i}]position")->widget(DepDrop::classname(), [
-
+                                            <?= $form->field($stan, "[{$i}]position")->widget(DepDrop::classname(), [
                                                 'pluginOptions'=>[
                                                     'depends'=>[Html::getInputId($stan, "[{$i}]class")], // the id for cat attribute
                                                     'placeholder'=>'- - -',
@@ -229,8 +226,7 @@ $codetnved = [];
                                             ]);?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?php
-                                            echo $form->field($stan, "[{$i}]subposition")->widget(DepDrop::classname(), [
+                                            <?= $form->field($stan, "[{$i}]subposition")->widget(DepDrop::classname(), [
 
                                                 'pluginOptions'=>[
                                                     'depends'=>[Html::getInputId($stan, "[{$i}]position")], // the id for cat attribute
@@ -249,24 +245,6 @@ $codetnved = [];
                                             ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                             <?= $form->field($stan, "[{$i}]labaratory_checking")->radioList( [1=>'taqdim etilgan', 0 => 'taqdim etilmagan'] );?>
-                                        </div>
-                                    
-                                        <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]residue_quantity")->widget(MaskMoney::classname(), [
-                                                 'pluginOptions' => [
-                                            'prefix' => 'SUMMA : ',
-                                            'suffix' => ' so\'m',
-                                            'allowNegative' => false ]
-                                            ]); ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]residue_amount")->textInput(['type' => 'number']) ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]year_amount")->textInput(['type' => 'number']) ?>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]year_quantity")->widget(MaskMoney::classname(), [
                                                 'pluginOptions' => [
                                             'prefix' => 'SUMMA : ',
@@ -276,24 +254,42 @@ $codetnved = [];
                                             ]);  ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]residue_quantity")->widget(MaskMoney::classname(), [
+                                                 'pluginOptions' => [
+                                            'prefix' => 'SUMMA : ',
+                                            'suffix' => ' so\'m',
+                                            'allowNegative' => false ]
+                                            ]); ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                      <?= $form->field($stan, "[{$i}]codetnved")->widget(MaskedInput::className(), [
+                                        'mask' => '999999999' ]) ?>
+                                     </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]residue_amount")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]year_amount")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]potency")->textInput() ?>
                                         </div>
-                                   
-                                    <div class="col-md-6 col-lg-3" >
-                                    <?= $form->field($stan, "[{$i}]certification")->radioList( [1=>'ha', 0 => 'yo\'q'], );?>
+                                    <div class = "row" style = "font-size: 18px; font-weight: bold;">
+                                        <div class="col-md-6 col-lg-3">
+                                             <?= $form->field($stan, "[{$i}]labaratory_checking")->radioList( [1=>'taqdim etilgan', 0 => 'taqdim etilmagan'] );?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3" >
+                                            <?= $form->field($stan, "[{$i}]certification")->radioList( [1=>'ha', 0 => 'yo\'q'], );?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]photo")->fileInput() ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]exsist_certificate")->radioList( [1=>'mavjud', 0 => 'mavjud emas'],['onclick' => "typeChange(event,this)",] );?>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 col-lg-3">
-                                     <?= $form->field($stan, "[{$i}]photo")->fileInput() ?>
-                                    </div>
-                                    <div class="col-md-6 col-lg-3">
-                                    <?= $form->field($stan, "[{$i}]exsist_certificate")->radioList( [1=>'mavjud', 0 => 'mavjud emas'],['onclick' => "typeChange(event,this)",] );?>
-                                    </div>
-                                    <div class="col-md-6 col-lg-3">
-                                      <?= $form->field($stan, "[{$i}]codetnved")->textInput(['type' => 'number']) ?>
-                                     </div>
-                                    <div class="col-md-6 col-lg-9  renderForm certificate" style="display:none;">
-                                            <?php
-                                            echo $this->render('_form_certification', [
+                                        <div class="col-md-6 col-lg-9  renderForm certificate" style="display:none;">
+                                            <?= $this->render('_form_certification', [
                                                 'form' => $form,
                                                 'primaryIndex' => $i,
                                                 'pro_cer' => !isset($pro_cer[$i]) ? [new ControlProductCertification] : $pro_cer[$i],

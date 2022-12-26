@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-6">
             <label class="control-label" for="company-name">Xo'jalik yurutuvchi subyekt nomi (XYUS)</label>
             <?= $form->field($model, 'name')->textInput()->label(false) ?>
         </div>
@@ -40,16 +40,17 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'region_id')->dropDownList(ArrayHelper::map(Region::find()->all(), 'id', 'name')) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'soogu')->textInput(['type' => 'number']) ?>
+            <?= $form->field($model, 'soogu')->widget(MaskedInput::className(), [
+                'mask' => '99999']) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'ifut')->textInput(['type' => 'number']);?>
+            <?= $form->field($model, 'ifut')->widget(MaskedInput::className(), [
+                'mask' => '99999']) ?>
         </div>
+  
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'mhobt')->textInput(['type' => 'number']);?>
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'thsht')->textInput(['type' => 'number']);?>
+            <?= $form->field($model, 'thsht')->widget(MaskedInput::className(), [
+                'mask' => '999']) ?>
         </div>
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'type')->textInput() ?>

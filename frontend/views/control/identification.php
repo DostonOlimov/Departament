@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-6 col-lg-4">
                             <?= $form->field($stan, "[{$key}]quality")->radioList( 
-                                [1=>'Sifatli', 0 => 'Sifatsiz'], );?>
+                                [1=>'Muvofiq', 0 => 'Nomuvofiq'], );?>
                         </div>
                         <div class="col-md-6 col-lg-8">
                             <?= $form->field($stan, "[{$key}]description")->textarea() ?>
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= $form->field($stan, "[{$key}]breaking_certification")->radioList( 
                                 [1=>'ha', 0 => 'yo\'q'],['onclick' => "typeChange(event,this)",] );?>
                         </div>
-                        <div class="row certificate">
+                        <div class="row certificate" style = "display: none">
                         <div class="col-md-6 col-lg-6">
                             <?= $form->field($stan, "[{$key}]quantity")->textInput() ?>
                         </div> 
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      </div>
                         <div class="col-md-6 col-lg-4">
                             <?= $form->field($stan, "[{$key}]quality")->radioList( 
-                                [1=>'Sifatli', 0 => 'Sifatsiz',2=>'Vaqtincha no\'malum'], );?>
+                                [1=>'Muvofiq', 0 => 'Nomuvofiq',2=>'Vaqtincha no\'malum'], );?>
                         </div>
                         <div class="col-md-6 col-lg-8">
                             <?= $form->field($stan, "[{$key}]description")->textarea() ?>

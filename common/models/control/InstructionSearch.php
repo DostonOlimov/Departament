@@ -27,7 +27,7 @@ class InstructionSearch extends Instruction
     public function rules(): array
     {
         return [
-            [['id', 'base','type','code','checkup_subject','checkup_duration','checkup_duration_start_date', 'letter_date', 'command_date', 'checkup_begin_date',
+            [['id', 'base','type','checkup_subject','checkup_duration','checkup_duration_start_date', 'letter_date', 'command_date', 'checkup_begin_date',
                 'checkup_duration_finish_date','real_checkup_date','inn', 'region_id', 'created_by'], 'integer'],
             [['letter_number', 'command_number', 'checkup_finish_date', 'name'], 'safe'],
         ];
@@ -53,6 +53,7 @@ class InstructionSearch extends Instruction
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['created_at' => SORT_DESC]],
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -84,7 +85,6 @@ class InstructionSearch extends Instruction
             'id' => $this->id,
             'base' => $this->base,
             'type' => $this->type,
-            'code' => $this->code,
             'checkup_duration_finish_date' => $this->checkup_duration_finish_date,
             'checkup_duration_start_date' => $this->checkup_duration_start_date,
             'real_checkup_date' => $this->real_checkup_date,

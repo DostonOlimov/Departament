@@ -7,7 +7,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\VarDumper;
-
+use yii\validators\UniqueValidator;
 /**
  * This is the model class for table "control_instruction".
  *
@@ -43,11 +43,12 @@ class Instruction extends \yii\db\ActiveRecord
     const GENERAL_STATUS_SEND = 20;
     const GENERAL_STATUS_DONE = 21;
 
-    const BASE_GRAF = 0;
-    const BASE_GIVEN = 1;
-    const BASE_APPEAL = 2;
-    const BASE_SMM_APPEAL = 3;
-    const BASE_ASSIGNMENT = 4;
+    const BASE_RISK = 0;
+    const BASE_GRAF = 1;
+    const BASE_GIVEN = 2;
+    const BASE_APPEAL = 3;
+    const BASE_SMM_APPEAL = 4;
+    const BASE_ASSIGNMENT = 5;
 
     const TYPE_AWARE = 0;
     const TYPE_AGREEMENT = 1;
@@ -86,12 +87,11 @@ class Instruction extends \yii\db\ActiveRecord
             [['base', 'type','checkup_duration','general_status',], 'integer'],
             [['general_status'], 'default', 'value' => self::GENERAL_STATUS_IN_PROCESS],
             [['employers','checkup_subject'], 'safe'],
-            ['code','unique'],
-           // [ 'code', 'unique', 'targetClass' => 'common\models\control\Instruction', 'message' => 'This username is already been taken.' ],
-            [['base', 'type', 'code', 'letter_date', 'letter_number','checkup_begin_date',
+            [['letter_number'],'unique'],
+            [['base', 'type', 'letter_date', 'letter_number','checkup_begin_date',
                 'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','real_checkup_date','checkup_duration'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date', 'checkup_finish_date',
-                'checkup_duration_finish_date','code','checkup_duration_start_date','real_checkup_date','who_send_letter'], 'string', 'max' => 255],
+                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter'], 'string', 'max' => 255],
         ];
     }
     public function beforeSave($insert)
@@ -107,7 +107,7 @@ class Instruction extends \yii\db\ActiveRecord
         $this->checkup_duration_finish_date = strtotime($this->checkup_duration_finish_date);
         $this->checkup_duration_start_date = strtotime($this->checkup_duration_start_date);
         $this->real_checkup_date= strtotime($this->real_checkup_date);
-        $this->code= preg_replace('/[^0-9]+/', '', $this->code);
+       // $this->code= preg_replace('/[^0-9]+/', '', $this->code);
        // $this->checkup_finish_date = strtotime($this->checkup_finish_date);
 
         return true;
@@ -116,6 +116,7 @@ class Instruction extends \yii\db\ActiveRecord
     public static function getBase($base = null)
     {
         $arr = [
+            self::BASE_RISK => 'Xavf tahlili',
             self::BASE_GRAF => 'Reja grafik',
             self::BASE_GIVEN => 'Berilgan ko\'rsatma',
             self::BASE_APPEAL => 'Kelib tushgan murojaat',

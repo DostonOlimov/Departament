@@ -7,6 +7,7 @@ use common\models\control\Company;
 use common\models\control\ControlProductLabaratoryChecking;
 use common\models\control\ControlProductCertification;
 use frontend\widgets\Steps;
+use frontend\models\IdentificationHelper;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 
@@ -34,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'quality',
                             'value' => function ($mod) {
-                                if($mod){return 'Sifatli';}
-                                else {return 'Sifatsiz';}
+                                if($mod->quality == 1){return 'Muvofiq';}
+                                else {return 'NoMuvofiq';}
                             }
                         ],
                         'description:text',
@@ -62,11 +63,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     <h4 style = 'color:blue;'>Sinov labalatoriyasi xulosasi</h4>
     <?php 
+    
          foreach ($products as $key => $value) 
          {
           $labs = ControlProductLabaratoryChecking::findOne(['product_id' => $value->id]);
           if ($labs){
-         
            
             $labs->product_name = $value->product_name;
             echo DetailView::widget([
@@ -77,9 +78,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'quality',
                         'value' => function ($labs) {
-                            if($labs){return 'Sifatli';}
-                            else {return 'Sifatsiz';}
-                        }
+                            if($labs->quality == 1){return 'Muvofiq';}
+                            elseif($labs->quality == 0){return 'NoMuvofiq';}
+                            else{return IdentificationHelper::getForm($labs->id, 'quality');}
+                        },
+                        'format' => 'raw',
                     ],
                     'description:text',
                 ],
@@ -88,13 +91,13 @@ $this->params['breadcrumbs'][] = $this->title;
       
     }
 ?>
-  <h4 style = 'color:blue;'>Majburiy sertifikatlashtirish</h4>
     <?php 
      foreach ($products as $key => $value) 
         {
             $cer = ControlProductCertification::findAll(['product_id' => $value->id]);
            
         if ($cer)
+       echo " <h4 style = 'color:blue;'>Majburiy sertifikatlashtirish</h4>";
         foreach ($cer as $key => $mod) {
             $mod->product_name = $value->product_name;
             echo DetailView::widget([

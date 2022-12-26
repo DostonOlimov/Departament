@@ -140,8 +140,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
 
                     ],
-                    'potency',
-                    
+                    'codetnved',
+                 /*   
                     [
                         'label' => 'Mahsulotning majburiy sertifikat reestr raqam(lar)i',
                         'value' => function($pro) {
@@ -156,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'format' => 'raw'
                     ],
-
+                */
                     [
                         'label' => 'Normativ hujjat(lar) turi va nomi',
                         'value' => function($pro) {
@@ -171,35 +171,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw'
                     ],
                     [
-                        'label' => 'Mahsulot rasmi',
-                        'value' => function($pro) {
-                            if($pro->photo){
-                                return $result = '<img src="../../../web/uploads/images/3160_eti.jpg'. '" alt="Italian Trulli">';
-                            }
-                            return 'rasm yo\'q';
+                        'attribute' => 'photo',
+                        'value' => function (PrimaryProduct $model) {
+                            $model->Image = $model->photo;
+                            return $model->Image ? '<a class="btn btn-info" target="_blank" href="' . $model->getUploadedFileUrl('Image') . '" >Yuklash</a>' : '';
                         },
                         'format' => 'raw'
                     ],
-                    
-        [
-
-            'attribute' => 'img',
-
-            'format' => 'html',
-
-            'label' => 'ImageColumnLable',
-
-            'value' => function ($pro) {
-                return yii\helpers\Url::base().'/uploads/images/';
-
-                return Html::img(Yii::getAlias('@frontend') . '/web/uploads/images/'. $pro['photo'],
-
-                    ['width' => '60px']);
-
-            },
-
-        ],
-                  
                 ],
             ]);
 

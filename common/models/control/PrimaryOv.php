@@ -21,6 +21,7 @@ class PrimaryOv extends \yii\db\ActiveRecord
     const TYPE_ENER = 1;
     const TYPE_PRODUCT = 2;
     const TYPE_TEX = 3;
+    const TYPE_NOT = 4;
 
     public static function tableName()
     {
@@ -58,6 +59,7 @@ class PrimaryOv extends \yii\db\ActiveRecord
             self::TYPE_ENER => 'Energiya resurslarini hisoblovchi',
             self::TYPE_PRODUCT => 'Mahsulot sifatini nazorat qiluvchi',
             self::TYPE_TEX => 'Texnolagik jarayonda ishlatiladigan',
+            self::TYPE_NOT => 'O\'lchov vositasi mavjud emas',
         ];
 
         if ($type === null) {

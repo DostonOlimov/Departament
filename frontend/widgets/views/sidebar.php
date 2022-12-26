@@ -51,7 +51,6 @@ if ($control_company_id) {
             }
         }
     }
-  
     $hrefIdentification = $identification ? Url::to(['/control/identification-view', 'id' => $control_company_id]) : Url::to(['/control/identification', 'company_id' => $control_company_id]);
     $classIdentification = ($action == 'identification' || $action == 'identification-view') ? 'active' : ($controlCompany->primaryData ? 'actived' : 'disabled');
 
@@ -59,7 +58,7 @@ if ($control_company_id) {
     $classLab = ($action == 'laboratory' || $action == 'laboratory-view') ? 'active' : ($identification ? 'actived' : 'disabled');
 
     $hrefDef = $controlCompany->defect ? Url::to(['/control/defect-view', 'id' => $controlCompany->defect->id]) : Url::to(['/control/defect', 'company_id' => $control_company_id]);
-    $classDef = ($action == 'defect' || $action == 'defect-view') ? 'active' : ($controlCompany->laboratory ? 'actived' : 'disabled');
+    $classDef = ($action == 'defect' || $action == 'defect-view') ? 'active' : ($controlCompany->laboratory  ? ($controlCompany->laboratory -> finish_dalolatnoma ? 'actived' : 'disabled') : 'disabled');
 
   /*  $hrefCaution = $controlCompany->caution ? Url::to(['/control/caution-view', 'id' => $control_company_id]) : Url::to(['/control/caution', 'company_id' => $control_company_id]);
     $classCaution = ($action == 'caution' || $action == 'caution-view') ? 'active' : ($controlCompany->defect ? 'actived' : 'disabled');
@@ -80,4 +79,5 @@ if ($control_company_id) {
     <a href="<?= $hrefLab ?>" class="list-group-item  list-group-item-action <?= $classLab ?> ">Na'muna olish va labaratoriya natijalari </a>
     <a href="<?= $hrefDef ?>" class="list-group-item  list-group-item-action <?= $classDef ?> ">Aniqlangan kamchiliklar </a>
     <a href="<?= $hrefMeasure ?>" class="list-group-item  list-group-item-action <?= $classMeasure ?> ">Ko'rilgan ta'sir choralar </a>
+    <a href="index" class="list-group-item  list-group-item-action actived  ">Barcha tekshiruvlar </a>
 </div>
