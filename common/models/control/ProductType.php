@@ -47,7 +47,7 @@ class ProductType extends \yii\db\ActiveRecord
     // insert product types
     Public function readData()
     {
-        $inputFileName = realpath(Yii::$app->basePath) . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'excel' . DIRECTORY_SEPARATOR . 'type1.xlsx';
+        $inputFileName = realpath(Yii::$app->basePath) . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'excel' . DIRECTORY_SEPARATOR . 'type91.xlsx';
 
         try {
 
@@ -77,7 +77,7 @@ class ProductType extends \yii\db\ActiveRecord
                     $gr1 = new ProductGroup();
                     $gr1->name = $item;
                     $gr1->kode =$code_group[$key];
-                    $gr1->sector_id =1;
+                    $gr1->sector_id =5;
                    $gr1->save();
 
                 }
