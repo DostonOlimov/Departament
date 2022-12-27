@@ -3,15 +3,15 @@
 /* @var $this yii\web\View */
 /* @var $model ControlInstruction */
 
-use common\models\ControlCompany;
-use common\models\ControlInstruction;
+use common\models\control\Company;
+use common\models\control\Instruction;
 use frontend\widgets\Steps;
 use yii\widgets\DetailView;
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
 
-$company = ControlCompany::findOne(['control_instruction_id' => $model->id])
+$company = Company::findOne(['control_instruction_id' => $model->id])
 ?>
 
 
@@ -30,7 +30,7 @@ $company = ControlCompany::findOne(['control_instruction_id' => $model->id])
                 [
                     'attribute' => 'base',
                     'value' => function ($model) {
-                        return ControlInstruction::getType($model->base);
+                        return Instruction::getType($model->base);
                     }
                 ],
                 'letter_date:date',

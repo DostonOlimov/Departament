@@ -118,7 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Asos',
                 'value' => function (Instruction $model) {
-                    return Instruction::getType($model->base);
+                    return Instruction::getType($model->type);
                 }
             ],
             [

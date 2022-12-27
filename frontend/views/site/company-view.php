@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $model ControlCompany */
 
-use common\models\ControlCompany;
+use common\models\control\Company;
 use frontend\widgets\Steps;
 use yii\widgets\DetailView;
 
@@ -32,13 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'type',
                 [
                     'attribute' => 'phone',
-                    'value' => function (ControlCompany $model) {
+                    'value' => function (Company $model) {
                         return $model->phoneNumber;
                     },
                 ],
                 [
                     'attribute' => 'region_id',
-                    'value' => function (ControlCompany $model) {
+                    'value' => function (Company $model) {
                         return $model->region->name;
                     },
                 ],
