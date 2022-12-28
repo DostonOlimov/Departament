@@ -211,6 +211,7 @@ return [
         'supervisor',
     ],
     72 => [
+        'admin',
         'supervisor',
         'inspector',
     ],

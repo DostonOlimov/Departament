@@ -38,7 +38,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'region_id', ArrayHelper::map(Region::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
-
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttonOptions' => [
+                    'class' => 'text-primary'
+                ],
+                'urlCreator' => function ($action, $searchmodel, $key, $index) {
+                    if ($action === 'view') {
+                        $url = Url::to(['view', 'id' => $searchmodel->id]);
+                        return $url;
+                    }
+                }
+            ],
             [
                 'class' => 'yii\grid\SerialColumn',
             ],
@@ -77,9 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'base',
                 'value' => function ($model) {
-                    return Instruction::getType($model->base);
+                    return Instruction::getType($model->type);
                 },
-                'filter' => Html::activeDropDownList($searchModel, 'base', Instruction::getType(), ['class' => 'form-control', 'prompt' => '- - -'])
+                'filter' => Html::activeDropDownList($searchModel, 'type', Instruction::getType(), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
             [
                 'attribute' => 'created_by',

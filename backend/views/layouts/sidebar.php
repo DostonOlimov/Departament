@@ -49,7 +49,7 @@ use common\models\User;
                         ['label' => 'Muhsulot normativ hujjatlari', 'url' => ['nd/index'], 'iconStyle' => 'far'],
                         ['label' => 'Normativ hujjat toifalari', 'url' => ['nd-type/index'], 'iconStyle' => 'far'],
                         ['label' => 'Dastur turi', 'url' => ['profilactic/program-type/index'], 'iconStyle' => 'far'],
-                        ['label' => 'Soha nomi', 'url' => ['control/product-type/index'], 'iconStyle' => 'far'],
+                        ['label' => 'Soha nomi', 'url' => ['types/product-sector/index'], 'iconStyle' => 'far'],
                     ]
                 ],
                 ['label' => 'Foydalanuvchilar', 'url' => ['user/index'], 'icon' => 'fa fa-users'],

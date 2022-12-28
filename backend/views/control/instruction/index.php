@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'base',
+            'type',
             'letter_date',
             'letter_number',
             'command_date',
