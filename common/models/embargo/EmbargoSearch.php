@@ -4,6 +4,8 @@ namespace common\models\embargo;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use common\models\control\Company;
+use common\models\control\Instruction;
 use common\models\embargo\Embargo;
 
 /**
@@ -17,8 +19,8 @@ class EmbargoSearch extends Embargo
     public function rules()
     {
         return [
-            [['id', 'instructions_id', 'companies_id', 'message_number', 'status'], 'integer'],
-            [['comment', 'message_date', 'inspector_name', 'inspectors'], 'safe'],
+            [['id', 'message_number', 'status'], 'integer'],
+            [['comment','instructions_id', 'companies_id', 'message_date', 'inspector_name', 'inspectors'], 'safe'],
         ];
     }
 
@@ -55,12 +57,16 @@ class EmbargoSearch extends Embargo
             // $query->where('0=1');
             return $dataProvider;
         }
+       // $query->joinWith('company');
+        $query->joinWith('company')->joinWith('instruction');
+       
+
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'instructions_id' => $this->instructions_id,
-            'companies_id' => $this->companies_id,
+         //   'id' => $this->id,
+          //  'instructions_id' => $this->instructions_id,
+           // 'companies_id' => $this->companies_id,
             'message_number' => $this->message_number,
             'status' => $this->status,
         ]);
@@ -68,7 +74,9 @@ class EmbargoSearch extends Embargo
         $query->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'message_date', $this->message_date])
             ->andFilterWhere(['like', 'inspector_name', $this->inspector_name])
-            ->andFilterWhere(['like', 'inspectors', $this->inspectors]);
+            ->andFilterWhere(['like', 'inspectors', $this->inspectors])
+            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
+            ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id]);
 
         return $dataProvider;
     }

@@ -18,8 +18,8 @@ class PreventionSearch extends Prevention
     public function rules()
     {
         return [
-            [['id', 'instructions_id', 'companies_id'], 'integer'],
-            [['message_num', 'message_date', 'comment', 'inspector_name'], 'safe'],
+            [['id'], 'integer'],
+            [['message_num', 'instructions_id', 'companies_id','message_date', 'comment', 'inspector_name'], 'safe'],
         ];
     }
 
@@ -56,19 +56,23 @@ class PreventionSearch extends Prevention
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->joinWith('company')->joinWith('instruction');
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'instructions_id' => $this->instructions_id,
-            'companies_id' => $this->companies_id,
+          //  'id' => $this->id,
+           // 'instructions_id' => $this->instructions_id,
+           // 'companies_id' => $this->companies_id,
         ]);
 
         $query->andFilterWhere(['like', 'message_num', $this->message_num])
             ->andFilterWhere(['like', 'message_date', $this->message_date])
             ->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'inspector_name', $this->inspector_name])
-            ->andFilterWhere(['like', 'inspectors', $this->inspectors]);
+            ->andFilterWhere(['like', 'inspectors', $this->inspectors])
+            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
+            ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
+            ->andFilterWhere(['like', 'caution_prevention.id', $this->id]);
 
         return $dataProvider;
     }
