@@ -29,7 +29,7 @@ class EmbargoController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['admin'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -50,20 +50,13 @@ class EmbargoController extends Controller
     public function actionIndex()
     {
        
-        $message = Embargo::find()->where(['status'=>1]);
-    
-    //    $numers = Embargo::find()->all();
         $searchModel = new EmbargoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        //$model = Embargo::find()->all();
+        
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            // 'embargos' => $embargos,
-            // 'numers' => $numers,
-            
-         //'numbers' => $numbers,
             
         ]);
     }
@@ -154,10 +147,7 @@ class EmbargoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);       
-       if($model->status = 1){
-       $num = Embargo::find()->sum('status');
        
-       $model->message_number = $num + 1;}
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -188,12 +178,7 @@ class EmbargoController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
+    
 
     /**
      * Finds the Embargo model based on its primary key value.

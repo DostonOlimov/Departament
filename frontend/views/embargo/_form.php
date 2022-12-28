@@ -22,13 +22,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->dropdownList([                           
+    <!--?= $form->field($model, 'status')->dropdownList([                           
         '0' => 'Jarayonda',
         '1' => 'Tasdiqlangan',
         '2' => 'Bekor qilingan',
         
             ]
-    );?>
+    );?-->
 
     <?= $form->field($model, 'message_date')->textInput(['maxlength' => true]) ?>
 
