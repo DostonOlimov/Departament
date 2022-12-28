@@ -12,13 +12,23 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'instructions_id')->textInput() ?>
+    <?= $form->field($model, 'instructions_id')->dropdownList([
+        $model['instructions_id'] => $model->instruction->command_number
+    ]);?>
 
-    <?= $form->field($model, 'companies_id')->textInput() ?>
+    <?= $form->field($model, 'companies_id')->dropdownList([
+        $model['companies_id'] => $model->company->name
+    ]);?>
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'status')->dropdownList([                           
+        '0' => 'Jarayonda',
+        '1' => 'Tasdiqlangan',
+        '2' => 'Bekor qilingan',
+        
+            ]
+    );?>
 
     <?= $form->field($model, 'message_date')->textInput(['maxlength' => true]) ?>
 
