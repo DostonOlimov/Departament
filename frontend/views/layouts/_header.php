@@ -56,9 +56,18 @@ use yii\helpers\Url;?>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-none  text-white btn-drop" onclick="btn_change()" id = "btn4" type="button" >
-                        <a href="<?= Url::to(['/caution/index']) ?>">Berilgan ko'rsatma va ogohlantirishlar</a>
-                    </button>
+                    <!-- <button class="btn btn-none  text-white btn-drop" onclick="btn_change()" id = "btn4" type="button" >
+                        <a href="">Berilgan ko'rsatma va ogohlantirishlar</a>
+                    </button> -->
+                    <div class="dropdown">
+                        <a class="btn btn-none  text-white btn-drop dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Berilgan ko'rsatma va ogohlantirishlar  
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="<?= Url::to(['/prevention/index']) ?>">Ko'rsatma</a></li>
+                            <li><a class="dropdown-item" href="#">Ogohlantirish</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <button class="btn btn-none  text-white btn-drop" type="button">
