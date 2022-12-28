@@ -51,7 +51,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'base',
                 'value' => function ($model) {
-                    return Instruction::getType($model->base);
+                    return Instruction::getBase($model->base);
+                }
+            ],
+            [
+                'attribute' => 'type',
+                'value' => function ($model) {
+                    return Instruction::getType($model->type);
                 }
             ],
             'letter_date:date',
@@ -61,12 +67,39 @@ $this->params['breadcrumbs'][] = $this->title;
             'checkup_begin_date:date',
             'checkup_finish_date:date',
             [
+                'attribute' => 'checkup_duration',
+                'value' => function ($model) {
+                    return $model->checkup_duration.'-kun';
+                }
+            ],
+            'real_checkup_date:date',
+            'checkup_duration_start_date:date',
+            'checkup_duration_finish_date:date',
+            'who_send_letter',
+            [
+                'attribute' => 'Tekshiruv predmeti',
+                'value' => function ($model) {
+                    
+                    $result = '';
+                    $model->checkup_subject = explode('.', substr($model->checkup_subject, 0));
+                  //  \yii\helpers\VarDumper::dump($model->checkup_subject);die;
+                    foreach ($model->checkup_subject as $key => $type) {
+                        $t=$key+1;
+                        if($type){
+                        $result .= $t.' - '. Instruction::getSubject($type) . "</br>";
+                        }
+                    }
+                    return $result;
+                },
+                'format' => 'raw',
+            ],
+            [
                 'label' => 'Inspektorlar',
                 'value' => function ($model) {
                     $users = InstructionUser::find()->where(['instruction_id' => $model->id])->all();
                     $result = '';
                     foreach ($users as $user) {
-                        $result .= '<span class="text-secondary">' . $user->user->username . '</span><br>';
+                        $result .= '<span class="text-secondary">' . $user->user->name . ' ' . $user->user->surname . '</span><br>';
                     }
                     return $result;
                 },
@@ -86,16 +119,19 @@ if ($company) { ?>
     <div class="company-view">
         <p>
             <?= Html::a('Yangilash', ['/control/company/update', 'id' => $company->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Ko\'rsatmalar', ['/control/caution/index', 'company_id' => $company->id], ['class' => 'btn btn-secondary float-right']) ?>
-            <?= Html::a('Identifikatsiya', ['/control/identification/index', 'company_id' => $company->id], ['class' => 'btn btn-secondary float-right mr-2']) ?>
+         
         </p>
         <?= DetailView::widget([
             'model' => $company,
             'attributes' => [
                 'name',
                 'inn',
-                'type',
                 'soogu',
+                'ifut',
+                'thsht',
+                'address',
+                'type',
+                'ownername',
                 [
                     'label' => 'Hudud',
                     'value' => function (Company $model) {
@@ -127,19 +163,27 @@ if ($company) { ?>
         <div class="company-view">
             <p>
                 <?= Html::a('Yangilash', ['/control/primary-data/update', 'id' => $primaryData->id], ['class' => 'btn btn-primary']) ?>
-                <?= Html::a('Mahsulotlar', ['/control/primary-product/index', 'primary_data_id' => $primaryData->id], ['class' => 'btn btn-info']) ?>
+                <?= Html::a('Mahsulotlar', ['/control/primary-products/index', 'primary_data_id' => $primaryData->id], ['class' => 'btn btn-info']) ?>
                 <?= Html::a('O\'lchov vositalari', ['/control/primary-ov/index', 'primary_data_id' => $primaryData->id], ['class' => 'btn btn-info']) ?>
             </p>
             <?= DetailView::widget([
                 'model' => $primaryData,
                 'attributes' => [
-                    'residue_quantity',
-                    'residue_amount',
-                    'year_quantity',
-                    'year_amount',
-                    'potency',
-
-                ],
+                    [
+                        'attribute' => 'laboratory',
+                        'value' => function ($model) {
+                            return PrimaryData::getLab($model->laboratory);
+                        }
+        
+                    ],
+                    [
+                        'attribute' => 'smt',
+                        'value' => function ($model) {
+                            return PrimaryData::getSMT($model->smt);
+                        }
+        
+                    ],
+                ]
             ]) ?>
         </div>
     <?php }
@@ -147,7 +191,7 @@ if ($company) { ?>
     $laboratory = Laboratory::findOne(['control_company_id' => $company->id]);
     if ($laboratory) { ?>
         <hr>
-        <h2>Birlamchi ma`lumotlar</h2>
+        <h2>Namuna olish va laboratoriya natijalari</h2>
         <div class="company-view">
             <p>
                 <?= Html::a('Yangilash', ['/control/laboratory/update', 'id' => $laboratory->id], ['class' => 'btn btn-primary']) ?>
@@ -221,10 +265,7 @@ if ($company) { ?>
                         'format' => 'raw'
                     ],
                     'description:text',
-                    'compliance_quantity',
-                    'compliance_cost',
-                    'tex_cost',
-                    'tex_quantity',
+                
                 ],
             ]) ?>
         </div>
@@ -256,15 +297,55 @@ if ($company) { ?>
                             },
                             'format' => 'raw'
                         ],
-                        'date',
-                        'quantity',
-                        'amount',
                         'ov_date',
                         'ov_quantity',
                         'ov_name',
+                        'realization_date',
+                        'realization_number',
                         'person',
                         'number_passport',
                         'fine_amount',
+                        [
+                            'attribute' => 'band_mjtk',
+                            'value' => function ($model) {
+                                
+                                $result = '';
+                                $model->band_mjtk = explode(',', substr($model->band_mjtk, 1));
+                               // \yii\helpers\VarDumper::dump($model->band_mjtk);die;
+                            if($model->band_mjtk[0]){$result .= ' MJtK ning 212-moddasi '. $model->band_mjtk[0]. '-qismi;</br>';}
+                            if($model->band_mjtk[1]){$result .= ' MJtK ning 213-moddasi '. $model->band_mjtk[1]. '-qismi;</br>';}
+                            if($model->band_mjtk[2]){$result .= ' MJtK ning 214-moddasi '. $model->band_mjtk[2]. '-qismi;';}
+                                return $result;
+                            },
+                            'format' => 'raw',
+                        ],
+                        [
+                            'attribute' => 'explanation_letter',
+                            'value' => function ( $model) {
+                                return $model->explanation_letter ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('explanation_letter') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+                            },
+                            'format' => 'raw'
+                        ],
+                        [
+                            'attribute' => 'court_letter',
+                            'value' => function ( $model) {
+                                return $model->court_letter ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('court_letter') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+                            },
+                            'format' => 'raw'
+                        ],
+                        [
+                            'attribute' => 'claim',
+                            'value' => function (   $model) {
+                                return $model->claim ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('claim') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+                            },
+                            'format' => 'raw'
+                        ],
+                        'first_warn_date',
+                        'warn_number',
+                        'eco_date',
+                        'eco_number',
+                        'eco_quantity',
+                        'eco_amount'
                     ],
                 ]
             ) ?>

@@ -3,16 +3,21 @@
 namespace backend\controllers\control;
 
 use common\models\control\PrimaryProduct;
-use common\models\PrimaryProductSearch;
+use common\models\control\PrimaryProductSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\types\ProductGroup;
+use common\models\types\ProductPosition;
+use common\models\types\ProductSubposition;
+use common\models\types\ProductClass;
+use yii\helpers\ArrayHelper;
 
 /**
  * PrimaryProductController implements the CRUD actions for PrimaryProduct model.
  */
-class PrimaryProductController extends Controller
+class PrimaryProductsController extends Controller
 {
     /**
      * @inheritDoc
@@ -51,6 +56,75 @@ class PrimaryProductController extends Controller
             'primary_data_id' => $primary_data_id,
         ]);
     }
+    public function actionGroup():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0];
+            $out = ProductGroup::find()
+                ->where(['sector_id' => $cat_id])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
+
+
+    public function actionClass():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+                $cat_id = $parents[0].'%';
+                $out = ProductClass::find()
+                    ->where(['like', 'kode', $cat_id, false])
+                    ->select(['kode as id','name'])
+                    ->orderBy('name', 'ASC')
+                    ->asArray()
+                    ->all();
+                return ['output'=>$out, 'selected'=>''];
+        }
+       return  ['output'=>'', 'selected'=>''];
+    }
+
+
+    public function actionPosition() :array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductPosition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
+
+    public function actionSubposition():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductSubposition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
 
     public function actionView($id)
     {
@@ -83,9 +157,13 @@ class PrimaryProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->exsist_certificate = 1;
+        if ($this->request->isPost && $model->load($this->request->post())  && $model->validate()) {
+            $model->product_type_id = $model->subposition;
+            if($model->save()) {
+                return $this->redirect(['index', 'primary_data_id' => $model->control_primary_data_id]);
+            }
+           
         }
 
         return $this->render('update', [

@@ -1,6 +1,6 @@
 <?php
 
-
+use common\models\User;
 use backend\widgets\Alert;
 use backend\widgets\Callout;
 use backend\widgets\InfoBox;
@@ -10,19 +10,24 @@ use backend\widgets\SmallBox;
 $this->title = 'Statistika';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
-<div class="container-fluid">
+<div class="container-fluid" > 
     <div class="row">
         <div class="col-lg-6">
-            <?= Alert::widget([
+        <?php $full_name = User::findOne(Yii::$app->user->id)->name.' '. User::findOne(Yii::$app->user->id)->surname ?>
+            <?php echo  Alert::widget([
                 'type' => 'success',
-                'body' => '<h3>Congratulations!</h3>',
-            ]) ?>
-            <?= Callout::widget([
-                'type' => 'danger',
-                'head' => 'I am a danger callout!',
-                'body' => 'There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.'
+                'body' => "<h3>Admin $full_name <br>
+                Tizimga muvaffaqiyatli kirildi!</h3>",
+                
             ]) ?>
         </div>
+           <div class="col-lg-12"> 
+            <?= Callout::widget([
+                'type' => 'danger',
+                'head' => 'Davlat nazorat departamentining statistika sahifasi!',
+                'body' => 'Bu sahifadagi malumotlarni o\'zgartirish huquqi faqat departamentning tayinlangan xodimlariga berilgan'
+            ]) ?>
+           </div>
     </div>
 
     <div class="row">
@@ -63,7 +68,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                 ]
             ]) ?>
         </div>
-        <div class="col-md-4 col-sm-6 col-12">
+        <div class="col-md-4 col-sm-6 col-12" >
             <?php $infoBox = InfoBox::begin([
                 'text' => 'Likes',
                 'number' => '41,410',

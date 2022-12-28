@@ -220,7 +220,7 @@ class Instruction extends \yii\db\ActiveRecord
             'code' => 'Tekshiruv kodi',
             'employers' => 'Inspektorlar',
             'letter_date' => 'Asos bo\'luvchi hujjat sanasi',
-            'letter_number' => 'Asos bo\'luvchi hujjat nomeri',
+            'letter_number' => 'Tekshiruv kodi',
             'command_date' => 'Buyruq sanasi',
             'command_number' => 'Buyruq nomeri',
             'checkup_begin_date' => 'Tekshiruv boshlangan sana',

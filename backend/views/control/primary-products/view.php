@@ -3,15 +3,15 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\ControlInstruction */
+/** @var yii\web\View $this */
+/** @var common\models\control\PrimaryProduct $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Control Instructions', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Primary Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="control-instruction-view">
+<div class="primary-product-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,16 +30,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'base',
-            'type',
-            'letter_date',
-            'letter_number',
-            'command_date',
-            'command_number',
-            'created_by',
-            'updated_by',
-            'created_at',
-            'updated_at',
+            'control_primary_data_id',
+            'product_type_id',
+            'product_name',
+            'made_country',
+            'product_measure',
+            'residue_amount',
+            'residue_quantity',
+            'potency',
+            'year_amount',
+            'year_quantity',
+            'labaratory_checking',
+            'certification',
+            'photo',
+            'quality',
+            'cer_amount',
+            'cer_quantity',
+            'description:ntext',
+            'codetnved:ntext',
         ],
     ]) ?>
 
