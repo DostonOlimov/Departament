@@ -104,8 +104,12 @@ class EmbargoController extends Controller
         $model = $this->findModel($id);
         if($model->status = 1){
             $num = Embargo::find()->sum('status');
-            
-            $model->message_number = $num + 1;}
+            $nums = Embargo::find()->where(['status'=>2])->all();
+            $sum = count($nums);
+            $model->message_number = ($num + 1) - $sum *2;}
+            elseif($model->status = 2){
+                $model->message->number = 0;
+            }
      
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
