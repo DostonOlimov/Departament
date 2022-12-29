@@ -65,10 +65,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'inspector_name',
             //'inspectors',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Embargo $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttonOptions' => [
+                    'class' => 'text-primary'
+                ],
+                /*'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('', $url);
+                    },
+                ],*/
+                'urlCreator' => function ($action, $searchmodel, $key, $index) {
+                    if ($action === 'view') {
+                        $url = Url::to(['view', 'id' => $searchmodel->id]);
+                        return $url;
+                    }
+                }
             ],
         ],
     ]); ?>
