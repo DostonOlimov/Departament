@@ -12,7 +12,7 @@ use common\models\embargo\Embargo;
 
 $this->title = $model->id;
 $this->title = Yii::t('app', 'Korxona');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Embargos'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Korxona'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -31,39 +31,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 [
                     'label' => 'Korxona',
-                    'value' => function ($model) {
-                        $company = Company::findOne(['id' => $model->companies_id]);
-                        return $company ? $company->name : '';
+                    'value' => function ($data) {   
+                        return $data ? $data->company->name : '';
                     }
                 ],
                 [
                     'label' => 'Korxona INN',
-                    'value' => function ($model) {
-                        $company = Company::findOne(['id' => $model->companies_id]);
-                        return $company ? $company->inn : '';
+                    'value' => function ($data) {
+                        return $data ? $data->company->inn : '';
                     }
                 ],
     
                 [
                     'label' => 'Korxona manzili',
-                    'value' => function ($model) {
-                        $company = Company::findOne(['id' => $model->companies_id]);
-                        return $company ? $company->address : '';
+                    'value' => function ($data) {
+                        return $data ? $data->company->address : '';
                     }
                 ],
                 [
                     'label' => 'Korxona telefon raqami',
-                    'value' => function ($model) {
-                        $company = Company::findOne(['id' => $model->companies_id]);
-                        return $company ? $company->phone : '';
+                    'value' => function ($data) {
+                        return $data ? $data->company->phone : '';
                     }
                 ],
     
                 [
                     'label' => 'Tekshiruv kodi',
-                    'value' => function ($model) {
-                        $instruction = Instruction::findOne(['id' => $model->instructions_id]);
-                        return $instruction ? $instruction->command_number : '';
+                    'value' => function ($data) {
+                        return $data ? $data->instruction->command_number : '';
                     }
                 ],
 

@@ -36,53 +36,53 @@ $this->title = Yii::t('app', 'Korxona');
         'attributes' => [
             [
                 'label' => 'Yozma ko\'rsatma raqami',
-                'value' => function ($model) {
-                    $prevention = Prevention::findOne(['id' => $model->id]);
-                    return $prevention ? $prevention->id : '';
+                'value' => function ($data) {
+                   // $prevention = Prevention::findOne(['id' => $model->id]);
+                    return $data ? $data->id : '';
                 }
             ],
             [
                 'label' => 'Korxona',
-                'value' => function ($model) {
-                    $company = Company::findOne(['id' => $model->companies_id]);
-                    return $company ? $company->name : '';
+                'value' => function ($data) {
+                    //$company = Company::findOne(['id' => $model->companies_id]);
+                    return $data ? $data->company->name : '';
                 }
             ],
             [
                 'label' => 'Korxona INN',
-                'value' => function ($model) {
-                    $company = Company::findOne(['id' => $model->companies_id]);
-                    return $company ? $company->inn : '';
+                'value' => function ($data) {
+                    //$company = Company::findOne(['id' => $model->companies_id]);
+                    return $data ? $data->company->inn : '';
                 }
             ],
 
             [
                 'label' => 'Korxona manzili',
-                'value' => function ($model) {
-                    $company = Company::findOne(['id' => $model->companies_id]);
-                    return $company ? $company->address : '';
+                'value' => function ($data) {
+                    //$company = Company::findOne(['id' => $model->companies_id]);
+                    return $data ? $data->company->address : '';
                 }
             ],
             [
                 'label' => 'Korxona telefon raqami',
-                'value' => function ($model) {
-                    $company = Company::findOne(['id' => $model->companies_id]);
-                    return $company ? $company->phone : '';
+                'value' => function ($data) {
+                    // $company = Company::findOne(['id' => $model->companies_id]);
+                    return $data ? $data->company->phone : '';
                 }
             ],
 
             [
                 'label' => 'Tekshiruv kodi',
-                'value' => function ($model) {
-                    $instruction = Instruction::findOne(['id' => $model->instructions_id]);
-                    return $instruction ? $instruction->command_number : '';
+                'value' => function ($data) {
+                    // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
+                    return $data ? $data->instruction->command_number : '';
                 }
             ],
            
             'message_date',
             'comment',
             'inspector_name',
-            'inspectors',
+            //'inspectors',
         ],
     ]) ?>
 

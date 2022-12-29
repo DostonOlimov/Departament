@@ -51,8 +51,8 @@ class PreventionController extends Controller
     {
         $searchModel = new PreventionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        $companies = Company::find()->asArray()->all();
-        $instructions = Instruction::find()->asArray()->all(); 
+        // $companies = Company::find()->asArray()->all();
+        // $instructions = Instruction::find()->asArray()->all(); 
         // echo "<pre>";
         // var_dump($instructions);
         // die;

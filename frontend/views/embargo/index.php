@@ -36,9 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'filterModel' => $searchModel,
             'headerRowOptions' => ['style' => 'background-color: #0072B5'],
-            'columns' => [
-                //  ['class' => 'yii\grid\SerialColumn2',
-                //     'headerOptions' => ['style'=> 'color: #fff']
+            'columns' => [          
+               
                     
                 //  ],
         
@@ -70,14 +69,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 
               
-                
+              
 
                 [
                     //'label' => 'Tekshiruv kodi',
                     'attribute' => 'instructions_id',
-                    'value' => function ($model) {
-                        $instruction = Instruction::findOne(['id' => $model->instructions_id]);
-                        return $instruction ? $instruction->command_number : '';
+                    'value' => function ($data) {
+                        // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
+                        return $data ? $data->instruction->command_number : '';
                     }
                 ],
 
@@ -85,10 +84,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' => 'companies_id',
-                   // 'filter' => ['jarayonda','tasdiqlangan'],
-                    'value' => function ($model) {
-                        $company = Company::findOne(['id' => $model->companies_id]);
-                        return $company ? $company->name : '';
+                    'value' => function ($data) {
+                       // $company = Company::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->company->name : '';
                     }
                 ],
                 [
@@ -121,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $url = Url::to(['embargo/view', 'id' => $model->id]);
                             return $url;
                         }
-                        // return Url::toRoute([$action, 'id' => $model->id]);
+                       
                     }
                 ],
             ],
