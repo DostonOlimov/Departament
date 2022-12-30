@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * EmbargoController implements the CRUD actions for Embargo model.
@@ -75,22 +76,22 @@ class EmbargoController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
-    {
-        $model = new Embargo();
+    // public function actionCreate()
+    // {
+    //     $model = new Embargo();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
+    //     if ($this->request->isPost) {
+    //         if ($model->load($this->request->post()) && $model->save()) {
+    //             return $this->redirect(['view', 'id' => $model->id]);
+    //         }
+    //     } else {
+    //         $model->loadDefaultValues();
+    //     }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+    //     return $this->render('create', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
     /**
      * Updates an existing Embargo model.
@@ -102,22 +103,27 @@ class EmbargoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if($model->status = 1){
-            $num = Embargo::find()->sum('status');
-            $nums = Embargo::find()->where(['status'=>2])->all();
-            $sum = count($nums);
-            $model->message_number = ($num + 1) - $sum *2;}
-            elseif($model->status = 2){
-                $model->message->number = 0;
+        if($model->status == 0){
+            if($model->status = 1){
+                $num = Embargo::find()->sum('status');
+                $nums = Embargo::find()->where(['status'=>2])->all();
+                $sum = count($nums);
+                $model->message_number = ($num + 1) - $sum *2;}
+                elseif($model->status = 2){
+                    $model->message->number = 0;
+                }
+        
+
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-     
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->render('update', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
+        return $this->render('view', [
+            'model' => $this->findModel($id),
         ]);
     }
 

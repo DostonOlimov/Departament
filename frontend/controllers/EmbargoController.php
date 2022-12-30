@@ -146,16 +146,23 @@ class EmbargoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);       
+        
+        $model = $this->findModel($id); 
+        if($model->status == 0){      
        
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
 
-        return $this->render('update', [
-            'model' => $model,
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }else{
+        return $this->render('view', [
+            'model' => $this->findModel($id),
         ]);
+        }
     }
 
     // public function actionUpdatenum($id)

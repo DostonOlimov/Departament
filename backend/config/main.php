@@ -49,6 +49,13 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'ko\'rsatma/taqiqlash/' => 'caution/embargo/index',
+                'ko\'rsatma/bartaraf_etish/' => 'caution/prevention/index',
+                'ko\'rsatma/taqiqlash/<id:\d+>' => 'caution/embargo/view',
+                'ko\'rsatma/bartaraf_etish/<id:\d+>' => 'caution/prevention/view',
+                'ko\'rsatma/taqiqlash/tahrirlash/<id:\d+>' => 'caution/embargo/update',
+                'ko\'rsatma/bartaraf_etish/tahrirlash/<id:\d+>' => 'caution/prevention/update',
+                
             ],
         ],
 
