@@ -65,6 +65,23 @@ class PreventionController extends Controller
         ]);
     }
 
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     protected function findModel($id)
     {
         if (($model = Prevention::findOne(['id' => $id])) !== null) {
