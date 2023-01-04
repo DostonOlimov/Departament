@@ -48,6 +48,15 @@ class EmbargoSearch extends Embargo
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'message_number' => SORT_DESC,
+                ]
+            ],
+
         ]);
 
         $this->load($params);
@@ -75,6 +84,7 @@ class EmbargoSearch extends Embargo
             ->andFilterWhere(['like', 'message_date', $this->message_date])
             ->andFilterWhere(['like', 'inspector_name', $this->inspector_name])
             ->andFilterWhere(['like', 'inspectors', $this->inspectors])
+            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id]);
 

@@ -41,9 +41,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($data) {
                     return $data ? $data->company->name : '';
                 }
-            ],            
+            ],
+            [
+                'label' => 'Korxona INN',
+                'value' => function ($data) {
+                    return $data ? $data->company->inn : '';
+                }
+            ], 
+            [
+                'label' => 'Korxona manzili',
+                'value' => function ($data) {
+                    return $data ? $data->company->address : '';
+                }
+            ], 
+            [
+                'label' => 'Korxona telefon raqami',
+                'value' => function ($data) {
+                    return $data ? $data->company->phone : '';
+                }
+            ],  
+            [
+                'label' => 'Tekshiruv kodi',
+                'value' => function ($data) {
+                    return $data ? $data->instruction->command_number : '';
+                }
+            ],        
             'comment:ntext',
-            'message_number',
+            
             [
                 'attribute' => 'status',
                 'value' => function($model){

@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
            // ['class' => 'yii\grid\SerialColumn'],
 
@@ -38,13 +39,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'message_date',
             //'comment:ntext',
-            //'inspector_name',
+            'inspector_name',
             //'inspectors',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Prevention $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttonOptions' => [
+                    'class' => 'text-primary'
+                ],
+               
+                'urlCreator' => function ($action, $searchmodel, $key, $index) {
+                    if ($action === 'view') {
+                        $url = Url::to(['view', 'id' => $searchmodel->id]);
+                        return $url;
+                    }
+                }
             ],
         ],
     ]); ?>

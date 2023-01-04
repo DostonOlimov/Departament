@@ -3,12 +3,14 @@
 namespace backend\controllers\caution;
 
 use common\models\prevention\Prevention;
+use common\models\prevention\PreventionSearch;
 use common\models\control\Company;
 use common\models\control\Instruction;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use Yii;
 
 /**
@@ -21,17 +23,23 @@ class PreventionController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
-            ]
-        );
+            ],
+            'verbs' => [
+                'class' => VerbFilter::classname(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -41,22 +49,25 @@ class PreventionController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Prevention::find()->joinWith('company')->joinWith('instruction'),
+        $searchModel = new PreventionSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Prevention::find()->joinWith('company')->joinWith('instruction'),
             
-            'pagination' => [
-                'pageSize' => 10
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
+        //     'pagination' => [
+        //         'pageSize' => 10
+        //     ],
+        //     'sort' => [
+        //         'defaultOrder' => [
+        //             'id' => SORT_DESC,
+        //         ]
+        //     ],
             
-        ]);
+        // ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
