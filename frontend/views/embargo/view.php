@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <!--?= $model->status;?-->
-        <?php if($model->status === 0):?>
+        <?php if($model->status == 0):?>
         <?= Html::a(Yii::t('app', 'Tahrirlash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php endif;?>
     </p>

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?php if($model->status === 0):?>
+        <?php if($model->status == 0):?>
         <?= Html::a(Yii::t('app', 'Tahrirlash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php endif;?>
         <!--?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
