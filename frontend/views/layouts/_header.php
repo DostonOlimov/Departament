@@ -56,7 +56,7 @@ use yii\helpers\Url;?>
                     </button>
                 </li>
                 <li class="nav-item">
-                    <!-- <button class="btn btn-none  text-white btn-drop" onclick="btn_change()" id = "btn4" type="button" >
+                    <!-- <button class="btn btn-none  textw-white btn-drop" onclick="btn_change()" id = "btn4" type="button" >
                         <a href="">Berilgan ko'rsatma va ogohlantirishlar</a>
                     </button> -->
                     <div class="dropdown">
@@ -64,7 +64,7 @@ use yii\helpers\Url;?>
                         Berilgan ko'rsatma va ogohlantirishlar  
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="<?= Url::to(['/prevention/index']) ?>">Ko'rsatma</a></li>
+                            <li><a class="dropdown-item" href="<?= Url::to(['/caution/prevention']) ?>">Ko'rsatma</a></li>
                             <li><a class="dropdown-item" href="#">Ogohlantirish</a></li>
                         </ul>
                     </div>

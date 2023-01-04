@@ -14,7 +14,7 @@ use kartik\select2\Select2;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
-$this->title = Yii::t('app', 'Korxona');
+$this->title = Yii::t('app', 'Bartaraf_etish');
 ?>
 <div class="page1-1 row">
     <!--div class="col-sm-3">

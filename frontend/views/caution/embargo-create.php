@@ -14,7 +14,7 @@ use kartik\select2\Select2;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
-$this->title = Yii::t('app', 'Korxona');
+$this->title = Yii::t('app', 'Taqiqlash');
 ?>
 <div class="page1-1 row">
     <!--div class="col-sm-3">
@@ -22,7 +22,7 @@ $this->title = Yii::t('app', 'Korxona');
                     
     ]) ?>
     </div-->
-    <form action="<?= \yii\helpers\Url::to(['embargo/create']) ?>" method="get">
+    <form action="<?= \yii\helpers\Url::to(['caution/embargo-search']) ?>" method="get">
     <label for="">Tekshiruv kodi</label>
         <input class="form-control" name="q" type="text" required minlength="5" maxlength="20" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tekshiruv kodini kiriting...';}" required=""><br>
         <input class="btn btn-primary" type="submit" value="Qidiruv">

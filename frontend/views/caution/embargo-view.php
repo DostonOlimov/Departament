@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use common\models\control\Company;
+use common\models\prevention\Prevention;
 use common\models\control\Instruction;
 use common\models\embargo\Embargo;
 
@@ -11,8 +12,8 @@ use common\models\embargo\Embargo;
 /** @var common\models\embargo\Embargo $model */
 
 $this->title = $model->id;
-$this->title = Yii::t('app', 'Korxona');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Korxona'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Taqiqlash');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -22,14 +23,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <!--?= $model->status;?-->
         <?php if($model->status == 0):?>
-        <?= Html::a(Yii::t('app', 'Tahrirlash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Tahrirlash'), ['embargo-update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php endif;?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            [
+                'label' => 'Yozma ko\'rsatma raqami',
+                'value' => function ($data) {   
+                    return $data ? $data->id : '';
+                }
+            ],
                 
                 [
                     'label' => 'Korxona',

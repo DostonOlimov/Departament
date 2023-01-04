@@ -13,7 +13,7 @@ use yii\grid\GridView;
 /** @var common\models\embargo\EmbargoSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Embargos');
+$this->title = Yii::t('app', 'Taqiqlash');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
      </div>
     <div class="col-sm-8"> 
             <p>
-                <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['search'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['embargo-search'], ['class' => 'btn btn-success']) ?>
             </p>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?> 
        
@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'urlCreator' => function ($action, Embargo $model, $key, $index) {
                         if ($action === 'view') {
-                            $url = Url::to(['embargo/view', 'id' => $model->id]);
+                            $url = Url::to(['caution/embargo-view', 'id' => $model->id]);
                             return $url;
                         }
                        

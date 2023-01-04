@@ -1,10 +1,15 @@
 <?php
 
 namespace frontend\controllers;
-
+use common\models\embargo\Embargo;
+use common\models\embargo\EmbargoSearch;
+use common\models\prevention\Prevention;
+use common\models\prevention\PreventionSearch;
 use common\models\caution\Execution;
-use common\models\caution\Company;
-use common\models\caution\Instruction;
+//use common\models\caution\Company;
+//use common\models\caution\Instruction;
+use common\models\control\Company;
+use common\models\control\Instruction;
 use common\models\caution\InstructionSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -99,6 +104,172 @@ class CautionController extends Controller
             'model' => $this->getModel(Execution::className(), $id)
         ]);
     }
+    public function actionEmbargo(){
+        $searchModel = new EmbargoSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->render('embargo', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionEmbargoView($id){
+        return $this->render('embargo-view', [
+            'model' => $this->getModel(Embargo::className(), $id)
+        ]);
+    }
+    public function actionEmbargoSearch(){
+        $q = trim(\Yii::$app->request->get('q'));
+        $codes = Instruction::find()->where(['like', 'command_number', $q])->all(); 
+        
+
+       $model = new Instruction();
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['embargo-create', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('embargo-search', [
+            'model' => $model,
+            'codes' => $codes,
+            'q' => $q,
+        ]);
+    }
+
+    public function actionEmbargoCreate(){
+        $q = trim(\Yii::$app->request->get('q'));
+        $codes = Instruction::find()->where(['like', 'command_number', $q])->all();
+        if(empty($q)){
+           return $this->render('embargo-search');
+        }
+        if(!empty($codes)):
+         foreach($codes as $code){
+           $companies = Company::findOne($code['id']);
+         } 
+           else:
+               $companies = null;
+       endif;
+        
+        $model = new Embargo;
+       if ($this->request->isPost) {
+           if ($model->load($this->request->post()) ) {
+             //  var_dump($this->request->post());
+              if($model->save()){
+               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
+              }                     
+            return $this->redirect(['embargo-search', 'id' => $model->id]);
+            
+             
+           }
+       } else {
+           $model->loadDefaultValues();
+       }
+
+       return $this->render('embargo-create', [
+           'companies' => $companies,
+           'model' => $model,
+           'codes' => $codes,
+           'q' => $q,
+       ]); 
+    }
+
+    public function actionEmbargoUpdate($id){
+       // $model = $this->findModel($id); 
+       $model = Embargo::findOne($id); 
+        if($model->status == 0){      
+       
+
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['embargo-view', 'id' => $model->id]);
+            }
+
+            return $this->render('embargo-update', [
+                'model' => $model,
+            ]);
+        }else{
+        return $this->render('embargo-view', [
+            'model' => $this->findModel($id),
+        ]);
+        }
+    }
+
+    public function actionPrevention(){
+        $searchModel = new PreventionSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->render('prevention', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPreventionView($id){
+        return $this->render('prevention-view', [
+            'model' => $this->getModel(Prevention::className(), $id)
+        ]);
+    }
+    public function actionPreventionSearch(){
+        $q = trim(\Yii::$app->request->get('q'));
+        $codes = Instruction::find()->where(['like', 'command_number', $q])->all(); 
+        
+
+       $model = new Instruction();
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['prevention-create', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('prevention-search', [
+            'model' => $model,
+            'codes' => $codes,
+            'q' => $q,
+        ]);
+    }
+
+    public function actionPreventionCreate(){
+        $q = trim(\Yii::$app->request->get('q'));
+        $codes = Instruction::find()->where(['like', 'command_number', $q])->all();
+        if(empty($q)){
+           return $this->render('prevention-search');
+        }
+        if(!empty($codes)):
+         foreach($codes as $code){
+           $companies = Company::findOne($code['id']);
+         } 
+           else:
+               $companies = null;
+       endif;
+        
+        $model = new Prevention;
+       if ($this->request->isPost) {
+           if ($model->load($this->request->post()) ) {
+             //  var_dump($this->request->post());
+              if($model->save()){
+               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
+              }                     
+            return $this->redirect(['prevention-search', 'id' => $model->id]);
+            
+             
+           }
+       } else {
+           $model->loadDefaultValues();
+       }
+
+       return $this->render('prevention-create', [
+           'companies' => $companies,
+           'model' => $model,
+           'codes' => $codes,
+           'q' => $q,
+       ]); 
+    }
+
+    
+
 
     private function getModel($className, $id, $attribute = 'id')
     {

@@ -1,12 +1,9 @@
 <?php
-
-use common\models\prevention\Prevention;
-use common\models\Control\Company;
-use common\models\Control\Instruction;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use frontend\widgets\StepsPrevention;
+use common\models\prevention\Prevention;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 
@@ -14,7 +11,7 @@ use yii\data\ActiveDataProvider;
 /** @var common\models\prevention\PreventionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Korxona');
+$this->title = Yii::t('app', 'Bartaraf_etish');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -26,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
      <div class="col-sm-8">       
 
             <p>
-                <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['search'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['prevention-search'], ['class' => 'btn btn-success']) ?>
             </p>
 
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -72,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'urlCreator' => function ($action, Prevention $model, $key, $index) {
                             if ($action === 'view') {
-                                $url = Url::to(['prevention/view', 'id' => $model->id]);
+                                $url = Url::to(['caution/prevention-view', 'id' => $model->id]);
                                 return $url;
                             }
                             // return Url::toRoute([$action, 'id' => $model->id]);

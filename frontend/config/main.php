@@ -49,12 +49,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'ko\'rsatma/taqiqlash/' => 'embargo/index',
-                'ko\'rsatma/bartaraf_etish/' => 'prevention/index',
-                'ko\'rsatma/taqiqlash/<id:\d+>' => 'embargo/view',
-                'ko\'rsatma/bartaraf_etish/<id:\d+>' => 'prevention/view',
-                'ko\'rsatma/taqiqlash/tahrirlash/<id:\d+>' => 'embargo/update',
-                'ko\'rsatma/bartaraf_etish/tahrirlash/<id:\d+>' => 'prevention/update',
+                'ko\'rsatma/taqiqlash/' => 'caution/embargo',
+                'ko\'rsatma/bartaraf_etish/' => 'caution/prevention',
+                'ko\'rsatma/taqiqlash/<id:\d+>' => 'caution/embargo-view',
+                'ko\'rsatma/bartaraf_etish/<id:\d+>' => 'caution/prevention-view',
+                'ko\'rsatma/taqiqlash/tahrirlash/<id:\d+>' => 'caution/embargo-update',
+                
             ],
         ],
     ],
