@@ -105,9 +105,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                    
                 ],
-              //  'status',
-              //  'message_date',
-                //'inspector_name',
+                'inspector_name',
+                [
+                    'attribute'=> 'supervisor_name',
+                    'value' => function ($data) {
+                        if(!empty($data->supervisor_name)){
+                        return $data ? $data->supervisor_name : '';
+                        }else{
+                            return '';}
+                    }
+                ],
                 [
                     'class' => ActionColumn::className(),
                     'template' => '{view}',

@@ -42,7 +42,7 @@ class Embargo extends \yii\db\ActiveRecord
             [['instructions_id',  'companies_id', 'status'], 'integer'],
             [['comment'], 'string'],
            // [['message_number'], 'unique'],
-            [['message_date', 'inspector_name'], 'string', 'max' => 255],
+            [['message_date', 'inspector_name','supervisor_name'], 'string', 'max' => 255],
         ];
     }
 
@@ -60,6 +60,7 @@ class Embargo extends \yii\db\ActiveRecord
             'status' => 'Holati',
             'message_date' => 'Ko\'rsatma sanasi',
             'inspector_name' => 'Ijrochi F.I.SH',
+            'supervisor_name' => 'Nazoratchi F.I.SH',
         ];
     }
 

@@ -84,6 +84,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'message_date',
             'inspector_name',
+            [
+                'attribute'=> 'supervisor_name',
+                'value' => function ($data) {
+                    if(!empty($data->supervisor_name)){
+                    return $data ? $data->supervisor_name : '';
+                    }else{
+                        return '';}
+                }
+            ],
            // 'inspectors',
         ],
     ]) ?>

@@ -49,20 +49,6 @@ class EmbargoController extends Controller
     {
         $searchModel = new EmbargoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        // $dataProvider = new ActiveDataProvider([
-        //     'query' => Embargo::find()->joinWith('company')->joinWith('instruction'),
-        //     /*
-        //     'pagination' => [
-        //         'pageSize' => 50
-        //     ],
-        //     'sort' => [
-        //         'defaultOrder' => [
-        //             'id' => SORT_DESC,
-        //         ]
-        //     ],
-        //     */
-        // ]);
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -82,35 +68,7 @@ class EmbargoController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Embargo model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    // public function actionCreate()
-    // {
-    //     $model = new Embargo();
-
-    //     if ($this->request->isPost) {
-    //         if ($model->load($this->request->post()) && $model->save()) {
-    //             return $this->redirect(['view', 'id' => $model->id]);
-    //         }
-    //     } else {
-    //         $model->loadDefaultValues();
-    //     }
-
-    //     return $this->render('create', [
-    //         'model' => $model,
-    //     ]);
-    // }
-
-    /**
-     * Updates an existing Embargo model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+   
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -137,28 +95,6 @@ class EmbargoController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
-    /**
-     * Deletes an existing Embargo model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Embargo model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id
-     * @return Embargo the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Embargo::findOne(['id' => $id])) !== null) {

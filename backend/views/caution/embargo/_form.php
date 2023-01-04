@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use common\models\User;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -32,7 +33,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'message_date')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'inspector_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'inspector_name')->textInput(['readonly' => true, 'value' => $model->inspector_name]) ?>
+    <?= $form->field($model, 'supervisor_name')->dropdownList([                           
+                          User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
+                          
+                          ]);?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
