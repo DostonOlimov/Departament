@@ -88,14 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             //'status',
             'message_date',
-            'inspector_name',
             [
-                'attribute'=> 'supervisor_name',
+                'attribute'=> 'created_by',
                 'value' => function ($data) {
-                    if(!empty($data->supervisor_name)){
-                    return $data ? $data->supervisor_name : '';
-                    }else{
-                        return '';}
+                   // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
+                    return $data ? $data->user->name .' '. $data->user->surname  : '';
                 }
             ],
         ],

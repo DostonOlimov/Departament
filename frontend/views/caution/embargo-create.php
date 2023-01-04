@@ -55,22 +55,11 @@ $this->title = Yii::t('app', 'Taqiqlash');
                     <?= $form->field($model, 'comment')->textarea(['rows' => '6']) ?>
                    
                     <!--?= $form->field($model, 'inspector_name')->textInput() ?-->
-                    <?= $form->field($model, 'inspector_name')->dropdownList([                           
-                          User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
+                     <?= $form->field($model, 'created_by')->dropdownList([                           
+                           User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
                           
                           ]);?>
-                    <!--?= $form->field($model, 'inspectors')->widget(Select2::class, [
-                        'data' => Instruction::getUsers(),
-                        'language' => 'uz',
-                        'options' => ['multiple' => true],
-                        'showToggleAll' => false,
-                    ]) ?-->
-                   
-                    <!--?= $form->field($model, 'companies_id')->textInput() ?-->
-                    <!--?= $form->field($model, 'inspection_num')->widget(\yii\widgets\MaskedInput::className(), [
-                'mask' => '999999']) ?-->
                     <?= $form->field($model, 'message_date')->widget(DatePicker::className()) ?>
-
                     <div class="form-group">
                         <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
                     </div>

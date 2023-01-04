@@ -64,8 +64,12 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
            
             'message_date',
             'comment',
-            'inspector_name',
-           // 'inspectors',
+            [
+                'attribute'=> 'created_by',
+                'value'=> function($data){
+                    return $data ? $data->user->name . ' '.$data->user->surname :'';
+                }
+            ]
         ],
     ]) ?>
 

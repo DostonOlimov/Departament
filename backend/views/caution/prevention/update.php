@@ -31,7 +31,9 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'inspector_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'created_by')->dropdownList([
+        $model['created_by'] => $model->user->name . ' '.$model->user->surname
+    ]);?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

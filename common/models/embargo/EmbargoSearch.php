@@ -20,7 +20,7 @@ class EmbargoSearch extends Embargo
     {
         return [
             [['id', 'message_number', 'status'], 'integer'],
-            [['comment','instructions_id', 'companies_id', 'message_date', 'inspector_name', 'inspectors'], 'safe'],
+            [['comment','instructions_id', 'companies_id', 'message_date'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class EmbargoSearch extends Embargo
             return $dataProvider;
         }
        // $query->joinWith('company');
-        $query->joinWith('company')->joinWith('instruction');
+        $query->joinWith('company')->joinWith('instruction')->joinWith('user');
        
 
 
@@ -82,11 +82,11 @@ class EmbargoSearch extends Embargo
 
         $query->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'message_date', $this->message_date])
-            ->andFilterWhere(['like', 'inspector_name', $this->inspector_name])
-            ->andFilterWhere(['like', 'inspectors', $this->inspectors])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
-            ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id]);
+            ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
+            ->andFilterWhere(['like', 'user.name', $this->created_by]);
+            
 
         return $dataProvider;
     }

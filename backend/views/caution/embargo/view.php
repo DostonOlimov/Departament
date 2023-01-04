@@ -84,16 +84,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             'message_date',
-            'inspector_name',
             [
-                'attribute'=> 'supervisor_name',
-                'value' => function ($data) {
-                    if(!empty($data->supervisor_name)){
-                    return $data ? $data->supervisor_name : '';
-                    }else{
-                        return '';}
+                'attribute'=> 'created_by',
+                'value'=> function($data){
+                    return $data ? $data->user->name .' '.$data->user->surname :'';
                 }
             ],
+            
            // 'inspectors',
         ],
     ]) ?>

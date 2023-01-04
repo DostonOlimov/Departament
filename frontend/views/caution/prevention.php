@@ -58,9 +58,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $data ? $data->instruction->command_number : '';
                         }
                     ],
-                    
                     'message_date',
-                    'inspector_name',
+                    [
+                        'attribute'=> 'created_by',
+                        'value' => function ($data) {
+                           // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
+                            return $data ? $data->user->name .' '. $data->user->surname  : '';
+                        }
+                    ],
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view}',

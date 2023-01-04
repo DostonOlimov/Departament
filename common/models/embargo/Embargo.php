@@ -3,6 +3,7 @@
 namespace common\models\embargo;
 use common\models\control\Company;
 use common\models\control\Instruction;
+use common\models\User;
 
 use Yii;
 
@@ -38,11 +39,11 @@ class Embargo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['instructions_id', 'companies_id', 'comment','message_date', 'inspector_name'], 'required'],
-            [['instructions_id',  'companies_id', 'status'], 'integer'],
+            [['instructions_id', 'companies_id', 'comment','message_date','created_by', 'updated_by'], 'required'],
+            [['instructions_id',  'companies_id','created_by','updated_by', 'status'], 'integer'],
             [['comment'], 'string'],
            // [['message_number'], 'unique'],
-            [['message_date', 'inspector_name','supervisor_name'], 'string', 'max' => 255],
+            [['message_date'], 'string', 'max' => 255],
         ];
     }
 
@@ -59,8 +60,8 @@ class Embargo extends \yii\db\ActiveRecord
             'comment' => 'Izoh',
             'status' => 'Holati',
             'message_date' => 'Ko\'rsatma sanasi',
-            'inspector_name' => 'Ijrochi F.I.SH',
-            'supervisor_name' => 'Nazoratchi F.I.SH',
+            'created_by' => 'Inspektor F.I.SH',
+            'updated_by' => 'Nazoratchi F.I.SH',
         ];
     }
 
@@ -75,5 +76,8 @@ class Embargo extends \yii\db\ActiveRecord
     public function getInstruction()
     {
         return $this->hasOne(Instruction::className(), ['id' => 'instructions_id']);
+    }
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 }

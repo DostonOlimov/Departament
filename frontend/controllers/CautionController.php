@@ -6,6 +6,7 @@ use common\models\embargo\EmbargoSearch;
 use common\models\prevention\Prevention;
 use common\models\prevention\PreventionSearch;
 use common\models\caution\Execution;
+use common\models\User;
 //use common\models\caution\Company;
 //use common\models\caution\Instruction;
 use common\models\control\Company;
@@ -156,6 +157,7 @@ class CautionController extends Controller
         $model = new Embargo;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
+            $model->updated_by = $model->created_by;
              //  var_dump($this->request->post());
               if($model->save()){
                \Yii::$app->session->setFlash('success','Bazaga yuklandi');
@@ -248,6 +250,7 @@ class CautionController extends Controller
         $model = new Prevention;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
+            $model->updated_by = $model->created_by;
              //  var_dump($this->request->post());
               if($model->save()){
                \Yii::$app->session->setFlash('success','Bazaga yuklandi');

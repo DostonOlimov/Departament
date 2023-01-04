@@ -66,8 +66,13 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
            
             'message_date',
             'comment',
-            'inspector_name',
-            //'inspectors',
+            [
+                'attribute'=> 'created_by',
+                'value' => function ($data) {
+                   // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
+                    return $data ? $data->user->name .' '. $data->user->surname  : '';
+                }
+            ],
         ],
     ]) ?>
 
