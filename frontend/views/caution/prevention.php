@@ -11,7 +11,7 @@ use yii\data\ActiveDataProvider;
 /** @var common\models\prevention\PreventionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Bartaraf_etish');
+$this->title = Yii::t('app', 'Bartaraf etish ko\'rsatmasi');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

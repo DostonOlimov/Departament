@@ -8,10 +8,10 @@ use common\models\User;
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
 
-$this->title = Yii::t('app', 'Tahrirlash Taqiqlash ko\'rsatmasi: {name}', [
+$this->title = Yii::t('app', 'Tahrirlash Bartaraf etish ko\'rsatmasi: {name}', [
     'name' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash ko\'rsatmasi'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bartaraf ko\'rsatmasi'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 ?>
