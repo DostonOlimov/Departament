@@ -71,10 +71,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=> 'updated_by',
                 'value'=> function($data){
+                    if($data->status==1){
                     return $data ? $data->user->name .' '.$data->user->surname :'';
+                    } return '';
                 }
             ],
-            'created_at',
+            //'created_at',
             'updated_at',
             [
                 'class' => 'yii\grid\ActionColumn',

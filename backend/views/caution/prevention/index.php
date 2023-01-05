@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data ? $data->user->name . ' ' . $data->user->surname : '';
                 }
             ],
-            'created_at',
+            //'created_at',
             'updated_at',
             [
                 'class' => 'yii\grid\ActionColumn',

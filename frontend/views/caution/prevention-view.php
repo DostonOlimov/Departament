@@ -64,7 +64,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 }
             ],
            
-            'created_at',
+            //'created_at',
             'updated_at',
             'comment',
             [

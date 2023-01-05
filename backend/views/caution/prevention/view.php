@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
             ],
            
             //'message_date',
-            'created_at',
+            //'created_at',
             'updated_at',
 
             'comment',

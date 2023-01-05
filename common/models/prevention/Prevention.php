@@ -59,7 +59,7 @@ class Prevention extends \yii\db\ActiveRecord
             'created_by' => 'Inspektor F.I.SH',
             'updated_by' => 'Nazoratchi F.I.SH',
             'created_at' => 'Ko\'rsatma sanasi',
-            'updated_at' => 'Yangilangan sanasi',
+            'updated_at' => 'Ko\'rsatma sanasi',
         ];
     }
 
