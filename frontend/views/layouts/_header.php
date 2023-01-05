@@ -56,6 +56,11 @@ use yii\helpers\Url;?>
                     </button>
                 </li>
                 <li class="nav-item">
+                    <button class="btn btn-none  text-white btn-drop" onclick="changeColor(event, 'btn3')" id ="btn3" type="button" >
+                        <a href="<?= Url::to(['/caution/reestr']) ?>">  Reestr</a>
+                    </button>
+                </li>
+                <li class="nav-item">
                     <!-- <button class="btn btn-none  textw-white btn-drop" onclick="btn_change()" id = "btn4" type="button" >
                         <a href="">Berilgan ko'rsatma va ogohlantirishlar</a>
                     </button> -->

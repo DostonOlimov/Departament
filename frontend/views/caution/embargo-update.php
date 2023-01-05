@@ -17,12 +17,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 
     <h1><!--?= Html::encode($this->title) ?--></h1>
 
-    <div class="col-3">
+    <div class="col-4">
             <?= StepsEmbargo::widget([
                     
             ])?>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-8" style="margin-left:-30px">
             <div class="col-sm-9" style="margin-top:-10%;">
 
                 <?php $form = ActiveForm::begin(); ?>

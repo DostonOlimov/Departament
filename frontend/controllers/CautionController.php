@@ -271,6 +271,10 @@ class CautionController extends Controller
        ]); 
     }
 
+    public function actionReestr(){
+        return $this->render('reestr.php');
+    }
+
     
 
 
