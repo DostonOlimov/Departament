@@ -27,7 +27,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                         echo Breadcrumbs::widget([
                             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                             'options' => [
-                                'class' => 'breadcrumb float-sm-right'
+                                'class' => 'p-2 bg-primary breadcrumb float-sm-right'
                             ]
                         ]);
                         ?>
