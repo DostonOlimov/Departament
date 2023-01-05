@@ -89,7 +89,7 @@ class Instruction extends \yii\db\ActiveRecord
             [['employers','checkup_subject'], 'safe'],
             [['letter_number'],'unique'],
             [['base', 'type', 'letter_date', 'letter_number','checkup_begin_date',
-                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','real_checkup_date','checkup_duration'], 'required'],
+                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','real_checkup_date','checkup_duration','checkup_subject','employers'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date', 'checkup_finish_date',
                 'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter'], 'string', 'max' => 255],
         ];

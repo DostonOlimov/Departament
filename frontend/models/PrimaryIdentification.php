@@ -23,13 +23,15 @@ class PrimaryIdentification extends Model
     public $quantity;
     public $amount;
     public $certification;
+    public $defect_type;
 
     public function rules()
     {
         return [
             [[ 'quality',], 'required'],
-            [['id', 'product_id','labaratory_checking','quality','breaking_certification','amount','quantity'], 'integer'],
-            [['description', 'name','product_name' ], 'string'],
+            [['id', 'product_id','labaratory_checking','quality','breaking_certification'], 'integer'],
+            [['description', 'name','product_name','amount','quantity' ], 'string'],
+            [['defect_type'], 'safe']
             
         ];
     }
@@ -50,7 +52,7 @@ class PrimaryIdentification extends Model
             'amount' => 'Sertifikatsiz realizatsiya qilingan mahsulot summasi',
             'quantity' => 'Sertifikatsiz realizatsiya qilingan mahsulot miqdori',
             'breaking_certification' => 'Sertifikatlashtirish talabi buzilgan',
-
+            'defect_type' => 'Nomuvofiqlik sababi',
           
         ];
     }

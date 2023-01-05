@@ -2,21 +2,22 @@
 
 namespace frontend\controllers;
 
-use common\models\embargo\Embargo;
-use common\models\embargo\myCounter;
-use common\models\embargo\EmbargoSearch;
-use common\models\control\Instruction;
+use common\models\prevention\Prevention;
+use common\models\prevention\PreventionSearch;
 use common\models\control\Company;
+use common\models\control\Instruction;
+use common\models\prevention\CautionInstruction;
+use common\models\prevention\ControlCompanies;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use Yii;
-
 /**
- * EmbargoController implements the CRUD actions for Embargo model.
+ * PreventionController implements the CRUD actions for Prevention model.
  */
-class EmbargoController extends Controller
+class PreventionController extends Controller
 {
     /**
      * @inheritDoc
@@ -29,7 +30,7 @@ class EmbargoController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['inspector'],
                     ],
                 ],
             ],
@@ -41,28 +42,31 @@ class EmbargoController extends Controller
             ],
         ];
     }
-
     /**
-     * Lists all Embargo models.
+     * Lists all Prevention models.
      *
      * @return string
      */
     public function actionIndex()
     {
-       
-        $searchModel = new EmbargoSearch();
+        $searchModel = new PreventionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $companies = Company::find()->asArray()->all();
+        $instructions = Instruction::find()->asArray()->all(); 
+        // echo "<pre>";
+        // var_dump($instructions);
+        // die;
+        // echo "</pre>";
         
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            
         ]);
     }
 
     /**
-     * Displays a single Embargo model.
+     * Displays a single Prevention model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -75,13 +79,13 @@ class EmbargoController extends Controller
     }
 
     /**
-     * Creates a new Embargo model.
+     * Creates a new Prevention model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionSearch(){
         $q = trim(\Yii::$app->request->get('q'));
-        $codes = Instruction::find()->where(['like', 'letter_number', $q])->all(); 
+        $codes = Instruction::find()->where(['like', 'command_number', $q])->all(); 
         
 
        $model = new Instruction();
@@ -100,9 +104,9 @@ class EmbargoController extends Controller
         ]);
     }
     public function actionCreate()
-    {
+    {   
        
-        $q = trim(\Yii::$app->request->get('q'));
+         $q = trim(\Yii::$app->request->get('q'));
          $codes = Instruction::find()->where(['like', 'letter_number', $q])->all();
          if(empty($q)){
             return $this->render('search');
@@ -114,8 +118,8 @@ class EmbargoController extends Controller
             else:
                 $companies = null;
         endif;
-        
-         $model = new Embargo;
+         
+         $model = new Prevention;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) ) {
               //  var_dump($this->request->post());
@@ -137,8 +141,9 @@ class EmbargoController extends Controller
             'q' => $q,
         ]);
     }
+
     /**
-     * Updates an existing Embargo model.
+     * Updates an existing Prevention model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -146,57 +151,44 @@ class EmbargoController extends Controller
      */
     public function actionUpdate($id)
     {
-        
-        $model = $this->findModel($id); 
-        if($model->status == 0){      
-       
+        $model = $this->findModel($id);
 
-            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }else{
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-    }
 
-    // public function actionUpdatenum($id)
-    // {
-    //     $model = $this->findModel($id);
-    //     $num = Embargo::find()->sum('status');
-    //     $model->message_number = $num +1;
-    //     if($model->save())
-    //     {
-    //         return $this->render('index', [
-    //             'model' => $model,]);   
-    //     }
-       
-    // }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+        /** Join Search  */
+    
+      
 
     /**
-     * Deletes an existing Embargo model.
+     * Deletes an existing Prevention model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
 
     /**
-     * Finds the Embargo model based on its primary key value.
+     * Finds the Prevention model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Embargo the loaded model
+     * @return Prevention the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Embargo::findOne(['id' => $id])) !== null) {
+        if (($model = Prevention::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

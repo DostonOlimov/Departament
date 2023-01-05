@@ -19,7 +19,7 @@ class PreventionSearch extends Prevention
     {
         return [
             [['id'], 'integer'],
-            [['message_num', 'instructions_id', 'companies_id', 'comment'], 'safe'],
+            [['message_num', 'instructions_id', 'companies_id','comment'], 'safe'],
         ];
     }
 

@@ -173,8 +173,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'photo',
                         'value' => function (PrimaryProduct $model) {
-                            $model->Image = $model->photo;
-                            return $model->Image ? '<a class="btn btn-info" target="_blank" href="' . $model->getUploadedFileUrl('Image') . '" >Yuklash</a>' : '';
+                            $model->img = $model->photo;
+                            return $model->img ? '<a class="btn btn-info" target="_blank" href="' . $model->getUploadedFileUrl('img') . '" >Yuklash</a>' : '';
                         },
                         'format' => 'raw'
                     ],

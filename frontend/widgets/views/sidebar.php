@@ -77,7 +77,5 @@ if ($control_company_id) {
     <a href="<?= $hrefPrimary ?>" class="list-group-item list-group-item-action <?= $classPrimary ?> ">Birlamchi ma'lumotlar</a>
     <a href="<?= $hrefIdentification ?>" class="list-group-item list-group-item-action <?= $classIdentification ?> ">Mahsulotning tashqi ko'rinishi va<br> markirovkasi bo'yicha ma'lumot (identifikatsiya)</a>
     <a href="<?= $hrefLab ?>" class="list-group-item  list-group-item-action <?= $classLab ?> ">Na'muna olish va labaratoriya natijalari </a>
-    <a href="<?= $hrefDef ?>" class="list-group-item  list-group-item-action <?= $classDef ?> ">Aniqlangan kamchiliklar </a>
-    <a href="<?= $hrefMeasure ?>" class="list-group-item  list-group-item-action <?= $classMeasure ?> ">Ko'rilgan ta'sir choralar </a>
     <a href="index" class="list-group-item  list-group-item-action actived  ">Barcha tekshiruvlar </a>
 </div>

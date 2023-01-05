@@ -6,6 +6,7 @@
 use common\models\control\Company;
 use common\models\control\ControlProductLabaratoryChecking;
 use common\models\control\ControlProductCertification;
+use common\models\control\PrimaryProduct;
 use frontend\widgets\Steps;
 use frontend\models\IdentificationHelper;
 use yii\widgets\DetailView;
@@ -44,17 +45,30 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'cer_amount',
                             'value' => function ($mod) {
                                 if($mod){return $mod->cer_amount;}
-                                else {return 'ko\'rsatilmagan';}
                             }
                         ],
                         [
                             'attribute' => 'cer_quantity',
                             'value' => function ($mod) {
                                 if($mod){return $mod->cer_amount;}
-                                else {return 'ko\'rsatilmagan';}
+                               
                             }
                         ],
-                      
+                        [
+                            'attribute' => 'Nomuvofiqlik sababi',
+                            'value' => function ($mod) {
+                                
+                                $result = '';
+                                $mod->defect_type = explode('.', substr($mod->defect_type, 0));
+                                foreach ($mod->defect_type as $key => $type) {
+                                    $t=$key+1;
+                                    if($type){
+                                    $result .= $t.' - '. PrimaryProduct::getDefect($type) . "; ";
+                                    }
+                                }
+                                return $result;
+                            }
+                        ],
                         
                     ],
                 ]) ;

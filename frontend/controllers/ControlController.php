@@ -232,10 +232,6 @@ class ControlController extends Controller
                                    $old_cer->delete();
                                 }    
                             }        
-                            if($old->photo){
-                                $folder = Yii::getAlias('@frontend') . '/web/uploads/images';
-                                @unlink($folder.'/'.$old->photo);
-                            }
                             $old->delete();
                         }       
                     }
@@ -254,10 +250,11 @@ class ControlController extends Controller
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
                                 $prod->codetnved = $product->codetnved;
-                                $prod->Image = UploadedFile::getInstance($product, "[{$key_p1}]photo");
-                                if ($prod->Image) {
-                                    $prod->photo = $prod->Image->name;
-                                }
+                                $product->img = \yii\web\UploadedFile::getInstance($product, "[{$key_p1}]photo");
+                                if ($product->img) {
+                                    $product->photo = $product->img->name;
+                                 }
+                                 $prod->photo = $product->photo;
                                 $prod->save(false);
                                 $id[$key_p1] = $prod->id; 
                            
@@ -295,12 +292,8 @@ class ControlController extends Controller
                         }
             $transaction->commit();
                     return $this->redirect(['identification','company_id' => $company_id]);
-                } catch (Exception $e) {
-                    foreach ($arrayImage as $image) {
-                        $folder = Yii::getAlias('@frontend') . '/web/uploads/images';
-                        @unlink($folder.'/'.$image);
-                    }
-                   
+                } catch (Exception $e) 
+                {
                     $transaction->rollBack();
                     throw $e;
                 }
@@ -475,10 +468,19 @@ class ControlController extends Controller
                       $pro_pr = PrimaryProduct::find()
                         ->where(['id' => $value->product_id])
                         ->one();
+                     $typeRes = '0.';//if defect type not exist
+                     if($value->defect_type)
+                       {
+                        $subject = $value->defect_type;
+                        foreach ( $subject as $key => $type) {
+                            $typeRes .= $type.'.';
+                        }
+                       }
                        $pro_pr->description = $value->description;
-                       $pro_pr->quality = (int)$value->quality;
+                       $pro_pr->quality = $value->quality;
                        $pro_pr->exsist_certificate = 1;
-                       if($value->breaking_certification == 0)
+                       $pro_pr->defect_type = $typeRes;
+                       if($value->quantity || $value->amount)
                        {
                         $pro_pr->cer_quantity = $value->quantity;
                         $pro_pr->cer_amount = $value->amount;
@@ -486,8 +488,8 @@ class ControlController extends Controller
                        if($pro_pr->validate())
                        {
                         $pro_pr->save(false);
+                       
                        }
-                      
                     }
                     foreach ($labs as $key => $value) 
                     {
@@ -574,7 +576,7 @@ class ControlController extends Controller
         
         if ($model->load(Yii::$app->request->post()) &&  $model->save()) {
             if($model->finish_dalolatnoma){
-                return $this->redirect(['defect', 'company_id' => $company_id]);
+                return $this->redirect(['laboratory-view', 'company_id' => $company_id]);
             }
             else{
                 return $this->render('laboratory-view', [
