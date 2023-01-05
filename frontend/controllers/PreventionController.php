@@ -107,7 +107,7 @@ class PreventionController extends Controller
     {   
        
          $q = trim(\Yii::$app->request->get('q'));
-         $codes = Instruction::find()->where(['like', 'command_number', $q])->all();
+         $codes = Instruction::find()->where(['like', 'letter_number', $q])->all();
          if(empty($q)){
             return $this->render('search');
          }

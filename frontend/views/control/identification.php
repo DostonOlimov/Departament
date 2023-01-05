@@ -6,6 +6,7 @@ use frontend\widgets\Steps;
 use kartik\file\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 use kartik\date\DatePicker;
 use yii\helpers\VarDumper;
 
@@ -43,10 +44,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             <label class="form-control" style = "background-color:rgb(57, 71, 227); color:white;" readonly><?= $stan['product_name'] ?></label>
                         <?= $form->field($stan, "[{$key}]product_id")->hiddenInput(['value'=> $stan['product_id']])->label(false);?>
                         </div>
+                    <div class="row">
                         <div class="col-md-6 col-lg-4">
                             <?= $form->field($stan, "[{$key}]quality")->radioList( 
-                                [1=>'Muvofiq', 0 => 'Nomuvofiq'], );?>
+                                [1=>'Muvofiq', 0 => 'Nomuvofiq'],['onclick' => "defectChange(event,this)",] );?>
                         </div>
+                        <div class="col-md-6 col-lg-6 defect">
+                     <?= $form->field($stan, "[{$key}]defect_type")->widget(Select2::class, [
+                         'data' => PrimaryProduct::getDefect(),
+                        'language' => 'uz',
+                         'options' => ['multiple' => true],
+                         'showToggleAll' => false,
+                         ]) ?>
+                    </div>
+                </div>
                         <div class="col-md-6 col-lg-8">
                             <?= $form->field($stan, "[{$key}]description")->textarea() ?>
                         </div> 
@@ -119,6 +130,24 @@ function findParent(elem, className){
         }
         if (e.target.value == "0" && e.target.checked) {
             let inputs = obj.getElementsByClassName('certificate');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].style.display = 'none';
+            }
+        }
+    }
+
+function defectChange(e,t) {
+        obj = findParent(t, 'panel-body');
+        if (e.target.value == "0" && e.target.checked) {
+        
+        var collection =  obj.getElementsByClassName("defect");
+        for (var i=0;i<collection.length;i++)
+        {
+            collection[i].style.display = 'block';
+        }
+        }
+        if (e.target.value == "1" && e.target.checked) {
+            let inputs = obj.getElementsByClassName('defect');
             for (let i = 0; i < inputs.length; i++) {
                 inputs[i].style.display = 'none';
             }

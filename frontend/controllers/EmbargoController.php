@@ -81,7 +81,7 @@ class EmbargoController extends Controller
      */
     public function actionSearch(){
         $q = trim(\Yii::$app->request->get('q'));
-        $codes = Instruction::find()->where(['like', 'command_number', $q])->all(); 
+        $codes = Instruction::find()->where(['like', 'letter_number', $q])->all(); 
         
 
        $model = new Instruction();
@@ -103,7 +103,7 @@ class EmbargoController extends Controller
     {
        
         $q = trim(\Yii::$app->request->get('q'));
-         $codes = Instruction::find()->where(['like', 'command_number', $q])->all();
+         $codes = Instruction::find()->where(['like', 'letter_number', $q])->all();
          if(empty($q)){
             return $this->render('search');
          }
