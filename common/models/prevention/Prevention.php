@@ -3,6 +3,9 @@ namespace common\models\prevention;
 use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\User;
+use yii\db\Expression;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 use Yii;
 
 class Prevention extends \yii\db\ActiveRecord
@@ -15,16 +18,28 @@ class Prevention extends \yii\db\ActiveRecord
         return 'caution_prevention';
     }
 
+    public function behaviors(){
+        return [
+            [
+                'class' => TimesTampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {    
             return [
-                [['companies_id', 'instructions_id','created_by', 'updated_by', 'message_date','comment'], 'required'],
-                [['companies_id', 'instructions_id', 'created_at','updated_at','created_by','updated_by'], 'integer'],
-                [['message_date'], 'safe'],
+                [['companies_id', 'instructions_id','created_by', 'updated_by','comment'], 'required'],
+                [['companies_id', 'instructions_id', 'created_by','updated_by'], 'integer'],
                 [['comment'], 'string'],
+                [['created_at','updated_at'],'safe'],
                 
                 
             ];        
@@ -40,10 +55,11 @@ class Prevention extends \yii\db\ActiveRecord
             'companies_id' => 'Korxona nomi',
             'instructions_id' => 'Tekshiruv kodi',
             'message_num' => 'Yozma ko\'rsatma raqami',
-            'message_date' => 'Yozma ko\'rsatma sanasi',
             'comment' => 'Izoh',
             'created_by' => 'Inspektor F.I.SH',
             'updated_by' => 'Nazoratchi F.I.SH',
+            'created_at' => 'Ko\'rsatma sanasi',
+            'updated_at' => 'Yangilangan sanasi',
         ];
     }
 

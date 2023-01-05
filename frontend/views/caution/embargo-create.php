@@ -59,7 +59,7 @@ $this->title = Yii::t('app', 'Taqiqlash');
                            User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
                           
                           ]);?>
-                    <?= $form->field($model, 'message_date')->widget(DatePicker::className()) ?>
+                    
                     <div class="form-group">
                         <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
                     </div>

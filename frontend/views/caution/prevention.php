@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $data ? $data->instruction->command_number : '';
                         }
                     ],
-                    'message_date',
                     [
                         'attribute'=> 'created_by',
                         'value' => function ($data) {
@@ -66,6 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $data ? $data->user->name .' '. $data->user->surname  : '';
                         }
                     ],
+                    'created_at',
+                    'updated_at',
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view}',

@@ -62,7 +62,10 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
                 }
             ],
            
-            'message_date',
+            //'message_date',
+            'created_at',
+            'updated_at',
+
             'comment',
             [
                 'attribute'=> 'created_by',

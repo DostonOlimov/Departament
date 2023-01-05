@@ -83,7 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 'format' => 'raw',
             ],
-            'message_date',
+            //'message_date',
+            'created_at',
+            'updated_at',
             [
                 'attribute'=> 'created_by',
                 'value'=> function($data){

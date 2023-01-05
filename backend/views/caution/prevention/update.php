@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
         $model['instructions_id'] => $model->instruction->command_number
     ]);?>
 
-    <?= $form->field($model, 'message_date')->widget(DatePicker::className()) ?>
+   
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 

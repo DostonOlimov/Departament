@@ -60,7 +60,6 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                           
                           ]);?>
                          
-                    <?= $form->field($model, 'message_date')->widget(DatePicker::className()) ?>
 
                     <div class="form-group">
                         <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>

@@ -19,7 +19,7 @@ class PreventionSearch extends Prevention
     {
         return [
             [['id'], 'integer'],
-            [['message_num', 'instructions_id', 'companies_id','message_date', 'comment'], 'safe'],
+            [['message_num', 'instructions_id', 'companies_id', 'comment'], 'safe'],
         ];
     }
 
@@ -73,8 +73,7 @@ class PreventionSearch extends Prevention
            // 'companies_id' => $this->companies_id,
         ]);
 
-        $query->andFilterWhere(['like', 'message_date', $this->message_date])
-            ->andFilterWhere(['like', 'comment', $this->comment])
+        $query->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
             ->andFilterWhere(['like', 'caution_prevention.id', $this->id])

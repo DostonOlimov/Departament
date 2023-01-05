@@ -4,6 +4,9 @@ namespace common\models\embargo;
 use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\User;
+use yii\db\Expression;
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 use Yii;
 
@@ -23,7 +26,7 @@ use Yii;
  * @property ControlCompanies $companies
  * @property ControlInstructions $instructions
  */
-class Embargo extends \yii\db\ActiveRecord
+class Embargo extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -33,17 +36,29 @@ class Embargo extends \yii\db\ActiveRecord
         return 'caution_embargo';
     }
 
+    public function behaviors(){
+        return [
+            [
+                'class' => TimesTampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['instructions_id', 'companies_id', 'comment','message_date','created_by', 'updated_by'], 'required'],
+            [['instructions_id', 'companies_id', 'comment','created_by', 'updated_by'], 'required'],
             [['instructions_id',  'companies_id','created_by','updated_by', 'status'], 'integer'],
             [['comment'], 'string'],
            // [['message_number'], 'unique'],
-            [['message_date'], 'string', 'max' => 255],
+            [['created_at','updated_at'],'safe'],
         ];
     }
 
@@ -59,9 +74,10 @@ class Embargo extends \yii\db\ActiveRecord
             'companies_id' => 'Korxona nomi',
             'comment' => 'Izoh',
             'status' => 'Holati',
-            'message_date' => 'Ko\'rsatma sanasi',
             'created_by' => 'Inspektor F.I.SH',
             'updated_by' => 'Nazoratchi F.I.SH',
+            'created_at' => 'Ko\'rsatma sanasi',
+            'updated_at' => 'Yangilangan sanasi',
         ];
     }
 

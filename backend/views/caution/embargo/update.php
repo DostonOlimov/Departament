@@ -38,8 +38,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
             ]
     );?>
 
-    <?= $form->field($model, 'message_date')->textInput(['maxlength' => true]) ?>
-
     
     <?= $form->field($model, 'updated_by')->dropdownList([                           
                           User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname

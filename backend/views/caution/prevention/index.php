@@ -37,13 +37,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data ? $data->company->name : '';
                 }
             ],
-            'message_date',
+            //'message_date',
             [
                 'attribute' => 'created_by',
                 'value' => function($data){
                     return $data ? $data->user->name . ' ' . $data->user->surname : '';
                 }
             ],
+            'created_at',
+            'updated_at',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}',

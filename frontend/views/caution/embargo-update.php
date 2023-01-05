@@ -45,8 +45,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
                         ]
                 );?-->
 
-                <?= $form->field($model, 'message_date')->textInput(['maxlength' => true]) ?>
-
                 <?= $form->field($model, 'created_by')->dropdownList([
                     $model['created_by'] => $model->user->name .' '. $model->user->surname 
                 ]);?>

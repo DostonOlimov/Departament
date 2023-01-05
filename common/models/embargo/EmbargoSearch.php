@@ -19,8 +19,8 @@ class EmbargoSearch extends Embargo
     public function rules()
     {
         return [
-            [['id', 'message_number', 'status'], 'integer'],
-            [['comment','instructions_id', 'companies_id', 'message_date'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['comment','instructions_id', 'companies_id'], 'safe'],
         ];
     }
 
@@ -81,7 +81,6 @@ class EmbargoSearch extends Embargo
         ]);
 
         $query->andFilterWhere(['like', 'comment', $this->comment])
-            ->andFilterWhere(['like', 'message_date', $this->message_date])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
