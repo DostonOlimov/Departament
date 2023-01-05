@@ -6,6 +6,7 @@ use frontend\widgets\StepsPrevention;
 use common\models\prevention\Prevention;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\PreventionSearch $searchModel */
@@ -26,6 +27,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p>
                     <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['prevention-search'], ['class' => 'btn btn-success']) ?>
                 </p>
+                <div class="">
+                    <?php
+                        echo Breadcrumbs::widget([
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'options' => [
+                                'class' => 'breadcrumb float-sm-right'
+                            ]
+                        ]);
+                        ?>
+                </div>
+
 
                 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

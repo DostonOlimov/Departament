@@ -7,14 +7,14 @@ use common\models\prevention\Prevention;
 use common\models\control\Instruction;
 use common\models\embargo\Embargo;
 use frontend\widgets\StepsEmbargo;
+use yii\bootstrap4\Breadcrumbs;
 
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
 
 $this->title = $model->id;
-$this->title = Yii::t('app', 'Taqiqlash');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash'), 'url' => ['embargo']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -31,8 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if($model->status == 0):?>
             <?= Html::a(Yii::t('app', 'Tahrirlash'), ['embargo-update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?php endif;?>
+            <?php
+            echo Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                 'options' => [
+                'class' => 'breadcrumb float-sm-right'
+                        ]
+                ]);
+            ?>
         </p>
-        
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [

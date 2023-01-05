@@ -2,6 +2,7 @@
 use frontend\widgets\StepsEmbargo;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
@@ -9,8 +10,8 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Tahrirlash: {name}', [
     'name' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash'), 'url' => ['embargo']];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['embargo-view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 ?>
 <div class="row">
@@ -23,6 +24,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
             ])?>
     </div>
     <div class="col-sm-8" style="margin-left:-30px">
+            <?php
+            echo Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                 'options' => [
+                'class' => 'breadcrumb float-sm-right'
+                        ]
+                ]);
+            ?>
             <div class="col-sm-9" style="margin-top:-10%;">
 
                 <?php $form = ActiveForm::begin(); ?>

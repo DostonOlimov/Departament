@@ -8,6 +8,9 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use frontend\widgets\StepsEmbargo;
 use yii\grid\GridView;
+use yii\bootstrap4\Breadcrumbs;
+
+
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\EmbargoSearch $searchModel */
@@ -27,6 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>
                 <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['embargo-search'], ['class' => 'btn btn-success']) ?>
             </p>
+            <?php
+                echo Breadcrumbs::widget([
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        'options' => [
+                        'class' => 'breadcrumb float-sm-right'
+                        ]
+                    ]);
+                ?>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?> 
        
                 

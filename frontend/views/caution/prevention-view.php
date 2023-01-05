@@ -3,13 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use frontend\widgets\StepsPrevention;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bartaraf_etish'), 'url' => ['index']];
-// $this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bartaraf_etish'), 'url' => ['prevention']];
+$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 $this->title = Yii::t('app', 'Bartaraf_etish');
 ?>
@@ -21,6 +22,16 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
     </div>
 
     <div class="col-sm-8" style="margin-left:-30px">
+    
+                    <?php
+                        echo Breadcrumbs::widget([
+                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'options' => [
+                                'class' => 'breadcrumb float-sm-right'
+                            ]
+                        ]);
+                        ?>
+                
         <?= DetailView::widget([
             'model' => $model,
             
