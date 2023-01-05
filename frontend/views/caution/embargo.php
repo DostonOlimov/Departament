@@ -113,7 +113,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute'=> 'updated_by',
                     'value'=> function($data){
+                        if($data->status==1){
                         return $data ? $data->user->name .' '.$data->user->surname :'';
+                        }else{
+                            return '';
+                        }
                     }
                 ],
                 'created_at',

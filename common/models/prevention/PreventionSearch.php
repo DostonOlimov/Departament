@@ -76,8 +76,7 @@ class PreventionSearch extends Prevention
         $query->andFilterWhere(['like', 'comment', $this->comment])
             ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
-            ->andFilterWhere(['like', 'caution_prevention.id', $this->id])
-            ->andFilterWhere(['like', 'user.name', $this->created_by]);
+            ->andFilterWhere(['like', 'caution_prevention.id', $this->id]);            
 
         return $dataProvider;
     }
