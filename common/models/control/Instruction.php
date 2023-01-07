@@ -43,6 +43,9 @@ class Instruction extends \yii\db\ActiveRecord
     const GENERAL_STATUS_SEND = 20;
     const GENERAL_STATUS_DONE = 21;
 
+    const DN = 0;
+    const DT = 1;
+
     const BASE_RISK = 0;
     const BASE_GRAF = 1;
     const BASE_GIVEN = 2;
@@ -75,6 +78,8 @@ class Instruction extends \yii\db\ActiveRecord
     public $employers;
     public $admin;
     public $subject;
+    public $dn;
+    public $dt_letter;
 
     public static function tableName()
     {
@@ -86,12 +91,12 @@ class Instruction extends \yii\db\ActiveRecord
         return [
             [['base', 'type','checkup_duration','general_status',], 'integer'],
             [['general_status'], 'default', 'value' => self::GENERAL_STATUS_IN_PROCESS],
-            [['employers','checkup_subject'], 'safe'],
+            [['employers','checkup_subject','dn'], 'safe'],
             [['letter_number'],'unique'],
-            [['base', 'type', 'letter_date', 'letter_number','checkup_begin_date',
-                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','real_checkup_date','checkup_duration','checkup_subject','employers'], 'required'],
+            [['base', 'type', 'letter_date','checkup_begin_date',
+                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date', 'checkup_finish_date',
-                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter'], 'string', 'max' => 255],
+                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','dt_letter'], 'string', 'max' => 255],
         ];
     }
     public function beforeSave($insert)
@@ -111,6 +116,21 @@ class Instruction extends \yii\db\ActiveRecord
        // $this->checkup_finish_date = strtotime($this->checkup_finish_date);
 
         return true;
+    }
+
+    public static function getDn($type = null)
+    {
+        $arr = [
+
+            self::DN => 'DN',
+            self::DT => 'DT',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
     }
 
     public static function getBase($base = null)
@@ -220,18 +240,20 @@ class Instruction extends \yii\db\ActiveRecord
             'code' => 'Tekshiruv kodi',
             'employers' => 'Inspektorlar',
             'letter_date' => 'Asos bo\'luvchi hujjat sanasi',
-            'letter_number' => 'Tekshiruv kodi',
+            'letter_number' => 'Tekshiruv kodi(Biznes Ombudsman)',
             'command_date' => 'Buyruq sanasi',
             'command_number' => 'Buyruq nomeri',
             'checkup_begin_date' => 'Tekshiruv boshlangan sana',
             'checkup_finish_date' => 'Tekshiruv tugatilgan sana',
             'checkup_duration' => 'Tekshiruv muddati',
-            'real_checkup_date' => 'Tekshiruv haqiqatda boshlanish sanasi',
+            'real_checkup_date' => 'Tekshiruvning haqiqatda boshlangan sanasi',
             'checkup_duration_start_date' => 'Tekshiruv davri boshlanish sanasi',
             'checkup_duration_finish_date' => 'Tekshiruv davri tugatilish sanasi',
             'might_be_breakdown_letter' => 'Buzilishi mumkin bo\'lgan normativ hujjat',
             'checkup_subject' => 'Tekshiruv predmeti',
             'who_send_letter' => 'Tekshirish uchun asos bo’luvchi hujjat jo’natgan tashkilot nomi yoki shaxs FISH',
+            'dt_letter' => 'Tekshiruv kodi',
+            'dn' => 'Davlat nazorati turi',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -272,5 +294,10 @@ class Instruction extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    public function getInstructionUser()
+    {
+        return $this->hasMany(InstructionUser::className(), ['instruction_id' => 'id']);
     }
 }

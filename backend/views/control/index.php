@@ -20,9 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
 
-    <p>
+    <p  style="display:inline">
         <?= Html::a('Export', ['/control/control/export-form'], ['class' => 'btn btn-primary']) ?>
     </p>
+
+    <p  style="display:inline-block">
+        <?= Html::a('Qo\'shish', ['/control/control/instruction'], ['class' => 'btn btn-primary']) ?>
+    </p>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

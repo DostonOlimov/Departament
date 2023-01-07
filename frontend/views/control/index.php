@@ -3,6 +3,7 @@
 use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\control\Measure;
+use common\models\control\PrimaryData;
 use frontend\models\StatusHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -14,6 +15,7 @@ use yii\helpers\Url;
 
 $this->title = 'Korxonalar';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <style>
     .pagination li a {
@@ -33,10 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 <div class="company-index m-5">
-
-    <p>
-        <?= Html::a('Qo\'shish', ['/control/instruction'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -124,7 +122,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Status',
                 'value' => function ($model) {
-                    return StatusHelper::getLabel($model->general_status);
+                   // $company_id = Company::findOne(['control_instruction_id' => $model->id])->id;
+                   // $data = PrimaryData::findOne(['company_id' => $company_id ]);
+                   
+                        return StatusHelper::getLabel($model->general_status);
+                   /* }
+                    else
+                    {
+                        return 'yangi tekshiruv';
+                    }
+                    */
                 },
                 'format' => 'raw'
             ],

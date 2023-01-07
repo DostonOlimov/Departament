@@ -64,6 +64,12 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                     }
                 ],
                 [
+                    'attribute' => 'real_checkup_date',
+                    'value' => function(Instruction $model) {
+                        return $model->real_checkup_date ? $model->real_checkup_date : 'Kiritilmagan';
+                    }
+                ],
+                [
                     'attribute' => 'checkup_finish_date',
                     'value' => function(Instruction $model) {
                         return $model->checkup_finish_date ? $model->checkup_finish_date : 'Yakunlanmagan';
@@ -71,7 +77,6 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                 ],
                 'checkup_duration_start_date:date',
                 'checkup_duration_finish_date:date',
-                'real_checkup_date:date',
                 'checkup_duration',
                 [
                     'label' => 'Inspektorlar',

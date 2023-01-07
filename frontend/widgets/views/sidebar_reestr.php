@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;?>
 
-<div class="container">
+<div class="container list-group margin-topSite">
     <div class="border border-1 rounded">
         <ul class="list-group">
         <li class="list-group-item disabled" aria-disabled="true">Reestr</li>
@@ -21,8 +21,10 @@ use yii\helpers\Url;?>
         <div class="dropdown">
             <a href="#" class="list-group-item list-group-item-action btn-block dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Choralar</a>
                 <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Iqtisodiy jarima</a>
-                <a class="dropdown-item" href="#">Ma'muriy bayonnoma</a>
+                <a class="dropdown-item" href="<?= Url::to(['/measure/ov-index']) ?>">O'lchov vositasini taqiqlash</a>
+                <a class="dropdown-item" href="<?= Url::to(['/measure/realization-index']) ?>">Realizatsiyani taqiqlash</a>
+                <a class="dropdown-item" href="<?= Url::to(['/measure/economic-index']) ?>">Iqtisodiy jarima</a>
+                <a class="dropdown-item" href="<?= Url::to(['/measure/executive-index']) ?>">Ma'muriy bayonnoma</a>
             </div>
         </div>
         </ul>
