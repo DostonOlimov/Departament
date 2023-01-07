@@ -5,6 +5,7 @@ namespace common\models\control;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\control\Instruction;
+use common\models\control\InstructionUser;
 use yii\db\ActiveQuery;
 
 /**
@@ -40,17 +41,18 @@ class InstructionSearch extends Instruction
     }
 
     public function search($params)
-    {
-        $query = Instruction::find()->joinWith('controlCompany')->joinWith(['controlCompany' => function(ActiveQuery $query) {
+    { 
+        $query = Instruction::find()->joinWith('instructionUser');
+        $query = $query->joinWith('controlCompany')->joinWith(['controlCompany' => function(ActiveQuery $query) {
             return $query->joinWith('region');
         }]);
 
         if ($this->userId) {
-            $query->where(['control_instructions.created_by' => $this->userId]);
+            $query->where(['instruction_users.user_id' => $this->userId]);
+            
         }
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['created_at' => SORT_DESC]],

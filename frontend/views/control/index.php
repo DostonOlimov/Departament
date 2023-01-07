@@ -34,10 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <div class="company-index m-5">
 
-    <p>
-        <?= Html::a('Qo\'shish', ['/control/instruction'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

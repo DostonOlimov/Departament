@@ -30,6 +30,7 @@ class Laboratory extends \yii\db\ActiveRecord
 {
     private $quality = [] ;
     public $finish_date;
+    public $start_date;
     /**
      * {@inheritdoc}
      */
@@ -46,7 +47,7 @@ class Laboratory extends \yii\db\ActiveRecord
         return [
             [['control_company_id','dalolatnoma','out_bayonnoma'], 'required'],
             [['control_company_id'], 'integer'],
-            [['comment','finish_date'],'string'],
+            [['comment','finish_date','start_date'], 'string'],
            /* ['finish_dalolatnoma', 'required', 'when' => function ($model) {
                 return $model->getQuality($this->control_company_id) === false;
             },'message'=>'{attribute} ni kiritib bo\'lmaydi.'],
@@ -93,6 +94,7 @@ class Laboratory extends \yii\db\ActiveRecord
             'out_dalolatnoma' => 'Oraliq dalolatnoma',
             'finish_dalolatnoma' => 'Yakuniy dalolatnoma',
             'comment' => 'Izoh',
+            'start_date' => 'Tekshiruv haqiqatda boshlangan sana',
             'finish_date' => 'Tekshiruv haqiqatda yakunlangan sana',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',

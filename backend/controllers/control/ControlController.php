@@ -19,6 +19,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Exception;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -65,6 +66,62 @@ class ControlController extends Controller
         ]);
     }
 
+    public function actionInstruction()
+    {
+        $model = new Instruction();
+        
+        if ($model->load($this->request->post()) ) {
+            
+            if($model->validate())
+            {
+               
+            $typeRes = '';
+            $subject = $model->checkup_subject;
+            foreach ( $subject as $key => $type) {
+                $typeRes .= $type.'.';
+            }
+            $model->checkup_subject = $typeRes;
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+            $model->command_number = Instruction::getDn($model->dn).'-'.$model->command_number;
+            $model->save(false);
+                if ($model->employers) {
+                    foreach ($model->employers as $employer) {
+                        $insUser = new InstructionUser();
+                        $insUser->instruction_id = $model->id;
+                        $insUser->user_id = $employer;
+                        $insUser->save(false);
+                    }
+                }
+                $transaction->commit();
+                return $this->redirect(['company', 'instruction_id' => $model->id]);
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+        } 
+       
+    }
+        return $this->render('instruction', [
+            'model' => $model,
+        ]);
+    }
+
+
+    public function actionCompany($instruction_id)
+    {
+        $model = new Company();
+        $model->control_instruction_id = $instruction_id;
+
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('company', [
+            'model' => $model,
+        ]);
+    }
+    
     public function actionDone($id)
     {
         $model = $this->findModel($id);

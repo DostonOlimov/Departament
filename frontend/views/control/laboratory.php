@@ -39,9 +39,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr><td class = "label">Oraliq dalolatnoma</td><td> <?= $form->field($model, 'out_dalolatnoma')->fileInput()->label(false) ?></td></tr>
         <tr><td class = "label">Yakuniy dalolatnoma</td><td> <?= $form->field($model, 'finish_dalolatnoma')->fileInput()->label(false) ?></td></tr>
     </table>
+    <div class="row">
+    <div class="col-sm-6">
+                <?= $form->field($model, 'start_date')->textInput(['type' => 'date']) ?>
+            </div>
     <div class="col-sm-6">
                 <?= $form->field($model, 'finish_date')->textInput(['type' => 'date']) ?>
-            </div>
+     </div>
+    </div>
     <div class="col-md-6 col-lg-8">
         <?= $form->field($model, "comment")->textarea() ?>
     </div> 
