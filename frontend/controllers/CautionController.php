@@ -6,6 +6,8 @@ use common\models\embargo\EmbargoSearch;
 use common\models\prevention\Prevention;
 use common\models\prevention\PreventionSearch;
 use common\models\caution\Execution;
+use common\models\caution\CautionLetters;
+use common\models\caution\CautionLettersSearch;
 use common\models\User;
 //use common\models\caution\Company;
 //use common\models\caution\Instruction;
@@ -14,6 +16,8 @@ use common\models\control\Instruction;
 use common\models\caution\InstructionSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
 /**
  * cautions controller
@@ -273,6 +277,82 @@ class CautionController extends Controller
 
     public function actionReestr(){
         return $this->render('reestr.php');
+    }
+    public function actionLetters(){
+        $searchModel = new CautionLettersSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('letters', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionLettersSearch(){
+        $q = trim(\Yii::$app->request->get('q'));
+        $codes = Company::find()->where(['like', 'inn', $q])->all(); 
+        
+
+       $model = new Company();
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['letters-create', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('letters-search', [
+            'model' => $model,
+            'codes' => $codes,
+            'q' => $q,
+        ]);
+    }
+
+    public function actionLettersCreate(){
+        $q = trim(\Yii::$app->request->get('q'));
+        $codes = Company::find()->where(['like', 'inn', $q])->all();
+        if(empty($q)){
+           return $this->render('letters-search');
+        }
+        if(!empty($codes)):
+         foreach($codes as $code){
+           $companies = Company::findOne($code['id']);
+         } 
+           else:
+               $companies = null;
+       endif;
+        
+        $model = new CautionLetters;
+       if ($this->request->isPost) {
+           if ($model->load($this->request->post()) ) {
+            if(!empty($_FILES['CautionLetters']['name']['file'])){
+                $file = UploadedFile::getInstance($model,'file');
+                $berkas = $model->company_id.'-.'.$file->getExtension();
+                $model->file = $berkas;
+                $path = 'uploads/caution_letter/';
+                if(!file_exists($path)){
+                    FileHelper::createDirectory($path);
+                }
+                $file->saveAs($path.$berkas);
+            }
+            
+          if($model->save()){
+               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
+              }                     
+            return $this->redirect(['letters-search', 'id' => $model->id]);
+            
+             
+           }
+       } else {
+           $model->loadDefaultValues();
+       }
+
+       return $this->render('letters-create', [
+           'companies' => $companies,
+           'model' => $model,
+           'codes' => $codes,
+           'q' => $q,
+       ]); 
     }
 
     
