@@ -16,7 +16,9 @@ class InstructionSearch extends Instruction
     public $userId;
     public $region_id;
     public $name;
+    public $address;
     public $inn;
+    public $type;
 
     public function __construct($userId, $config = [])
     {
@@ -30,7 +32,7 @@ class InstructionSearch extends Instruction
         return [
             [['id', 'base','type','checkup_subject','checkup_duration','checkup_duration_start_date', 'letter_date', 'command_date', 'checkup_begin_date',
                 'checkup_duration_finish_date','real_checkup_date','inn', 'region_id', 'created_by'], 'integer'],
-            [['letter_number', 'command_number', 'checkup_finish_date', 'name'], 'safe'],
+            [['letter_number', 'command_number', 'checkup_finish_date', 'name','address','type'], 'safe'],
         ];
     }
 
@@ -102,6 +104,8 @@ class InstructionSearch extends Instruction
         $query->andFilterWhere(['like', 'letter_number', $this->letter_number])
             ->andFilterWhere(['like', 'command_number', $this->command_number])
             ->andFilterWhere(['like', 'control_companies.name', $this->name])
+            ->andFilterWhere(['like', 'control_companies.address', $this->address])
+            ->andFilterWhere(['like', 'control_companies.type', $this->type])
             ->andFilterWhere(['like', 'control_companies.inn', $this->inn])
             ->andFilterWhere(['like', 'checkup_finish_date', $this->checkup_finish_date]);
 

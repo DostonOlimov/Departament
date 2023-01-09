@@ -56,9 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-            [
-                'class' => 'yii\grid\SerialColumn',
-            ],
+           
             [
                 'attribute' => 'name',
                 'label' => 'XYUS nomi',
@@ -78,26 +76,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             [
+                'attribute' => 'address',
                 'label' => 'XYUS yuridik manzili',
                 'value' => function (Instruction $model) {
                     return $model->controlCompany ? $model->controlCompany->address : '';
                 },
+                'filter' => Html::activeInput('text',$searchModel, 'address', ['class' => 'form-control']),
                 'format' => 'raw',
             ],
             [
+                'attribute' => 'type',
                 'label' => 'XYUS faoliyat turi',
                 'value' => function ($model) {
                     return $model->controlCompany ? $model->controlCompany->type : '';
                 },
+                'filter' => Html::activeInput('text',$searchModel, 'type', ['class' => 'form-control']),
                 'format' => 'raw',
             ],
-            [
-                'attribute' => 'base',
-                'value' => function ($model) {
-                    return Instruction::getType($model->type);
-                },
-                'filter' => Html::activeDropDownList($searchModel, 'type', Instruction::getType(), ['class' => 'form-control', 'prompt' => '- - -'])
-            ],
+           
             [
                 'attribute' => 'created_by',
                 'label' => 'Mutaxassis',
@@ -112,8 +108,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
-            'created_at',
-            'updated_at',   
+            'created_at:date',
+            'updated_at:date',   
             [
                 'label' => 'Status',
                 'value' => function ($model) {
