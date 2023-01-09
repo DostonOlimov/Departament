@@ -75,6 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         //'created_at',
                         'updated_at',
                         [
+                            'attribute'=> 'created_by',
+                            'value'=> function($data){                                
+                                return $data ? $data->user->name .' '.$data->user->surname :'';
+                            }
+                        ],
+                        [
                             'class' => ActionColumn::className(),
                             'template' => '{view}',
                             'buttonOptions' => [

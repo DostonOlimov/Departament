@@ -325,6 +325,7 @@ class CautionController extends Controller
         $model = new CautionLetters;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
+            $model->updated_by = $model->created_by;
             if(!empty($_FILES['CautionLetters']['name']['file'])){
                 $file = UploadedFile::getInstance($model,'file');
                 $berkas = $model->company_id.'-.'.$file->getExtension();
@@ -353,6 +354,12 @@ class CautionController extends Controller
            'codes' => $codes,
            'q' => $q,
        ]); 
+    }
+
+    public function actionLettersView($id){
+        return $this->render('letters-view', [
+            'model' => $this->getModel(CautionLetters::className(), $id)
+        ]);
     }
 
     

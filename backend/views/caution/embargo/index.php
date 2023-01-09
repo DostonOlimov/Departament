@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -13,6 +14,14 @@ $this->title = Yii::t('app', 'Taqiqlash ko\'rsatmasi');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="embargo-index">
+<?php
+            echo Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                 'options' => [
+                'class' => 'breadcrumb float-sm-right'
+                        ]
+                ]);
+            ?>
 
     
 
@@ -77,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             //'created_at',
-            'updated_at',
+            'message_date',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}',

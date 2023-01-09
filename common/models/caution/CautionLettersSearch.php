@@ -18,7 +18,7 @@ class CautionLettersSearch extends CautionLetters
     {
         return [
             [['id', 'company_id'], 'integer'],
-            [['letter_date', 'letter_number', 'inpector_name'], 'safe'],
+            [['letter_date', 'letter_number', 'created_by','updated_by'], 'safe'],
         ];
     }
 
@@ -40,12 +40,20 @@ class CautionLettersSearch extends CautionLetters
      */
     public function search($params)
     {
-        $query = CautionLetters::find();
+        $query = CautionLetters::find()->joinWith('company')->joinWith('user');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);
@@ -64,7 +72,8 @@ class CautionLettersSearch extends CautionLetters
         ]);
 
         $query->andFilterWhere(['like', 'letter_number', $this->letter_number])
-            ->andFilterWhere(['like', 'inpector_name', $this->inpector_name]);
+        ->andFilterWhere(['like', 'user.name', $this->created_by]);
+           
 
         return $dataProvider;
     }

@@ -2,20 +2,30 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\bootstrap4\Breadcrumbs;
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
 
-$this->title = $model->id;
+$this->title = 'Yozma ko\'rsatma № '.$model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bartaraf etish ko\'rsatmasi'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = '№'.' '. $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="prevention-view">
+    <?php
+    echo Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        'options' => [
+        'class' => 'breadcrumb float-sm-right'
+                ]
+        ]);
+    ?>
 <p>
        
         <?= Html::a(Yii::t('app', 'Tahrirlash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-       
+            <?php if(empty($model->file)):?>
+            <?= Html::a(Yii::t('app', 'File yuklash'), ['uploads', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?php endif;?>
     </p>
 
 
@@ -64,7 +74,8 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
            
             //'message_date',
             //'created_at',
-            'updated_at',
+            'created_at',
+            'file',
 
             'comment',
             [

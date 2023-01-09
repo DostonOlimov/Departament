@@ -2,6 +2,7 @@
 
 namespace common\models\caution;
 use common\models\control\Company;
+use common\models\User;
 
 use Yii;
 
@@ -34,11 +35,11 @@ class CautionLetters extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'letter_date', 'letter_number'], 'required'],
-            [['company_id'], 'integer'],
+            [['company_id', 'letter_date', 'letter_number','created_by','updated_by','comment'], 'required'],
+            [['company_id','created_by','updated_by'], 'integer'],
             [['file'],'file','extensions'=> 'pdf,doc,docx'],
-            [['letter_date'], 'safe'],
-            [['letter_number', 'inpector_name'], 'string', 'max' => 255],
+            [['letter_date','comment'], 'safe'],
+            [['letter_number'], 'string', 'max' => 255],
             
         ];
     }
@@ -49,12 +50,13 @@ class CautionLetters extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'company_id' => 'Company ID',
-            'letter_date' => 'Letter Date',
-            'letter_number' => 'Letter Number',
+            'id' => '№',
+            'company_id' => 'Korxona nomi',
+            'letter_date' => 'Ogohlantirish sanasi',
+            'letter_number' => 'Ogohlantirish raqami',
             'file' => 'Files',
-            'inpector_name' => 'Inpector Name',
+            'created_by' => 'Inspektor F.I.SH',
+            'updated_by' => 'Nazoratchi F.I.SH',
         ];
     }
 
@@ -65,6 +67,9 @@ class CautionLetters extends \yii\db\ActiveRecord
      */
     public function getCompany()
     {
-        return $this->hasOne(Companies::class, ['id' => 'company_id']);
+        return $this->hasOne(Company::class, ['id' => 'company_id']);
+    }
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 }

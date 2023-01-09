@@ -3,21 +3,33 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
 
-$this->title = $model->id;
+$this->title = 'Yozma ko\'rsatma № '.$model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash ko\'rsatmasi'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="embargo-view">
-
-
+<?php
+            echo Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                 'options' => [
+                'class' => 'breadcrumb float-sm-right'
+                        ]
+                ]);
+            ?>
     <p>
         <?php if($model->status == 0):?>
         <?= Html::a(Yii::t('app', 'Tahrirlash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php endif;?>
+        <?php if($model->status == 1):?>
+            <?php if(empty($model->file)):?>
+        <?= Html::a(Yii::t('app', 'File yuklash'), ['uploads', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php endif;?>
         <?php endif;?>
         <!--?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -26,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?-->
+        
     </p>
 
     <?= DetailView::widget([
@@ -83,6 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 'format' => 'raw',
             ],
+            'file',
             //'message_date',
             //'created_at',
             'updated_at',

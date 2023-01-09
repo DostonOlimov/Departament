@@ -7,7 +7,7 @@ use yii\helpers\Url;?>
         <ul class="list-group">
         <li class="list-group-item disabled" aria-disabled="true">Reestr</li>
         <a href="#" class="list-group-item list-group-item-action active">Davlat nazorat buyruqlari</a>
-        <a href="#" class="list-group-item list-group-item-action">Ogohlantirish xatlari</a>
+        <a href="<?= Url::to(['/caution/letters']) ?>" class="list-group-item list-group-item-action">Ogohlantirish xatlari</a>
         <div class="dropdown">
             <a href="#" class="list-group-item list-group-item-action btn-block dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Ko'rsatmalar</a>
                 <div class="dropdown-menu">

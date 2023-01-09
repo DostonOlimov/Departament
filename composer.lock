@@ -3590,12 +3590,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "14d4f13f2f0fb4905f4b800ae559751ae3df8240"
+                "reference": "b47968eca3f1b81a7eedc82ee8741eee2af721a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/14d4f13f2f0fb4905f4b800ae559751ae3df8240",
-                "reference": "14d4f13f2f0fb4905f4b800ae559751ae3df8240",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/b47968eca3f1b81a7eedc82ee8741eee2af721a6",
+                "reference": "b47968eca3f1b81a7eedc82ee8741eee2af721a6",
                 "shasum": ""
             },
             "require": {
@@ -3651,7 +3651,7 @@
                 "issues": "https://github.com/FakerPHP/Faker/issues",
                 "source": "https://github.com/FakerPHP/Faker/tree/main"
             },
-            "time": "2023-01-03T15:39:41+00:00"
+            "time": "2023-01-05T14:50:10+00:00"
         },
         {
             "name": "guzzlehttp/psr7",

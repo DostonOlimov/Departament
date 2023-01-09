@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use common\models\User;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
@@ -16,6 +17,14 @@ $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' 
 $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 ?>
 <div class="prevention-update">
+<?php
+    echo Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'options' => [
+        'class' => 'breadcrumb float-sm-right'
+                ]
+        ]);
+    ?>
 <div class="prevention-form">
 
     <?php $form = ActiveForm::begin(); ?>

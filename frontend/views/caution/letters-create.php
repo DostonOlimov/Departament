@@ -33,25 +33,32 @@ $this->title = Yii::t('app', 'Taqiqlash');
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'company_id')->dropdownList([                           
-      $companies['id'] => $companies['name'],               
-    ]
-    );?>
-
-    <?= $form->field($model, 'letter_date')->textInput() ?>
-
-    <?= $form->field($model, 'letter_number')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'file')->widget(FileInput::className(),[
-        'options'=>['accept'=>'pdf/*','doc/*','docx/*'],
-        'pluginOptions' => [
-            'showUpload' => false,
-           // 'uploadUrl' => Url::to(['/site/upload']),
-            'allowFileExtensions' => ['pdf','jpeg'],
-            'maxFileSize' => 3000
-        ],
-        ])?>
-
-    <?= $form->field($model, 'inpector_name')->textInput(['maxlength' => true]) ?>
+        $companies['id'] => $companies['name'],               
+        ]
+        );?>
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <?= $form->field($model, 'comment')->textarea(['rows' => '6']) ?>
+         <?= $form->field($model, 'letter_date')->widget(DatePicker::className()) ?>
+         <?= $form->field($model, 'letter_number')->widget(\yii\widgets\MaskedInput::className(), [
+                'mask' => '99-999']) ?>
+       <?= $form->field($model, 'created_by')->dropdownList([                           
+            User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
+            
+            ]);?>
+        </div>
+        <div class="form-group col-sm-6">
+        <?= $form->field($model, 'file')->widget(FileInput::className(),[
+            'options'=>['accept'=>'pdf/*','doc/*','docx/*'],
+            'pluginOptions' => [
+                'showUpload' => false,
+            // 'uploadUrl' => Url::to(['/site/upload']),
+                'allowFileExtensions' => ['pdf','jpeg'],
+                'maxFileSize' => 3000
+            ],
+            ])?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

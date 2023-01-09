@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 use Yii;
 
 /**
@@ -77,7 +79,9 @@ class EmbargoController extends Controller
                 $num = Embargo::find()->sum('status');
                 $nums = Embargo::find()->where(['status'=>2])->all();
                 $sum = count($nums);
-                $model->message_number = ($num + 1) - $sum *2;}
+                $model->message_number = ($num + 1) - $sum *2;
+                $model->message_date = $model->updated_at;
+            }
                 elseif($model->status = 2){
                     $model->message->number = 0;
                 }
@@ -91,6 +95,46 @@ class EmbargoController extends Controller
                 'model' => $model,
             ]);
         }
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+    public function actionUploads($id){
+        $model = $this->findModel($id);
+        if($model->status == 1){
+            if(empty($model->file)){
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) ) {
+                 if(!empty($_FILES['Embargo']['name']['file'])){
+                     $file = UploadedFile::getInstance($model,'file');
+                     $berkas = $model->instruction->command_number.'-embargo'.'.'.$file->getExtension();
+                     $model->file = $berkas;
+                     $path = 'uploads/caution_embargo/';
+                     if(!file_exists($path)){
+                         FileHelper::createDirectory($path);
+                     }
+                     $file->saveAs($path.$berkas);
+                 }
+                 
+               if($model->save()){
+                    \Yii::$app->session->setFlash('success','Bazaga yuklandi');
+                   }                     
+                 return $this->redirect(['view', 'id' => $model->id]);
+                 
+                  
+                }
+            }
+            }else{
+                return '';
+            }
+            } else {
+                $model->loadDefaultValues();
+            }
+
+        return $this->render('uploads', [
+            'model' => $model,
+        ]);
+       
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

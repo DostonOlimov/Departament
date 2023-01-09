@@ -57,6 +57,8 @@ class Embargo extends ActiveRecord
             [['instructions_id', 'companies_id', 'comment','created_by', 'updated_by'], 'required'],
             [['instructions_id',  'companies_id','created_by','updated_by', 'status'], 'integer'],
             [['comment'], 'string'],
+            [['file'],'file','extensions'=> 'pdf,doc,docx'],
+            [['message_date'], 'string', 'max' => 255],
            // [['message_number'], 'unique'],
             [['created_at','updated_at'],'safe'],
         ];
@@ -70,6 +72,7 @@ class Embargo extends ActiveRecord
         return [
             //'id' => 'Ko\'rsatma ',
             'message_number' => 'Ko\'rsatma raqami',
+            'message_date' => 'Aniq sanasi',
             'instructions_id' => 'Tekshiruv kodi',
             'companies_id' => 'Korxona nomi',
             'comment' => 'Izoh',
@@ -78,6 +81,7 @@ class Embargo extends ActiveRecord
             'updated_by' => 'Nazoratchi F.I.SH',
             'created_at' => 'Ko\'rsatma sanasi',
             'updated_at' => 'Ko\'rsatma sanasi',
+            'file' => 'Tasdiqlangan file',
         ];
     }
 

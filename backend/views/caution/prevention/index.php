@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-
+use yii\bootstrap4\Breadcrumbs;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
@@ -13,11 +13,14 @@ $this->title = Yii::t('app', 'Bartaraf etish ko\'rsatmasi');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="prevention-index">
-
-    
-
-
-
+<?php
+    echo Breadcrumbs::widget([
+        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'options' => [
+        'class' => 'breadcrumb float-sm-right'
+                ]
+        ]);
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

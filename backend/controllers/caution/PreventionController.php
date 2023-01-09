@@ -11,6 +11,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 use Yii;
 
 /**
@@ -77,6 +79,43 @@ class PreventionController extends Controller
                 'model' => $model,
             ]);
         
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+    public function actionUploads($id){
+        $model = $this->findModel($id);
+            if(empty($model->file)){
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) ) {
+                 if(!empty($_FILES['Prevention']['name']['file'])){
+                     $file = UploadedFile::getInstance($model,'file');
+                     $berkas = $model->instruction->command_number.'-prevention'.'.'.$file->getExtension();
+                     $model->file = $berkas;
+                     $path = 'uploads/caution_prevention/';
+                     if(!file_exists($path)){
+                         FileHelper::createDirectory($path);
+                     }
+                     $file->saveAs($path.$berkas);
+                 }
+                 
+               if($model->save()){
+                    \Yii::$app->session->setFlash('success','Bazaga yuklandi');
+                   }                     
+                 return $this->redirect(['view', 'id' => $model->id]);
+                 
+                  
+                }
+            }
+            }else{
+                return '';
+            }
+            
+
+        return $this->render('uploads', [
+            'model' => $model,
+        ]);
+       
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

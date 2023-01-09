@@ -8,10 +8,6 @@ use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\bootstrap4\Breadcrumbs;
 
-/** @var yii\web\View $this */
-/** @var common\models\prevention\PreventionSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
-
 $this->title = Yii::t('app', 'Ogohlantirish xati');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -23,20 +19,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ])?>
         </div>
         <div class="col-sm-8" style="margin-left:-30px;">       
-
+        <?php echo Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'options' => [
+                    'class' => 'breadcrumb float-sm-right text-primary'
+                ]
+            ]);
+            ?>
                 <p>
                     <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['letters-search'], ['class' => 'btn btn-success']) ?>
                 </p>
-                <div class="">
-                    <?php
-                        echo Breadcrumbs::widget([
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            'options' => [
-                                'class' => 'p-2 bg-primary breadcrumb float-sm-right'
-                            ]
-                        ]);
-                        ?>
-                </div>
+                
                 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
                 <?= GridView::widget([
@@ -44,19 +37,46 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filterModel' => $searchModel,
                     'headerRowOptions' => ['style' => 'background-color: #0072B5'],
                     'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
+                       // ['class' => 'yii\grid\SerialColumn'],
 
-                        'id',
-                        'company_id',
+                        [
+                            'attribute'=> 'id',
+                            'value' => function ($data) {
+                                //$prevention = Prevention::findOne(['id' => $model->id]);
+    
+                                return $data ? $data->id : '';
+                            }
+                        ],
+                        [
+                            'attribute'=> 'company_id',
+                            'value' => function ($data) {
+                                //$prevention = Prevention::findOne(['id' => $model->id]);
+    
+                                return $data ? $data->company->name : '';
+                            }
+                        ],
                         'letter_date',
                         'letter_number',
-                        'file',
+                        [
+                            'attribute'=> 'created_by',
+                            'value'=> function($data){                               
+                                return $data ? $data->user->name .' '.$data->user->surname :'';
+                            }
+                        ],
                         //'inpector_name',
                         [
-                            // 'class' => ActionColumn::className(),
-                            // 'urlCreator' => function ($action, CautionLetters $model, $key, $index, $column) {
-                            //     return Url::toRoute([$action, 'id' => $model->id]);
-                            // }
+                            'class' => ActionColumn::className(),
+                            'template' => '{view}',
+                            'buttonOptions' => [
+                                'class' => 'text-primary'
+                            ],
+                            'urlCreator' => function ($action, $model, $key, $index) {
+                                if ($action === 'view') {
+                                    $url = Url::to(['caution/letters-view', 'id' => $model->id]);
+                                    return $url;
+                                }
+                               
+                            }
                         ],
                     ],
                 ]); ?>
