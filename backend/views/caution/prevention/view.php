@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap4\Breadcrumbs;
+use yii\helpers\Url;
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
 
@@ -86,5 +87,14 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
             ]
         ],
     ]) ?>
+    
+    <div class="embed-responsive embed-responsive-16by9">
+    <?php if(!empty($model->file)):?>
+    <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_prevention/{$model->file}", true);?>" 
+        title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
+        height="600px">
+    </iframe>
+    <?php endif;?>
+    </div>
 
 </div>

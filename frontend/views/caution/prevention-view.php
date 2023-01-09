@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use frontend\widgets\StepsPrevention;
 use yii\bootstrap4\Breadcrumbs;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
@@ -93,5 +94,8 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 ],
             ],
         ]) ?>
+        <div class="embed-responsive embed-responsive-16by9">
+        <iframe style="width:100%;height:100%" class="" src="<?php echo Url::to("backend/web/uploads/caution_embargo/{$model->file}", true);?>"></iframe>
+    </div>
     </div>
 </div>

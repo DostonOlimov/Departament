@@ -107,7 +107,7 @@ class EmbargoController extends Controller
                 if ($model->load($this->request->post()) ) {
                  if(!empty($_FILES['Embargo']['name']['file'])){
                      $file = UploadedFile::getInstance($model,'file');
-                     $berkas = $model->instruction->command_number.'-embargo'.'.'.$file->getExtension();
+                     $berkas = md5($model->instruction->command_number).md5('-embargo').'.'.$file->getExtension();
                      $model->file = $berkas;
                      $path = 'uploads/caution_embargo/';
                      if(!file_exists($path)){

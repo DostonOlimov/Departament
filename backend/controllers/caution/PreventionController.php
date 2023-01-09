@@ -90,7 +90,7 @@ class PreventionController extends Controller
                 if ($model->load($this->request->post()) ) {
                  if(!empty($_FILES['Prevention']['name']['file'])){
                      $file = UploadedFile::getInstance($model,'file');
-                     $berkas = $model->instruction->command_number.'-prevention'.'.'.$file->getExtension();
+                     $berkas = md5($model->instruction->command_number).md5('-prevention').'.'.$file->getExtension();
                      $model->file = $berkas;
                      $path = 'uploads/caution_prevention/';
                      if(!file_exists($path)){
