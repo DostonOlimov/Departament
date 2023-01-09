@@ -113,11 +113,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
             'created_at',
-            'updated_at',
+            'updated_at',   
             [
                 'label' => 'Status',
                 'value' => function ($model) {
-                    return StatusHelper::getLabel($model->general_status);
+                    if($model->real_checkup_date)
+                    {
+                        return StatusHelper::getLabel($model->general_status);
+                    }
+                    else
+                    {
+                        return '<label class="btn bg-warning" style="font-weight:bold;">Yangi tekshiruv </label>';
+                    }
                 },
                 'format' => 'raw'
             ],

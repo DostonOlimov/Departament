@@ -66,7 +66,7 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                 [
                     'attribute' => 'real_checkup_date',
                     'value' => function(Instruction $model) {
-                        return $model->real_checkup_date ? $model->real_checkup_date : 'Kiritilmagan';
+                        return $model->real_checkup_date ? $model->real_checkup_date : 'Boshlanmagan';
                     }
                 ],
                 [

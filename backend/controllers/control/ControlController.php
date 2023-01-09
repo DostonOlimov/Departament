@@ -68,8 +68,7 @@ class ControlController extends Controller
 
     public function actionInstruction()
     {
-        $model = new Instruction();
-        
+        $model = new Instruction();     
         if ($model->load($this->request->post()) ) {
             if($model->dn == 1)
             {

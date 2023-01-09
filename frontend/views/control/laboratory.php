@@ -41,10 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </table>
     <div class="row">
     <div class="col-sm-6">
-                <?= $form->field($model, 'start_date')->textInput(['type' => 'date']) ?>
-            </div>
-    <div class="col-sm-6">
-                <?= $form->field($model, 'finish_date')->textInput(['type' => 'date']) ?>
+        <?= $form->field($model, 'finish_date')->textInput(['type' => 'date']) ?>
      </div>
     </div>
     <div class="col-md-6 col-lg-8">

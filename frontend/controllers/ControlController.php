@@ -596,19 +596,19 @@ class ControlController extends Controller
         $company = Company::findOne(['id' => $company_id]);
         $ins = Instruction::findOne(['id' => $company->control_instruction_id]);
         if ($model->load(Yii::$app->request->post()) &&  $model->save()) {
-            $ins->real_checkup_date = $model->start_date;
-            $ins->checkup_finish_date = $model->finish_date;
-            $ins->employers = 1;
-            $ins->save();
-            if($model->finish_dalolatnoma){
-                return $this->redirect(['laboratory-view', 'company_id' => $company_id]);
+            if($model->finish_date)
+            {
+                $ins->checkup_finish_date = $model->finish_date;
+                $ins->employers = 1;
+                $ins->general_status = Instruction::GENERAL_STATUS_SEND;
+                $ins->save();
             }
-            else{
+           
                 return $this->render('laboratory-view', [
                     'model' => $model,
                     
                 ]);
-            }
+            
            
         }
 

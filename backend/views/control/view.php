@@ -65,14 +65,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'command_date:date',
             'command_number',
             'checkup_begin_date:date',
-            'checkup_finish_date:date',
             [
                 'attribute' => 'checkup_duration',
                 'value' => function ($model) {
                     return $model->checkup_duration.'-kun';
                 }
             ],
-            'real_checkup_date:date',
+            [
+                'attribute' => 'real_checkup_date',
+                'value' => function(Instruction $model) {
+                    return $model->real_checkup_date ? $model->real_checkup_date : 'Boshlanmagan';
+                }
+            ],
+            [
+                'attribute' => 'checkup_finish_date',
+                'value' => function(Instruction $model) {
+                    return $model->checkup_finish_date ? $model->checkup_finish_date : 'Yakunlanmagan';
+                }
+            ],
             'checkup_duration_start_date:date',
             'checkup_duration_finish_date:date',
             'who_send_letter',

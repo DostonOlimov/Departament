@@ -92,9 +92,21 @@ class InstructionController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['/control/control/view', 'id' => $model->id]);
+        if ($model->load($this->request->post()) ) {
+            $model->checkup_finish_date = '';
+            $model->real_checkup_date = '';
+            $model->employers =1;
+            $typeRes = '';
+            $subject = $model->checkup_subject;
+            foreach ( $subject as $key => $type) {
+                $typeRes .= $type.'.';
+            }
+            $model->checkup_subject = $typeRes;
+            if($model->validate() && $model->save()) {
+                return $this->redirect(['/control/control/view', 'id' => $model->id]);
+            }
         }
+        
 
         return $this->render('update', [
             'model' => $model,
