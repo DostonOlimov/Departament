@@ -17,7 +17,7 @@
         "php": ">=5.6.0",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "kartik-v/yii2-widget-fileinput": "1.1.x-dev",
+        "kartik-v/yii2-widget-fileinput": "dev-master",
         "yii-dream-team/yii2-upload-behavior": "dev-master",
         "kartik-v/yii2-widget-select2": "2.2.x-dev",
         "wbraganca/yii2-dynamicform": "*",
@@ -27,7 +27,8 @@
         "almasaeed2010/adminlte": "dev-master",
         "kartik-v/yii2-date-range": "dev-master",
         "kartik-v/yii2-widget-depdrop": "dev-master",
-        "kartik-v/yii2-money": "*"
+        "kartik-v/yii2-money": "*",
+        "kartik-v/yii2-krajee-base": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

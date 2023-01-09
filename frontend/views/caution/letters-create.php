@@ -6,11 +6,11 @@ use yii\helpers\ArrayHelper;
 use frontend\widgets\StepsPrevention;
 use common\models\User;
 use kartik\date\DatePicker;
+use kartik\file\FileInput;
 use yii\widgets\ActiveForm;
-use common\models\prevention\Embargo;
 use common\models\control\Instruction;
 use common\models\control\Company;
-use kartik\select2\Select2;
+//use kartik\select2\Select2;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
@@ -22,48 +22,42 @@ $this->title = Yii::t('app', 'Taqiqlash');
                     
     ]) ?>
     </div-->
-    <form action="<?= \yii\helpers\Url::to(['caution/embargo-create']) ?>" method="get">
+    <form action="<?= \yii\helpers\Url::to(['caution/letters-create']) ?>" method="get">
     <label for="">Tekshiruv kodi</label>
         <input class="form-control" name="q" type="text" required minlength="5" maxlength="20" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tekshiruv kodini kiriting...';}" required=""><br>
         <input class="btn btn-primary" type="submit" value="Qidiruv">
-
-    </form>
-       
- 
+    </form>       
     <?php if(!empty($codes)): ?>
-       <?php 
-     
-        //$companies=ArrayHelper::map($companies,'id','name');?>
-       
-                    
-                    <?php foreach($codes as $code): ?>
-                     
-                    <?php endforeach;?>
-                   
-                    <?php $form = ActiveForm::begin(); ?>
-                    <?= $form->field($model, 'instructions_id')->dropdownList([                           
-                         $code['id'] => $code['command_number']
-                           
-                        ]
-                    );?>
-                    
-                    <?= $form->field($model, 'companies_id')->dropdownList([                           
-                          $companies['id'] => $companies['name'],
-                           
-                        ]
-                    );?>
-                    <?= $form->field($model, 'comment')->textarea(['rows' => '6']) ?>
-                   
-                    <!--?= $form->field($model, 'inspector_name')->textInput() ?-->
-                     <?= $form->field($model, 'created_by')->dropdownList([                           
-                           User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
-                          
-                          ]);?>
-                    
-                    <div class="form-group">
-                        <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
-                    </div>
-            <?php ActiveForm::end(); ?>            
+        <?php foreach($codes as $code): ?>
+        <?php endforeach;?>    
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'company_id')->dropdownList([                           
+      $companies['id'] => $companies['name'],               
+    ]
+    );?>
+
+    <?= $form->field($model, 'letter_date')->textInput() ?>
+
+    <?= $form->field($model, 'letter_number')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'file')->widget(FileInput::className(),[
+        'options'=>['accept'=>'pdf/*','doc/*','docx/*'],
+        'pluginOptions' => [
+            'showUpload' => false,
+           // 'uploadUrl' => Url::to(['/site/upload']),
+            'allowFileExtensions' => ['pdf','jpeg'],
+            'maxFileSize' => 3000
+        ],
+        ])?>
+
+    <?= $form->field($model, 'inpector_name')->textInput(['maxlength' => true]) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>          
             <?php else: ?>
                 <div class="row">
                 <div class="alert alert-primary d-flex align-self-center align-items-center justify-content-md-center" role="alert">

@@ -22,7 +22,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                     
     ]) ?>
     </div-->
-    <form action="<?= \yii\helpers\Url::to(['prevention/create']) ?>" method="get">
+    <form action="<?= \yii\helpers\Url::to(['caution/prevention-create']) ?>" method="get">
     <label for="">Tekshiruv kodi</label>
         <input class="form-control" name="q" type="text" required minlength="5" maxlength="20" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tekshiruv kodini kiriting...';}" required=""><br>
         <input class="btn btn-primary" type="submit" value="Qidiruv">

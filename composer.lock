@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfd2a4ecfe3c7366cca182f1e7d9f9c3",
+    "content-hash": "6e2a8ac80acc91207d02807608118e62",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -6517,7 +6517,8 @@
         "kartik-v/yii2-widget-datepicker": 20,
         "almasaeed2010/adminlte": 20,
         "kartik-v/yii2-date-range": 20,
-        "kartik-v/yii2-widget-depdrop": 20
+        "kartik-v/yii2-widget-depdrop": 20,
+        "kartik-v/yii2-krajee-base": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
