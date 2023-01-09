@@ -2,7 +2,7 @@
 
 use common\models\control\Company;
 use common\models\control\Instruction;
-use common\models\control\Measure;
+use common\models\control\InstructionUser;
 use common\models\Region;
 use common\models\User;
 use frontend\models\StatusHelper;
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            
             [
                 'attribute' => 'region_id',
                 'label' => 'Hudud',
@@ -102,10 +102,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'created_by',
                 'label' => 'Mutaxassis',
                 'value' => function ($model) {
-                    return $model->createdBy->username;
+                    $re_users = '';
+                    $in_users = InstructionUser::findAll(['instruction_id'=>$model->id]);
+                    foreach ($in_users as $user) {
+                       $name =  User::findOne([$user->user_id]);
+                        $re_users .= $name->username.',';
+                    }
+                    return $re_users;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
+            'created_at',
+            'updated_at',
             [
                 'label' => 'Status',
                 'value' => function ($model) {

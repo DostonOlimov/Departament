@@ -113,6 +113,26 @@ class ControlController extends Controller
         ]);
     }
 
+    public function actionFirstStep($id)
+    {
+        $model = Instruction::findOne(['id' => $id]);
+        
+        if ($model->load($this->request->post()) ) {
+            $model->real_checkup_date = $model->first_date;
+            $model->checkup_finish_date = '';
+            $model->employers = 1;
+            if($model->validate() && $model->save(false))
+            {
+            $company_id = Company::findOne(['control_instruction_id' => $model->id])->id;
+            return $this->redirect(['primary-data', 'company_id' => $company_id]);
+        } 
+       
+    }
+        return $this->render('first-step', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionInstructionView($id)
     {
         return $this->render('instruction-view', [

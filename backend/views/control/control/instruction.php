@@ -14,7 +14,12 @@ use yii\widgets\ActiveForm;
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<style>
+    body 
+    {
+        background-color:antiquewhite !important;
+    }
+</style>
 
 
     <?php $form = ActiveForm::begin() ?>

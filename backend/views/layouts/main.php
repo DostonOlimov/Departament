@@ -6,6 +6,7 @@
 use backend\assets\AdminLteAsset;
 use backend\assets\FontAwesomeAsset;
 use yii\helpers\Html;
+use common\widgets\Alert;
 
 FontAwesomeAsset::register($this);
 AdminLteAsset::register($this);
@@ -34,7 +35,7 @@ $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/admi
 
     <!-- Main Sidebar Container -->
     <?= $this->render('sidebar', ['assetDir' => $assetDir]) ?>
-
+    <?= Alert::widget() ?>
     <!-- Content Wrapper. Contains page content -->
     <?= $this->render('content', ['content' => $content, 'assetDir' => $assetDir]) ?>
     <!-- /.content-wrapper -->
@@ -46,7 +47,7 @@ $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/admi
     <!-- Main Footer -->
     <?= $this->render('footer') ?>
 </div>
-
+<script src="https://kit.fontawesome.com/f107c55bf5.js" crossorigin="anonymous"></script>
 <?php $this->endBody() ?>
 </body>
 </html>

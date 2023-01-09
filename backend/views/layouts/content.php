@@ -2,6 +2,8 @@
 /* @var $content string */
 
 use yii\bootstrap4\Breadcrumbs;
+use common\widgets\Alert;
+use yii\bootstrap4\Html;
 ?>
 <div class="content-wrapper" >
     <!-- Content Header (Page header) -->
@@ -22,9 +24,10 @@ use yii\bootstrap4\Breadcrumbs;
             </div><!-- /.row -->    
     </div>
     <!-- /.content-header -->
-
+  
     <!-- Main content -->
     <div class="content">
+    <?= Alert::widget() ?>
         <?= $content ?><!-- /.container-fluid -->
     </div>
     <!-- /.content -->

@@ -14,7 +14,7 @@ use common\models\control\Measure;
 use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
-use common\models\control\ProPrimaryData;
+use common\models\control\PrimaryProductNd;
 use Exception;
 use Yii;
 use yii\filters\AccessControl;
@@ -113,7 +113,7 @@ class InstructionController extends Controller
                     if ($nd = PrimaryProduct::findOne(['control_primary_data_id' => $primaryData->id])) {
 			//\yii\helpers\VarDumper::dump($nd,12,true);die;
 			//\yii\helpers\VarDumper::dump(ProPrimaryData::deleteAll(['control_pxrimary_id' => $nd->id]),12,true);die;
-                        ProPrimaryData::deleteAll(['control_primary_id' => $nd->id]);
+                    PrimaryProductNd::deleteAll(['control_primary_id' => $nd->id]);
                     }
 		    PrimaryProduct::deleteAll(['control_primary_data_id' => $primaryData->id]);    
                     PrimaryOv::deleteAll(['control_primary_data_id' => $primaryData->id]);
@@ -123,7 +123,7 @@ class InstructionController extends Controller
                 Laboratory::deleteAll(['control_company_id' => $company->id]);
                 Defect::deleteAll(['control_company_id' => $company->id]);
                 Caution::deleteAll(['control_company_id' => $company->id]);
-		Measure::deleteAll(['control_company_id' => $company->id]);
+		        Measure::deleteAll(['control_company_id' => $company->id]);
                 $company->delete();
                 InstructionUser::deleteAll(['instruction_id' => $id]);
                 $this->findModel($id)->delete();

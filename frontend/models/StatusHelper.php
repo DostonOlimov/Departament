@@ -15,7 +15,7 @@ class StatusHelper
         if ($status == Instruction::GENERAL_STATUS_DONE) {
             $class = 'success';
         }
-        return '<label class="btn bg-' . $class . '">' . Instruction::getStatus($status) . '</label>';
+        return '<label class="btn bg-' . $class . '" style="font-weight:bold;color:white;">' . Instruction::getStatus($status) . '</label>';
 
     }
 
@@ -28,7 +28,7 @@ class StatusHelper
         if ($status == \common\models\profilactic\Instruction::GENERAL_STATUS_DONE) {
             $class = 'success';
         }
-        return '<label class="btn bg-' . $class . '">' . Instruction::getStatus($status) . '</label>';
+        return '<label class="btn bg-' . $class . '" style="font-weight:bold;">' . Instruction::getStatus($status) . '</label>';
 
     }
 }

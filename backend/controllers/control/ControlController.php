@@ -71,7 +71,10 @@ class ControlController extends Controller
         $model = new Instruction();
         
         if ($model->load($this->request->post()) ) {
-            
+            if($model->dn == 1)
+            {
+                $model->letter_number = '';
+            }
             if($model->validate())
             {
                

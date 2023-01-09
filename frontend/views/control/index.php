@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $company ? $company->region->name : '';
                 }
             ],
-            [
+          /*  [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}',
                 'buttonOptions' => [
@@ -60,20 +60,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     'view' => function ($url, $model) {
                         return Html::a('', $url);
                     },
-                ],*/
+                ],/
                 'urlCreator' => function ($action, $searchmodel, $key, $index) {
                     if ($action === 'view') {
                         $url = Url::to(['control/instruction-view', 'id' => $searchmodel->id]);
                         return $url;
                     }
                 }
-            ],
+            ], */
+           
             [
                 'label' => 'Xyus nomi',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->name, ['/control/instruction-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->name;
                     }
                     return '';
                 },
@@ -84,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->inn, ['/control/instruction-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->inn;
                     }
                     return '';
                 },
@@ -120,18 +121,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Status',
+                'label' => 'Holat',
                 'value' => function ($model) {
-                   // $company_id = Company::findOne(['control_instruction_id' => $model->id])->id;
-                   // $data = PrimaryData::findOne(['company_id' => $company_id ]);
-                   
-                        return StatusHelper::getLabel($model->general_status);
-                   /* }
+                    $f =' <i class="bi bi-eye"></i>';
+                    if ($model->real_checkup_date) {
+                        return Html::a('Ko\'rish&nbsp&nbsp&nbsp&nbsp', ['/control/instruction-view', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
+                    }
                     else
                     {
-                        return 'yangi tekshiruv';
+                        return Html::a('Boshlash', ['/control/first-step', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
                     }
-                    */
+                   
+                },
+                'format' => 'raw',
+            ],
+            [
+                'label' => 'Status',
+                'value' => function ($model) {
+                    if($model->real_checkup_date)
+                    {
+                        return StatusHelper::getLabel($model->general_status);
+                    }
+                    else
+                    {
+                        return '<label class="btn bg-warning" style="font-weight:bold;">Yangi tekshiruv </label>';
+                    }
                 },
                 'format' => 'raw'
             ],

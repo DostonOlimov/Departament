@@ -86,7 +86,7 @@ class InstructionSearch extends Instruction
         $query->andFilterWhere([
             'id' => $this->id,
             'base' => $this->base,
-            'type' => $this->type,
+         //   'type' => Instruction::getType($this->type),
             'checkup_duration_finish_date' => $this->checkup_duration_finish_date,
             'checkup_duration_start_date' => $this->checkup_duration_start_date,
             'real_checkup_date' => $this->real_checkup_date,
@@ -95,7 +95,7 @@ class InstructionSearch extends Instruction
             'letter_date' => $this->letter_date,
             'command_date' => $this->command_date,
             'checkup_begin_date' => $this->checkup_begin_date,
-            'control_instructions.created_by' => $this->created_by,
+            'instruction_users.user_id' => $this->created_by,
             'regions.id' => $this->region_id,
         ]);
 
