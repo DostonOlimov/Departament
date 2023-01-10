@@ -71,7 +71,7 @@ use common\models\User;
                     ]
                     
                     ],
-                    ['label' => 'Ogohlantirish', 'url' => ['#'], 'iconStyle' => 'far'],
+                    ['label' => 'Ogohlantirish xati', 'url' => ['caution/letters/index'], 'iconStyle' => 'far'],
                    
                 ],
             ], 
@@ -96,7 +96,7 @@ use common\models\User;
                         ]
                         
                         ],
-                        ['label' => 'Ogohlantirish', 'url' => ['#'], 'iconStyle' => 'far'],
+                        ['label' => 'Ogohlantirish xati', 'url' => ['caution/letters/index'], 'iconStyle' => 'far'],
                        
                     ],
                 ]    

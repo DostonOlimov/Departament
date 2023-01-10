@@ -92,10 +92,10 @@ class PreventionController extends Controller
                      $file = UploadedFile::getInstance($model,'file');
                      $berkas = md5($model->instruction->command_number).md5('-prevention').'.'.$file->getExtension();
                      $model->file = $berkas;
-                     $path = 'uploads/caution_prevention/';
-                     if(!file_exists($path)){
-                         FileHelper::createDirectory($path);
-                     }
+                     $path = '@frontend/web/uploads/caution_prevention/';
+                    //  if(!file_exists($path)){
+                    //      FileHelper::createDirectory($path);
+                    //  }
                      $file->saveAs($path.$berkas);
                  }
                  

@@ -2,43 +2,40 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use frontend\widgets\StepsPrevention;
-use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
+use yii\bootstrap4\Breadcrumbs;
 
 /** @var yii\web\View $this */
-/** @var common\models\prevention\Prevention $model */
+/** @var common\models\caution\CautionLetters $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Bartaraf_etish'), 'url' => ['prevention']];
+$this->title = 'Ogohlantirish xati №'.$model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ogohlantirish xati №'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-$this->title = Yii::t('app', 'Bartaraf_etish');
 ?>
-<div class="row">
-    <div class="col-sm-4">
-        <?= StepsPrevention::widget([
-                        
-        ])?>
-    </div>
-
-    <div class="col-sm-8" style="margin-left:-30px">
+<div class="caution-letters-view">
+    <p>
+        
+    <?php echo Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                'options' => [
+                    'class' => 'breadcrumb float-sm-right text-primary'
+                ]
+            ]);
+            ?>
+    <?= Html::a(Yii::t('app', 'Tahrirlash'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     
-                    <?php
-                        echo Breadcrumbs::widget([
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            'options' => [
-                                'class' => 'p-2 bg-primary breadcrumb float-sm-right'
-                            ]
-                        ]);
-                        ?>
-                
-        <?= DetailView::widget([
+    <?= Html::a(Yii::t('app', 'File yuklash'), ['uploads', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
+        
+    </p>
+
+    <?= DetailView::widget([
             'model' => $model,
             
             'attributes' => [
                 [
-                    'label' => 'Yozma ko\'rsatma raqami',
+                    'label' => '№',
                     'value' => function ($data) {
                     // $prevention = Prevention::findOne(['id' => $model->id]);
                         return $data ? $data->id : '';
@@ -73,17 +70,11 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                         return $data ? $data->company->phone : '';
                     }
                 ],
-
-                [
-                    'label' => 'Tekshiruv kodi',
-                    'value' => function ($data) {
-                        // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
-                        return $data ? $data->instruction->command_number : '';
-                    }
-                ],
             
                 //'created_at',
-                'updated_at',
+                'letter_date',
+                'letter_number',
+                //'file',
                 'comment',
                 [
                     'attribute'=> 'created_by',
@@ -94,12 +85,11 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 ],
             ],
         ]) ?>
-         <?php if(!empty($model->file)):?>
-        <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_prevention/{$model->file}", true);?>" 
+        <?php if(!empty($model->file)):?>
+        <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_letter/{$model->file}", true);?>" 
             title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
             height="600px">
         </iframe>
         <?php endif;?>
-        </div>
-    </div>
+
 </div>

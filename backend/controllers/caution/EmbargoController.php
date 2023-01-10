@@ -109,10 +109,10 @@ class EmbargoController extends Controller
                      $file = UploadedFile::getInstance($model,'file');
                      $berkas = md5($model->instruction->command_number).md5('-embargo').'.'.$file->getExtension();
                      $model->file = $berkas;
-                     $path = 'uploads/caution_embargo/';
-                     if(!file_exists($path)){
-                         FileHelper::createDirectory($path);
-                     }
+                     $path = '@frontend/web/uploads/caution_embargo/';
+                    //  if(!file_exists($path)){
+                    //      FileHelper::createDirectory($path);
+                    //  }
                      $file->saveAs($path.$berkas);
                  }
                  

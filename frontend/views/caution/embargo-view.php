@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
              <?php if(!empty($model->file)):?>
-            <iframe class="iframemargins" src="<?php echo Url::to("@backend/web/uploads/caution_embargo/{$model->file}", true);?>" 
+            <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_embargo/{$model->file}", true);?>" 
                 title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
                 height="600px">
             </iframe>
