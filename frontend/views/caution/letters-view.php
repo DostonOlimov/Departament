@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use frontend\widgets\StepsPrevention;
 use yii\bootstrap4\Breadcrumbs;
+use yii\helpers\Url;
 
 
 $this->title = $model->id;
@@ -74,7 +75,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 //'created_at',
                 'letter_date',
                 'letter_number',
-                'file',
+                //'file',
                 'comment',
                 [
                     'attribute'=> 'created_by',
@@ -85,5 +86,13 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 ],
             ],
         ]) ?>
+        <div class="embed-responsive embed-responsive-16by9">
+        <?php if(!empty($model->file)):?>
+        <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_letter/{$model->file}", true);?>" 
+            title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
+            height="600px">
+        </iframe>
+        <?php endif;?>
+        </div>
     </div>
 </div>

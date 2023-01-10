@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 'format' => 'raw',
             ],
-            'file',
+            //'file',
             //'message_date',
             //'created_at',
             'updated_at',

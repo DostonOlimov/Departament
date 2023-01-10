@@ -8,6 +8,7 @@ use common\models\control\Instruction;
 use common\models\embargo\Embargo;
 use frontend\widgets\StepsEmbargo;
 use yii\bootstrap4\Breadcrumbs;
+use yii\helpers\Url;
 
 
 /** @var yii\web\View $this */
@@ -112,6 +113,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'updated_at',
                 ],
             ]) ?>
+             <?php if(!empty($model->file)):?>
+            <iframe class="iframemargins" src="<?php echo Url::to("@backend/web/uploads/caution_embargo/{$model->file}", true);?>" 
+                title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
+                height="600px">
+            </iframe>
+            <?php endif;?>
+            </div>
     </div>
 
 </div>

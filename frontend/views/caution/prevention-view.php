@@ -94,8 +94,12 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 ],
             ],
         ]) ?>
-        <div class="embed-responsive embed-responsive-16by9">
-        <iframe style="width:100%;height:100%" class="" src="<?php echo Url::to("backend/web/uploads/caution_embargo/{$model->file}", true);?>"></iframe>
-    </div>
+         <?php if(!empty($model->file)):?>
+        <iframe class="iframemargins" src="<?php echo Url::to("@backend/web/uploads/caution_prevention/{$model->file}", true);?>" 
+            title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
+            height="600px">
+        </iframe>
+        <?php endif;?>
+        </div>
     </div>
 </div>

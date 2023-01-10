@@ -328,7 +328,7 @@ class CautionController extends Controller
             $model->updated_by = $model->created_by;
             if(!empty($_FILES['CautionLetters']['name']['file'])){
                 $file = UploadedFile::getInstance($model,'file');
-                $berkas = $model->company_id.'-.'.$file->getExtension();
+                $berkas = md5($model->company_id).'-.'.$file->getExtension();
                 $model->file = $berkas;
                 $path = 'uploads/caution_letter/';
                 if(!file_exists($path)){
