@@ -4,6 +4,7 @@ use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\control\Measure;
 use frontend\models\StatusHelper;
+use frontend\widgets\StepsReestr;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -33,6 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
         background-color: grey;
     }
 </style>
+<div class="row">
+    <div class="col-4">
+        <?= StepsReestr::widget([
+            ])?>
+    </div>
+     <div class="col-sm-8">       
+    </div>
+</div>
+
 <div class="company-index m-5">
 
     <?= GridView::widget([

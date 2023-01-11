@@ -123,7 +123,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Holat',
                 'value' => function ($model) {
-                    $f =' <i class="bi bi-eye"></i>';
                     if ($model->real_checkup_date) {
                         return Html::a('Ko\'rish&nbsp&nbsp&nbsp&nbsp', ['/control/instruction-view', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }

@@ -75,6 +75,10 @@ class InstructionSearch extends Instruction
             'asc' => ['control_companies.name' => SORT_ASC],
             'desc' => ['control_companies.name' => SORT_DESC],
         ];
+        $dataProvider->sort->attributes['address'] = [
+            'asc' => ['control_companies.address' => SORT_ASC],
+            'desc' => ['control_companies.address' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -105,7 +109,7 @@ class InstructionSearch extends Instruction
             ->andFilterWhere(['like', 'command_number', $this->command_number])
             ->andFilterWhere(['like', 'control_companies.name', $this->name])
             ->andFilterWhere(['like', 'control_companies.address', $this->address])
-            ->andFilterWhere(['like', 'control_companies.type', $this->type])
+            ->andFilterWhere(['like', 'control_companies.typee', $this->type])
             ->andFilterWhere(['like', 'control_companies.inn', $this->inn])
             ->andFilterWhere(['like', 'checkup_finish_date', $this->checkup_finish_date]);
 

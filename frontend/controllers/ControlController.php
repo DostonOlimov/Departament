@@ -25,7 +25,6 @@ use common\models\types\ProductClass;
 use common\models\Model;
 use common\models\Codetnved;
 use common\models\control\ControlProductMeasures;
-use common\models\control\ProductType;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;

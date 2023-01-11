@@ -48,6 +48,7 @@ class m210915_122841_create_pro_results_table extends Migration
 
         $this->createIndex('index-pro_results-updated_by', 'pro_results', 'updated_by');
         $this->addForeignKey('fkey-pro_results-updated_by', 'pro_results', 'updated_by', 'user', 'id', 'RESTRICT', 'RESTRICT');
+    
     }
 
     public function safeDown()

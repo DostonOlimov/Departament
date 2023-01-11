@@ -145,9 +145,9 @@ $codetnved = [];
                         'formFields' => [
                             'sector_id',
                             'group',
+                            'class',
                             'position',
                             'subposition',
-                            'class',
                             'made_country',
                             'product_measure',
                             'product_purpose',

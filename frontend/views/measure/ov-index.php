@@ -7,6 +7,7 @@ use frontend\models\StatusHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use frontend\widgets\StepsReestr;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\control\InstructionSearch */
@@ -33,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         background-color: grey;
     }
 </style>
-<div class="company-index m-5">
+<div class="company-index m-5 ">
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
