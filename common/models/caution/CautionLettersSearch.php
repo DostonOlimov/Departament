@@ -40,7 +40,7 @@ class CautionLettersSearch extends CautionLetters
      */
     public function search($params)
     {
-        $query = CautionLetters::find()->where(['company_id'=>$params]);
+        $query = CautionLetters::find();
 
         // add conditions that should always apply here
 
