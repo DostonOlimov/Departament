@@ -24,7 +24,7 @@ use yii\helpers\Url;?>
                 <a class="dropdown-item" href="<?= Url::to(['/measure/ov-index']) ?>">O'lchov vositasini taqiqlash</a>
                 <a class="dropdown-item" href="<?= Url::to(['/measure/realization-index']) ?>">Realizatsiyani taqiqlash</a>
                 <a class="dropdown-item" href="<?= Url::to(['/measure/economic-index']) ?>">Iqtisodiy jarima</a>
-                <a class="dropdown-item" href="<?= Url::to(['/measure/executive-index']) ?>">Ma'muriy bayonnoma</a>
+                <a class="dropdown-item" href="<?= Url::to(['/measure/execution-index']) ?>">Ma'muriy bayonnoma</a>
             </div>
         </div>
         </ul>

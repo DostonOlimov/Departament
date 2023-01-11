@@ -5,10 +5,15 @@ namespace frontend\controllers;
 use common\models\caution\Execution;
 use common\models\User;
 use common\models\control\Company;
-use common\models\control\Instruction;
+use common\models\measure\Executions;
 use common\models\control\InstructionSearch;
+use common\models\measure\ExecutionsSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use common\models\Model;
+use Yii;
+use Exception;
+use yii\helpers\VarDumper;
 
 /**
  * cautions controller
@@ -64,7 +69,7 @@ class MeasureController extends Controller
         $searchModel = new InstructionSearch(\Yii::$app->user->id);
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('ov-index', [
+        return $this->render('realization-index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -94,7 +99,7 @@ class MeasureController extends Controller
         $searchModel = new InstructionSearch(\Yii::$app->user->id);
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('ov-index', [
+        return $this->render('economic-index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -119,41 +124,68 @@ class MeasureController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionExecutiveIndex()
+    public function actionExecutionIndex()
     {
         $searchModel = new InstructionSearch(\Yii::$app->user->id);
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('ov-index', [
+        return $this->render('execution-index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionExecutive()
+    public function actionExecution($id)
     {
-        $searchModel = new InstructionSearch(\Yii::$app->user->id);
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $model = [new Executions];
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        if (Yii::$app->request->post()) {
+
+            $model = Model::createMultiple(Executions::classname(), $model);
+            Model::loadMultiple($model, $this->request->post());
+
+            foreach ($model as $index => $modelOptionValue) {
+                $modelOptionValue->s_claim = \yii\web\UploadedFile::getInstance($modelOptionValue, "[{$index}]claim");
+                $modelOptionValue->s_explanation_letter = \yii\web\UploadedFile::getInstance($modelOptionValue, "[{$index}]explanation_letter");
+                $modelOptionValue->s_court_letter = \yii\web\UploadedFile::getInstance($modelOptionValue, "[{$index}]court_letter");
+                if ($modelOptionValue->s_explanation_letter) {
+                    $modelOptionValue->explanation_letter = $modelOptionValue->s_explanation_letter->name;
+                }
+                if($modelOptionValue->s_claim)  {
+                    $modelOptionValue->claim = $modelOptionValue->s_claim->name;
+                }   
+                if($modelOptionValue->s_court_letter){    
+                    $modelOptionValue->court_letter = $modelOptionValue->s_court_letter->name;
+                
+                }
+            }
+            if (Model::validateMultiple($model)) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    foreach ($model as $key => $product) {
+                        $product->band_mjtk = ','.$product->m212.','.$product->m213.','.$product->m214;
+                        $product->control_instruction_id = $id;
+                        $product->save(false);
+                    }
+                    $transaction->commit();
+                    return $this->redirect(['execution-view','id'=> $id]);
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+        }
+
+        return $this->render('execution', [
+            'model' => $model,
         ]);
     }
-    public function actionExecutiveView()
-    {
-        $searchModel = new InstructionSearch(\Yii::$app->user->id);
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+    public function actionExecutionView($id)
+    { 
+        return $this->render('execution-view', [
+            'model' => Executions::find()->where(['control_instruction_id' => $id])->all(),
+            'id' => $id,
         ]);
     }
-   
-  
 
-
-
-      
 
 }

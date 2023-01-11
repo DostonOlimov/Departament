@@ -2,6 +2,7 @@
 
 use common\models\control\Company;
 use common\models\control\Instruction;
+use common\models\measure\Executions;
 use common\models\control\Measure;
 use frontend\models\StatusHelper;
 use yii\helpers\Html;
@@ -78,13 +79,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Ma\'muriy jarima qo\'llash',
+                'label' => 'Ma\'muriy jarimalar',
                 'value' => function ($model) {
-                    $company = Company::findOne(['control_instruction_id' => $model->id]);
-                    if ($company) {
-                        return Html::a('qo\'shish', ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                    $ex = Executions::findOne(['control_instruction_id' => $model->id]);
+                    if ($ex) {
+                        return Html::a('Ko\'rish&nbsp&nbsp&nbsp&nbsp', ['/measure/execution-view', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }
-                    return '';
+                    else
+                    {
+                        return Html::a('Qo\'shish', ['/measure/execution', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
+                    }
+                   
                 },
                 'format' => 'raw',
             ],

@@ -111,10 +111,11 @@ class Caution extends \yii\db\ActiveRecord
             BlameableBehavior::class,
             [
                 'class' => FileUploadBehavior::class,
-                'attribute' => 's_file',
+                'attribute' => 'file',
                 'filePath' => '@webroot/uploads/caution/[[pk]].[[extension]]',
                 'fileUrl' => '/uploads/caution/[[pk]].[[extension]]',
             ],
+           
         ];
     }
 
