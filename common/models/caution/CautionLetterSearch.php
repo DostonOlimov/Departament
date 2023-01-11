@@ -9,7 +9,7 @@ use common\models\caution\CautionLetters;
 /**
  * CautionLettersSearch represents the model behind the search form of `common\models\caution\CautionLetters`.
  */
-class CautionLettersSearch extends CautionLetters
+class CautionLetterSearch extends CautionLetters
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,7 @@ class CautionLettersSearch extends CautionLetters
     public function rules()
     {
         return [
-            [['id', 'company_id'], 'integer'],
+            [['id', 'company_id','instructions_id'], 'integer'],
             [['letter_date', 'letter_number', 'created_by','updated_by'], 'safe'],
         ];
     }
@@ -40,7 +40,7 @@ class CautionLettersSearch extends CautionLetters
      */
     public function search($params)
     {
-        $query = CautionLetters::find()->where(['company_id'=>$params]);
+        $query = CautionLetters::find()->where(['instructions_id'=>$params]);
 
         // add conditions that should always apply here
 
@@ -63,7 +63,7 @@ class CautionLettersSearch extends CautionLetters
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith('company')->joinWith('user');
+        $query->joinWith('company')->joinWith('user')->joinWith('instruction');
 
         // grid filtering conditions
         $query->andFilterWhere([

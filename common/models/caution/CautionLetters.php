@@ -2,6 +2,7 @@
 
 namespace common\models\caution;
 use common\models\control\Company;
+use common\models\control\Instruction;
 use common\models\User;
 
 use Yii;
@@ -35,8 +36,8 @@ class CautionLetters extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'letter_date', 'letter_number','created_by','updated_by','comment'], 'required'],
-            [['company_id','created_by','updated_by'], 'integer'],
+            [['company_id', 'letter_date', 'letter_number','created_by','instructions_id','updated_by','comment'], 'required'],
+            [['company_id','created_by','updated_by','instructions_id'], 'integer'],
             [['file'],'file','extensions'=> 'pdf,doc,docx'],
             [['letter_date','comment'], 'safe'],
             [['letter_number'], 'string', 'max' => 255],
@@ -54,6 +55,7 @@ class CautionLetters extends \yii\db\ActiveRecord
             'company_id' => 'Korxona nomi',
             'letter_date' => 'Ogohlantirish sanasi',
             'letter_number' => 'Ogohlantirish raqami',
+            'instructions_id' => 'Tekshiruv buyrug\'i',
             'file' => 'Files',
             'created_by' => 'Inspektor F.I.SH',
             'updated_by' => 'Nazoratchi F.I.SH',
@@ -68,6 +70,10 @@ class CautionLetters extends \yii\db\ActiveRecord
     public function getCompany()
     {
         return $this->hasOne(Company::class, ['id' => 'company_id']);
+    }
+    public function getInstruction()
+    {
+        return $this->hasOne(Instruction::class, ['id' => 'instructions_id']);
     }
     public function getUser(){
         return $this->hasOne(User::className(), ['id' => 'created_by']);
