@@ -1,103 +1,109 @@
 <?php
+
+use common\models\control\Company;
+use common\models\control\Instruction;
+use frontend\models\StatusHelper;
 use yii\helpers\Html;
+use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-use frontend\widgets\StepsPrevention;
-use common\models\prevention\Prevention;
-use yii\grid\GridView;
-use yii\data\ActiveDataProvider;
-use yii\bootstrap4\Breadcrumbs;
 
-/** @var yii\web\View $this */
-/** @var common\models\prevention\PreventionSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/* @var $this yii\web\View */
+/* @var $searchModel common\models\control\InstructionSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Bartaraf etish ko\'rsatmasi');
+
+$this->title = 'Korxonalar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="">
-    <div class="row">
-        <div class="col-sm-4">
-            <?= StepsPrevention::widget([
-                    
-            ])?>
-        </div>
-        <div class="col-sm-8" style="margin-left:-30px;">       
+<style>
+    .pagination li a {
+        padding: 2px 5px;
+    }
 
-                <p>
-                    <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['prevention-search'], ['class' => 'btn btn-success']) ?>
-                </p>
-                <div class="">
-                    <?php
-                        echo Breadcrumbs::widget([
-                            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            'options' => [
-                                'class' => 'p-2 bg-primary breadcrumb float-sm-right'
-                            ]
-                        ]);
-                        ?>
-                </div>
+    .pagination li.active {
+        background-color: #1AB475;
+    }
+
+    .pagination li a {
+        color: black;
+    }
+
+    .pagination li a:hover {
+        background-color: grey;
+    }
+</style>
+<div class="company-index m-5">
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'headerRowOptions' => ['style' => 'background-color: #0072B5'],
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            [
+                'label' => 'Hudud',
+                'value' => function ($model) {
+                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    // echo '<pre>';
+                    // var_dump($company->region->name);die();
+                    // echo '</pre>';
+                    return $company ? $company->region->name : '';
+                }
+            ],
+            [
+                'label' => 'Xyus nomi',
+                'value' => function ($model) {
+                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    if ($company) {
+                        return Html::a($company->name, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                    }
+                    return '';
+                },
+                'format' => 'raw',
+            ],
+            [
+                'label' => 'Xyus inn',
+                'value' => function ($model) {
+                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    if ($company) {
+                        return Html::a($company->inn, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                    }
+                    return '';
+                },
+                'format' => 'raw',
+            ],
+            [   
+                'label' => 'Buyruq nomeri',
+                'value' => function (Instruction $model) {
+                    return $model->command_number;
+                }
+            ],
+            [
+                'label' => 'Ko\'rsatmalar',
+                'value' => function ($model) {
+                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    if ($company) {
+                        return Html::a('Batafsil', ['/caution/prevention-add', 'id' => $model->id], ['class' => 'text-primary']);
+                    }
+                    return '';
+                },
+                'format' => 'raw',
+            ],
+            [
+                'label' => 'Ko\'rsatma qo\'shish',
+                'value' => function ($model) {
+                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    if ($company) {
+                        return Html::a('qo\'shish', ['/caution/prevention-create', 'id' => $model->id], ['class' => 'text-primary']);
+                    }
+                    return '';
+                },
+                'format' => 'raw',
+            ],
+        ],
+    ]); ?>
 
 
-                <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-                <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'headerRowOptions' => ['style' => 'background-color: #0072B5'],
-                    'columns' => [
-                    //  ['class' => 'yii\grid\SerialColumn'],
-                
-
-                    [
-                        'attribute'=> 'id',
-                        'value' => function ($data) {
-                            //$prevention = Prevention::findOne(['id' => $model->id]);
-
-                            return $data ? $data->id : '';
-                        }
-                    ],
-                        [
-                            'attribute'=> 'companies_id',
-                            'value' => function ($data) {
-                                //$company = Company::findOne(['id' => $model->companies_id]);
-                                return $data ? $data->company->name : '';
-                            }
-                        ],
-                        [
-                            'attribute'=> 'instructions_id',
-                            'value' => function ($data) {
-                            // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
-                                return $data ? $data->instruction->command_number : '';
-                            }
-                        ],
-                        
-                        //'created_at',
-                        'updated_at',
-                        [
-                            'attribute'=> 'created_by',
-                            'value'=> function($data){                                
-                                return $data ? $data->user->name .' '.$data->user->surname :'';
-                            }
-                        ],
-                        [
-                            'class' => ActionColumn::className(),
-                            'template' => '{view}',
-                            'buttonOptions' => [
-                                'class' => 'text-primary'
-                            ],
-                            'urlCreator' => function ($action, Prevention $model, $key, $index) {
-                                if ($action === 'view') {
-                                    $url = Url::to(['caution/prevention-view', 'id' => $model->id]);
-                                    return $url;
-                                }
-                                // return Url::toRoute([$action, 'id' => $model->id]);
-                            }
-                        ],
-                    ],
-                ]); ?>
-            </div>
-
-
-    </div>
 </div>

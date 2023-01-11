@@ -2555,12 +2555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "48f4c268a2406f4c726ce7a9792d5f424875d0c9"
+                "reference": "14d6b8f7b2a7b23b9904dece1203c7fa0129a4b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/48f4c268a2406f4c726ce7a9792d5f424875d0c9",
-                "reference": "48f4c268a2406f4c726ce7a9792d5f424875d0c9",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/14d6b8f7b2a7b23b9904dece1203c7fa0129a4b9",
+                "reference": "14d6b8f7b2a7b23b9904dece1203c7fa0129a4b9",
                 "shasum": ""
             },
             "require": {
@@ -2670,7 +2670,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-29T20:37:32+00:00"
+            "time": "2023-01-10T11:16:04+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap4",
@@ -4297,12 +4297,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3084c105230e0d24fe890d3f60cce173b0e4210c"
+                "reference": "c0a8cb85666cf8c07b5bd1340cf284d9c0668dae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3084c105230e0d24fe890d3f60cce173b0e4210c",
-                "reference": "3084c105230e0d24fe890d3f60cce173b0e4210c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c0a8cb85666cf8c07b5bd1340cf284d9c0668dae",
+                "reference": "c0a8cb85666cf8c07b5bd1340cf284d9c0668dae",
                 "shasum": ""
             },
             "require": {
@@ -4386,7 +4386,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-09T12:30:16+00:00"
+            "time": "2023-01-10T09:02:18+00:00"
         },
         {
             "name": "psr/container",

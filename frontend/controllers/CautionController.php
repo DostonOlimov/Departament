@@ -2,22 +2,19 @@
 
 namespace frontend\controllers;
 use common\models\embargo\Embargo;
-use common\models\embargo\EmbargoSearch;
+use common\models\embargo\EmbargosSearch;
 use common\models\prevention\Prevention;
-use common\models\prevention\PreventionSearch;
+use common\models\prevention\PreventionsSearch;
 use common\models\caution\Execution;
 use common\models\caution\CautionLetters;
 use common\models\caution\CautionLettersSearch;
 use common\models\User;
-//use common\models\caution\Company;
-//use common\models\caution\Instruction;
 use common\models\control\Company;
 use common\models\control\Instruction;
-use common\models\caution\InstructionSearch;
+use common\models\control\InstructionSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\UploadedFile;
-use yii\helpers\FileHelper;
+use Yii;
 
 /**
  * cautions controller
@@ -109,10 +106,21 @@ class CautionController extends Controller
             'model' => $this->getModel(Execution::className(), $id)
         ]);
     }
+
     public function actionEmbargo(){
-        $searchModel = new EmbargoSearch();
+        $searchModel = new InstructionSearch(\Yii::$app->user->id);
         $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('embargo', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionEmbargoAdd(){
+        $searchModel = new EmbargosSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->render('embargo-add', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -123,50 +131,19 @@ class CautionController extends Controller
             'model' => $this->getModel(Embargo::className(), $id)
         ]);
     }
-    public function actionEmbargoSearch(){
-        $q = trim(\Yii::$app->request->get('q'));
-        $codes = Instruction::find()->where(['like', 'command_number', $q])->all(); 
-        
-
-       $model = new Instruction();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['embargo-create', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('embargo-search', [
-            'model' => $model,
-            'codes' => $codes,
-            'q' => $q,
-        ]);
-    }
 
     public function actionEmbargoCreate(){
-        $q = trim(\Yii::$app->request->get('q'));
-        $codes = Instruction::find()->where(['like', 'command_number', $q])->all();
-        if(empty($q)){
-           return $this->render('embargo-search');
-        }
-        if(!empty($codes)):
-         foreach($codes as $code){
-           $companies = Company::findOne($code['id']);
-         } 
-           else:
-               $companies = null;
-       endif;
-        
+        $id = Yii::$app->request->get('id');
+        $company = Company::findOne(['control_instruction_id' => $id]);
         $model = new Embargo;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
             $model->updated_by = $model->created_by;
-             //  var_dump($this->request->post());
+              var_dump($this->request->post());
               if($model->save()){
                \Yii::$app->session->setFlash('success','Bazaga yuklandi');
               }                     
-            return $this->redirect(['embargo-search', 'id' => $model->id]);
+            return $this->redirect(['embargo-view', 'id' => $model->id]);
             
              
            }
@@ -175,13 +152,11 @@ class CautionController extends Controller
        }
 
        return $this->render('embargo-create', [
-           'companies' => $companies,
+           'company' => $company,
            'model' => $model,
-           'codes' => $codes,
-           'q' => $q,
        ]); 
+       
     }
-
     public function actionEmbargoUpdate($id){
        // $model = $this->findModel($id); 
        $model = Embargo::findOne($id); 
@@ -201,11 +176,20 @@ class CautionController extends Controller
         ]);
         }
     }
-
     public function actionPrevention(){
-        $searchModel = new PreventionSearch();
+        $searchModel = new InstructionSearch(\Yii::$app->user->id);
         $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('prevention', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPreventionAdd(){
+        $searchModel = new PreventionsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->render('prevention-add', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -216,50 +200,20 @@ class CautionController extends Controller
             'model' => $this->getModel(Prevention::className(), $id)
         ]);
     }
-    public function actionPreventionSearch(){
-        $q = trim(\Yii::$app->request->get('q'));
-        $codes = Instruction::find()->where(['like', 'command_number', $q])->all(); 
-        
-
-       $model = new Instruction();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['prevention-create', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('prevention-search', [
-            'model' => $model,
-            'codes' => $codes,
-            'q' => $q,
-        ]);
-    }
-
+   
+    
     public function actionPreventionCreate(){
-        $q = trim(\Yii::$app->request->get('q'));
-        $codes = Instruction::find()->where(['like', 'command_number', $q])->all();
-        if(empty($q)){
-           return $this->render('prevention-search');
-        }
-        if(!empty($codes)):
-         foreach($codes as $code){
-           $companies = Company::findOne($code['id']);
-         } 
-           else:
-               $companies = null;
-       endif;
-        
+        $id = Yii::$app->request->get('id');
+        $company = Company::findOne(['control_instruction_id' => $id]);
         $model = new Prevention;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
             $model->updated_by = $model->created_by;
-             //  var_dump($this->request->post());
+              var_dump($this->request->post());
               if($model->save()){
                \Yii::$app->session->setFlash('success','Bazaga yuklandi');
               }                     
-            return $this->redirect(['prevention-search', 'id' => $model->id]);
+            return $this->redirect(['prevention-view', 'id' => $model->id]);
             
              
            }
@@ -268,13 +222,11 @@ class CautionController extends Controller
        }
 
        return $this->render('prevention-create', [
-           'companies' => $companies,
+           'company' => $company,
            'model' => $model,
-           'codes' => $codes,
-           'q' => $q,
        ]); 
+       
     }
-
     public function actionReestr(){
         return $this->render('reestr.php');
     }
