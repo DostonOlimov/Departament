@@ -3,6 +3,7 @@
 use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\control\Measure;
+use common\models\measure\Economics;
 use frontend\models\StatusHelper;
 use frontend\widgets\StepsReestr;
 use yii\helpers\Html;
@@ -35,15 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 <div class="row">
-    <div class="col-4">
-        <?= StepsReestr::widget([
-            ])?>
-    </div>
-     <div class="col-sm-8">       
-    </div>
+<div class="col-3 mt-5">
+<?= StepsReestr::widget([])?>
 </div>
-
-<div class="company-index m-5">
+<div class="col-9">
+<h2>Iqtisodiy jarimalar</h2>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -64,8 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->name, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
-                    }
+                        return $company->name;
+                       }
                     return '';
                 },
                 'format' => 'raw',
@@ -75,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->inn, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
-                    }
+                        return $company->inn;
+                     }
                     return '';
                 },
                 'format' => 'raw',
@@ -88,13 +85,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Iqtisodiy jarima qo\'llash',
+                'label' => 'Iqtisodiy jarimalar',
                 'value' => function ($model) {
-                    $company = Company::findOne(['control_instruction_id' => $model->id]);
-                    if ($company) {
-                        return Html::a('qo\'shish', ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                    $ex = Economics::findOne(['control_instruction_id' => $model->id]);
+                    if ($ex) {
+                        return Html::a('Ko\'rish&nbsp&nbsp&nbsp&nbsp', ['/measure/economic-view', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }
-                    return '';
+                    else
+                    {
+                        return Html::a('Qo\'shish', ['/measure/economic', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
+                    }
+                   
                 },
                 'format' => 'raw',
             ],

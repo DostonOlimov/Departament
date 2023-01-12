@@ -4,7 +4,7 @@ use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\measure\Executions;
 use common\models\control\Measure;
-use frontend\models\StatusHelper;
+use frontend\widgets\StepsReestr;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -34,8 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
         background-color: grey;
     }
 </style>
-<div class="company-index m-5">
-
+<div class="row">
+<div class="col-3 mt-5">
+<?= StepsReestr::widget([])?>
+</div>
+<div class="col-9">
+<h2>Ma'muriy bayonnomalar</h2>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -43,19 +47,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            [
+          [
                 'label' => 'Hudud',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     return $company ? $company->region->name : '';
                 }
             ],
-            [
+              [
                 'label' => 'Xyus nomi',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->name, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->name;
+                       // return Html::a($company->name, ['/control/company-view', 'id' => $company->id], ['class' => 'text-primary']);
                     }
                     return '';
                 },
@@ -66,7 +71,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->inn, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->inn;
+                       // return Html::a($company->inn, ['/control/company-view', 'id' => $company->id], ['class' => 'text-primary']);
                     }
                     return '';
                 },
@@ -95,6 +101,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
-
+    </div>  
 </div>

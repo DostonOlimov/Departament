@@ -9,7 +9,7 @@ use frontend\widgets\StepsReestr;
 /** @var common\models\prevention\PreventionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Bartaraf etish ko\'rsatmasi');
+$this->title = Yii::t('app', 'Reestr');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

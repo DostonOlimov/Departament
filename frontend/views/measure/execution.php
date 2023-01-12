@@ -12,6 +12,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
+use frontend\widgets\StepsReestr;
 
 $this->title = 'Korxona';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,7 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="page1-1 row">
-
+<div class="col-3">
+<?= StepsReestr::widget([])?>
+</div>
     <?php $form = ActiveForm::begin([
 //        'enableClientValidation' => false,
 //        'enableAjaxValidation' => true,
@@ -130,63 +133,3 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end() ?>
 
 </div>
-
-
-<?php
-$this->registerJs("	
-var lastSelected = [];
- var s =0, a, b;
-	$('.dynamicform_wrapper').on('beforeInsert', function(e, item) {
-	if(s==0){
-	console.log('1 chidagi')
-	}
-	});   
-
- 
-	$('.dynamicform_wrapper').on('afterInsert', function(e, item) {
-	
-	let options = document.querySelectorAll('.types')
-	let count = e.target.children[0].childElementCount
-	let items = e.target.children[0].children
-	console.log(s)
-
-    if(s==0){
-    for(let i=1; i < 4; i++){             
-          if(options[options.length-2].children[0].children[1].children[i].selected){        
-                options[options.length-1].children[0].children[1].children[i].style.display='none'
-                a = options[options.length-1].children[0].children[1].children[i].value
-        }    
-          if(options[0].children[0].children[1].children[i].selected !==true){
-                options[0].children[0].children[1].children[i].style.display = 'none'
-         }
-    }
-    }else if(s==1){    
-            for(let i=1; i < 4; i++){             
-                  if(options[options.length-2].children[0].children[1].children[i].selected || options[options.length-2].children[0].children[1].children[i].value ==a){        
-                        options[options.length-1].children[0].children[1].children[i].style.display='none'                
-                }       
-            }
-    }
-    s=s+1
-   
-
-              
-              
-	console.log('Added:'+e.target.children[0].childElementCount)
-	console.log(e.target.children[0].children)
-	console.log(options)
-	
-	
-	});
-
-	$('.dynamicform_wrapper').on('beforeDelete', function(e, item) {
-		
-	});
-
-	$('.dynamicform_wrapper').on('afterDelete', function(e) {
-		$('.dynamicform_wrapper .panel-title').each(function(index) {
-			$(this).html('Стандарт: ' + (index + 1));
-		});
-	});
-");
-?>
