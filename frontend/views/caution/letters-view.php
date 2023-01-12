@@ -20,7 +20,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
         ])?>
     </div>
 
-    <div class="col-sm-8" style="margin-left:-30px">
+    <div class="col-sm-8" style="margin-left:-20px">
     
                     <?php
                         echo Breadcrumbs::widget([

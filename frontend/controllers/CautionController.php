@@ -141,7 +141,9 @@ class CautionController extends Controller
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
             $model->updated_by = $model->created_by;
-              var_dump($this->request->post());
+            // echo '<pre>';
+            //   var_dump($this->request->post()); die();
+            //   echo '</pre>';
               if($model->save()){
                \Yii::$app->session->setFlash('success','Bazaga yuklandi');
               }                     
@@ -211,7 +213,7 @@ class CautionController extends Controller
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
             $model->updated_by = $model->created_by;
-              var_dump($this->request->post());
+            //   var_dump($this->request->post());
               if($model->save()){
                \Yii::$app->session->setFlash('success','Bazaga yuklandi');
               }                     
@@ -250,12 +252,16 @@ class CautionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionLettersCreate(){
         $id = Yii::$app->request->get('id');
         $company = Company::findOne(['control_instruction_id' => $id]);
         $model = new CautionLetters;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
+            echo '<pre>';
+            var_dump($this->request->post());die();
+            echo '</pre>';
             $model->updated_by = $model->created_by;
             if(!empty($_FILES['CautionLetters']['name']['file'])){
                 $file = UploadedFile::getInstance($model,'file');
@@ -281,54 +287,6 @@ class CautionController extends Controller
        return $this->render('letters-create', [
            'company' => $company,
            'model' => $model,
-       ]); 
-    }
-
-    public function actionLettersCreates(){
-        $q = trim(\Yii::$app->request->get('q'));
-        $codes = Company::find()->where(['like', 'inn', $q])->all();
-        if(empty($q)){
-           return $this->render('letters-search');
-        }
-        if(!empty($codes)):
-         foreach($codes as $code){
-           $companies = Company::findOne($code['id']);
-         } 
-           else:
-               $companies = null;
-       endif;
-        
-        $model = new CautionLetters;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-            if(!empty($_FILES['CautionLetters']['name']['file'])){
-                $file = UploadedFile::getInstance($model,'file');
-                $berkas = md5($model->company_id).'-.'.$file->getExtension();
-                $model->file = $berkas;
-                $path = 'uploads/caution_letter/';
-                if(!file_exists($path)){
-                    FileHelper::createDirectory($path);
-                }
-                $file->saveAs($path.$berkas);
-            }
-            
-          if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['letters-search', 'id' => $model->id]);
-            
-             
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
-
-       return $this->render('letters-create', [
-           'companies' => $companies,
-           'model' => $model,
-           'codes' => $codes,
-           'q' => $q,
        ]); 
     }
 
