@@ -5,6 +5,7 @@ namespace common\models\measure;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use common\models\User;
 
 /**
  * This is the model class for table "economics".
@@ -66,8 +67,8 @@ class Economics extends \yii\db\ActiveRecord
             'eco_amount' => 'Iqtisodiy jarimada ko’rsatilgan mahsulotlar summasi',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => 'Yaratilgan sanasi',
+            'updated_at' => 'Yangilangan sanasi',
         ];
     }
     public function behaviors()

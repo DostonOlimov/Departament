@@ -43,7 +43,7 @@ use common\models\User;
             $items = [
                 [
                     'label' => 'Qo\'shimcha ma`lumotlar',
-                    'icon' => 'tachometer-alt',
+                    'icon' => 'th',
 //                        'badge' => '<span class="right badge badge-info">2</span>',
                     'items' => [
                         ['label' => 'Muhsulot normativ hujjatlari', 'url' => ['nd/index'], 'iconStyle' => 'far'],
@@ -53,13 +53,15 @@ use common\models\User;
                     ]
                 ],
                 ['label' => 'Foydalanuvchilar', 'url' => ['user/index'], 'icon' => 'fa fa-users'],
-                ['label' => 'Davlat nazorati', 'url' => ['control/control/index'], 'icon' => 'th'],
-                ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-building'],
-                ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-building'],
+                ['label' => 'Davlat nazorati', 'url' => ['control/control/index'], 'icon' => 'fa fa-briefcase'],
+                ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-address-book'],
+                ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-university'],
+                ['label' => 'Iqtisodiy jarimalar', 'url' => ['measure/economic/index'], 'icon' => 'fa fa-percent'],
+                ['label' => 'Ma\'muriy bayonnomalar', 'url' => ['measure/execution/index'], 'icon' => 'fa fa-credit-card'],
                // ['label' => 'Berilgan ko\'rsatma va ogohlantirishlar', 'url' => ['caution/caution/index'], 'icon' => 'fa fa-building'],
                [
                 'label' => 'Berilgan ko\'rsatma va ogohlantirishlar',
-                'icon' => 'fa fa-building',
+                'icon' => 'fa fa-exclamation-circle',
                 
 //                        'badge' => '<span class="right badge badge-info">2</span>',
                 'items' => [
