@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use frontend\widgets\StepsPrevention;
+use frontend\widgets\StepsReestr;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
 
@@ -16,13 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->title = Yii::t('app', 'Bartaraf_etish');
 ?>
 <div class="row">
-    <div class="col-sm-4">
-        <?= StepsPrevention::widget([
-                        
-        ])?>
+    <div class="col-3">
+        <?= StepsReestr::widget([])?>
     </div>
 
-    <div class="col-sm-8" style="margin-left:-20px">
+    <div class="col-sm-8">
     
                     <?php
                         echo Breadcrumbs::widget([

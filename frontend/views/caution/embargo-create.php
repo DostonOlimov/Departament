@@ -18,11 +18,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 $this->title = Yii::t('app', 'Taqiqlash');
 ?>
 <div class="page1-1 row">
-    <!--div class="col-sm-3">
-     <?= StepsPrevention::widget([
-                    
-    ]) ?>
-    </div-->
+    
 
     <?php $form = ActiveForm::begin([
             'id' => 'dynamic-form',

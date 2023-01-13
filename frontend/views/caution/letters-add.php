@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-use frontend\widgets\StepsLetters;
+use frontend\widgets\StepsReestr;
 use common\models\prevention\Prevention;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
@@ -13,12 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="">
     <div class="row">
-        <div class="col-sm-4">
-            <?= StepsLetters::widget([
-                    
-            ])?>
+        <div class="col-3">
+            <?= StepsReestr::widget([])?>
         </div>
-        <div class="col-sm-8" style="margin-left:-20px;">       
+        <div class="col-sm-8">       
         <?php echo Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 'options' => [
