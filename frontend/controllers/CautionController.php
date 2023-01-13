@@ -9,6 +9,7 @@ use common\models\caution\Execution;
 use common\models\caution\CautionLetters;
 use common\models\caution\CautionLetterSearch;
 use common\models\User;
+use common\models\Model;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 use common\models\control\Company;
@@ -134,33 +135,42 @@ class CautionController extends Controller
         ]);
     }
 
-    public function actionEmbargoCreate(){
+    public function actionEmbargoCreate($id)
+    {
         $id = Yii::$app->request->get('id');
         $company = Company::findOne(['control_instruction_id' => $id]);
-        $model = new Embargo;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-            // echo '<pre>';
-            //   var_dump($this->request->post()); die();
-            //   echo '</pre>';
-              if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['embargo-view', 'id' => $model->id]);
-            
-             
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
-
-       return $this->render('embargo-create', [
-           'company' => $company,
-           'model' => $model,
-       ]); 
-       
+        $modelsPrevent = [new Embargo];
+        if (Yii::$app->request->post()) {
+            $modelsPrevent = Model::createMultiple(Embargo::classname(),$modelsPrevent);
+            Model::loadMultiple($modelsPrevent, $this->request->post());
+            foreach($modelsPrevent as $key=>$product) {
+                $product->updated_by = $product->created_by;
+            }    
+            //$valid = Model::validateMultiple($modelsPrevent);
+            if (Model::validateMultiple($modelsPrevent)) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                
+                try {
+                        foreach ($modelsPrevent as $key=>$product) {
+                           $product->instructions_id = $id;                                                    
+                           $product->save(false);
+                        }
+                        $transaction->commit();
+                       return $this->redirect(['embargo-add', 'instructions_id' => $id]);
+                    // }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+        
+        }
+        return $this->render('embargo-create', [            
+            'modelsPrevent' => $modelsPrevent,
+            'company' => $company,
+        ]);
     }
+
     public function actionEmbargoUpdate($id){
        // $model = $this->findModel($id); 
        $model = Embargo::findOne($id); 
@@ -204,33 +214,43 @@ class CautionController extends Controller
             'model' => $this->getModel(Prevention::className(), $id)
         ]);
     }
-   
-    
-    public function actionPreventionCreate(){
+
+    public function actionPreventionCreate($id)
+    {
         $id = Yii::$app->request->get('id');
         $company = Company::findOne(['control_instruction_id' => $id]);
-        $model = new Prevention;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-            //   var_dump($this->request->post());
-              if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['prevention-view', 'id' => $model->id]);
-            
-             
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
-
-       return $this->render('prevention-create', [
-           'company' => $company,
-           'model' => $model,
-       ]); 
-       
+        $modelsPrevent = [new Prevention];
+        if (Yii::$app->request->post()) {
+            $modelsPrevent = Model::createMultiple(Prevention::classname(),$modelsPrevent);
+            Model::loadMultiple($modelsPrevent, $this->request->post());
+            foreach($modelsPrevent as $key=>$product) {
+                $product->updated_by = $product->created_by;
+            }    
+            //$valid = Model::validateMultiple($modelsPrevent);
+            if (Model::validateMultiple($modelsPrevent)) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                
+                try {
+                        foreach ($modelsPrevent as $key=>$product) {
+                           $product->instructions_id = $id;                                                    
+                           $product->save(false);
+                        }
+                        $transaction->commit();
+                       return $this->redirect(['prevention-add', 'instructions_id' => $id]);
+                    // }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+        
+        }
+        return $this->render('prevention-create', [            
+            'modelsPrevent' => $modelsPrevent,
+            'company' => $company,
+        ]);
     }
+   
     public function actionReestr(){
         return $this->render('reestr.php');
     }
@@ -259,9 +279,7 @@ class CautionController extends Controller
         $model = new CautionLetters;
        if ($this->request->isPost) {
            if ($model->load($this->request->post()) ) {
-            echo '<pre>';
-            var_dump($this->request->post());die();
-            echo '</pre>';
+
             $model->updated_by = $model->created_by;
             if(!empty($_FILES['CautionLetters']['name']['file'])){
                 $file = UploadedFile::getInstance($model,'file');
