@@ -7,7 +7,7 @@
 use common\models\control\Caution;
 use common\models\control\Company;
 use common\models\measure\Executions;
-use frontend\widgets\Steps;
+use frontend\widgets\StepsReestr;
 use yii\widgets\DetailView;
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="page1-1 row">
-
+<div class="col-3">
+<?= StepsReestr::widget([])?>
+</div>
 
     <div class="col-6">
         <?php
@@ -28,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'person',
                         'person_position',
                         'number_passport',
-                        'first_date',
+                        'first_date:date',
                         'caution_number',
                         'fine_amount',
                         'paid_amount',

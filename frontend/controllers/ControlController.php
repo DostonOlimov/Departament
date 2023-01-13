@@ -269,15 +269,14 @@ class ControlController extends Controller
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
                                 $prod->codetnved = $product->codetnved;
-                                $product->img = \yii\web\UploadedFile::getInstance($product, "[{$key_p1}]photo");
-                                if ($product->img) {
-                                    $product->photo = $product->img->name;
+                                $product->image = \yii\web\UploadedFile::getInstance($product, "[{$key_p1}]photo");
+                                if ($product->image) {
+                                    $product->photo = $product->image->name;
                                  }
                                  $prod->photo = $product->photo;
                                 $prod->save(false);
                                 $id[$key_p1] = $prod->id; 
-                           
-                }         
+                }        // VarDumper::dump($prod->getUploadedFileUrl('photo'),12,true);die();
                         foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
                             {
                                foreach($proData as $k2 => $v)

@@ -7,6 +7,7 @@ use common\models\User;
 use common\models\control\Company;
 use common\models\measure\Executions;
 use common\models\control\InstructionSearch;
+use common\models\measure\Economics;
 use common\models\measure\ExecutionsSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -104,24 +105,31 @@ class MeasureController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionEconomic()
+    public function actionEconomic($id)
     {
-        $searchModel = new InstructionSearch(\Yii::$app->user->id);
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $model = new Economics();
+        $model->control_instruction_id = $id;
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                try {
+                    if ($model->save()) 
+                    {
+                        return $this->redirect(['economic-view', 'id' => $id]);
+                    }
+                } catch (Exception $e) {
+                    throw $e;
+                }
+        }
+        return $this->render('economic', [
+            'model' => $model,
+            'id' => $id,
         ]);
     }
-    public function actionEconomicView()
+    public function actionEconomicView($id)
     {
-        $searchModel = new InstructionSearch(\Yii::$app->user->id);
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        return $this->render('economic-view', [
+            'model' => Economics::find()->where(['control_instruction_id' => $id])->one(),
+            'id' => $id,
         ]);
     }
     public function actionExecutionIndex()

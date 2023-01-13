@@ -63,7 +63,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public $position;
     public $exsist_certificate;
 
-    public $img;
+    public $image;
  
     /**
      * {@inheritdoc}
@@ -84,7 +84,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality',], 'integer'],
             [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity','codetnved','defect_type','cer_amount','cer_quantity'], 'string', 'max' => 255],
             ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],
-            [['photo'], 'image', 'extensions' => 'png, jpg'],
+            [['photo','image'], 'image', 'extensions' => 'png, jpg'],
             [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::class, 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
@@ -149,7 +149,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
          //   BlameableBehavior::class,
            [
             'class' => ImageUploadBehavior::class,
-            'attribute' => 'img',
+            'attribute' => 'image',
             'createThumbsOnRequest' => true,
             'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
             'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
