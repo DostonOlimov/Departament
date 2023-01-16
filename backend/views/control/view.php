@@ -11,6 +11,8 @@ use common\models\control\Measure;
 use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
+use common\models\control\ControlProductLabaratoryChecking;
+use common\models\control\ControlProductCertification;
 use frontend\models\LaboratoryHelper;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -28,20 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Yangilash', ['/control/instruction/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Foydalanuvchilar', ['/control/instruction-user/index', 'instruction_id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Inspektorlar qo\'shish', ['/control/instruction-user/index', 'instruction_id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php
             if ($model->general_status == Instruction::GENERAL_STATUS_SEND) {
                 echo Html::a('Tasdiqlash', ['/control/control/done', 'id' => $model->id], ['class' => 'btn btn-warning']);
             }
         ?>
-
-        <?= Html::a('Hamma ma`lumotni o\'chirish', ['/control/instruction/delete', 'id' => $model->id], [
+        <?php if ($model->general_status !== Instruction::GENERAL_STATUS_DONE){
+        echo  Html::a('Hamma ma`lumotni o\'chirish', ['/control/instruction/delete', 'id' => $model->id], [
             'class' => 'btn btn-danger float-right',
             'data' => [
                 'confirm' => 'Haqiqatan ham bu elementni o‘chirmoqchimisiz?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]); } ?>
     </p>
 
     <?= DetailView::widget([
@@ -196,8 +198,121 @@ if ($company) { ?>
                 ]
             ]) ?>
         </div>
-    <?php }
+    <?php 
 
+ $primaryDataId = PrimaryData::findOne(['control_company_id' => $company->id])->id;
+ $products = PrimaryProduct::find()->where(['control_primary_data_id' => $primaryDataId])->all();
+
+ if ($products) { ?>
+    <hr>
+    <h2>Mahsulotlar sifati</h2>
+    <h4 style = 'color:blue;'>Tashqi ko’rinish bayonnomasi</h4>
+        <?php
+        if ($products)
+            foreach ($products as $key => $mod) {
+                echo DetailView::widget([
+                    'model' => $mod,
+                    'attributes' => [
+//            'id',
+                       'product_name:text',
+                        [
+                            'attribute' => 'quality',
+                            'value' => function ($mod) {
+                                if($mod->quality == 1){return 'Muvofiq';}
+                                else {return 'NoMuvofiq';}
+                            }
+                        ],
+                        'description:text',
+                        [
+                            'attribute' => 'cer_amount',
+                            'value' => function ($mod) {
+                                if($mod){return $mod->cer_amount;}
+                            }
+                        ],
+                        [
+                            'attribute' => 'cer_quantity',
+                            'value' => function ($mod) {
+                                if($mod){return $mod->cer_amount;}
+                               
+                            }
+                        ],
+                        [
+                            'attribute' => 'Nomuvofiqlik sababi',
+                            'value' => function ($mod) {
+                                
+                                $result = '';
+                                $mod->defect_type = explode('.', substr($mod->defect_type, 0));
+                                foreach ($mod->defect_type as $key => $type) {
+                                    $t=$key+1;
+                                    if($type){
+                                    $result .= $t.' - '. PrimaryProduct::getDefect($type) . "; ";
+                                    }
+                                }
+                                return $result;
+                            }
+                        ],
+                        
+                    ],
+                ]) ;
+            }
+
+        ?>
+    <h4 style = 'color:blue;'>Sinov labalatoriyasi xulosasi</h4>
+    <?php 
+    
+         foreach ($products as $key => $value) 
+         {
+          $labs = ControlProductLabaratoryChecking::findOne(['product_id' => $value->id]);
+          if ($labs){
+           
+            $labs->product_name = $value->product_name;
+            echo DetailView::widget([
+                'model' => $labs,
+                'attributes' => [
+//            'id',
+                    'product_name:text',             
+                    [
+                        'attribute' => 'quality',
+                        'value' => function ($labs) {
+                            if($labs->quality == 1){return 'Muvofiq';}
+                            elseif($labs->quality == 0){return 'NoMuvofiq';}
+                            else{return 'Kiritilmagan';}
+                        },
+                        'format' => 'raw',
+                    ],
+                    'description:text',
+                ],
+            ]) ;
+        }
+      
+    }
+?>
+    <?php 
+     foreach ($products as $key => $value) 
+        {
+            $cer = ControlProductCertification::findAll(['product_id' => $value->id]);
+           
+        if ($cer)
+       echo " <h4 style = 'color:blue;'>Mahsulot(lar) sertifikatlari</h4>";
+        foreach ($cer as $key => $mod) {
+            $mod->product_name = $value->product_name;
+            echo DetailView::widget([
+                'model' => $mod,
+                'attributes' => [
+//            'id',
+                    'product_name:text',
+                    'number_reestr:text',
+                    'date_to:text',
+                    'date_from:text',
+                ],
+            ]) ;
+        }
+
+    }
+}
+?> 
+<?php
+}
     $laboratory = Laboratory::findOne(['control_company_id' => $company->id]);
     if ($laboratory) { ?>
         <hr>

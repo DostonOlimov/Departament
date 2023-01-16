@@ -149,7 +149,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
-         //   BlameableBehavior::class,
+            BlameableBehavior::class,
            [
             'class' => ImageUploadBehavior::class,
             'attribute' => 'image',

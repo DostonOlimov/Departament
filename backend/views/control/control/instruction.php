@@ -15,9 +15,9 @@ $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
-    body 
+    .help-block 
     {
-        background-color:antiquewhite !important;
+        color:red !important;
     }
 </style>
 
