@@ -99,6 +99,7 @@ class EmbargoController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    
     public function actionUploads($id){
         $model = $this->findModel($id);
         if($model->status == 1){
@@ -133,10 +134,6 @@ class EmbargoController extends Controller
 
         return $this->render('uploads', [
             'model' => $model,
-        ]);
-       
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
     protected function findModel($id)

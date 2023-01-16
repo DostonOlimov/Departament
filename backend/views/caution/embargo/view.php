@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
+use common\models\embargo\Embargo;
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
@@ -97,6 +98,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 'format' => 'raw',
             ],
+            [
+                'attribute' => 'file',
+                'value' => function(Embargo $model) {
+                    $model->s_file = $model->file;
+                    return $model->s_file ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('s_file') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+
+                },
+                'format' => 'raw'
+            ],
             //'file',
             //'message_date',
             //'created_at',
@@ -111,14 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
            // 'inspectors',
         ],
     ]) ?>
-   <div class="embed-responsive embed-responsive-16by9">
-    <?php if(!empty($model->file)):?>
-    <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_embargo/{$model->file}", true);?>" 
-        title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
-        height="600px">
-    </iframe>
-    <?php endif;?>
-    </div>
+   
 
 
 </div>

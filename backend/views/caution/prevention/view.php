@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap4\Breadcrumbs;
+use common\models\prevention\Prevention;
 use yii\helpers\Url;
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
@@ -77,6 +78,15 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
             //'created_at',
             'created_at',
             //'file',
+            [
+                'attribute' => 'file',
+                'value' => function(Prevention $model) {
+                    $model->s_file = $model->file;
+                    return $model->s_file ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('s_file') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+
+                },
+                'format' => 'raw'
+            ],
 
             'comment',
             [
@@ -88,13 +98,6 @@ $this->params['breadcrumbs'][] = '№'.' '. $this->title;
         ],
     ]) ?>
     
-    <div class="embed-responsive embed-responsive-16by9">
-    <?php if(!empty($model->file)):?>
-    <iframe class="iframemargins" src="<?php echo Url::to("@frontend/web/uploads/caution_prevention/{$model->file}", true);?>" 
-        title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
-        height="600px">
-    </iframe>
-    <?php endif;?>
-    </div>
+    
 
 </div>

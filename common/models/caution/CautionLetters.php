@@ -68,11 +68,13 @@ class CautionLetters extends \yii\db\ActiveRecord
             [
                 'class' => FileUploadBehavior::class,
                 'attribute' => 's_file',
-                'filePath' => '@webroot/uploads/letters/ogohlantirish/[[pk]].[[extension]]',
-                'fileUrl' => 'uploads/letters/ogohlantirish/[[pk]].[[extension]]',
+                'filePath' => '@webroot/uploads/letters/ogohlantirish/[[filename]].[[extension]]',
+                'fileUrl' => '/uploads/letters/ogohlantirish/[[filename]].[[extension]]',
             ],           
         ];
     }
+
+    
 
     /**
      * Gets query for [[Company]].

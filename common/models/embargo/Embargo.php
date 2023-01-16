@@ -7,6 +7,8 @@ use common\models\User;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yiidreamteam\upload\FileUploadBehavior;
+use yii\behaviors\BlameableBehavior;
 
 use Yii;
 
@@ -35,6 +37,7 @@ class Embargo extends ActiveRecord
     {
         return 'caution_embargo';
     }
+    public $s_file;
 
     public function behaviors(){
         return [
@@ -45,8 +48,16 @@ class Embargo extends ActiveRecord
                 'value' => new Expression('NOW()'),
 
             ],
+            BlameableBehavior::class,           
+            [
+                'class' => FileUploadBehavior::class,
+                'attribute' => 's_file',
+                'filePath' => '@webroot/uploads/caution_embargo/[[filename]].[[extension]]',
+                'fileUrl' => '/uploads/caution_embargo/[[filename]].[[extension]]',
+            ],  
         ];
     }
+    
 
     /**
      * {@inheritdoc}

@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use yii\bootstrap4\Breadcrumbs;
+use common\models\caution\CautionLetters;
 
 /** @var yii\web\View $this */
 /** @var common\models\caution\CautionLetters $model */
 
-$this->title = 'Ogohlantirish xati №'.$model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ogohlantirish xati №'), 'url' => ['index']];
+$this->title = 'Ogohlantirish xati '.'№'.' '.$model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ogohlantirish xati'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -74,7 +75,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'created_at',
                 'letter_date',
                 'letter_number',
-                //'file',
+                [
+                    'attribute' => 'file',
+                    'value' => function(CautionLetters $model) {
+                        $model->s_file = $model->file;
+                        return $model->s_file ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('s_file') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+
+                    },
+                    'format' => 'raw'
+                ],
                 'comment',
                 [
                     'attribute'=> 'created_by',
@@ -85,11 +94,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]) ?>
-        <?php if(!empty($model->file)):?>
-        <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_letter/{$model->file}", true);?>" 
-            title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
-            height="600px">
-        </iframe>
-        <?php endif;?>
+       
 
 </div>

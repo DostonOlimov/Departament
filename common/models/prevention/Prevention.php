@@ -6,6 +6,8 @@ use common\models\User;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yiidreamteam\upload\FileUploadBehavior;
+use yii\behaviors\BlameableBehavior;
 use Yii;
 
 class Prevention extends \yii\db\ActiveRecord
@@ -17,6 +19,7 @@ class Prevention extends \yii\db\ActiveRecord
     {
         return 'caution_prevention';
     }
+    public $s_file;
 
     public function behaviors(){
         return [
@@ -27,6 +30,13 @@ class Prevention extends \yii\db\ActiveRecord
                 'value' => new Expression('NOW()'),
 
             ],
+            BlameableBehavior::class,           
+            [
+                'class' => FileUploadBehavior::class,
+                'attribute' => 's_file',
+                'filePath' => '@webroot/uploads/caution_prevention/[[filename]].[[extension]]',
+                'fileUrl' => '/uploads/caution_prevention/[[filename]].[[extension]]',
+            ], 
         ];
     }
 
