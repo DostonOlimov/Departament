@@ -6,8 +6,11 @@
 
 use common\models\control\Laboratory;
 use frontend\models\LaboratoryHelper;
+use common\models\control\Instruction;
 use frontend\widgets\Steps;
 use yii\widgets\DetailView;
+use yii\helpers\Html;
+
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -73,5 +76,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </div>
-
 </div>
+<?php $finish_date = Instruction::findOne(['id'=>$model->controlCompany->control_instruction_id])->checkup_finish_date;
+if (!$finish_date ) : 
+    if($model->finish_dalolatnoma || $model->out_dalolatnoma):?>
+        <div class="col-9" style="text-align:center;">
+            <?= Html::a('Tekshiruvni yakunlash', ['last-step','id' => $model->controlCompany->control_instruction_id], ['class' => 'btn btn-info']) ?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

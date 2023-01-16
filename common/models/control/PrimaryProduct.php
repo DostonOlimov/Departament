@@ -84,7 +84,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality',], 'integer'],
             [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity', 'potency', 'year_amount', 'photo','year_quantity','codetnved','defect_type','cer_amount','cer_quantity'], 'string', 'max' => 255],
             ['certification', 'compare', 'compareValue' => 0, 'operator' => '>=','message' => 'Sertifikatlar soni 0 yoki undan katta bo\'lishi kerak'],
-            [['photo','image'], 'image', 'extensions' => 'png, jpg'],
+            [['photo'], 'image'],
             [['made_country'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::class, 'targetAttribute' => ['made_country' => 'id']],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::class, 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
@@ -140,8 +140,11 @@ class PrimaryProduct extends \yii\db\ActiveRecord
 
         return $arr[$type];
     }
-
-
+/*
+    'attribute' => 's_court_letter',
+    'filePath' => '@webroot/uploads/executions/sud_xati/[[pk]].[[extension]]',
+    'fileUrl' => '/uploads/executions/sud_xati/[[pk]].[[extension]]',
+*/
     public function behaviors()
     {
         return [
@@ -151,31 +154,32 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             'class' => ImageUploadBehavior::class,
             'attribute' => 'image',
             'createThumbsOnRequest' => true,
-            'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
-            'thumbPath' => '@frontend/web/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-            'thumbUrl' => '@url/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-            'thumbs' => [
-                'xs' => ['width' => 64, 'height' => 48],
-                'sm' => ['width' => 120, 'height' => 67],
-                'md' => ['width' => 240, 'height' => 135],
-                'lg' => ['width' => 960, 'height' => 540],
-            ],
+                'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
+                'thumbPath' => '@frontend/web/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@url/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbs' => [
+                    'xs' => ['width' => 64, 'height' => 48],
+                    'sm' => ['width' => 120, 'height' => 67],
+                    'md' => ['width' => 240, 'height' => 135],
+                    'lg' => ['width' => 960, 'height' => 540],
+                ],
         ],
         [
             'class' => ImageUploadBehavior::class,
             'attribute' => 'photo',
             'createThumbsOnRequest' => true,
-            'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
-            'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
-            'thumbPath' => '@frontend/web/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-            'thumbUrl' => '@url/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-            'thumbs' => [
-                'xs' => ['width' => 64, 'height' => 48],
-                'sm' => ['width' => 120, 'height' => 67],
-                'md' => ['width' => 240, 'height' => 135],
-                'lg' => ['width' => 960, 'height' => 540],
-            ],
+            'createThumbsOnRequest' => true,
+                'filePath' => '@frontend/web/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
+                'fileUrl' => '@url/app-images/store/control-identification/[[attribute_id]]/[[filename]].[[extension]]',
+                'thumbPath' => '@frontend/web/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbUrl' => '@url/app-images/cache/control-identification/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+                'thumbs' => [
+                    'xs' => ['width' => 64, 'height' => 48],
+                    'sm' => ['width' => 120, 'height' => 67],
+                    'md' => ['width' => 240, 'height' => 135],
+                    'lg' => ['width' => 960, 'height' => 540],
+                ],
         ],
         ];
     }

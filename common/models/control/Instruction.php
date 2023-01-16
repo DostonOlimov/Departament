@@ -81,6 +81,7 @@ class Instruction extends \yii\db\ActiveRecord
     public $dn;
     public $dt_letter;
     public $first_date;
+    public $finish_date;
 
     public static function tableName()
     {
@@ -97,7 +98,7 @@ class Instruction extends \yii\db\ActiveRecord
             [['base', 'type', 'letter_date','checkup_begin_date',
                 'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date','checkup_finish_date',
-                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','dt_letter','first_date'], 'string', 'max' => 255],
+                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','dt_letter','first_date','finish_date'], 'string', 'max' => 255],
         ];
     }
     public function beforeSave($insert)
@@ -252,6 +253,7 @@ class Instruction extends \yii\db\ActiveRecord
             'checkup_duration_start_date' => 'Tekshiruv davri boshlanish sanasi',
             'checkup_duration_finish_date' => 'Tekshiruv davri tugatilish sanasi',
             'might_be_breakdown_letter' => 'Buzilishi mumkin bo\'lgan normativ hujjat',
+            'finish_date' => 'Tekshiruvning haqiqatda yakunlangan sanasi',
             'checkup_subject' => 'Tekshiruv predmeti',
             'who_send_letter' => 'Tekshirish uchun asos bo’luvchi hujjat jo’natgan tashkilot nomi yoki shaxs FISH',
             'dt_letter' => 'Tekshiruv kodi',

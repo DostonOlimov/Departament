@@ -22,6 +22,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\MaskedInput;
+use kartik\file\FileInput;
 
 $this->title = 'Birlamchi ma`lumotlar';
 $this->params['breadcrumbs'][] = $this->title;
@@ -40,6 +41,7 @@ $codetnved = [];
             'enableClientValidation' => false,
             'options' => [
                 'enctype' => 'multipart/form-data',
+                'id' => 'dynamic-form'
             ]
         ]) ?>
         
@@ -282,7 +284,7 @@ $codetnved = [];
                                             <?= $form->field($stan, "[{$i}]certification")->radioList( [1=>'ha', 0 => 'yo\'q'], );?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]photo")->fileInput() ?>
+                                            <?= $form->field($stan, "[{$i}]photo")->input('file') ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]exsist_certificate")->radioList( [1=>'mavjud', 0 => 'mavjud emas'],['onclick' => "typeChange(event,this)",] );?>
