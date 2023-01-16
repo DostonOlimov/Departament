@@ -39,6 +39,7 @@ use yii\web\Response;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
 
+
 /**
  * Site controller
  */
@@ -269,14 +270,15 @@ class ControlController extends Controller
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
                                 $prod->codetnved = $product->codetnved;
-                                $product->image = \yii\web\UploadedFile::getInstance($product, "[{$key_p1}]photo");
+                                $product->image = UploadedFile::getInstance($product, "[{$key_p1}]photo");
                                 if ($product->image) {
                                     $product->photo = $product->image->name;
                                  }
+            
                                  $prod->photo = $product->photo;
                                 $prod->save(false);
                                 $id[$key_p1] = $prod->id; 
-                }        // VarDumper::dump($prod->getUploadedFileUrl('photo'),12,true);die();
+                }       // VarDumper::dump($prod->getUploadedfilePath('photo'),12,true);die();
                         foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
                             {
                                foreach($proData as $k2 => $v)
@@ -591,17 +593,7 @@ class ControlController extends Controller
         
         $model = new Laboratory();
         $model->control_company_id = $company_id;
-        $company = Company::findOne(['id' => $company_id]);
-        $ins = Instruction::findOne(['id' => $company->control_instruction_id]);
         if ($model->load(Yii::$app->request->post()) &&  $model->save()) {
-            if($model->finish_date)
-            {
-                $ins->checkup_finish_date = $model->finish_date;
-                $ins->employers = 1;
-                $ins->general_status = Instruction::GENERAL_STATUS_SEND;
-                $ins->save();
-            }
-           
                 return $this->render('laboratory-view', [
                     'model' => $model,
                     
@@ -800,5 +792,26 @@ class ControlController extends Controller
             throw new \yii\db\Exception('Ma`lumot topilmadi');
         }
         return $model;
+    }
+
+    public function actionLastStep($id)
+    {
+        $model = Instruction::findOne(['id' => $id]);
+        $company_id = Company::findOne(['control_instruction_id'=>$id])->id;
+        if ($model->load($this->request->post()) ) {
+            $model->checkup_finish_date = $model->finish_date;
+            $model->employers = 1;
+            $model->general_status = Instruction::GENERAL_STATUS_SEND;
+            if($model->validate() && $model->save(false))
+            {
+            return $this->redirect(['index',]);
+        } 
+       
+    }
+        return $this->render('last-step', [
+            'model' => $model,
+            'id' => $id,
+            'company_id' => $company_id,
+        ]);
     }
 }

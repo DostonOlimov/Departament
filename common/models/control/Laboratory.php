@@ -94,8 +94,6 @@ class Laboratory extends \yii\db\ActiveRecord
             'out_dalolatnoma' => 'Oraliq dalolatnoma',
             'finish_dalolatnoma' => 'Yakuniy dalolatnoma',
             'comment' => 'Izoh',
-            'start_date' => 'Tekshiruv haqiqatda boshlangan sana',
-            'finish_date' => 'Tekshiruv haqiqatda yakunlangan sana',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',

@@ -16,6 +16,12 @@ use yii\widgets\MaskedInput;
 $this->title = 'Korxona';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+ .help-block 
+    {
+        color:red !important;
+    }
+</style>
 <div class="page1-1 row" style="margin:auto; padding:10px;">
 
     <?php $form = ActiveForm::begin() ?>

@@ -18,6 +18,7 @@ use yii\grid\GridView;
 $this->title = 'Mahsulotlar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="primary-product-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -98,8 +99,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'photo',
                         'value' => function (PrimaryProduct $model) {
-                            $model->Image = $model->photo;
-                            return $model->Image ? '<a class="btn btn-info" target="_blank" href="' . $model->getUploadedFileUrl('Image') . '" >Yuklash</a>' : '';
+                            $model->image = $model->photo;
+                            return $model->image ? '<a class="btn btn-info" target="_blank" href="' . $model->getUploadedFileUrl('image') . '" >Yuklash</a>' : '';
                         },
                         'format' => 'raw'
                     ],
