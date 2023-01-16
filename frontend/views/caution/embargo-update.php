@@ -1,5 +1,5 @@
 <?php
-use frontend\widgets\StepsEmbargo;
+use frontend\widgets\StepsReestr;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\bootstrap4\Breadcrumbs;
@@ -18,12 +18,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 
     <h1><!--?= Html::encode($this->title) ?--></h1>
 
-    <div class="col-4">
-            <?= StepsEmbargo::widget([
-                    
-            ])?>
+    <div class="col-3">
+        <?= StepsReestr::widget([])?>
     </div>
-    <div class="col-sm-8" style="margin-left:-30px">
+    <div class="col-sm-8">
             <?php
             echo Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a('Batafsil', ['/caution/embargo-add', 'id' => $model->id], ['class' => 'text-primary']);
+                        return Html::a('Batafsil', ['/caution/embargo-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }
                     return '';
                 },
@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a('qo\'shish', ['/caution/embargo-create', 'id' => $model->id], ['class' => 'text-primary']);
+                        return Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['/caution/embargo-create', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
                     }
                     return '';
                 },

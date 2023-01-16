@@ -9,6 +9,7 @@ use common\models\caution\Execution;
 use common\models\caution\CautionLetters;
 use common\models\caution\CautionLetterSearch;
 use common\models\User;
+use common\models\Model;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 use common\models\control\Company;
@@ -16,6 +17,7 @@ use common\models\control\Instruction;
 use common\models\control\InstructionSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use Exception;
 use Yii;
 
 /**
@@ -134,31 +136,42 @@ class CautionController extends Controller
         ]);
     }
 
-    public function actionEmbargoCreate(){
+    public function actionEmbargoCreate($id)
+    {
         $id = Yii::$app->request->get('id');
         $company = Company::findOne(['control_instruction_id' => $id]);
-        $model = new Embargo;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-              var_dump($this->request->post());
-              if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['embargo-view', 'id' => $model->id]);
-            
-             
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
-
-       return $this->render('embargo-create', [
-           'company' => $company,
-           'model' => $model,
-       ]); 
-       
+        $modelsPrevent = [new Embargo];
+        if (Yii::$app->request->post()) {
+            $modelsPrevent = Model::createMultiple(Embargo::classname(),$modelsPrevent);
+            Model::loadMultiple($modelsPrevent, $this->request->post());
+            foreach($modelsPrevent as $key=>$product) {
+                $product->updated_by = $product->created_by;
+            }    
+            //$valid = Model::validateMultiple($modelsPrevent);
+            if (Model::validateMultiple($modelsPrevent)) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                
+                try {
+                        foreach ($modelsPrevent as $key=>$product) {
+                           $product->instructions_id = $id;                                                    
+                           $product->save(false);
+                        }
+                        $transaction->commit();
+                       return $this->redirect(['embargo-add', 'instructions_id' => $id]);
+                    // }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+        
+        }
+        return $this->render('embargo-create', [            
+            'modelsPrevent' => $modelsPrevent,
+            'company' => $company,
+        ]);
     }
+
     public function actionEmbargoUpdate($id){
        // $model = $this->findModel($id); 
        $model = Embargo::findOne($id); 
@@ -202,33 +215,43 @@ class CautionController extends Controller
             'model' => $this->getModel(Prevention::className(), $id)
         ]);
     }
-   
-    
-    public function actionPreventionCreate(){
+
+    public function actionPreventionCreate($id)
+    {
         $id = Yii::$app->request->get('id');
         $company = Company::findOne(['control_instruction_id' => $id]);
-        $model = new Prevention;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-              var_dump($this->request->post());
-              if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['prevention-view', 'id' => $model->id]);
-            
-             
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
-
-       return $this->render('prevention-create', [
-           'company' => $company,
-           'model' => $model,
-       ]); 
-       
+        $modelsPrevent = [new Prevention];
+        if (Yii::$app->request->post()) {
+            $modelsPrevent = Model::createMultiple(Prevention::classname(),$modelsPrevent);
+            Model::loadMultiple($modelsPrevent, $this->request->post());
+            foreach($modelsPrevent as $key=>$product) {
+                $product->updated_by = $product->created_by;
+            }    
+            //$valid = Model::validateMultiple($modelsPrevent);
+            if (Model::validateMultiple($modelsPrevent)) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                
+                try {
+                        foreach ($modelsPrevent as $key=>$product) {
+                           $product->instructions_id = $id;                                                    
+                           $product->save(false);
+                        }
+                        $transaction->commit();
+                       return $this->redirect(['prevention-add', 'instructions_id' => $id]);
+                    // }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+        
+        }
+        return $this->render('prevention-create', [            
+            'modelsPrevent' => $modelsPrevent,
+            'company' => $company,
+        ]);
     }
+   
     public function actionReestr(){
         return $this->render('reestr.php');
     }
@@ -250,87 +273,82 @@ class CautionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionLettersCreate(){
+
+    public function actionLettersCreate($id)
+    {
         $id = Yii::$app->request->get('id');
         $company = Company::findOne(['control_instruction_id' => $id]);
-        $model = new CautionLetters;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-            if(!empty($_FILES['CautionLetters']['name']['file'])){
-                $file = UploadedFile::getInstance($model,'file');
-                $berkas = md5($model->company_id).'-.'.$file->getExtension();
-                $model->file = $berkas;
-                $path = 'uploads/caution_letter/';
-                if(!file_exists($path)){
-                    FileHelper::createDirectory($path);
-                }
-                $file->saveAs($path.$berkas);
+        $modelsPrevent = [new CautionLetters];
+
+        if (Yii::$app->request->post()) {
+
+            $modelsPrevent = Model::createMultiple(CautionLetters::classname(),  $modelsPrevent);
+            Model::loadMultiple($modelsPrevent, $this->request->post());
+
+            foreach ($modelsPrevent as $index => $modelOptionValue) {
+                $modelOptionValue->updated_by = $modelOptionValue->created_by;
+                $modelOptionValue->s_file = UploadedFile::getInstance($modelOptionValue, "[{$index}]file");                
+                if($modelOptionValue->s_file)  {
+                    $modelOptionValue->file = $modelOptionValue->s_file->name;
+                }   
+                
             }
-              if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['letters-view', 'id' => $model->id]);
-            
-             
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
-
-       return $this->render('letters-create', [
-           'company' => $company,
-           'model' => $model,
-       ]); 
-    }
-
-    public function actionLettersCreates(){
-        $q = trim(\Yii::$app->request->get('q'));
-        $codes = Company::find()->where(['like', 'inn', $q])->all();
-        if(empty($q)){
-           return $this->render('letters-search');
+            if (Model::validateMultiple($modelsPrevent)) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    foreach ($modelsPrevent as $key => $product) {                        
+                        $product->instructions_id = $id;
+                        $product->save(false);
+                    }
+                    $transaction->commit();
+                    return $this->redirect(['letters-add','instructions_id'=> $id]);
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
         }
-        if(!empty($codes)):
-         foreach($codes as $code){
-           $companies = Company::findOne($code['id']);
-         } 
-           else:
-               $companies = null;
-       endif;
-        
-        $model = new CautionLetters;
-       if ($this->request->isPost) {
-           if ($model->load($this->request->post()) ) {
-            $model->updated_by = $model->created_by;
-            if(!empty($_FILES['CautionLetters']['name']['file'])){
-                $file = UploadedFile::getInstance($model,'file');
-                $berkas = md5($model->company_id).'-.'.$file->getExtension();
-                $model->file = $berkas;
-                $path = 'uploads/caution_letter/';
-                if(!file_exists($path)){
-                    FileHelper::createDirectory($path);
-                }
-                $file->saveAs($path.$berkas);
-            }
-            
-          if($model->save()){
-               \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-              }                     
-            return $this->redirect(['letters-search', 'id' => $model->id]);
+
+        return $this->render('letters-create', [
+            'modelsPrevent' =>  $modelsPrevent,
+            'company' => $company,
+        ]);
+    }
+
+    // public function actionLettersCreate(){
+    //     $id = Yii::$app->request->get('id');
+    //     $company = Company::findOne(['control_instruction_id' => $id]);
+    //     $model = new CautionLetters;
+    //    if ($this->request->isPost) {
+    //        if ($model->load($this->request->post()) ) {
+
+    //         $model->updated_by = $model->created_by;
+    //         if(!empty($_FILES['CautionLetters']['name']['file'])){
+    //             $file = UploadedFile::getInstance($model,'file');
+    //             $berkas = md5($model->company_id).'-.'.$file->getExtension();
+    //             $model->file = $berkas;
+    //             $path = 'uploads/caution_letter/';
+    //             if(!file_exists($path)){
+    //                 FileHelper::createDirectory($path);
+    //             }
+    //             $file->saveAs($path.$berkas);
+    //         }
+    //           if($model->save()){
+    //            \Yii::$app->session->setFlash('success','Bazaga yuklandi');
+    //           }                     
+    //         return $this->redirect(['letters-view', 'id' => $model->id]);
             
              
-           }
-       } else {
-           $model->loadDefaultValues();
-       }
+    //        }
+    //    } else {
+    //        $model->loadDefaultValues();
+    //    }
 
-       return $this->render('letters-create', [
-           'companies' => $companies,
-           'model' => $model,
-           'codes' => $codes,
-           'q' => $q,
-       ]); 
-    }
+    //    return $this->render('letters-create', [
+    //        'company' => $company,
+    //        'model' => $model,
+    //    ]); 
+    // }
 
     public function actionLettersView($id){
         return $this->render('letters-view', [

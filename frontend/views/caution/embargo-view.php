@@ -6,7 +6,7 @@ use common\models\control\Company;
 use common\models\prevention\Prevention;
 use common\models\control\Instruction;
 use common\models\embargo\Embargo;
-use frontend\widgets\StepsEmbargo;
+use frontend\widgets\StepsReestr;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
 
@@ -20,13 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="row">
-    <div class="col-4">
-            <?= StepsEmbargo::widget([
-                    
-            ])?>     
-     </div>
+    <div class="col-3">
+        <?= StepsReestr::widget([])?>
+    </div>
 
-    <div class="col-sm-8" style="margin-left:-30px;">
+    <div class="col-sm-8">
         <p>
             <!--?= $model->status;?-->
             <?php if($model->status == 0):?>

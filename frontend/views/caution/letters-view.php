@@ -2,8 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use frontend\widgets\StepsPrevention;
+use frontend\widgets\StepsReestr;
 use yii\bootstrap4\Breadcrumbs;
+use common\models\caution\CautionLetters;
 use yii\helpers\Url;
 
 
@@ -14,13 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->title = Yii::t('app', 'Bartaraf_etish');
 ?>
 <div class="row">
-    <div class="col-sm-4">
-        <?= StepsPrevention::widget([
-                        
-        ])?>
+    <div class="col-3">
+        <?= StepsReestr::widget([])?>
     </div>
 
-    <div class="col-sm-8" style="margin-left:-30px">
+    <div class="col-sm-8">
     
                     <?php
                         echo Breadcrumbs::widget([
@@ -71,6 +70,15 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                         return $data ? $data->company->phone : '';
                     }
                 ],
+                [
+                    'attribute' => 'file',
+                    'value' => function (CautionLetters $model) {
+                        $model->s_file = $model->file;
+                        return $model->s_file ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('s_file') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+
+                    },
+                    'format' => 'raw'
+                ],
             
                 //'created_at',
                 'letter_date',
@@ -83,16 +91,15 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                     // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
                         return $data ? $data->user->name .' '. $data->user->surname  : '';
                     }
-                ],
+                ],                
             ],
         ]) ?>
-        <div class="embed-responsive embed-responsive-16by9">
         <?php if(!empty($model->file)):?>
-        <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_letter/{$model->file}", true);?>" 
-            title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
-            height="600px">
-        </iframe>
-        <?php endif;?>
-        </div>
+            <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/letters/ogohlantirish/{$model->id}.pdf", true);?>" 
+                title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
+                height="600px">
+            </iframe>
+            <?php endif;?>
+        
     </div>
 </div>

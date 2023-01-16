@@ -6,7 +6,7 @@ use common\models\control\Instruction;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-use frontend\widgets\StepsEmbargo;
+use frontend\widgets\StepsReestr;
 use yii\grid\GridView;
 use yii\bootstrap4\Breadcrumbs;
 
@@ -21,15 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
 
-     <div class="col-4">
-            <?= StepsEmbargo::widget([
-                    
-            ])?>     
-     </div>
-    <div class="col-sm-8" style="margin-left:-30px;"> 
-            <p>
-                <?= Html::a(Yii::t('app', 'Ko\'rsatma qo\'shish'), ['embargo-search'], ['class' => 'btn btn-success']) ?>
-            </p>
+    <div class="col-3">
+        <?= StepsReestr::widget([])?>
+    </div>
+    <div class="col-sm-8"> 
             <?php
                 echo Breadcrumbs::widget([
                         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

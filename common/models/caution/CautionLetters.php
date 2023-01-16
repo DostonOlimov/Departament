@@ -4,6 +4,9 @@ namespace common\models\caution;
 use common\models\control\Company;
 use common\models\control\Instruction;
 use common\models\User;
+use yiidreamteam\upload\FileUploadBehavior;
+use yii\behaviors\BlameableBehavior;
+
 
 use Yii;
 
@@ -21,10 +24,7 @@ use Yii;
  */
 class CautionLetters extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-    //public $file;
+    public $s_file;
     public static function tableName()
     {
         return 'caution_letters';
@@ -59,6 +59,18 @@ class CautionLetters extends \yii\db\ActiveRecord
             'file' => 'Files',
             'created_by' => 'Inspektor F.I.SH',
             'updated_by' => 'Nazoratchi F.I.SH',
+        ];
+    }
+    public function behaviors()
+    {
+        return [
+            BlameableBehavior::class,           
+            [
+                'class' => FileUploadBehavior::class,
+                'attribute' => 's_file',
+                'filePath' => '@webroot/uploads/letters/ogohlantirish/[[pk]].[[extension]]',
+                'fileUrl' => 'uploads/letters/ogohlantirish/[[pk]].[[extension]]',
+            ],           
         ];
     }
 
