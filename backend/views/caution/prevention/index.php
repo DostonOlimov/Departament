@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\bootstrap4\Breadcrumbs;
+use kartik\export\ExportMenu;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
@@ -21,6 +22,48 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
         ]);
     ?>
+
+<?php $gridColumns = [
+    ['class' => 'yii\grid\SerialColumn'],
+        'id',
+        [
+            'attribute'=> 'companies_id',
+            'value' => function ($data) {
+                return $data ? $data->company->name : '';
+            }
+        ],
+        [
+            'attribute'=> 'instructions_id',
+            'value' => function ($data) {
+                return $data ? $data->instruction->command_number : '';
+            }
+        ],
+        
+       // 'message_date',
+        [
+            'attribute'=> 'created_by',
+            'value'=> function($data){
+                return $data ? $data->user->name .' '.$data->user->surname :'';
+            }
+        ],
+        [
+            'attribute'=> 'updated_by',
+            'value'=> function($data){                
+                return $data ? $data->user->name .' '.$data->user->surname :'';               
+            }
+        ],
+        //'created_at',
+        'message_date',
+    ['class' => 'yii\grid\ActionColumn'],
+    ];
+
+    // Renders a export dropdown menu
+    echo ExportMenu::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => $gridColumns,
+        'clearBuffers' => true, //optional
+    ]);?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
