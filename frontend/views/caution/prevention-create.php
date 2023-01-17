@@ -1,16 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use common\models\control\InstructionUser;
-use yii\helpers\ArrayHelper;
-use frontend\widgets\StepsPrevention;
+use frontend\widgets\StepsReestr;
 use common\models\User;
-use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
-use common\models\prevention\Prevention;
-use common\models\control\Instruction;
-use common\models\control\Company;
-use kartik\select2\Select2;
 use wbraganca\dynamicform\DynamicFormWidget;
 
 /** @var yii\web\View $this */
@@ -18,9 +11,9 @@ use wbraganca\dynamicform\DynamicFormWidget;
 $this->title = Yii::t('app', 'Bartaraf_etish');
 ?>
 <div class="page1-1 row">
-   
-   
-
+<div class="col-3">
+<?= StepsReestr::widget([])?>
+</div>     
     <?php $form = ActiveForm::begin([
             'id' => 'dynamic-form',
             'enableClientValidation' => false,

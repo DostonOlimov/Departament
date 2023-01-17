@@ -1,24 +1,19 @@
 <?php
 
 use yii\helpers\Html;
-use common\models\control\InstructionUser;
-use yii\helpers\ArrayHelper;
-use frontend\widgets\StepsPrevention;
+use frontend\widgets\StepsReestr;
 use common\models\User;
-use kartik\date\DatePicker;
-// use kartik\file\FileInput;
 use yii\widgets\ActiveForm;
-use common\models\control\Instruction;
-use common\models\control\Company;
 use wbraganca\dynamicform\DynamicFormWidget;
-//use kartik\select2\Select2;
 
 /** @var yii\web\View $this */
 /** @var common\models\prevention\Prevention $model */
 $this->title = Yii::t('app', 'Ogohlantirish xati');
 ?>
 <div class="page1-1 row">
-   
+<div class="col-3">
+<?= StepsReestr::widget([])?>
+</div>  
 
     <?php $form = ActiveForm::begin([
             'id' => 'dynamic-form',

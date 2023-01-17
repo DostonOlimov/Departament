@@ -278,7 +278,7 @@ class ControlController extends Controller
                                  $prod->photo = $product->photo;
                                 $prod->save(false);
                                 $id[$key_p1] = $prod->id; 
-                }       // VarDumper::dump($prod->getUploadedfilePath('photo'),12,true);die();
+                }       //e VarDumper::dump($prod->getUploadedfilePath('photo'),12,true);die();
                         foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
                             {
                                foreach($proData as $k2 => $v)
