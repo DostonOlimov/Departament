@@ -87,12 +87,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function($model){
-                    if($model->status==1){
-                    return $model->status==1 ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
-                    }elseif($model->status==2){
-                        return $model->status==2 ? '<span class="text-danger">Bekor qilingan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';  
+                    if($model->status == null){
+                        return '<span class="text-warning">Jarayonda</span>';
+                    //return $model->status ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
+                    }elseif($model->status == 1){
+                        return '<span class="text-primary">Tasdiqlangan</span>';
                     }else{
-                        return $model->status==0 ? '<span class="text-warning">Jarayonda</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';   
+                        return '<span class="text-alert">Bekor qilingan</span>';   
                     }
                 },
                 

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use frontend\widgets\StepsReestr;
 use yii\bootstrap4\Breadcrumbs;
+use common\models\prevention\Prevention;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
@@ -79,9 +80,19 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                         return $data ? $data->instruction->command_number : '';
                     }
                 ],
+                [
+                    'attribute' => 'file',
+                    'value' => function (Prevention $model) {
+                        $model->s_file = $model->file;
+                        return $model->s_file ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('s_file') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+
+                    },
+                    'format' => 'raw'
+                ],
+                
             
-                //'created_at',
-                'updated_at',
+                'created_at',
+                
                 'comment',
                 [
                     'attribute'=> 'created_by',
@@ -92,12 +103,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 ],
             ],
         ]) ?>
-         <?php if(!empty($model->file)):?>
-        <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/caution_prevention/{$model->file}", true);?>" 
-            title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
-            height="600px">
-        </iframe>
-        <?php endif;?>
+         
         </div>
     </div>
 </div>
