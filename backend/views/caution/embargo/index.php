@@ -52,12 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute' => 'status',
             'value' => function($model){
                 if($model->status == null){
-                    return '<span class="text-warning">Jarayonda</span>';
+                    return '<span class="btn btn-warning text-dark btn-block">Jarayonda</span>';
                 //return $model->status ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
                 }elseif($model->status == 1){
-                    return '<span class="text-primary">Tasdiqlangan</span>';
+                    return '<span class="btn btn-primary text-light btn-block">Tasdiqlangan</span>';
                 }else{
-                    return '<span class="text-alert">Bekor qilingan</span>';   
+                    return '<span class="btn btn-alert text-dark btn-block">Bekor qilingan</span>';   
                 }
             },
             
@@ -123,12 +123,12 @@ echo ExportMenu::widget([
                 'attribute' => 'status',
                 'value' => function($model){
                     if($model->status == null){
-                        return '<span class="text-warning">Jarayonda</span>';
+                        return '<span class="btn btn-warning text-dark btn-block">Jarayonda</span>';
                     //return $model->status ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
                     }elseif($model->status == 1){
-                        return '<span class="text-primary">Tasdiqlangan</span>';
+                        return '<span class="btn btn-primary text-light btn-block">Tasdiqlangan</span>';
                     }else{
-                        return '<span class="text-alert">Bekor qilingan</span>';   
+                        return '<span class="btn btn-danger text-light btn-block">Bekor qilingan</span>';   
                     }
                 },
                 

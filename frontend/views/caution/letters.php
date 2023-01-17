@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->name, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->name;
                     }
                     return '';
                 },
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->inn, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->inn;
                     }
                     return '';
                 },
@@ -85,18 +85,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Ko\'rsatmalar',
+                'label' => 'Xatlar',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a('Batafsil', ['/caution/letters-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
-                    }
-                    return '';
+                        return Html::a('Batafsil', ['/caution/prevention-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
+                    }else{
+                    return '';}
                 },
                 'format' => 'raw',
             ],
             [
-                'label' => 'Ko\'rsatma qo\'shish',
+                'label' => 'Xat qo\'shish',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {

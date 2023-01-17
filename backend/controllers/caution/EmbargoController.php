@@ -6,6 +6,7 @@ use common\models\embargo\Embargo;
 use common\models\embargo\EmbargoSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use common\models\User;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -88,7 +89,7 @@ class EmbargoController extends Controller
         
 
             if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $this->findModel($id)]);
             }
 
             return $this->render('update', [

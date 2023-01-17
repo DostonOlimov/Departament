@@ -88,12 +88,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'value' => function($model){
                     if($model->status == null){
-                        return '<span class="text-warning">Jarayonda</span>';
+                        return '<span class="btn btn-warning text-dark">Jarayonda</span>';
                     //return $model->status ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
                     }elseif($model->status == 1){
-                        return '<span class="text-primary">Tasdiqlangan</span>';
+                        return '<span class="btn btn-primary text-light">Tasdiqlangan</span>';
                     }else{
-                        return '<span class="text-alert">Bekor qilingan</span>';   
+                        return '<span class="btn btn-alert text-dark">Bekor qilingan</span>';   
                     }
                 },
                 

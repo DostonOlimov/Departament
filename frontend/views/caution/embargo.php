@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->name, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->name;
                     }
                     return '';
                 },
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a($company->inn, ['/control/company-view', 'id' => $model->id], ['class' => 'text-primary']);
+                        return $company->inn;
                     }
                     return '';
                 },
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                'label' => 'Ko\'rsatmalar',
+                'label' => 'Taqiqlar',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
