@@ -6,6 +6,7 @@ use common\models\control\Company;
 use common\models\prevention\Prevention;
 use common\models\control\Instruction;
 use common\models\embargo\Embargo;
+use common\models\User;
 use frontend\widgets\StepsReestr;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
@@ -103,11 +104,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     [
                         'attribute'=> 'created_by',
-                        'value' => function ($data) {
-                        // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
-                            return $data ? $data->user->name .' '. $data->user->surname  : '';
+                        'value'=> function($model){
+                            $user = User::findOne($model->created_by);
+                            return $user ? $user->name .' '.$user->surname :'';
                         }
-                    ],
+                        ],
+                        [
+                            'attribute'=> 'updated_by',
+                            'value'=> function($model){
+                                $user = User::findOne($model->updated_by);
+                                if($model->status == 1){               
+                                return $user ? $user->name .' '.$user->surname :'';
+                                }return '';
+                            }
+                        ],
                     //'created_at',
                     'updated_at',
                 ],

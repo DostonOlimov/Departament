@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
+use common\models\User;
 use common\models\embargo\Embargo;
 
 /** @var yii\web\View $this */
@@ -114,10 +115,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
             [
                 'attribute'=> 'created_by',
-                'value'=> function($data){
-                    return $data ? $data->user->name .' '.$data->user->surname :'';
+                'value'=> function($model){
+                    $user = User::findOne($model->created_by);
+                    return $user ? $user->name .' '.$user->surname :'';
                 }
-            ],
+                ],
+                [
+                    'attribute'=> 'updated_by',
+                    'value'=> function($model){
+                        $user = User::findOne($model->updated_by);
+                        if($model->status == 1){               
+                        return $user ? $user->name .' '.$user->surname :'';
+                        }return '';
+                    }
+                ],
             
            // 'inspectors',
         ],
