@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= StepsReestr::widget([])?>
 </div>
 <div class="col-9">
-<h2>Taqiqlash ko'rsatmalari</h2>
+<h2>Bartaraf etish ko'rsatmalari</h2>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
