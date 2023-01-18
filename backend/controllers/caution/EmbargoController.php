@@ -6,6 +6,7 @@ use common\models\embargo\Embargo;
 use common\models\embargo\EmbargoSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
+use common\models\User;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -110,10 +111,10 @@ class EmbargoController extends Controller
                      $file = UploadedFile::getInstance($model,'file');
                      $berkas = md5($model->instruction->command_number).md5('-embargo').'.'.$file->getExtension();
                      $model->file = $berkas;
-                     $path = '@frontend/web/uploads/caution_embargo/';
-                    //  if(!file_exists($path)){
-                    //      FileHelper::createDirectory($path);
-                    //  }
+                     $path= Yii::getAlias('@frontend').'/web/uploads/caution_embargo/';
+                     if(!file_exists($path)){
+                         FileHelper::createDirectory($path);
+                     }
                      $file->saveAs($path.$berkas);
                  }
                  

@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\bootstrap4\Breadcrumbs;
 use yii\helpers\Url;
+use common\models\User;
 use common\models\embargo\Embargo;
 
 /** @var yii\web\View $this */
@@ -87,12 +88,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function($model){
-                    if($model->status==1){
-                    return $model->status==1 ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
-                    }elseif($model->status==2){
-                        return $model->status==2 ? '<span class="text-danger">Bekor qilingan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';  
+                    if($model->status == null){
+                        return '<span class="btn btn-warning text-dark">Jarayonda</span>';
+                    //return $model->status ? '<span class="text-primary">Tasdiqlangan</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';
+                    }elseif($model->status == 1){
+                        return '<span class="btn btn-primary text-light">Tasdiqlangan</span>';
                     }else{
-                        return $model->status==0 ? '<span class="text-warning">Jarayonda</span>':'<span class="text-warning">Jarayonda</span>'?:'<span class="text-alert">Bekor qilingan</span>';   
+                        return '<span class="btn btn-alert text-dark">Bekor qilingan</span>';   
                     }
                 },
                 
@@ -113,10 +115,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
             [
                 'attribute'=> 'created_by',
-                'value'=> function($data){
-                    return $data ? $data->user->name .' '.$data->user->surname :'';
+                'value'=> function($model){
+                    $user = User::findOne($model->created_by);
+                    return $user ? $user->name .' '.$user->surname :'';
                 }
-            ],
+                ],
+                [
+                    'attribute'=> 'updated_by',
+                    'value'=> function($model){
+                        $user = User::findOne($model->updated_by);
+                        if($model->status == 1){               
+                        return $user ? $user->name .' '.$user->surname :'';
+                        }return '';
+                    }
+                ],
             
            // 'inspectors',
         ],

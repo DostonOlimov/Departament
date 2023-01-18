@@ -98,9 +98,9 @@ class LettersController extends Controller
                      $file = UploadedFile::getInstance($model,'file');
                      $berkas = md5($model->company->name).md5('-letters').'.'.$file->getExtension();
                      $model->file = $berkas;
-                     $path = '@frontend/web/uploads/caution_letter/';
-                      if(!file_exists($path)){
-                      FileHelper::createDirectory($path);
+                     $path= Yii::getAlias('@frontend').'/web/uploads/caution_letter/';
+                     if(!file_exists($path)){
+                         FileHelper::createDirectory($path);
                      }
                    
                    $file->saveAs($path.$berkas);
