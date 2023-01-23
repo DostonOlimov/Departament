@@ -61,7 +61,7 @@ $codetnved = [];
     
             <i class="fa fa-toggle-right" id = "open2" onclick=openPanel2(); style="font-size:24px;color:blue;display:none;"></i> 
             <i class="fa fa-toggle-down " id = "close2" onclick=closePanel2(); style="font-size:24px;color:blue; " ></i> 
-            <h3 style="color:black;display:inline;">Tashkolotda mavjud o'lchov vositalari haqida ma'lumot</h3>
+            <h3 style="color:black;display:inline;">Tashkilotda mavjud o'lchov vositalari haqida ma'lumot</h3>
                 <hr>
         <div class="row" id="content2"  >
             <div class="box box-default" style="display: inline-block">
