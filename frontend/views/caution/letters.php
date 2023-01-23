@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     if ($company) {
-                        return Html::a('Batafsil', ['/caution/prevention-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
+                        return Html::a('Batafsil', ['/caution/letters-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }else{
                     return '';}
                 },
