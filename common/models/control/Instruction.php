@@ -49,12 +49,14 @@ class Instruction extends \yii\db\ActiveRecord
     const BASE_RISK = 0;
     const BASE_GRAF = 1;
     const BASE_GIVEN = 2;
-    const BASE_APPEAL = 3;
-    const BASE_SMM_APPEAL = 4;
-    const BASE_ASSIGNMENT = 5;
+    const BASE_APPEAL1 = 3;
+    const BASE_APPEAL2 = 4;
+    const BASE_SMM_APPEAL = 5;
+    const BASE_ASSIGNMENT = 6;
 
     const TYPE_AWARE = 0;
     const TYPE_AGREEMENT = 1;
+    const TYPE_DT = 11;
 
     const SUBJECT1 = 1;
     const SUBJECT2 = 2;
@@ -79,7 +81,6 @@ class Instruction extends \yii\db\ActiveRecord
     public $admin;
     public $subject;
     public $dn;
-    public $dt_letter;
     public $first_date;
     public $finish_date;
 
@@ -98,7 +99,7 @@ class Instruction extends \yii\db\ActiveRecord
             [['base', 'type', 'letter_date','checkup_begin_date',
                 'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date','checkup_finish_date',
-                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','dt_letter','first_date','finish_date'], 'string', 'max' => 255],
+                'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','first_date','finish_date'], 'string', 'max' => 255],
         ];
     }
     public function beforeSave($insert)
@@ -141,7 +142,8 @@ class Instruction extends \yii\db\ActiveRecord
             self::BASE_RISK => 'Xavf tahlili',
             self::BASE_GRAF => 'Reja grafik',
             self::BASE_GIVEN => 'Berilgan ko\'rsatma',
-            self::BASE_APPEAL => 'Kelib tushgan murojaat',
+            self::BASE_APPEAL1 => 'Yuridik shaxsdan kelib tushgan murojaat',
+            self::BASE_APPEAL2 => 'Jismoniy shaxsdan kelib tushgan murojaat',
             self::BASE_SMM_APPEAL => 'Ijtimoiy tarmoqlardan kelib tushgan murojaatlar',
             self::BASE_ASSIGNMENT => 'Xukumat topshiriqlari',
         ];
@@ -158,6 +160,7 @@ class Instruction extends \yii\db\ActiveRecord
 
             self::TYPE_AWARE => 'Xabardor',
             self::TYPE_AGREEMENT => 'Kelishuv',
+            self::TYPE_DT => 'Davlat tashkiloti',
         ];
 
         if ($type === null) {
@@ -245,7 +248,7 @@ class Instruction extends \yii\db\ActiveRecord
             'letter_number' => 'Tekshiruv kodi(Biznes Ombudsman)',
             'command_date' => 'Buyruq sanasi',
             'command_number' => 'Buyruq nomeri',
-            'checkup_begin_date' => 'Tekshiruv boshlangan sana',
+            'checkup_begin_date' => 'Tekshiruv boshlanish sanasi',
             'checkup_finish_date' => 'Tekshiruv tugatilgan sana',
             'checkup_duration' => 'Tekshiruv muddati',
             'first_date' => 'Tekshiruvning haqiqatda boshlanish sanasi',
@@ -256,7 +259,6 @@ class Instruction extends \yii\db\ActiveRecord
             'finish_date' => 'Tekshiruvning haqiqatda yakunlangan sanasi',
             'checkup_subject' => 'Tekshiruv predmeti',
             'who_send_letter' => 'Tekshirish uchun asos bo’luvchi hujjat jo’natgan tashkilot nomi yoki shaxs FISH',
-            'dt_letter' => 'Tekshiruv kodi',
             'dn' => 'Davlat nazorati turi',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',

@@ -46,10 +46,10 @@ class PrimaryOv extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'control_primary_data_id' => 'Control Primary Data ID',
-            'type' => 'O\'v turlari',
-            'measurement' => 'O\'v soni',
-            'compared' => 'Qiyoslangan o\'v soni',
-            'invalid' => 'Yaroqsiz o\'v soni',
+            'type' => 'O\'V turlari',
+            'measurement' => 'O\'V soni',
+            'compared' => 'Qiyoslangan O\'V soni',
+            'invalid' => 'Yaroqsiz O\'V soni',
         ];
     }
 
@@ -58,7 +58,7 @@ class PrimaryOv extends \yii\db\ActiveRecord
         $arr = [
             self::TYPE_ENER => 'Energiya resurslarini hisoblovchi',
             self::TYPE_PRODUCT => 'Mahsulot sifatini nazorat qiluvchi',
-            self::TYPE_TEX => 'Texnolagik jarayonda ishlatiladigan',
+            self::TYPE_TEX => 'Texnologik jarayonda ishlatiladigan',
             self::TYPE_NOT => 'O\'lchov vositasi mavjud emas',
         ];
 

@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'label' => 'Foydalonuvchilar',
+                'label' => 'Foydalanuvchilar',
                 'value' => function(InstructionUser $model){
                      return $model->user->username;
                 }

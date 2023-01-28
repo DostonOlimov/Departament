@@ -211,14 +211,14 @@ class PrimaryProduct extends \yii\db\ActiveRecord
             'year_quantity' => 'Mahsulotning yillik summasi',
             'year_amount' => 'Mahsulotning yillik miqdori',
             'appearance_marking' => 'Tashqi ko’rinish va markirovkasi bo’yicha tekshirish',
-            'labaratory_checking' => 'Sinov labaratoriyasiga berilganligi',
+            'labaratory_checking' => 'Sinov laboratoriyasiga berilganligi',
             'certification' => 'Mahsulotning majburiy sertifikatlashtirishga tushishi',
             'quality' => 'Mahsulot sifati',
             'description' => 'Izoh',
             'cer_amount' =>'Sertifikatsiz realizatsiya qilingan mahsulot qiymati',
             'cer_quantity' =>'Sertifikatsiz realizatsiya qilingan mahsulot summasi',
             'exsist_certificate' =>'Mahsulotning sertifikat(lar)i',
-            'codetnved' => 'Mahsulotning TN VED kodi',
+            'codetnved' => 'Mahsulotning TIF TN kodi',
             'photo' =>'Mahsulotning rasmi',
             'defect_type' =>'Mahsulotning kamchilikgi'
 

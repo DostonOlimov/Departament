@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
         <thead>
         </thead>
         <tbody class="container-rooms">
-        <h5 style="color:black;">Mahsulotga oid texnik regalament yoki meyoriy hujjat(lar)</h5>
+        <h5 style="color:black;">Mahsulotga oid texnik reglament yoki standartlar</h5>
         <?php foreach ($pro_primary as $indexRoom => $modelRoom): ?>
             <tr class="room-item ">
                 <td class="vcenter">

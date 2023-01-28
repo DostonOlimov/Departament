@@ -25,33 +25,30 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin() ?>
 
     <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'base')->dropDownList(Instruction::getBase()) ?>
-        </div>
-
-        <div class="col-sm-6">
-            <?= $form->field($model, 'type')->dropDownList(Instruction::getType()) ?>
-        </div>
-    </div>
-    <div class="row">
     <div class="col-sm-6">
             <?= $form->field($model, 'dn')->dropDownList(Instruction::getDN(),['onclick' => "typeChange(event,this)",]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'base')->dropDownList(Instruction::getBase()) ?>
         </div>
         <div class="col-sm-6" id = "code">
             <?= $form->field($model, 'letter_number')->widget(\yii\widgets\MaskedInput::className(), [
                 'mask' => '999-999-999']) ?>
         </div>
-        <div class="col-sm-6" id = "code1" style = "display:none">
-            <?= $form->field($model, 'dt_letter')->textInput() ?>
+        <div class="col-sm-6" id = "type">
+            <?= $form->field($model, 'type')->dropDownList(Instruction::getType()) ?>
         </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'command_date')->widget(DatePicker::className()) ?>
+    </div>
+    <div class="row">
+    <div class="col-sm-6">
+            <?= $form->field($model, 'command_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd-MM-yyyy'
+    ]]) ?>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'command_number')->textInput(['type' => 'number']) ?>
         </div>
-    </div>
-    <div class="row">
         <div class="col-sm-6">
             <?= $form->field($model, 'letter_date')->widget(DatePicker::className()) ?>
         </div>
@@ -111,15 +108,15 @@ $this->params['breadcrumbs'][] = $this->title;
         if (e.target.value == "1") {
            
         var collection =  document.getElementById("code");
-        var collection1 =  document.getElementById("code1");
+        var collection1 =  document.getElementById("type");
             collection.style.display = 'none';
-            collection1.style.display = 'block';
+            collection1.style.display = 'none';
         }
         if (e.target.value == "0") {
         var col =  document.getElementById("code");
-        var col1 =  document.getElementById("code1");
+        var col1 =  document.getElementById("type");
             col.style.display = 'block';
-            col1.style.display = 'none';
+            col1.style.display = 'block';
         }
     }
 </script>

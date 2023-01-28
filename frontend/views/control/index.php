@@ -115,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             [   
-                'label' => 'Asos',
+                'label' => 'Tekshiruv turi',
                 'value' => function (Instruction $model) {
                     return Instruction::getType($model->type);
                 }
