@@ -48,7 +48,7 @@ use yii\widgets\ActiveForm;
                             <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]number_reestr")->textInput(['type' => 'number']); ?>
                         </div>
                         <div class="col-sm-4">
-                            <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]date_to")->textInput(['type' => 'date']) ?>
+                            <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]date_to")->textInput(['type' => 'date',]) ?>
                         </div>
                         <div class="col-sm-4">
                             <?= $form->field($modelRoom, "[{$primaryIndex}][{$indexRoom}]date_from")->textInput(['type' => 'date']) ?>

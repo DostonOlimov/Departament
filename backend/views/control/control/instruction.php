@@ -43,25 +43,37 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-sm-6">
             <?= $form->field($model, 'command_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
-        'format' => 'dd-MM-yyyy'
+        'format' => 'dd.mm.yyyy'
     ]]) ?>
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'command_number')->textInput(['type' => 'number']) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'letter_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'letter_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'checkup_begin_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'checkup_begin_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'checkup_duration_start_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'checkup_duration_start_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'checkup_duration_finish_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'checkup_duration_finish_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
     </div>
     <div class="row">

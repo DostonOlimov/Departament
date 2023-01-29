@@ -15,6 +15,9 @@ use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
 use common\models\control\PrimaryProductNd;
+use common\models\control\ControlProductCertification;
+use common\models\control\ControlProductLabaratoryChecking;
+use common\models\control\ControlProductMeasures;
 use Exception;
 use Yii;
 use yii\filters\AccessControl;
@@ -122,12 +125,17 @@ class InstructionController extends Controller
             try {
                 $primaryData = PrimaryData::findOne(['control_company_id' => $company->id]);
                 if ($primaryData) {
-                    if ($nd = PrimaryProduct::findOne(['control_primary_data_id' => $primaryData->id])) {
+                    if ($products = PrimaryProduct::findAll(['control_primary_data_id' => $primaryData->id])) {
 			//\yii\helpers\VarDumper::dump($nd,12,true);die;
-			//\yii\helpers\VarDumper::dump(ProPrimaryData::deleteAll(['control_pxrimary_id' => $nd->id]),12,true);die;
-                    PrimaryProductNd::deleteAll(['control_primary_id' => $nd->id]);
-                    }
-		    PrimaryProduct::deleteAll(['control_primary_data_id' => $primaryData->id]);    
+			//\yii\helpers\VarDumper::dump(PrimaryProductNd::deleteAll(['control_primary_product_id' => $nd->id]),12,true);
+                 foreach($products as  $nd){
+                    PrimaryProductNd::deleteAll(['control_primary_product_id' => $nd->id]);
+                    ControlProductCertification::deleteAll((['product_id' => $nd->id]));
+                    ControlProductLabaratoryChecking::deleteAll((['product_id' => $nd->id]));
+                    ControlProductMeasures::deleteAll((['product_id' => $nd->id]));
+                     }
+                }
+		            PrimaryProduct::deleteAll(['control_primary_data_id' => $primaryData->id]);    
                     PrimaryOv::deleteAll(['control_primary_data_id' => $primaryData->id]);
                     PrimaryData::deleteAll(['control_company_id' => $company->id]);
                 }

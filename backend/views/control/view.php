@@ -156,11 +156,10 @@ if ($company) { ?>
                         return $model->phoneNumber;
                     },
                 ],
-                'address',
                 [
                     'label' => 'Mutaxasis',
                     'value' => function (Company $model) {
-                        return $model->createdBy->username;
+                        return $model->createdBy->name.' '.$model->createdBy->surname;
                     },
                 ],
             ],

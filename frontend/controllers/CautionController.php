@@ -5,7 +5,6 @@ use common\models\embargo\Embargo;
 use common\models\embargo\EmbargosSearch;
 use common\models\prevention\Prevention;
 use common\models\prevention\PreventionsSearch;
-use common\models\caution\Execution;
 use common\models\caution\CautionLetters;
 use common\models\caution\CautionLetterSearch;
 use common\models\User;
@@ -47,67 +46,6 @@ class CautionController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionInstruction()
-    {
-        $model = new Instruction();
-
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['company', 'instruction_id' => $model->id]);
-        }
-
-        return $this->render('instruction', [
-            'model' => $model
-        ]);
-    }
-
-    public function actionInstructionView($id)
-    {
-        return $this->render('instruction-view', [
-            'model' => $this->getModel(Instruction::className(), $id)
-        ]);
-    }
-
-    public function actionCompany($instruction_id)
-    {
-        $model = new Company();
-        $model->caution_instruction_id = $instruction_id;
-
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['execution', 'company_id' => $model->id]);
-        }
-
-        return $this->render('company', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionCompanyView($id)
-    {
-        return $this->render('company-view', [
-            'model' => $this->getModel(Company::className(), $id)
-        ]);
-    }
-
-    public function actionExecution($company_id)
-    {
-        $model = new Execution();
-        $model->caution_company_id = $company_id;
-
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['/caution/index']);
-        }
-        return $this->render('execution', [
-            'model' => $model
-        ]);
-    }
-
-    public function actionExecutionView($id)
-    {
-        return $this->render('execution-view', [
-            'model' => $this->getModel(Execution::className(), $id)
         ]);
     }
 
