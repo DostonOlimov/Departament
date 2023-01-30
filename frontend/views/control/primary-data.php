@@ -117,6 +117,15 @@ $codetnved = [];
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]invalid")->textInput(['type' => 'number']) ?>
                                         </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]uncompared")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]expired")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <?= $form->field($stan, "[{$i}]unworked")->textInput(['type' => 'number']) ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

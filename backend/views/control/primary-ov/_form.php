@@ -12,15 +12,26 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-9">
             <?= $form->field($model, 'type')->dropDownList($model::getType()) ?>
-
+            </div>
+        <div class="col-md-6">
             <?= $form->field($model, 'measurement')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'compared')->textInput(['maxlength' => true]) ?>
-
+            </div>
+        <div class="col-md-6">
             <?= $form->field($model, 'invalid')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'uncompared')->textInput(['maxlength' => true]) ?>
+            </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'expired')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'unworked')->textInput(['maxlength' => true]) ?>
         </div>
 
         <div class="form-group">

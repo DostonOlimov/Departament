@@ -33,7 +33,7 @@ class PrimaryOv extends \yii\db\ActiveRecord
         return [
             [[ 'type', 'measurement', 'compared', 'invalid'], 'required'],
             [['control_primary_data_id', 'type'], 'integer'],
-            [['measurement', 'compared', 'invalid'], 'string', 'max' => 255],
+            [['measurement', 'compared', 'invalid','uncompared','expired','unworked'], 'string', 'max' => 255],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::className(), 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
     }
@@ -50,6 +50,9 @@ class PrimaryOv extends \yii\db\ActiveRecord
             'measurement' => 'O\'V soni',
             'compared' => 'Qiyoslangan O\'V soni',
             'invalid' => 'Yaroqsiz O\'V soni',
+            'uncompared' => 'Qiyoslash muddati o\'tgan O\'V soni',
+            'expired' => 'Qiyoslanmagan O\'V soni',
+            'unworked' => 'Ish faoliyatida bo\'lmagan(yaroqsiz O\'Vni hisoblamaganda) O\'V soni',
         ];
     }
 

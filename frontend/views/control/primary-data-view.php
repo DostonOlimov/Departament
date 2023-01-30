@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'control_instruction_id' => $model->controlCompany->control_instruction_id,
         'control_company_id' => $model->control_company_id,
     ]) ?>
-    <div class="col-6">
+    <div class="col-8">
     <h3>Korxona haqida</h3>
     <?= DetailView::widget([
         'model' => $model,
@@ -66,6 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'measurement',
                     'compared',
                     'invalid',
+                    'uncompared',
+                    'invalid',
+                    'unworked',
                     [
                         'attribute' => 'type',
                         'value' => function (PrimaryOv $model) {

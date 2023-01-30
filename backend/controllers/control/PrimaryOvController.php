@@ -3,7 +3,7 @@
 namespace backend\controllers\control;
 
 use common\models\control\PrimaryOv;
-use common\models\PrimaryOvSearch;
+use common\models\control\PrimaryOvSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

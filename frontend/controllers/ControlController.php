@@ -227,6 +227,9 @@ class ControlController extends Controller
                             $ov1->measurement = $ov->measurement;
                             $ov1->compared = $ov->compared;
                             $ov1->invalid = $ov->invalid;
+                            $ov1->uncompared = $ov->uncompared;
+                            $ov1->expired = $ov->expired;
+                            $ov1->unworked = $ov->unworked;
                             $ov1->save(false);
                         }
                         
