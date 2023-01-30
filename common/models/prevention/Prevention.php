@@ -62,8 +62,8 @@ class Prevention extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Yozma ko\'rsatma raqami',
-            'companies_id' => 'Korxona nomi',
-            'instructions_id' => 'Tekshiruv kodi',
+            'companies_id' => 'XYUS nomi',
+            'instructions_id' => 'Tekshiruv buyrug\'i',
             'message_num' => 'Yozma ko\'rsatma raqami',
             'comment' => 'Izoh',
             'created_by' => 'Inspektor F.I.SH',

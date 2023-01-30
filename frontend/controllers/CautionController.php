@@ -292,15 +292,14 @@ class CautionController extends Controller
     }
     public function actionUpdateLab($id, $attribute)
     {
-        $files = InstructionFile::find()->where(['instructions_id'=>$instructions_id])->all(); 
-        if(!empty($files)){
+       
         $model = InstructionFile::findOne($id);
         $model->$attribute = $_FILES[$attribute]['name'];
         $model->validate();
         $model->save();
         return $this->redirect(['instruction-files', 'instructions_id' => $model->instructions_id]);
-        } return 'Mumkin emas';
     }
+    
     public function actionInstructionFiles($instructions_id)
     {      
         $files = InstructionFile::find()->where(['instructions_id'=>$instructions_id])->all(); 

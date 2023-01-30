@@ -41,7 +41,7 @@ class InstructionFileSearch extends InstructionFile
      */
     public function search($params)
     {
-        $query = InstructionFile::find()->joinWith('instruction')->joinWith('user');
+        $query = InstructionFile::find()->joinWith('instruction');
 
         // add conditions that should always apply here
 

@@ -5,10 +5,8 @@ namespace backend\controllers\control;
 use common\models\control\InstructionFile;
 use common\models\control\InstructionFileSearch;
 use yii\web\Controller;
-use common\models\User;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 
 /**
  * InstructionFileController implements the CRUD actions for InstructionFile model.
@@ -41,9 +39,8 @@ class InstructionFileController extends Controller
     public function actionIndex()
     {
         $searchModel = new InstructionFileSearch();
-       
         $dataProvider = $searchModel->search($this->request->queryParams);
-        
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

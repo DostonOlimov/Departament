@@ -52,7 +52,7 @@ class CautionLetters extends \yii\db\ActiveRecord
     {
         return [
             'id' => '№',
-            'company_id' => 'Korxona nomi',
+            'company_id' => 'XYUS nomi',
             'letter_date' => 'Ogohlantirish sanasi',
             'letter_number' => 'Ogohlantirish raqami',
             'instructions_id' => 'Tekshiruv buyrug\'i',
