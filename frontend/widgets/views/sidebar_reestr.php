@@ -5,7 +5,7 @@ use yii\helpers\Url;?>
 
 <div class="list-group margin-topSite">
     <a href="javascript:void(0);" class="list-group-item list-group-item-action notHover">Reestr</a>
-    <a href="#" class="list-group-item list-group-item-action actived">Davlat nazorat buyruqlari</a>
+    <a href="<?= Url::to(['/caution/instruction-file']) ?>" class="list-group-item list-group-item-action actived">Davlat nazorat buyruqlari</a>
     <a href="<?= Url::to(['/caution/letters']) ?>" class="list-group-item list-group-item-action actived">Ogohlantirish xatlari</a>
     <a href="#" class="list-group-item list-group-item-action actived" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Ko'rsatmalar</a>
         <div class="dropdown-menu">

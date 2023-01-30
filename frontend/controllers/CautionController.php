@@ -8,6 +8,9 @@ use common\models\prevention\PreventionsSearch;
 use common\models\caution\Execution;
 use common\models\caution\CautionLetters;
 use common\models\caution\CautionLetterSearch;
+use common\models\control\InstructionFile;
+use common\models\control\InstructionFileSearch;
+use common\models\control\Laboratory;
 use common\models\User;
 use common\models\Model;
 use yii\web\UploadedFile;
@@ -315,46 +318,62 @@ class CautionController extends Controller
         ]);
     }
 
-    // public function actionLettersCreate(){
-    //     $id = Yii::$app->request->get('id');
-    //     $company = Company::findOne(['control_instruction_id' => $id]);
-    //     $model = new CautionLetters;
-    //    if ($this->request->isPost) {
-    //        if ($model->load($this->request->post()) ) {
-
-    //         $model->updated_by = $model->created_by;
-    //         if(!empty($_FILES['CautionLetters']['name']['file'])){
-    //             $file = UploadedFile::getInstance($model,'file');
-    //             $berkas = md5($model->company_id).'-.'.$file->getExtension();
-    //             $model->file = $berkas;
-    //             $path = 'uploads/caution_letter/';
-    //             if(!file_exists($path)){
-    //                 FileHelper::createDirectory($path);
-    //             }
-    //             $file->saveAs($path.$berkas);
-    //         }
-    //           if($model->save()){
-    //            \Yii::$app->session->setFlash('success','Bazaga yuklandi');
-    //           }                     
-    //         return $this->redirect(['letters-view', 'id' => $model->id]);
-            
-             
-    //        }
-    //    } else {
-    //        $model->loadDefaultValues();
-    //    }
-
-    //    return $this->render('letters-create', [
-    //        'company' => $company,
-    //        'model' => $model,
-    //    ]); 
-    // }
+   
 
     public function actionLettersView($id){
         return $this->render('letters-view', [
             'model' => $this->getModel(CautionLetters::className(), $id)
         ]);
     }
+    public function actionInstructionFile(){
+        $searchModel = new InstructionSearch(\Yii::$app->user->id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('instruction-file', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionFileCreate($instructions_id)
+    {
+        $files = InstructionFile::find()->where(['instructions_id'=>$instructions_id])->all();
+        if(empty($files)){
+            $model = new InstructionFile();
+            $model->instructions_id = $instructions_id;
+            if ($model->load(Yii::$app->request->post()) &&  $model->save()) {
+                    return $this->render('instruction-files', [
+                        'model' => $model,
+                        
+                    ]);
+            }
+
+            return $this->render('file-create', [
+                'model' => $model,
+                ]); }
+            return 'Mumkin emas';      
+    }
+    public function actionUpdateLab($id, $attribute)
+    {
+        $files = InstructionFile::find()->where(['instructions_id'=>$instructions_id])->all(); 
+        if(!empty($files)){
+        $model = InstructionFile::findOne($id);
+        $model->$attribute = $_FILES[$attribute]['name'];
+        $model->validate();
+        $model->save();
+        return $this->redirect(['instruction-files', 'instructions_id' => $model->instructions_id]);
+        } return 'Mumkin emas';
+    }
+    public function actionInstructionFiles($instructions_id)
+    {      
+        $files = InstructionFile::find()->where(['instructions_id'=>$instructions_id])->all(); 
+        if(!empty($files)){
+         $ins = InstructionFile::findOne(['instructions_id'=> $instructions_id]);
+            return $this->render('instruction-files', [
+                'model' => $this->getModel(InstructionFile::className(),$ins['id'])
+            ]);
+        } return 'Mumkin emas';
+    }
+    
 
     
 

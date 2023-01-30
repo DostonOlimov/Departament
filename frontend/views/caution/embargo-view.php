@@ -101,6 +101,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                     ],
                     //'status',
+                    [
+                        'attribute' => 'file',
+                        'value' => function ($model) {
+                            $model->s_file = $model->file;
+                            return $model->s_file ? '<a class="btn btn-info" href="' . $model->getUploadedFileUrl('s_file') . '" download>Yuklash<a/>' : 'Yuklanmagan';
+    
+                        },
+                        'format' => 'raw'
+                    ],
+                    
                     
                     [
                         'attribute'=> 'created_by',
