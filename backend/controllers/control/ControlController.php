@@ -73,6 +73,7 @@ class ControlController extends Controller
             if($model->dn == 1)
             {
                 $model->letter_number = '';
+                $model->type = 11;
             }
             if($model->validate())
             {

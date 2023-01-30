@@ -3,6 +3,7 @@
 use common\models\control\PrimaryOv;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $primary_data_id */
@@ -33,10 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'value' => function(PrimaryOv $model){
                     return $model::getType($model->type);
-                }
+                },
+                'filter' => Html::activeDropDownList($searchModel, 'type', PrimaryOv::getType(), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
             'measurement',
             'compared',
+            'uncompared',
+            'expired',
+            'unworked',
             //'invalid',
 
             ['class' => 'yii\grid\ActionColumn'],

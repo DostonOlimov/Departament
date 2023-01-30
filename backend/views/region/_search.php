@@ -3,12 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\caution\InstructionSearch */
-/* @var $form yii\widgets\ActiveForm */
+/** @var yii\web\View $this */
+/** @var common\models\RegionSearch $model */
+/** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="instruction-search">
+<div class="region-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,17 +17,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'base') ?>
-
-    <?= $form->field($model, 'letter_date') ?>
-
-    <?= $form->field($model, 'letter_number') ?>
+    <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'created_by') ?>
 
-    <?php // echo $form->field($model, 'updated_by') ?>
+    <?= $form->field($model, 'updated_by') ?>
 
-    <?php // echo $form->field($model, 'created_at') ?>
+    <?= $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'updated_at') ?>
 

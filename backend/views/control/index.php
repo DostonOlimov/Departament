@@ -17,6 +17,7 @@ use yii\helpers\Url;
 
 $this->title = 'Korxonalar';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="company-index">
 
@@ -102,11 +103,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     $in_users = InstructionUser::findAll(['instruction_id'=>$model->id]);
                     foreach ($in_users as $user) {
                        $name =  User::findOne([$user->user_id]);
-                        $re_users .= $name->username.',';
+                        $re_users .= $name->name.' '.$name->surname.',';
                     }
                     return $re_users;
                 },
-                'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
+                
+                'filter' => Html::activeDropDownList($searchModel, 'created_by', 
+                ArrayHelper::map($users = User::findAll(['status'=>10]), 'id',function ($users) {
+                    return $users->name.' '.$users->surname;
+                 }), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
             'created_at:date',
             'updated_at:date',   

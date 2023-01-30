@@ -24,7 +24,7 @@ class PrimaryOvSearch extends PrimaryOv
     {
         return [
             [['id', 'control_primary_data_id', 'type'], 'integer'],
-            [['measurement', 'compared', 'invalid'], 'safe'],
+           // [['measurement', 'compared', 'invalid'], 'safe'],
         ];
     }
 

@@ -1,65 +1,56 @@
 <?php
 
-namespace backend\controllers\control;
+namespace backend\controllers;
 
-use common\models\control\PrimaryOv;
-use common\models\control\PrimaryOvSearch;
-use yii\filters\AccessControl;
+use common\models\Region;
+use common\models\RegionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PrimaryOvController implements the CRUD actions for PrimaryOv model.
+ * RegionController implements the CRUD actions for Region model.
  */
-class PrimaryOvController extends Controller
+class RegionController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['update', 'delete', 'create'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['update', 'delete', 'create'],
-                        'roles' => ['admin'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**
-     * Lists all PrimaryOv models.
-     * @return mixed
+     * Lists all Region models.
+     *
+     * @return string
      */
-    public function actionIndex($primary_data_id)
+    public function actionIndex()
     {
-        $searchModel = new PrimaryOvSearch($primary_data_id);
+        $searchModel = new RegionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'primary_data_id' => $primary_data_id,
         ]);
     }
 
     /**
-     * Displays a single PrimaryOv model.
+     * Displays a single Region model.
      * @param int $id ID
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -70,16 +61,15 @@ class PrimaryOvController extends Controller
     }
 
     /**
-     * Creates a new PrimaryOv model.
+     * Creates a new Region model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
-    public function actionCreate($control_primary_data_id)
+    public function actionCreate()
     {
-        $model = new PrimaryOv();
+        $model = new Region();
 
         if ($this->request->isPost) {
-            $model->control_primary_data_id = $control_primary_data_id;
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -89,15 +79,14 @@ class PrimaryOvController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'control_primary_data_id' => $control_primary_data_id
         ]);
     }
 
     /**
-     * Updates an existing PrimaryOv model.
+     * Updates an existing Region model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return mixed
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -110,35 +99,33 @@ class PrimaryOvController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'primary_data_id' => $model->control_primary_data_id
         ]);
     }
 
     /**
-     * Deletes an existing PrimaryOv model.
+     * Deletes an existing Region model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return mixed
+     * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $primary_data_id = $this->findModel($id)->control_primary_data_id;
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'primary_data_id' => $primary_data_id]);
+        return $this->redirect(['index']);
     }
 
     /**
-     * Finds the PrimaryOv model based on its primary key value.
+     * Finds the Region model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return PrimaryOv the loaded model
+     * @return Region the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = PrimaryOv::findOne($id)) !== null) {
+        if (($model = Region::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

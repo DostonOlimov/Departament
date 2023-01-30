@@ -3,15 +3,15 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\ProCompany */
+/** @var yii\web\View $this */
+/** @var common\models\Region $model */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Pro Companies', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Regions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="pro-company-view">
+<div class="region-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,14 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'pro_instruction_id',
-            'region_id',
             'name',
-            'inn',
-            'type',
-            'phone',
-            'link',
-            'address',
             'created_by',
             'updated_by',
             'created_at',

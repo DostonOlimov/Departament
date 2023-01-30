@@ -47,7 +47,7 @@ $codetnved = [];
         
             <i class="fa fa-toggle-right" id = "open1" onclick=openPanel(); style="font-size:24px;color:blue;display:none;"></i> 
             <i class="fa fa-toggle-down " id = "close1" onclick=closePanel(); style="font-size:24px;color:blue; " ></i> 
-            <h3 style="color:black; display:inline;" >Tashkilotga oid malumotlar</h3>
+            <h3 style="color:black; display:inline;" >Tashkilotga oid ma'lumotlar</h3>
                 <hr>
                         <div class="row" id="content1">
                             <div class="col-sm-6">
@@ -116,6 +116,15 @@ $codetnved = [];
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]invalid")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]uncompared")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]expired")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <?= $form->field($stan, "[{$i}]unworked")->textInput(['type' => 'number']) ?>
                                         </div>
                                     </div>
                                 </div>
@@ -247,6 +256,9 @@ $codetnved = [];
                                             ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]year_amount")->textInput(['type' => 'number']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]year_quantity")->widget(MaskMoney::classname(), [
                                                 'pluginOptions' => [
                                             'prefix' => 'SUMMA : ',
@@ -255,14 +267,7 @@ $codetnved = [];
                                             ]
                                             ]);  ?>
                                         </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]residue_quantity")->widget(MaskMoney::classname(), [
-                                                 'pluginOptions' => [
-                                            'prefix' => 'SUMMA : ',
-                                            'suffix' => ' so\'m',
-                                            'allowNegative' => false ]
-                                            ]); ?>
-                                        </div>
+                                       
                                         <div class="col-md-6 col-lg-3">
                                       <?= $form->field($stan, "[{$i}]codetnved")->widget(MaskedInput::className(), [
                                         'mask' => '999999999' ]) ?>
@@ -271,7 +276,12 @@ $codetnved = [];
                                             <?= $form->field($stan, "[{$i}]residue_amount")->textInput(['type' => 'number']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]year_amount")->textInput(['type' => 'number']) ?>
+                                            <?= $form->field($stan, "[{$i}]residue_quantity")->widget(MaskMoney::classname(), [
+                                                 'pluginOptions' => [
+                                            'prefix' => 'SUMMA : ',
+                                            'suffix' => ' so\'m',
+                                            'allowNegative' => false ]
+                                            ]); ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]potency")->textInput() ?>

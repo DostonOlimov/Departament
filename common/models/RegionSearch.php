@@ -4,26 +4,21 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\control\PrimaryOv;
+use common\models\Region;
 
 /**
- * PrimaryOvSearch represents the model behind the search form of `common\models\control\PrimaryOv`.
+ * RegionSearch represents the model behind the search form of `common\models\Region`.
  */
-class PrimaryOvSearch extends PrimaryOv
+class RegionSearch extends Region
 {
-    private $_prId;
-
-    public function __construct($prId, $config = [])
-    {
-        $this->_prId = $prId;
-        parent::__construct($config);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['id', 'control_primary_data_id', 'type'], 'integer'],
-            [['measurement', 'compared', 'invalid'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -45,7 +40,7 @@ class PrimaryOvSearch extends PrimaryOv
      */
     public function search($params)
     {
-        $query = PrimaryOv::find()->where(['control_primary_data_id' => $this->_prId]);
+        $query = Region::find();
 
         // add conditions that should always apply here
 
@@ -64,13 +59,13 @@ class PrimaryOvSearch extends PrimaryOv
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'control_primary_data_id' => $this->control_primary_data_id,
-            'type' => $this->type,
+            'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'measurement', $this->measurement])
-            ->andFilterWhere(['like', 'compared', $this->compared])
-            ->andFilterWhere(['like', 'invalid', $this->invalid]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
