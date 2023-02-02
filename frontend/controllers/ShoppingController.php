@@ -3,8 +3,10 @@
 namespace frontend\controllers;
 
 use common\models\shopping\Company;
+use common\models\User;
 use common\models\shopping\Instruction;
 use common\models\shopping\InstructionSearch;
+use common\models\shopping\ShoppingNotice;
 use common\models\shopping\Product;
 use yii\filters\AccessControl;
 use yii\helpers\VarDumper;
@@ -29,6 +31,25 @@ class ShoppingController extends Controller
                 ],
             ]
         ];
+    }
+
+    public function actionNotice()
+    {
+        $model = new ShoppingNotice();
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+               $model->updated_by = $model->created_by;
+            }
+            if($model->save()){
+                return $this->redirect(['index']);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('notice', [
+            'model' => $model,
+        ]);
     }
 
     public function actionIndex()
