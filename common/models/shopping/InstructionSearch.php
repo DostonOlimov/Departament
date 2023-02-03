@@ -3,6 +3,7 @@
 namespace common\models\shopping;
 
 use yii\base\Model;
+use common\models\shopping\ShoppingNotice;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 
@@ -11,10 +12,10 @@ use yii\db\ActiveQuery;
  */
 class InstructionSearch extends Instruction
 {
-    public $userId;
-    public $region_id;
-    public $name;
-    public $inn;
+     public $userId;
+     public $region_id;
+     public $name;
+     public $inn;
 
     public function __construct($userId, $config = [])
     {
@@ -25,8 +26,8 @@ class InstructionSearch extends Instruction
     public function rules()
     {
         return [
-            [['id', 'base', 'letter_date', 'created_by', 'inn', 'region_id'], 'integer'],
-            [['letter_number', 'name'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at', 'notice_id'], 'integer'],
+            [['card_number', 'card_given_date', 'card_return_date', 'status'], 'safe'],
         ];
     }
 
@@ -61,18 +62,18 @@ class InstructionSearch extends Instruction
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['inn'] = [
-            'asc' => ['shopping_companies.inn' => SORT_ASC],
-            'desc' => ['shopping_companies.inn' => SORT_DESC],
-        ];
-        $dataProvider->sort->attributes['region_id'] = [
-            'asc' => ['regions.name' => SORT_ASC],
-            'desc' => ['regions.name' => SORT_DESC],
-        ];
-        $dataProvider->sort->attributes['name'] = [
-            'asc' => ['shopping_companies.name' => SORT_ASC],
-            'desc' => ['shopping_companies.name' => SORT_DESC],
-        ];
+        // $dataProvider->sort->attributes['inn'] = [
+        //     'asc' => ['shopping_companies.inn' => SORT_ASC],
+        //     'desc' => ['shopping_companies.inn' => SORT_DESC],
+        // ];
+        // $dataProvider->sort->attributes['region_id'] = [
+        //     'asc' => ['regions.name' => SORT_ASC],
+        //     'desc' => ['regions.name' => SORT_DESC],
+        // ];
+        // $dataProvider->sort->attributes['name'] = [
+        //     'asc' => ['shopping_companies.name' => SORT_ASC],
+        //     'desc' => ['shopping_companies.name' => SORT_DESC],
+        // ];
 
         $this->load($params);
 
@@ -85,16 +86,18 @@ class InstructionSearch extends Instruction
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'base' => $this->base,
-            'letter_date' => $this->letter_date,
-            'shopping_instructions.created_by' => $this->created_by,
-            'regions.id' => $this->region_id,
+            'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'notice_id' => $this->notice_id,
         ]);
 
-        $query->andFilterWhere(['like', 'letter_number', $this->letter_number])
-            ->andFilterWhere(['like', 'shopping_companies.name', $this->name])
-            ->andFilterWhere(['like', 'shopping_companies.inn', $this->inn]);
+        $query->andFilterWhere(['like', 'card_number', $this->card_number])
+        ->andFilterWhere(['like', 'card_given_date', $this->card_given_date])
+        ->andFilterWhere(['like', 'card_return_date', $this->card_return_date])
+        ->andFilterWhere(['like', 'status', $this->status]);
 
-        return $dataProvider;
+    return $dataProvider;
     }
 }

@@ -4,7 +4,9 @@
 /* @var $model Instruction */
 
 use common\models\shopping\Instruction;
+use common\models\shopping\ShoppingNotice;
 use frontend\widgets\StepsShopping;
+use common\models\user;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
 
@@ -24,17 +26,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'base')->dropDownList(Instruction::getType()) ?>
+        <?= $form->field($model, "notice_id")->dropdownList([                           
+                ShoppingNotice::findOne($notice_id)->id => ShoppingNotice::findOne($notice_id)->notice_number 
+            ]);?>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'letter_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'card_number')->textInput() ?>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'letter_number')->textInput() ?>
+            <?= $form->field($model, 'card_given_date')->textInput() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+        <?= $form->field($model, "created_by")->dropdownList([                           
+                User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname
+            ]);?>
         </div>
     </div>
 

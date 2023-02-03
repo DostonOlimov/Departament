@@ -30,22 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-//            'id',
-                [
-                    'attribute' => 'base',
-                    'value' => function ($model) {
-                        return Instruction::getType($model->base);
-                    }
-                ],
-                'letter_date:date',
-                'letter_number',
-//            'product',
-//            'phone',
-//            'address',
-//            'created_by',
-//            'updated_by',
-//            'created_at',
-//            'updated_at',
+           'id',
+                // [
+                //     'attribute' => 'base',
+                //     'value' => function ($model) {
+                //         return Instruction::getType($model->base);
+                //     }
+                // ],
+                // 'letter_date:date',
+                // 'letter_number',
+           'product',
+           'phone',
+           'address',
+           'created_by',
+           'updated_by',
+           'created_at',
+           'updated_at',
             ],
         ]) ?>
 

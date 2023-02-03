@@ -6,7 +6,9 @@
 use common\models\shopping\Instruction;
 use common\models\shopping\Company;
 use frontend\widgets\StepsShopping;
+use common\models\shopping\ShoppingNotice;
 use yii\widgets\DetailView;
+use common\models\User;
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -26,19 +28,23 @@ $company = Company::findOne(['shopping_instruction_id' => $model->id])
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-//            'id',
-                [
-                    'attribute' => 'base',
-                    'value' => function ($model) {
-                        return Instruction::getType($model->base);
-                    }
+            'id',
+            [
+                'attribute'=> 'notice_id',
+                'value'=> function($model){
+                    $notice = ShoppingNotice::findOne($model->notice_id);
+                    return $notice ? $notice->notice_number :'';
+                }
                 ],
-                'letter_date:date',
-                'letter_number',
-//            'created_by',
-//            'updated_by',
-//            'created_at',
-//            'updated_at',
+            'card_number',
+            'card_given_date',  
+                [
+                'attribute'=> 'created_by',
+                'value'=> function($model){
+                    $user = User::findOne($model->created_by);
+                    return $user ? $user->name .' '.$user->surname :'';
+                }
+                ],               
             ],
         ]) ?>
     </div>

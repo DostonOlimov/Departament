@@ -9,14 +9,9 @@ use yii\db\ActiveQuery;
 /**
  * ShoppingNoticeSearch represents the model behind the search form of `common\models\shopping\ShoppingNotice`.
  */
-class ShoppingNoticeSearch extends ShoppingNotice
+class NoticeSearch extends ShoppingNotice
 {
-    public $userId;
-    public function __construct($userId, $config = [])
-    {
-        $this->userId = $userId;
-        parent::__construct($config);
-    }
+   
     /**
      * {@inheritdoc}
      */
@@ -47,10 +42,7 @@ class ShoppingNoticeSearch extends ShoppingNotice
     public function search($params)
     {
         $query = ShoppingNotice::find();
-        if ($this->userId) {
-            $query->where(['attachment_user_id' => $this->userId]);
-            
-        }
+        
 
         // add conditions that should always apply here
 

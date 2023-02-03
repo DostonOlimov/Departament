@@ -17,10 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
 <?php $form = ActiveForm::begin(); ?>    
 
     <?= $form->field($model, 'status')->dropdownList([                           
-        '0' => 'Jarayonda',
-        '1' => 'Tasdiqlangan',
-        '2' => 'Bekor qilingan',
-        
+        '1' => 'Tasdiqlangan',        
             ]
     );?>
     <?= $form->field($model, 'attachment_user_id')->textInput() ?>

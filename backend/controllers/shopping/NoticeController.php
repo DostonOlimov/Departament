@@ -3,7 +3,7 @@
 namespace backend\controllers\shopping;
 
 use common\models\shopping\ShoppingNotice;
-use common\models\shopping\ShoppingNoticeSearch;
+use common\models\shopping\NoticeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,7 +38,7 @@ class NoticeController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ShoppingNoticeSearch();
+        $searchModel = new NoticeSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
