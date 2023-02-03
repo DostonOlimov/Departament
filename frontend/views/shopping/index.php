@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="company-index m-5">
 
     <p>
-        <?= Html::a('Qo\'shish', ['/shopping/instruction'], ['class' => 'btn btn-success'])  ?>
+        <?= Html::a('Bildirgo qo\'shish', ['/shopping/notice'], ['class' => 'btn btn-success'])  ?>
+        <!--?= Html::a('Qo\'shish', ['/shopping/instruction'], ['class' => 'btn btn-success'])  ?-->
     </p>
 
     <?= GridView::widget([

@@ -18,6 +18,9 @@ $this->title = 'Korxonalar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
+    <p>
+        <?= Html::a('Bildirgilar', ['/shopping/notice/index'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
