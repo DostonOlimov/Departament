@@ -234,6 +234,12 @@ class ControlController extends Controller
                         }
                         
                 $id = [];
+                foreach ($products as $index => $modelOptionValue) {
+                    $modelOptionValue->img = \yii\web\UploadedFile::getInstance($modelOptionValue, "[{$index}]photo");
+                    if ($modelOptionValue->img) {
+                        $modelOptionValue->photo = $modelOptionValue->img->name;
+                    }
+                }
                 foreach ($products as $key_p1 => $product)
                 {
                   if($t)
@@ -273,15 +279,16 @@ class ControlController extends Controller
                                 $prod->labaratory_checking = $product->labaratory_checking;
                                 $prod->certification = $product->certification;
                                 $prod->codetnved = $product->codetnved;
-                                $product->image = UploadedFile::getInstance($product, "[{$key_p1}]photo");
-                                if ($product->image) {
-                                    $product->photo = $product->image->name;
-                                 }
-            
-                                 $prod->photo = $product->photo;
+                                $prod->exsist_certificate = $product->exsist_certificate;
+                               /* $prod->img = \yii\web\UploadedFile::getInstance($prod, "[{$key_p1}]photo");
+                                if ($prod->img) {
+                                    $prod->photo = $prod->img->name;
+                                }*/
+                                $prod->photo = $product->photo;
                                 $prod->save(false);
                                 $id[$key_p1] = $prod->id; 
-                }       //e VarDumper::dump($prod->getUploadedfilePath('photo'),12,true);die();
+                }      
+               // VarDumper::dump($prod,12,true);;die();
                         foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
                             {
                                foreach($proData as $k2 => $v)
