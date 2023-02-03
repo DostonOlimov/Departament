@@ -294,7 +294,7 @@ $codetnved = [];
                                             <?= $form->field($stan, "[{$i}]certification")->radioList( [1=>'ha', 0 => 'yo\'q'], );?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <?= $form->field($stan, "[{$i}]photo")->input('file') ?>
+                                        <?= $form->field($stan, "[{$i}]photo")->input('file') ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]exsist_certificate")->radioList( [1=>'mavjud', 0 => 'mavjud emas'],['onclick' => "typeChange(event,this)",] );?>
@@ -308,13 +308,6 @@ $codetnved = [];
                                             ])
                                             ?>
                                         </div>
-                                   <!-- <button type="button" onclick="myFunction(this)" class=" add-item3 btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> Majburiy</button>
-                                    </h4>
-
-                                        <div class="pull-right">
-                                            <button type="button"  onclick = "myFunction1(this)" class="remove-item3 btn btn-danger btn-xs mandatory" style="display: none">
-                                                <i class="glyphicon glyphicon-minus" ></i>Majburiy emas</button>
-                                        </div>-->
                                    
                                     </div>
                                 </div>
@@ -396,17 +389,6 @@ $this->registerJs($script);
             }
         }
     }
-   /* function myFunction(button) {
-    alert(button);
-        obj = findParent(button, 'panel-body');
-
-       var collection =  obj.getElementsByClassName("certificate");
-       for (var i=0;i<collection.length;i++)
-       { ;
-           collection[i].style.display = 'none';
-       }
-
-    }*/
 function openPanel() {
 
     var  item1 = document.getElementById('open1');
