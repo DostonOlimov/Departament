@@ -28,9 +28,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 <div class="prevention-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?= $form->field($model, 'companies_id')->dropdownList([
-        $model['companies_id'] => $model->company->name
-    ]);?>
+    
 
     <?= $form->field($model, 'instructions_id')->dropdownList([
         $model['instructions_id'] => $model->instruction->command_number

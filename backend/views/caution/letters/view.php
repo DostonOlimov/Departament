@@ -43,32 +43,32 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 [
-                    'label' => 'Korxona',
+                    'label' => 'XYUS nomi',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->name : '';
+                        //$instruction->controlCompany = instruction->controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->name : '';
                     }
                 ],
                 [
-                    'label' => 'Korxona INN',
+                    'label' => 'XYUS INN',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->inn : '';
+                        //$instruction->controlCompany = instruction->controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->inn : '';
                     }
                 ],
 
                 [
-                    'label' => 'Korxona manzili',
+                    'label' => 'XYUS manzili',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->address : '';
+                        //$instruction->controlCompany = instruction->controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->address : '';
                     }
                 ],
                 [
-                    'label' => 'Korxona telefon raqami',
+                    'label' => 'XYUS telefon raqami',
                     'value' => function ($data) {
-                        // $company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->phone : '';
+                        // $instruction->controlCompany = instruction->controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->phone : '';
                     }
                 ],
             
