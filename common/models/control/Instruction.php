@@ -3,6 +3,7 @@
 namespace common\models\control;
 
 use common\models\User;
+use common\models\control\Company;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -301,7 +302,6 @@ class Instruction extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
-
     public function getInstructionUser()
     {
         return $this->hasMany(InstructionUser::className(), ['instruction_id' => 'id']);

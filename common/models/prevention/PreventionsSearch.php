@@ -19,7 +19,7 @@ class PreventionsSearch extends Prevention
     {
         return [
             [['id'], 'integer'],
-            [['message_num', 'instructions_id', 'companies_id','comment'], 'safe'],
+            [['message_num', 'instructions_id', 'comment'], 'safe'],
         ];
     }
 
@@ -64,7 +64,7 @@ class PreventionsSearch extends Prevention
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith('company')->joinWith('instruction')->joinWith('user');
+        $query->joinWith('instruction')->joinWith('user');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -74,7 +74,6 @@ class PreventionsSearch extends Prevention
         ]);
 
         $query->andFilterWhere(['like', 'comment', $this->comment])
-            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
             ->andFilterWhere(['like', 'caution_prevention.id', $this->id]);            
 

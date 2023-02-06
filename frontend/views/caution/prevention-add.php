@@ -54,10 +54,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     ],
                         [
-                            'attribute'=> 'companies_id',
+                            'attribute'=> 'XYUS nomi',
+                            'headerOptions' => ['style' => 'color: #fff'],
                             'value' => function ($data) {
                                 //$company = Company::findOne(['id' => $model->companies_id]);
-                                return $data ? $data->company->name : '';
+                                return $data ? $data->instruction->controlCompany->name : '';
                             }
                         ],
                         [

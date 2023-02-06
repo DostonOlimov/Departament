@@ -13,6 +13,7 @@ use common\models\embargo\Embargo;
  */
 class EmbargosSearch extends Embargo
 {
+    public $company;
     /**
      * {@inheritdoc}
      */
@@ -67,7 +68,7 @@ class EmbargosSearch extends Embargo
             return $dataProvider;
         }
        // $query->joinWith('company');
-        $query->joinWith('company')->joinWith('instruction')->joinWith('user');
+        $query->joinWith('instruction')->joinWith('user');
        
 
 
@@ -81,8 +82,7 @@ class EmbargosSearch extends Embargo
         ]);
 
         $query->andFilterWhere(['like', 'comment', $this->comment])
-            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
-            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
+            ->andFilterWhere(['like', 'control_instructions.control_companies.name', $this->company])            
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
             ->andFilterWhere(['like', 'user.name', $this->created_by]);
             

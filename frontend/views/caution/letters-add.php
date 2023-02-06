@@ -43,11 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         [
-                            'attribute'=> 'company_id',
+                            'attribute'=> 'XYUS nomi',
+                            'headerOptions' => ['style' => 'color: #fff'],
                             'value' => function ($data) {
-                                //$prevention = Prevention::findOne(['id' => $model->id]);
-    
-                                return $data ? $data->company->name : '';
+                                //$company = Company::findOne(['id' => $model->companies_id]);
+                                return $data ? $data->instruction->controlCompany->name : '';
                             }
                         ],
                         'letter_date',

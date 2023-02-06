@@ -67,10 +67,7 @@ $this->title = Yii::t('app', 'Ogohlantirish xati');
                                     <?= $form->field($prevent, "[{$i}]instructions_id")->dropdownList([                           
                                     $company->control_instruction_id => $company->controlInstruction->command_number])?>
                                 </div>
-                                <div class="col-sm-4">
-                                    <?= $form->field($prevent, "[{$i}]company_id")->dropdownList([                           
-                                        $company->id => $company->name]);?>
-                                </div>
+                                
                                 <div class="col-sm-4">
                                     <?= $form->field($prevent, "[{$i}]created_by")->dropdownList([                           
                                     User::findOne(Yii::$app->user->id)->id => User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname

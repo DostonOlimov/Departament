@@ -6,6 +6,7 @@ use common\models\shopping\Company;
 use common\models\User;
 use common\models\shopping\Instruction;
 use common\models\shopping\InstructionSearch;
+use common\models\shopping\InstructionAdd;
 use common\models\shopping\ShoppingNotice;
 use common\models\shopping\ShoppingNoticeSearch;
 use common\models\shopping\Product;
@@ -55,20 +56,19 @@ class ShoppingController extends Controller
 
     public function actionIndex()
     {
-        $search = new ShoppingNoticeSearch(\Yii::$app->user->id);
-        $dataProvider = $search->search($this->request->queryParams);
+        $searchModel = new ShoppingNoticeSearch(\Yii::$app->user->id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'search' => $search,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
     public function actionInstructionAdd()
     {
-        $searchModel = new InstructionSearch(null);
+        $searchModel = new InstructionAdd();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('/instruction-add', [
+        return $this->render('instruction-add', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

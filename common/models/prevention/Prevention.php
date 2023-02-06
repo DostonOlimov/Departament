@@ -46,8 +46,8 @@ class Prevention extends \yii\db\ActiveRecord
     public function rules()
     {    
             return [
-                [['companies_id', 'instructions_id','created_by', 'updated_by','comment'], 'required'],
-                [['companies_id', 'instructions_id', 'created_by','updated_by'], 'integer'],
+                [['instructions_id','created_by', 'updated_by','comment'], 'required'],
+                [['instructions_id', 'created_by','updated_by'], 'integer'],
                 [['comment'], 'string'],
                 [['created_at','updated_at'],'safe'],
                 
@@ -62,7 +62,6 @@ class Prevention extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Yozma ko\'rsatma raqami',
-            'companies_id' => 'XYUS nomi',
             'instructions_id' => 'Tekshiruv buyrug\'i',
             'message_num' => 'Yozma ko\'rsatma raqami',
             'comment' => 'Izoh',
@@ -78,9 +77,7 @@ class Prevention extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCompany(){
-        return $this->hasOne(Company::className(), ['id' => 'companies_id']);
-    }
+    
     public function getInstruction()
     {
         return $this->hasOne(Instruction::className(), ['id' => 'instructions_id']);

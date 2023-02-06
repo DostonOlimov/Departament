@@ -38,6 +38,7 @@ class Embargo extends ActiveRecord
         return 'caution_embargo';
     }
     public $s_file;
+    public $company;
 
     public function behaviors(){
         return [
@@ -65,8 +66,8 @@ class Embargo extends ActiveRecord
     public function rules()
     {
         return [
-            [['instructions_id', 'companies_id', 'comment','created_by', 'updated_by'], 'required'],
-            [['instructions_id',  'companies_id','created_by','updated_by', 'status'], 'integer'],
+            [['instructions_id', 'comment','created_by', 'updated_by'], 'required'],
+            [['instructions_id',  'created_by','updated_by', 'status'], 'integer'],
             [['comment'], 'string'],
             [['file'],'file','extensions'=> 'pdf,doc,docx'],
             [['message_date'], 'string', 'max' => 255],
@@ -84,8 +85,7 @@ class Embargo extends ActiveRecord
             //'id' => 'Ko\'rsatma ',
             'message_number' => 'Ko\'rsatma raqami',
             'message_date' => 'Aniq sanasi',
-            'instructions_id' => 'Tekshiruv buyrug\'i',
-            'companies_id' => 'XYUS nomi',
+            'instructions_id' => 'Tekshiruv buyrug\'i',            
             'comment' => 'Izoh',
             'status' => 'Holati',
             'created_by' => 'Inspektor F.I.SH',
@@ -93,6 +93,7 @@ class Embargo extends ActiveRecord
             'created_at' => 'Ko\'rsatma sanasi',
             'updated_at' => 'Ko\'rsatma sanasi',
             'file' => 'Tasdiqlangan file',
+            
         ];
     }
 
@@ -101,9 +102,7 @@ class Embargo extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCompany(){
-        return $this->hasOne(Company::className(), ['id' => 'companies_id']);
-    }
+   
     public function getInstruction()
     {
         return $this->hasOne(Instruction::className(), ['id' => 'instructions_id']);

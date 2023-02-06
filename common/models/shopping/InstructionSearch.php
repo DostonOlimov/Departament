@@ -17,11 +17,11 @@ class InstructionSearch extends Instruction
      public $name;
      public $inn;
 
-    public function __construct($userId, $config = [])
-    {
-        $this->userId = $userId;
-        parent::__construct($config);
-    }
+    // public function __construct($userId, $config = [])
+    // {
+    //     $this->userId = $userId;
+    //     parent::__construct($config);
+    // }
 
     public function rules()
     {
@@ -49,9 +49,10 @@ class InstructionSearch extends Instruction
      */
     public function search($params)
     {
-        $query = Instruction::find()->joinWith('company')->joinWith(['company' => function (ActiveQuery $query) {
+        $query = Instruction::find()->joinWith('company')->joinWith('shoppingNotice')->joinWith(['company' => function (ActiveQuery $query) {
             return $query->joinWith('region');
         }]);
+
 
         if ($this->userId) {
             $query->where(['shopping_instructions.created_by' => $this->userId]);

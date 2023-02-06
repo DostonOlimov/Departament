@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $search,
+                'filterModel' => $searchModel,
                 'headerRowOptions' => ['style' => 'background-color: #0072B5'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function ($model) {
                             $shopping = ShoppingNotice::findOne(['id' => $model->id]);
                             if ($shopping) {
-                                return Html::a('Batafsil', ['/shopping/instruction-add'], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
+                                return Html::a('Batafsil', ['/shopping/instruction-add','notice_id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                             }
                             return '';
                         },
