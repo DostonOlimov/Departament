@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\shopping\Company;
+use common\models\Model;
 use common\models\User;
 use common\models\shopping\Instruction;
 use common\models\shopping\InstructionSearch;
@@ -11,8 +12,11 @@ use common\models\shopping\ShoppingNotice;
 use common\models\shopping\ShoppingNoticeSearch;
 use common\models\shopping\Product;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
+use Yii;
 
 /**
  * Site controller
@@ -117,24 +121,73 @@ class ShoppingController extends Controller
         ]);
     }
 
+   
+
     public function actionProduct($company_id)
     {
-        $model = new Product();
-        $model->shopping_company_id = $company_id;
-
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['/shopping/index']);
+        //$id = Yii::$app->request->get('id');
+       $company = Company::findOne($company_id);
+       $user = User::findOne(Yii::$app->user->id);
+       
+        $modelsPrevent = [new Product];
+        if (Yii::$app->request->post()) {
+            $modelsPrevent = Model::createMultiple(Product::classname(),$modelsPrevent);
+            Model::loadMultiple($modelsPrevent, $this->request->post());
+            foreach($modelsPrevent as $key=>$product) {
+                $product->shopping_company_id = $company['id']; 
+                $product->created_by = $user['id'];
+                $product->updated_by = $product->created_by;     
+            }    
+            //$valid = Model::validateMultiple($modelsPrevent);
+            if (Model::validateMultiple($modelsPrevent)) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                
+                try {
+                        foreach ($modelsPrevent as $key=>$product) {
+                            $product->s_photo = UploadedFile::getInstance($product, "[{$key}]photo");                
+                            if($product->s_photo)  {
+                                $product->photo = $product->s_photo->name;
+                            }   
+                            $product->s_photo_check = UploadedFile::getInstance($product, "[{$key}]photo_chek");                
+                            if($product->s_photo_check)  {
+                                $product->photo_chek = $product->s_photo_check->name;
+                            }                                               
+                           $product->save(false);
+                        }
+                        $transaction->commit();
+                       return $this->redirect(['product-view', 'shopping_company' => $company_id]);
+                    // }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw $e;
+                }
+            }
+        
         }
-
-        return $this->render('product', [
-            'model' => $model
+        return $this->render('product', [            
+            'modelsPrevent' => $modelsPrevent,
         ]);
     }
 
-    public function actionProductView($id)
+    // public function actionProduct($company_id)
+    // {
+    //     $model = new Product();
+    //     $model->shopping_company_id = $company_id;
+
+    //     if ($model->load($this->request->post()) && $model->save()) {
+    //         return $this->redirect(['/shopping/index']);
+    //     }
+
+    //     return $this->render('product', [
+    //         'model' => $model
+    //     ]);
+    // }
+
+    public function actionProductView($shopping_company)
     {
         return $this->render('product-view', [
-            'model' => $this->getModel(Product::className(), $id)
+            'model' => Company::findOne($shopping_company),
+           
         ]);
     }
 

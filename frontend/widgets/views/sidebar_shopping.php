@@ -20,7 +20,7 @@ $classProduct = 'disabled';
 if ($shopping_company_id) {
     $shoppingCompany = Company::findOne($shopping_company_id);
 
-    $hrefProduct = $shoppingCompany->product ? Url::to(['/shopping/product-view', 'id' => $shoppingCompany->product->id]) : Url::to(['/shopping/product', 'company_id' => $shopping_company_id]);
+    $hrefProduct = $shoppingCompany->product ? Url::to(['/shopping/product-view', 'shopping_company' => $shoppingCompany->id]) : Url::to(['/shopping/product', 'company_id' => $shopping_company_id]);
     $classProduct = ($action == 'product' || $action == 'product-view') ? 'active' : 'actived';
 }
 
@@ -31,5 +31,6 @@ if ($shopping_company_id) {
     <a href="<?= $hrefIns ?>" class="list-group-item list-group-item-action <?= $classIns ?>">Nazorat xaridini amalga oshirish uchun asos</a>
     <a href="<?= $hrefCom ?>" class="list-group-item list-group-item-action <?= $classCom ?>">XYUS to'g'risida ma'lumot</a>
     <a href="<?= $hrefProduct ?>" class="list-group-item list-group-item-action <?= $classProduct ?>">Maxsulot to'g'risidagi ma'lumot</a>
+    <a href="<?= $hrefProduct ?>" class="list-group-item list-group-item-action">Laborotoriya xulosasi</a>
 
 </div>
