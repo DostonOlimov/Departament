@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'label' => 'XYUS faoliyat turi',
                 'value' => function ($model) {
-                    if($model->controlCompany->type){
+                    if(isset($model->controlCompany->type)){
                         return $model->controlCompany ? Company::getType($model->controlCompany->type) : '';
                     }
                 },

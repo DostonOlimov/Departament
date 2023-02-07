@@ -18,6 +18,13 @@ use common\models\control\PrimaryProductNd;
 use common\models\control\ControlProductCertification;
 use common\models\control\ControlProductLabaratoryChecking;
 use common\models\control\ControlProductMeasures;
+use common\models\control\ControlPrimaryOvNd;
+use common\models\measure\Executions;
+use common\models\caution\CautionLetters;
+use common\models\prevention\Prevention;
+use common\models\embargo\Embargo;
+use common\models\control\InstructionFile;
+use common\models\measure\Economics;
 use Exception;
 use Yii;
 use yii\filters\AccessControl;
@@ -55,41 +62,6 @@ class InstructionController extends Controller
             ],
         ];
     }
-
-    /*public function actionIndex()
-    {
-        $searchModel = new InstructionSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    public function actionCreate()
-    {
-        $model = new Instruction();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }*/
 
     public function actionUpdate($id)
     {
@@ -135,6 +107,11 @@ class InstructionController extends Controller
                     ControlProductMeasures::deleteAll((['product_id' => $nd->id]));
                      }
                 }
+                if ($ovs = PrimaryOv::findAll(['control_primary_data_id' => $primaryData->id])) {
+                         foreach($ovs as  $ov){
+                            ControlPrimaryOvNd::deleteAll(['ov_id' => $ov->id]);
+                             }
+                        }
 		            PrimaryProduct::deleteAll(['control_primary_data_id' => $primaryData->id]);    
                     PrimaryOv::deleteAll(['control_primary_data_id' => $primaryData->id]);
                     PrimaryData::deleteAll(['control_company_id' => $company->id]);
@@ -146,6 +123,12 @@ class InstructionController extends Controller
 		        Measure::deleteAll(['control_company_id' => $company->id]);
                 $company->delete();
                 InstructionUser::deleteAll(['instruction_id' => $id]);
+                Executions::deleteAll(['control_instruction_id' => $id]);
+                Economics::deleteAll(['control_instruction_id' => $id]);
+                InstructionFile::deleteAll(['instructions_id' => $id]);
+                Prevention::deleteAll(['instructions_id' => $id]);
+                CautionLetters::deleteAll(['instructions_id' => $id]);
+                Embargo::deleteAll(['instructions_id' => $id]);
                 $this->findModel($id)->delete();
                 $transaction->commit();
             } catch (Exception $e) {
