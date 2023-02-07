@@ -5,6 +5,7 @@
 
 /* @var $model PrimaryData */
 
+use common\models\control\ControlPrimaryOvNd;
 use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
@@ -108,28 +109,38 @@ $codetnved = [];
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]type")->dropDownList(PrimaryOv::getType(),['prompt'=>'- - -']) ?>
                                         </div>
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg-2">
                                             <?= $form->field($stan, "[{$i}]measurement")->textInput(['type' => 'number']) ?>
                                         </div>
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg-2">
                                             <?= $form->field($stan, "[{$i}]compared")->textInput(['type' => 'number']) ?>
                                         </div>
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg-2">
                                             <?= $form->field($stan, "[{$i}]invalid")->textInput(['type' => 'number']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]uncompared")->textInput(['type' => 'number']) ?>
                                         </div>
+                                        <div class="col-md-6 col-lg-6  renderForm">
+                                            <?php
+                                            echo $this->render('_form_nd_ovs', [
+                                                'form' => $form,
+                                                'primaryIndex' => $i,
+                                                'pro_ovs' => !isset($pro_ovs[$i]) ? [new ControlPrimaryOvNd()] : $pro_ovs[$i],
+                                            ])
+                                            ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-3">
+                                            <?= $form->field($stan, "[{$i}]unworked")->textInput(['type' => 'number']) ?>
+                                        </div>
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]expired")->textInput(['type' => 'number']) ?>
                                         </div>
-                                        <div class="col-md-6 col-lg-6">
-                                            <?= $form->field($stan, "[{$i}]unworked")->textInput(['type' => 'number']) ?>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
-                          
+                            
                         <?php endforeach; ?>
                     </div>
                     <?php DynamicFormWidget::end(); ?>

@@ -92,7 +92,7 @@ class InstructionSearch extends Instruction
         $query->andFilterWhere([
             'id' => $this->id,
             'base' => $this->base,
-         //   'type' => Instruction::getType($this->type),
+          //  'type' => $this->type,
             'checkup_duration_finish_date' => $this->checkup_duration_finish_date,
             'checkup_duration_start_date' => $this->checkup_duration_start_date,
             'real_checkup_date' => $this->real_checkup_date,
@@ -109,7 +109,7 @@ class InstructionSearch extends Instruction
             ->andFilterWhere(['like', 'command_number', $this->command_number])
             ->andFilterWhere(['like', 'control_companies.name', $this->name])
             ->andFilterWhere(['like', 'control_companies.address', $this->address])
-            ->andFilterWhere(['like', 'control_companies.typee', $this->type])
+          //  ->andFilterWhere(['like', 'control_companies.type', $this->type])
             ->andFilterWhere(['like', 'control_companies.inn', $this->inn])
             ->andFilterWhere(['like', 'checkup_finish_date', $this->checkup_finish_date]);
 

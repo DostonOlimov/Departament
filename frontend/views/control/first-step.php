@@ -18,7 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin() ?>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'first_date')->widget(DatePicker::className()) ?>
+            <?= $form->field($model, 'first_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
     </div>
     <div class="col-12">

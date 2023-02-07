@@ -66,6 +66,7 @@ class Instruction extends \yii\db\ActiveRecord
     const SUBJECT5 = 5;
     const SUBJECT6 = 6;
     const SUBJECT7 = 7;
+    const SUBJECT8 = 8;
 
     const DURATION1 = 1;
     const DURATION2 = 2;
@@ -194,8 +195,8 @@ class Instruction extends \yii\db\ActiveRecord
             self::SUBJECT4 => 'Ishlab chiqarish, xizmat ko‘rsatish va savdoda mahsulotlar sifatini muvofiqligini tasdiqlovchi hujjatlarning (xalqaro standartlar, muvofiqlik sertifikati, sifat tizimi joriy qilinganligi, sinov bayonnomalari va boshqalar) mavjudligini o‘rganish',
             self::SUBJECT5 => 'Ishlab chiqarish, xizmat ko‘rsatish va savdoda mahsulotlar hamda xizmatlarga oid texnik reglamentlar, standartlar va qonunchilikda belgilangan talablarga rioya qilinishi va muvofiqligini o‘rganish.',
             self::SUBJECT6 => 'Ishlab chiqarish, xizmat ko‘rsatish va savdo jarayonida o‘lchash vositalari, etalonlar, standart namunalar, axborot o‘lchash tizimlari yoki o‘lchash uskunalari bilan ta’minlanganligi va qiyoslash ko‘rigidan o‘tganligini o‘rganish',
-            self::SUBJECT7 => 'Ishlab chiqarish, hizmat ko‘rsatish va savdo jarayonida realizatsiya qilingan mahsulotlar to‘g‘risida ma’lumotlarni o‘rganish.; Sertifikatlashtirish talablariga tayyorlovchilar (tadbirkorlar, sotuvchilar, ijrochilar) tomonidan rioya etilishini o‘rganish',
-
+            self::SUBJECT7 => 'Ishlab chiqarish, hizmat ko‘rsatish va savdo jarayonida realizatsiya qilingan mahsulotlar to‘g‘risida ma’lumotlarni o‘rganish.',
+            self::SUBJECT8 => 'Sertifikatlashtirish talablariga tayyorlovchilar (tadbirkorlar, sotuvchilar, ijrochilar) tomonidan rioya etilishini o‘rganish'
         ];
 
         if ($status === null) {

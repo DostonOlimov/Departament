@@ -142,7 +142,15 @@ if ($company) { ?>
                 'ifut',
                 'thsht',
                 'address',
-                'type',
+                [
+                    'attribute' => 'type',
+                    'value' => function ($model) {
+                        if($model->type) {
+                            return Company::getType($model->type);
+                        }
+                       
+                    }
+                ],
                 'ownername',
                 [
                     'label' => 'Hudud',

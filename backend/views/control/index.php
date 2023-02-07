@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            
+            'command_number',
             [
                 'attribute' => 'region_id',
                 'label' => 'Hudud',
@@ -89,12 +89,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'label' => 'XYUS faoliyat turi',
                 'value' => function ($model) {
-                    return $model->controlCompany ? $model->controlCompany->type : '';
+                    if(isset($model->controlCompany->type)){
+                        return $model->controlCompany ? Company::getType($model->controlCompany->type) : '';
+                    }
                 },
                 'filter' => Html::activeInput('text',$searchModel, 'type', ['class' => 'form-control']),
                 'format' => 'raw',
             ],
-           
             [
                 'attribute' => 'created_by',
                 'label' => 'Mutaxassis',
@@ -113,8 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $users->name.' '.$users->surname;
                  }), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
-            'created_at:date',
-            'updated_at:date',   
+            'created_at:date',  
             [
                 'label' => 'Status',
                 'value' => function ($model) {

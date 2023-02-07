@@ -18,6 +18,7 @@ use common\models\control\PrimaryProduct;
 use common\models\control\Laboratory;
 use common\models\control\PrimaryProductSearch;
 use common\models\control\PrimaryProductNd;
+use common\models\control\ControlPrimaryOvNd;
 use common\models\types\ProductGroup;
 use common\models\types\ProductPosition;
 use common\models\types\ProductSubposition;
@@ -123,8 +124,15 @@ class ControlController extends Controller
             $model->employers = 1;
             if($model->validate() && $model->save(false))
             {
-            $company_id = Company::findOne(['control_instruction_id' => $model->id])->id;
-            return $this->redirect(['primary-data', 'company_id' => $company_id]);
+            $company = Company::findOne(['control_instruction_id' => $model->id]);
+            if($company->type == 4)
+            {
+                return $this->redirect(['primary-ov', 'company_id' => $company->id]);
+            }
+            else
+            {
+                return $this->redirect(['primary-data', 'company_id' => $company->id]);
+            }
         } 
        
     }
@@ -175,6 +183,9 @@ class ControlController extends Controller
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
 
+          $pro_ovs[0] = [new ControlPrimaryOvNd];
+          $pro_ovs[1] = [new ControlPrimaryOvNd];
+
           $pro_cer[0] = [new ControlProductCertification];
           $pro_cer[1] = [new ControlProductCertification];
         }
@@ -188,6 +199,9 @@ class ControlController extends Controller
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
 
+          $pro_ovs[0] = [new ControlPrimaryOvNd];
+          $pro_ovs[1] = [new ControlPrimaryOvNd];
+
           $pro_cer[0] = [new ControlProductCertification];
           $pro_cer[1] = [new ControlProductCertification];
         }
@@ -198,6 +212,7 @@ class ControlController extends Controller
            unset($products[1]);
            unset($pro_primary[1]);
            unset($pro_cer[1]);
+           unset($pro_ovs[1]);
 
             $products = Model::createMultiple(PrimaryProduct::classname());
             Model::loadMultiple($products, $this->request->post());
@@ -215,11 +230,8 @@ class ControlController extends Controller
                     foreach ($ovs as $key_ov1 => $ov) {
                             if($t)
                             {
-                            $old_ovs = PrimaryOv::findAll(['control_primary_data_id' => $model->id]);
-                            foreach ($old_ovs as $key_ov2 => $old_ov)
-                                { 
-                                   $old_ov->delete();
-                                }
+                            PrimaryOv::deleteAll(['control_primary_data_id' => $model->id]);
+                            ControlPrimaryOvNd::deleteAll(['ov_id' => $ov->id]);
                             }
                             $ov1 = new PrimaryOv();
                             $ov1->control_primary_data_id = $model->id;
@@ -231,15 +243,22 @@ class ControlController extends Controller
                             $ov1->expired = $ov->expired;
                             $ov1->unworked = $ov->unworked;
                             $ov1->save(false);
-                        }
-                        
+                            foreach ($post['ControlPrimaryOvNd'] as $k2 => $proOv) 
+                            {
+                               foreach($proOv as $k3 => $v1)
+                               {
+                                
+                                $ov_nd = new ControlPrimaryOvNd();
+                                $ov_nd->ov_id = $ov1->id;
+                                $ov_nd->name = $v1['name'];
+                                $ov_nd->type_id = $v1['type_id'];
+                                if($ov_nd->validate()){
+                                    $ov_nd->save(false);
+                                }
+                               }
+                            }
+                        } 
                 $id = [];
-                foreach ($products as $index => $modelOptionValue) {
-                    $modelOptionValue->img = \yii\web\UploadedFile::getInstance($modelOptionValue, "[{$index}]photo");
-                    if ($modelOptionValue->img) {
-                        $modelOptionValue->photo = $modelOptionValue->img->name;
-                    }
-                }
                 foreach ($products as $key_p1 => $product)
                 {
                   if($t)
@@ -247,19 +266,10 @@ class ControlController extends Controller
                         $old_pro = PrimaryProduct::findAll(['control_primary_data_id' => $model->id]);        
                         foreach ($old_pro as $key_p2 => $old)
                         {   
-                            if($old_nds = PrimaryProductNd::findAll(['control_primary_product_id' => $old->id]))
+                            PrimaryProductNd::deleteAll(['control_primary_product_id' => $old->id]);
+                            if(ControlProductCertification::findAll(['product_id' => $old->id]))
                             { 
-                                foreach ($old_nds as $key_nd => $old_nd)
-                                { 
-                                   $old_nd->delete();
-                                }    
-                            } 
-                            if($old_cers = ControlProductCertification::findAll(['product_id' => $old->id]))
-                            { 
-                                foreach ($old_cers as $key_cer => $old_cer)
-                                { 
-                                   $old_cer->delete();
-                                }    
+                                ControlProductCertification::deleteAll(['product_id' => $old->id]);
                             }        
                             $old->delete();
                         }       
@@ -268,7 +278,6 @@ class ControlController extends Controller
                                 $prod->control_primary_data_id = $model->id;
                                 $prod->product_type_id = $product->subposition;
                                 $prod->product_name = $product->product_name;
-                               // $prod->nd = $product->nd ? implode(',', $product->nd) : null;
                                 $prod->residue_quantity = $product->residue_quantity;
                                 $prod->residue_amount = $product->residue_amount;
                                 $prod->year_quantity = $product->year_quantity;
@@ -280,11 +289,10 @@ class ControlController extends Controller
                                 $prod->certification = $product->certification;
                                 $prod->codetnved = $product->codetnved;
                                 $prod->exsist_certificate = $product->exsist_certificate;
-                               /* $prod->img = \yii\web\UploadedFile::getInstance($prod, "[{$key_p1}]photo");
+                                $prod->img = \yii\web\UploadedFile::getInstance($prod, "[{$key_p1}]photo");
                                 if ($prod->img) {
                                     $prod->photo = $prod->img->name;
-                                }*/
-                                $prod->photo = $product->photo;
+                                }
                                 $prod->save(false);
                                 $id[$key_p1] = $prod->id; 
                 }      
@@ -336,8 +344,13 @@ class ControlController extends Controller
             'pro_cer' => $pro_cer,
             'product' => $products,
             'ov' =>$ovs,
-            'company_id' => $company_id
+            'company_id' => $company_id,
+            'pro_ov' => $pro_ovs,
         ]);
+    }
+    public function actionPrimaryOv($company_id)
+    {
+        
     }
     public function actionCodeTnVed($term)
 	{
