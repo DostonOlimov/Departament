@@ -32,12 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 
 <div class="company-index m-5 pb-5">
-
+    <div class="col-9">
+<h1><marquee>Hozirda bu bo'lim mavjud emas!!!</marquee></h1>
+</div>
     <p>
-        <?= Html::a('Qo\'shish', ['/profilactic/instruction'], ['class' => 'btn btn-success']) ?>
+        <?php Html::a('Qo\'shish', ['/profilactic/instruction'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?php   /* echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'headerRowOptions' => ['style' => 'background-color: #0072B5'],
@@ -57,11 +59,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttonOptions' => [
                     'class' => 'text-primary'
                 ],
-                /*'buttons' => [
+                'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('', $url);
                     },
-                ],*/
+                ],
                 'urlCreator' => function ($action, $searchmodel, $key, $index) {
                     if ($action === 'view') {
                         $url = Url::to(['profilactic/ins-view', 'id' => $searchmodel->id]);
@@ -124,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //            'phone',
         ],
-    ]); ?>
+    ]); */ ?>
 
 
 </div>
