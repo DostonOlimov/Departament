@@ -40,28 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            
             'filterModel' => $searchModel,
             'headerRowOptions' => ['style' => 'background-color: #0072B5'],
-            'columns' => [          
+            'columns' => [
                
-                    
-                //  ],
-        
-                // [
-                //     'class' => 'yii\grid\DataColumn', 
-                //     'headerOptions' => ['style'=> 'color: #fff'],
-                //     'attribute' => 'id',
-                //     'value' => function ($model) {
-                //         if($model->status === 1){
-                //            if(!empty($model)){
-                //             return $model ? $model->id: '';
-                //            }
-                //         }else{
-                //            return '';
-                //         }
-                //     },
-                // ],
+               
                 [
                     'attribute'=> 'message_number',
                     'value'=>function($model){
@@ -72,26 +55,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     }
                 ],
-               // 'message_number',
-
-                
-              
-              
 
                 [
-                    //'label' => 'Tekshiruv kodi',
+                    'label' => 'Tekshiruv kodi',
                     'attribute' => 'instructions_id',
                     'value' => function ($data) {
                         // $instruction = Instruction::findOne(['id' => $model->instructions_id]);
                         return $data ? $data->instruction->command_number : '';
                     }
                 ],
-
                 [
-                    'attribute' => 'companies_id',
+                    'attribute'=> 'XYUS nomi',
+                    'headerOptions' => ['style' => 'color: #fff'],
                     'value' => function ($data) {
-                       // $company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->name : '';
+                        //$company = Company::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->name : '';
                     }
                 ],
                 [
@@ -109,6 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     'format' => 'raw',
                 ],
+               
                 
                 [
                     'attribute'=> 'created_by',
@@ -126,9 +105,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             }return '';
                         }
                     ],
-                //'created_at',
-                'updated_at',
-                [
+                // //'created_at',
+                // 'updated_at',
+                 [
                     'class' => ActionColumn::className(),
                     'template' => '{view}',
                     'buttonOptions' => [

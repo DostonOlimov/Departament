@@ -17,7 +17,7 @@ class CautionLetterSearch extends CautionLetters
     public function rules()
     {
         return [
-            [['id', 'company_id','instructions_id'], 'integer'],
+            [['id', 'instructions_id'], 'integer'],
             [['letter_date', 'letter_number', 'created_by','updated_by'], 'safe'],
         ];
     }
@@ -63,12 +63,11 @@ class CautionLetterSearch extends CautionLetters
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith('company')->joinWith('user')->joinWith('instruction');
+        $query->joinWith('user')->joinWith('instruction');
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'company_id' => $this->company_id,
             'letter_date' => $this->letter_date,
         ]);
 

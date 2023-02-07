@@ -20,7 +20,7 @@ class EmbargoSearch extends Embargo
     {
         return [
             [['id', 'status'], 'integer'],
-            [['comment','instructions_id', 'companies_id'], 'safe'],
+            [['comment','instructions_id'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class EmbargoSearch extends Embargo
             return $dataProvider;
         }
        // $query->joinWith('company');
-        $query->joinWith('company')->joinWith('instruction')->joinWith('user');
+        $query->joinWith('instruction')->joinWith('user');
        
 
 
@@ -81,8 +81,6 @@ class EmbargoSearch extends Embargo
         ]);
 
         $query->andFilterWhere(['like', 'comment', $this->comment])
-            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
-            ->andFilterWhere(['like', 'control_companies.name', $this->companies_id])
             ->andFilterWhere(['like', 'control_instructions.command_number', $this->instructions_id])
             ->andFilterWhere(['like', 'user.name', $this->created_by]);
             

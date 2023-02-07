@@ -44,30 +44,30 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 [
                     'label' => 'Korxona',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->name : '';
+                        //$controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->name : '';
                     }
                 ],
                 [
                     'label' => 'Korxona INN',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->inn : '';
+                        //$controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->inn : '';
                     }
                 ],
 
                 [
                     'label' => 'Korxona manzili',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->address : '';
+                        //$controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->address : '';
                     }
                 ],
                 [
                     'label' => 'Korxona telefon raqami',
                     'value' => function ($data) {
-                        // $company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->phone : '';
+                        // $controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->phone : '';
                     }
                 ],
                 [
@@ -94,12 +94,7 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 ],                
             ],
         ]) ?>
-        <?php if(!empty($model->file)):?>
-            <iframe class="iframemargins" src="<?php echo Url::to("@web/uploads/letters/ogohlantirish/{$model->id}.pdf", true);?>" 
-                title="PDF in an i-Frame" frameborder="0" scrolling="auto" width="100%" 
-                height="600px">
-            </iframe>
-            <?php endif;?>
+        
         
     </div>
 </div>

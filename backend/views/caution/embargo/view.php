@@ -56,25 +56,25 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'Korxona nomi',
                 'value' => function ($data) {
-                    return $data ? $data->company->name : '';
+                    return $data ? $data->instruction->controlCompany->name : '';
                 }
             ],
             [
                 'label' => 'Korxona INN',
                 'value' => function ($data) {
-                    return $data ? $data->company->inn : '';
+                    return $data ? $data->instruction->controlCompany->inn : '';
                 }
             ], 
             [
                 'label' => 'Korxona manzili',
                 'value' => function ($data) {
-                    return $data ? $data->company->address : '';
+                    return $data ? $data->instruction->controlCompany->address : '';
                 }
             ], 
             [
                 'label' => 'Korxona telefon raqami',
                 'value' => function ($data) {
-                    return $data ? $data->company->phone : '';
+                    return $data ? $data->instruction->controlCompany->phone : '';
                 }
             ],  
             [

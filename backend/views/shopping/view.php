@@ -108,20 +108,20 @@ if ($company) { ?>
                     'name',
                     'quantity',
                     'cost',
-                    [
-                        'attribute' => 'photo',
-                        'value' => function (Product $model) {
-                            return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
-                        },
-                        'format' => 'raw'
-                    ],
-                    [
-                        'attribute' => 'photo_chek',
-                        'value' => function (Product $model) {
-                            return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
-                        },
-                        'format' => 'raw'
-                    ],
+                    // [
+                    //     'attribute' => 'photo',
+                    //     'value' => function (Product $model) {
+                    //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
+                    //     },
+                    //     'format' => 'raw'
+                    // ],
+                    // [
+                    //     'attribute' => 'photo_chek',
+                    //     'value' => function (Product $model) {
+                    //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
+                    //     },
+                    //     'format' => 'raw'
+                    // ],
                 ],
             ]) ?>
         </div>

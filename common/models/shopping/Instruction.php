@@ -115,6 +115,10 @@ class Instruction extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
+    public function getAttachment_user_id()
+    {
+        return $this->hasOne(User::className(), ['id' => 'attachment_user_id']);
+    }
 
     public function getUpdatedBy()
     {

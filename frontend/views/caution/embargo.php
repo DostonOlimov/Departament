@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Taqiqlar',
                 'value' => function ($model) {
-                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    $company = Instruction::findOne(['id' => $model->id]);
                     if ($company) {
                         return Html::a('Batafsil', ['/caution/embargo-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Taqiq qo\'shish',
                 'value' => function ($model) {
-                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    $company = Instruction::findOne(['id' => $model->id]);
                     if ($company) {
                         return Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['/caution/embargo-create', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
                     }

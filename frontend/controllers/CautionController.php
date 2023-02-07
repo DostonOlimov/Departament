@@ -62,9 +62,12 @@ class CautionController extends Controller
         ]);
     }
 
-    public function actionEmbargoAdd(){
+    public function actionEmbargoAdd($id){
         $searchModel = new EmbargosSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        // echo '<pre>';
+        // var_dump($dataProvider);die();
+        // echo '</pre>';
         return $this->render('embargo-add', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -80,7 +83,7 @@ class CautionController extends Controller
     public function actionEmbargoCreate($id)
     {
         $id = Yii::$app->request->get('id');
-        $company = Company::findOne(['control_instruction_id' => $id]);
+        $company = Instruction::findOne(['id' => $id]);
         $modelsPrevent = [new Embargo];
         if (Yii::$app->request->post()) {
             $modelsPrevent = Model::createMultiple(Embargo::classname(),$modelsPrevent);
@@ -160,7 +163,7 @@ class CautionController extends Controller
     public function actionPreventionCreate($id)
     {
         $id = Yii::$app->request->get('id');
-        $company = Company::findOne(['control_instruction_id' => $id]);
+        $company = Instruction::findOne(['id' => $id]);
         $modelsPrevent = [new Prevention];
         if (Yii::$app->request->post()) {
             $modelsPrevent = Model::createMultiple(Prevention::classname(),$modelsPrevent);

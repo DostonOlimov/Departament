@@ -46,30 +46,30 @@ $this->title = Yii::t('app', 'Bartaraf_etish');
                 [
                     'label' => 'Korxona',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->name : '';
+                        //$controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->name : '';
                     }
                 ],
                 [
                     'label' => 'Korxona INN',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->inn : '';
+                        //$controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->inn : '';
                     }
                 ],
 
                 [
                     'label' => 'Korxona manzili',
                     'value' => function ($data) {
-                        //$company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->address : '';
+                        //$controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->address : '';
                     }
                 ],
                 [
                     'label' => 'Korxona telefon raqami',
                     'value' => function ($data) {
-                        // $company = Company::findOne(['id' => $model->companies_id]);
-                        return $data ? $data->company->phone : '';
+                        // $controlCompany = controlCompany::findOne(['id' => $model->companies_id]);
+                        return $data ? $data->instruction->controlCompany->phone : '';
                     }
                 ],
 

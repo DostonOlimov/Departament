@@ -27,10 +27,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Tahrirlash');
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'company_id')->dropdownList([                           
-            $model->company->id => $model->company->name
-            ]);?>
-
     <?= $form->field($model, 'letter_number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'letter_date')->textInput(['maxlength' => true]) ?>

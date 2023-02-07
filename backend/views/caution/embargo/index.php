@@ -38,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ],
         [
-            'attribute'=> 'companies_id',
+            'attribute'=> 'XYUS nomi',
             'value' => function ($data) {
-                return $data ? $data->company->name : '';
+                return $data ? $data->instruction->controlCompany->name : '';
             }
         ],
         [
@@ -111,9 +111,10 @@ echo ExportMenu::widget([
             }
             ],
             [
-                'attribute'=> 'companies_id',
+                'attribute'=> 'Xyus nomi',
+                'headerOptions' => ['style' => 'color: #007bff'],
                 'value' => function ($data) {
-                    return $data ? $data->company->name : '';
+                    return $data ? $data->instruction->controlCompany->name : '';
                 }
             ],
             [

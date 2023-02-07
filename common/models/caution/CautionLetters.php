@@ -36,8 +36,8 @@ class CautionLetters extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'letter_date', 'letter_number','created_by','instructions_id','updated_by','comment'], 'required'],
-            [['company_id','created_by','updated_by','instructions_id'], 'integer'],
+            [['letter_date', 'letter_number','created_by','instructions_id','updated_by','comment'], 'required'],
+            [['created_by','updated_by','instructions_id'], 'integer'],
             [['file'],'file','extensions'=> 'pdf,doc,docx'],
             [['letter_date','comment'], 'safe'],
             [['letter_number'], 'string', 'max' => 255],
@@ -52,7 +52,6 @@ class CautionLetters extends \yii\db\ActiveRecord
     {
         return [
             'id' => '№',
-            'company_id' => 'XYUS nomi',
             'letter_date' => 'Ogohlantirish sanasi',
             'letter_number' => 'Ogohlantirish raqami',
             'instructions_id' => 'Tekshiruv buyrug\'i',
@@ -81,10 +80,7 @@ class CautionLetters extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCompany()
-    {
-        return $this->hasOne(Company::class, ['id' => 'company_id']);
-    }
+   
     public function getInstruction()
     {
         return $this->hasOne(Instruction::class, ['id' => 'instructions_id']);

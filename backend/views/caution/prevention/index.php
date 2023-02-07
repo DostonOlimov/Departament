@@ -27,9 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ['class' => 'yii\grid\SerialColumn'],
         'id',
         [
-            'attribute'=> 'companies_id',
+            'attribute'=> 'XYUS nomi',
             'value' => function ($data) {
-                return $data ? $data->company->name : '';
+                return $data ? $data->instruction->controlCompany->name : '';
             }
         ],
         [
@@ -78,9 +78,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute'=> 'companies_id',
+                'attribute'=> 'XYUS nomi',
                 'value' => function ($data) {
-                    return $data ? $data->company->name : '';
+                    return $data ? $data->instruction->controlCompany->name : '';
                 }
             ],
             //'message_date',

@@ -83,10 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->command_number;
                 }
             ],
+            
+            
             [
                 'label' => 'Ko\'rsatmalar',
                 'value' => function ($model) {
-                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    $company = Instruction::findOne(['id' => $model->id]);
                     if ($company) {
                         return Html::a('Batafsil', ['/caution/prevention-add', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }else{
@@ -97,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Ko\'rsatma qo\'shish',
                 'value' => function ($model) {
-                    $company = Company::findOne(['control_instruction_id' => $model->id]);
+                    $company = Instruction::findOne(['id' => $model->id]);
                     if ($company) {
                         return Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['/caution/prevention-create', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
                     }
