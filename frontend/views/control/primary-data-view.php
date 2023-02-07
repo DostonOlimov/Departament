@@ -4,6 +4,7 @@
 
 /* @var $model PrimaryData */
 
+use common\models\control\ControlPrimaryOvNd;
 use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
@@ -67,8 +68,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     'compared',
                     'invalid',
                     'uncompared',
-                    'invalid',
+                    'expired',
                     'unworked',
+                    [
+                        'label' => 'Normativ hujjat(lar) turi va nomi',
+                        'value' => function($dataOv) {
+                            $data = ControlPrimaryOvNd::find()->where(['ov_id' => $dataOv->id])->all();
+                            
+                            $result = '';
+                            foreach ($data as $da) {
+                                $type = NdType::find()->where(['id' => $da->type_id])->one();
+                                $result .= '<span>' . $type->name . ' - ' . $da-> name . ',' . '</span><br>';
+                            }
+                            return $result;
+                        },
+                        'format' => 'raw'
+                    ],
                     [
                         'attribute' => 'type',
                         'value' => function (PrimaryOv $model) {
@@ -82,7 +97,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <hr>
         <?php
-        echo $model->id;
         if ($product = PrimaryProduct::findAll(['control_primary_data_id' => $model->id])) {
             echo "<h3>Mahsulot</h3>";
             echo GridView::widget([
