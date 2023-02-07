@@ -123,8 +123,15 @@ class ControlController extends Controller
             $model->employers = 1;
             if($model->validate() && $model->save(false))
             {
-            $company_id = Company::findOne(['control_instruction_id' => $model->id])->id;
-            return $this->redirect(['primary-data', 'company_id' => $company_id]);
+            $company = Company::findOne(['control_instruction_id' => $model->id]);
+            if($company->type == 4)
+            {
+                return $this->redirect(['primary-ov', 'company_id' => $company->id]);
+            }
+            else
+            {
+                return $this->redirect(['primary-data', 'company_id' => $company->id]);
+            }
         } 
        
     }
@@ -338,6 +345,10 @@ class ControlController extends Controller
             'ov' =>$ovs,
             'company_id' => $company_id
         ]);
+    }
+    public function actionPrimaryOv($company_id)
+    {
+        
     }
     public function actionCodeTnVed($term)
 	{

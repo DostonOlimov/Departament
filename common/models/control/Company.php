@@ -38,8 +38,19 @@ use yii\behaviors\TimestampBehavior;
  * @property Measure $measure
  * @property $phoneNumber
  */
+
 class Company extends \yii\db\ActiveRecord
 {
+    const TYPE1 = 1;
+    const TYPE2 = 2;
+    const TYPE3 = 3;
+    const TYPE4 = 4;
+   
+    const PRETYPE1 = 1;
+    const PRETYPE2 = 2;
+    const PRETYPE3 = 3;
+    const PRETYPE4 = 4;
+
     public static function tableName()
     {
         return 'control_companies';
@@ -49,8 +60,8 @@ class Company extends \yii\db\ActiveRecord
     {
         return [
             [['control_instruction_id', 'region_id', 'inn',  'phone', 'name', 'type','ownername', 'address'], 'required'],
-            [['control_instruction_id', 'region_id', 'inn', ], 'integer'],
-            [['name', 'type', 'link', 'address', 'phone','soogu','thsht','ownername','mhobt','ifut'], 'string', 'max' => 255],
+            [['control_instruction_id', 'region_id', 'inn','type','pre_type' ], 'integer'],
+            [['name',  'link', 'address', 'phone','soogu','thsht','ownername','mhobt','ifut'], 'string', 'max' => 255],
             [['control_instruction_id'], 'exist', 'skipOnError' => true, 'targetClass' => Instruction::className(), 'targetAttribute' => ['control_instruction_id' => 'id']],
             [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::className(), 'targetAttribute' => ['region_id' => 'id']],
         ];
@@ -63,16 +74,16 @@ class Company extends \yii\db\ActiveRecord
             'control_instruction_id' => 'Control Instruction ID',
             'region_id' => 'Hudud',
             'name' => 'Xo\'jalik yurituvchi subyekt nomi (XYUS)',
-            'inn' => 'XYUS STIRi(Soliq to’lovchining identifikatsion raqami)',
+            'inn' => 'Korxona STIRi(Soliq to’lovchining identifikatsion raqami)',
             'soogu' => 'DBIBT(Davlat boshqaruvi idoralarini belgilash tizimi)',
             'thsht' =>'THSHT(Tashkiliy-huquqiy shakllar tasniflagichi)',
             'ifut' => 'IFUT(Iqtisodiy faoliyat turlari umumdavlat tasniflagichi)',
             'mhobt' =>'MHOBT(Ma\'muriy-hududiy ob‘yektlarni belgilash tizimi)',
             'ownername' => 'Tashkilot rahbari FISH',
-            'type' => 'XYUS faoliyat turi',
-            'phone' => 'XYUS telefon raqami',
-            'link' => 'XYUS manziliga havola',
-            'address' => 'XYUS yuridik manzil',
+            'type' => 'Korxona faoliyat turi',
+            'phone' => 'Korxona telefon raqami',
+            'link' => 'Korxona manziliga havola',
+            'address' => 'Korxona yuridik manzil',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -80,10 +91,40 @@ class Company extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getINN($inn)
+    public static function getType($type = null)
     {
+        $arr = [
 
+            self::TYPE1 => 'Ishlab chiqaruvshi',
+            self::TYPE2 => 'Importiyor',
+            self::TYPE3 => 'Savdo',
+            self::TYPE4 => 'Xizmat ko\'rsatish'
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
     }
+
+    public static function getPreType($type = null)
+    {
+        $arr = [
+
+            self::PRETYPE1 => 'Sertifikatsiya organi',
+            self::PRETYPE2 => 'Tibbiyot',
+            self::PRETYPE3 => 'Suv xo\'jaligi',
+            self::PRETYPE4 => 'Qurilish korxonasi'
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
+    
     public function getPhoneNumber()
     {
         return '(' . substr($this->phone,0, 2) . ')-' . substr($this->phone,2,3) . '-' .

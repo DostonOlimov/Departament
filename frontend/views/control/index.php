@@ -106,8 +106,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Xyus faoliyat turi',
                 'value' => function ($model) {
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
-                    if ($company) {
-                        return $company->type;
+                    if ($company->type) {
+                        return Company::getType($company->type);
                     } else {
                         return '';
                     }

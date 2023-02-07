@@ -89,7 +89,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'label' => 'XYUS faoliyat turi',
                 'value' => function ($model) {
-                    return $model->controlCompany ? $model->controlCompany->type : '';
+                    if($model->controlCompany->type){
+                        return $model->controlCompany ? Company::getType($model->controlCompany->type) : '';
+                    }
                 },
                 'filter' => Html::activeInput('text',$searchModel, 'type', ['class' => 'form-control']),
                 'format' => 'raw',

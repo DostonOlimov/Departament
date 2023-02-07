@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'mask' => '999']) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'type')->textInput() ?>
+            <?= $form->field($model, 'type')->dropDownList(Company::getType()) ?>
         </div>
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'phone')->widget(MaskedInput::className(), [
