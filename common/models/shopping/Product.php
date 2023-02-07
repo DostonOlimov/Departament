@@ -8,6 +8,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yiidreamteam\upload\ImageUploadBehavior;
 
+
 /**
  * This is the model class for table "shopping_products".
  *
@@ -29,6 +30,8 @@ use yiidreamteam\upload\ImageUploadBehavior;
  */
 class Product extends \yii\db\ActiveRecord
 {
+    public $s_photo;
+    public $s_photo_check;
     /**
      * {@inheritdoc}
      */
@@ -41,13 +44,12 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['shopping_company_id'], 'required'],
-            [['shopping_company_id', 'quantity', 'cost'], 'integer'],
-            [['name'], 'string', 'max' => 255],
-            [['photo', 'photo_chek'], 'image'],
-            [['shopping_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['shopping_company_id' => 'id']],
+            [['shopping_company_id', 'quantity', 'sum'], 'integer'],
+            [['name','purchase_date','production_date','product_lot'], 'string', 'max' => 255],
+            [['photo', 'photo_chek'], 'image','extensions'=> 'jpg,png,pdf'],
+            //[['shopping_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['shopping_company_id' => 'id']],
         ];
     }
-
     public function behaviors()
     {
         return [
@@ -55,36 +57,59 @@ class Product extends \yii\db\ActiveRecord
             BlameableBehavior::class,
             [
                 'class' => ImageUploadBehavior::class,
-                'attribute' => 'photo',
-                'createThumbsOnRequest' => true,
-                'filePath' => '@frontend/web/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-                'fileUrl' => '@url/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-                'thumbPath' => '@frontend/web/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbUrl' => '@url/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbs' => [
-                    'xs' => ['width' => 64, 'height' => 48],
-                    'sm' => ['width' => 120, 'height' => 67],
-                    'md' => ['width' => 240, 'height' => 135],
-                    'lg' => ['width' => 960, 'height' => 540],
-                ],
+                'attribute' => 's_photo',
+                'filePath' => '@webroot/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
+                'fileUrl' => '/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
             ],
             [
                 'class' => ImageUploadBehavior::class,
-                'attribute' => 'photo_chek',
-                'createThumbsOnRequest' => true,
-                'filePath' => '@frontend/web/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-                'fileUrl' => '@url/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-                'thumbPath' => '@frontend/web/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbUrl' => '@url/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-                'thumbs' => [
-                    'xs' => ['width' => 64, 'height' => 48],
-                    'sm' => ['width' => 120, 'height' => 67],
-                    'md' => ['width' => 240, 'height' => 135],
-                    'lg' => ['width' => 960, 'height' => 540],
-                ],
+                'attribute' => 's_photo_check',
+                'filePath' => '@webroot/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
+                'fileUrl' => '/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
             ],
+            
+            
         ];
     }
+
+    // public function behaviors()
+    // {
+    //     return [
+    //         TimestampBehavior::class,
+    //         BlameableBehavior::class,
+            
+    //         // [
+    //         //     'class' => ImageUploadBehavior::class,
+    //         //     'attribute' => 'photo',
+    //         //     'createThumbsOnRequest' => true,
+    //         //     'filePath' => '@frontend/web/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
+    //         //     'fileUrl' => '@url/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
+    //         //     'thumbPath' => '@frontend/web/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+    //         //     'thumbUrl' => '@url/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+    //         //     'thumbs' => [
+    //         //         'xs' => ['width' => 64, 'height' => 48],
+    //         //         'sm' => ['width' => 120, 'height' => 67],
+    //         //         'md' => ['width' => 240, 'height' => 135],
+    //         //         'lg' => ['width' => 960, 'height' => 540],
+    //         //     ],
+    //         // ],
+    //         // [
+    //         //     'class' => ImageUploadBehavior::class,
+    //         //     'attribute' => 'photo_chek',
+    //         //     'createThumbsOnRequest' => true,
+    //         //     'filePath' => '@frontend/web/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
+    //         //     'fileUrl' => '@url/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
+    //         //     'thumbPath' => '@frontend/web/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+    //         //     'thumbUrl' => '@url/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
+    //         //     'thumbs' => [
+    //         //         'xs' => ['width' => 64, 'height' => 48],
+    //         //         'sm' => ['width' => 120, 'height' => 67],
+    //         //         'md' => ['width' => 240, 'height' => 135],
+    //         //         'lg' => ['width' => 960, 'height' => 540],
+    //         //     ],
+    //         // ],
+    //     ];
+    // }
 
     public function attributeLabels()
     {
@@ -93,7 +118,7 @@ class Product extends \yii\db\ActiveRecord
             'shopping_company_id' => 'Shopping Company ID',
             'name' => 'Maxsulot nomi',
             'quantity' => 'Maxsulot miqdori',
-            'cost' => 'Na`muna narxi',
+            'sum' => 'Na`muna narxi',
             'photo' => 'Mahsulot rasmi',
             'photo_chek' => 'Chek rasmi',
             'created_by' => 'Created By',
