@@ -97,6 +97,7 @@ class ControlController extends Controller
                         $insUser = new InstructionUser();
                         $insUser->instruction_id = $model->id;
                         $insUser->user_id = $employer;
+                        $start_type = '';
                         $insUser->save(false);
                     }
                 }
@@ -125,14 +126,38 @@ class ControlController extends Controller
             if($model->validate() && $model->save(false))
             {
             $company = Company::findOne(['control_instruction_id' => $model->id]);
-            if($company->type == 4)
+            $s = 0;
+            foreach($model->start_type as $key => $value)
             {
-                return $this->redirect(['primary-ov', 'company_id' => $company->id]);
+                $s += $value;
             }
-            else
-            {
-                return $this->redirect(['primary-data', 'company_id' => $company->id]);
-            }
+             switch ($s) {
+                case 1:
+                    return $this->redirect(['primary-data', 'company_id' => $company->id]);
+                  break;
+                case 10:
+                    return $this->redirect(['primary-data', 'company_id' => $company->id]);;
+                  break;
+                case 11:
+                    return $this->redirect(['primary-data', 'company_id' => $company->id]);
+                  break;
+                case 100:
+                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
+                  break;
+                case 101:
+                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
+                  break;
+                case 110:
+                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
+                  break;
+                case 111:
+                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
+                  break;
+                case 1000:
+                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
+                  break;
+              }
+            
         } 
        
     }
@@ -655,12 +680,13 @@ class ControlController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $typeRes = '';
-            $types = $model->type;
-            foreach ( $types as $key => $type) {
+            
+            $typeds = $model->type;
+            foreach ( $typeds as $key => $type) {
                 $typeRes .= '.' . $type;
             }
             $model->type = $typeRes;
-          
+        
             if ($model->type == '.4') 
             {
                 $transaction = Yii::$app->db->beginTransaction();
@@ -824,6 +850,7 @@ class ControlController extends Controller
         if ($model->load($this->request->post()) ) {
             $model->checkup_finish_date = $model->finish_date;
             $model->employers = 1;
+            $model->start_type = 2;
             $model->general_status = Instruction::GENERAL_STATUS_SEND;
             if($model->validate() && $model->save(false))
             {
