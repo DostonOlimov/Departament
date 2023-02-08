@@ -1,11 +1,6 @@
 <?php
-use common\models\control\InstructionUser;
-use common\models\control\Instruction;
-use common\models\User;
-use frontend\widgets\Steps;
+use common\models\control\DocumentAnalysis;
 use kartik\date\DatePicker;
-use kartik\select2\Select2;
-use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -17,7 +12,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="page1-1 row">
     <?php $form = ActiveForm::begin() ?>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="font-size:24px">
+            <?= $form->field($model, 'start_type')->checkboxList(DocumentAnalysis::typeList(), [
+                'onclick' => 'typeChange(event)',
+                'class' => 'row',
+            ]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="font-size:24px">
             <?= $form->field($model, 'first_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
         'format' => 'dd.mm.yyyy'
@@ -30,3 +33,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end() ?>
 
 </div>
+<script>
+
+    function typeChange(e) {
+        
+        
+        if (e.target.value == "1000" && e.target.checked) {
+            
+            let inputs = document.querySelectorAll("#instruction-start_type input:not(lastchild)")
+            
+            inputs.forEach(input => {
+                    if (input.value != "1000") {
+                        input.setAttribute('disabled', 'disabled')
+                    }
+                }
+            )
+        }
+        if (e.target.value == "1000" && !e.target.checked) {
+            let inputs = document.querySelectorAll("#instruction-start_type input:not(lastchild)")
+            inputs.forEach(input => {
+                    if (input.value != "1000") {
+                        input.removeAttribute('disabled')
+                    }
+                }
+            )
+        }
+        // console.log(e)
+    }
+
+</script>

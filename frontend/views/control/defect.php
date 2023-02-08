@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-12" style="font-size:24px">
             <?= $form->field($model, 'type')->checkboxList(Defect::typeList(), [
                 'onclick' => 'typeChange(event)',
-                'class' => 'row'
+                'class' => 'row',
             ]) ?>
         </div>
     </div>

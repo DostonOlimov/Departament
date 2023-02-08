@@ -21,10 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
 <p>
-            <?= Html::a('Export', ['/profilactic/profilactic/export-form'], ['class' => 'btn btn-primary']) ?>
+    <h1>Bu sahifa mavjud emas</h1>
+            <?php Html::a('Export', ['/profilactic/profilactic/export-form'], ['class' => 'btn btn-primary']) ?>
                     </p>
 
-    <?= GridView::widget([
+    <?php GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
