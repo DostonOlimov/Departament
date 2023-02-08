@@ -61,7 +61,7 @@ $this->title = Yii::t('app', 'Taqiqlash');
                             <div class="row">
                                 <div class="col-sm-4">
                                     <?= $form->field($prevent, "[{$i}]instructions_id")->dropdownList([                           
-                                    $company->control_instruction_id => $company->controlInstruction->command_number])?>
+                                    $company->id => $company->command_number])?>
                                 </div>
                                 
                                 <div class="col-sm-4">

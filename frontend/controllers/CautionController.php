@@ -62,7 +62,7 @@ class CautionController extends Controller
         ]);
     }
 
-    public function actionEmbargoAdd($id){
+    public function actionEmbargoAdd(){
         $searchModel = new EmbargosSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         // echo '<pre>';

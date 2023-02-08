@@ -190,6 +190,18 @@ class ShoppingController extends Controller
            
         ]);
     }
+    public function actionLaboratory($shopping_company){
+        $model = new Laboratory();
+        $model->shopping_company_id = $shopping_company;
+
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['laboratory-view', 'id' => $model->id]);
+        }
+
+        return $this->render('laboratory', [
+            'model' => $model
+        ]);
+    }
 
     private function getModel($className, $id, $attribute = 'id')
     {

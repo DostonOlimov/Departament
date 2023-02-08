@@ -210,12 +210,7 @@ return [
     71 => [
         'supervisor',
     ],
-    72 => [
-        'admin',
-        'supervisor',
-        'inspector',
-    ],
-    74 => [
+    73 => [
         'inspector',
     ],
 ];
