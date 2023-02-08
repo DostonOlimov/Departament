@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'headerRowOptions' => ['style' => 'background-color: #0072B5'],
             'columns' => [
-               
+              
                
                 [
                     'attribute'=> 'message_number',
