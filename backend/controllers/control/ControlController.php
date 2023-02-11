@@ -77,7 +77,6 @@ class ControlController extends Controller
             }
             if($model->validate())
             {
-               
             $typeRes = '';
             $subject = $model->checkup_subject;
             foreach ( $subject as $key => $type) {
@@ -102,7 +101,7 @@ class ControlController extends Controller
                 $transaction->rollBack();
                 throw $e;
             }
-        } 
+        }   
        
     }
         return $this->render('instruction', [

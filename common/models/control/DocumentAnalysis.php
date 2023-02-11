@@ -4,6 +4,8 @@ namespace common\models\control;
 
 use Yii;
 use common\models\control\Instructions;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "document_analysis".
@@ -24,11 +26,9 @@ use common\models\control\Instructions;
  */
 class DocumentAnalysis extends \yii\db\ActiveRecord
 {
+    public $document_type;
 
-    const TYPE_OV = 1;
-    const TYPE_PRODUCT = 10;
-    const TYPE_DOC = 100;
-    const TYPE_NO_INSTRUCTION = 1000;
+
     /**
      * {@inheritdoc}
      */
@@ -60,30 +60,15 @@ class DocumentAnalysis extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'control_instruction_id' => 'Control Instruction ID',
-            'reestr_number' => 'Reestr Number',
-            'given_date' => 'Given Date',
-            'defect' => 'Defect',
-            'type' => 'Type',
+            'reestr_number' => 'Hujjat reestr raqami',
+            'given_date' => 'Hujjat berilgan sana',
+            'defect' => 'Kamchilik',
+            'document_type' => 'Hujjat tahlili',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
-    }
-    public static function typeList($type = null)
-    {
-        $arr = [
-            self::TYPE_OV => 'O\'lchov vositasi',
-            self::TYPE_PRODUCT => 'Mahsulot ',
-            self::TYPE_DOC => 'Hujjat tahlili',
-            self::TYPE_NO_INSTRUCTION => 'Tekshiruvga qo\'yilmadi',
-        ];
-
-        if ($type === null) {
-            return $arr;
-        }
-
-        return $arr[$type];
     }
 
     public function behaviors()

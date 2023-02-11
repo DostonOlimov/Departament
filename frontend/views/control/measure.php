@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'finish_date')->textInput(['type' => 'date']) ?>
             </div>
             <div class="col-sm-12 col-lg-12">
-                <?= $form->field($model, 'type')->checkboxList(Measure::typeList(), [
+                <?= $form->field($model, 'type')->radioList(Measure::typeList(), [
                     'onchange' => "inputGenerate(event)"
                 ])->label('Ko\'rilgan ta`sir choralar') ?>
             </div>

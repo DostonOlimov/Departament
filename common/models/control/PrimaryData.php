@@ -24,6 +24,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class PrimaryData extends \yii\db\ActiveRecord
 {
+
+    public $type;
+
     const LABORATORY_HAVE = 1;
     const LABORATORY_CONTRACT = 2;
     const LABORATORY_NOT = 3;

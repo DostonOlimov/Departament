@@ -1,0 +1,22 @@
+h3{
+    color:black;
+    display:inline;
+}
+.openPanel{
+    font-size:24px;
+    color:blue;
+}
+.closePanel{
+    font-size:24px;
+    color:blue;
+    
+}
+.type{
+    font-size:24px;
+    font-weight:bold;
+    background-color: rgb(220, 237, 244);
+}
+.smallFont{
+    font-size: 18px;
+     font-weight: bold;
+}

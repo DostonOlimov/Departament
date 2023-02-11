@@ -85,7 +85,6 @@ class Instruction extends \yii\db\ActiveRecord
     public $dn;
     public $first_date;
     public $finish_date;
-    public $start_type;
 
     public static function tableName()
     {
@@ -97,10 +96,10 @@ class Instruction extends \yii\db\ActiveRecord
         return [
             [['base', 'type','checkup_duration','general_status',], 'integer'],
             [['general_status'], 'default', 'value' => self::GENERAL_STATUS_IN_PROCESS],
-            [['employers','checkup_subject','dn','start_type'], 'safe'],
+            [['employers','checkup_subject','dn'], 'safe'],
             [['letter_number'],'unique'],
             [['base', 'type', 'letter_date','checkup_begin_date',
-                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers','start_type'], 'required'],
+                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date','checkup_finish_date',
                 'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','first_date','finish_date'], 'string', 'max' => 255],
         ];
@@ -263,7 +262,6 @@ class Instruction extends \yii\db\ActiveRecord
             'checkup_subject' => 'Tekshiruv predmeti',
             'who_send_letter' => 'Tekshirish uchun asos bo’luvchi hujjat jo’natgan tashkilot nomi yoki shaxs FISH',
             'dn' => 'Davlat nazorati turi',
-            'start_type' => 'Tekshiruv davomida quyidagi(lar) tekshiriladi',
 
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',

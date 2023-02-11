@@ -57,6 +57,8 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     const DEFECT2 = 2;
     const DEFECT3 = 3;
 
+    public $product_type;
+
     public $sector_id;
     public $group;
     public $subposition;
@@ -81,7 +83,9 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate'], 'required'],
+            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate'], 'required',
+            'when' => function($model) { return $model->product_type == 0; }],
+            [['product_type'],'required'],
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality',], 'integer'],
             [['product_type_id', 'product_name', 'residue_amount','subposition','group','position','class', 'residue_quantity','photo', 'potency', 'year_amount','year_quantity','codetnved','defect_type','cer_amount','cer_quantity'], 'string', 'max' => 255],
             [['img',], 'file'],
@@ -222,7 +226,8 @@ public function behaviors()
             'exsist_certificate' =>'Mahsulotning sertifikat(lar)i',
             'codetnved' => 'Mahsulotning TIF TN kodi',
             'photo' =>'Mahsulotning rasmi',
-            'defect_type' =>'Mahsulotning kamchilikgi'
+            'defect_type' =>'Mahsulotning kamchilikgi',
+            'product_type' => 'Mahsulot tekshirildi'
 
         ];
     }

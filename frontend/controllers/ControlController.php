@@ -26,6 +26,7 @@ use common\models\types\ProductClass;
 use common\models\Model;
 use common\models\Codetnved;
 use common\models\control\ControlProductMeasures;
+use common\models\control\DocumentAnalysis;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
@@ -125,39 +126,9 @@ class ControlController extends Controller
             $model->employers = 1;
             if($model->validate() && $model->save(false))
             {
+                
             $company = Company::findOne(['control_instruction_id' => $model->id]);
-            $s = 0;
-            foreach($model->start_type as $key => $value)
-            {
-                $s += $value;
-            }
-             switch ($s) {
-                case 1:
-                    return $this->redirect(['primary-data', 'company_id' => $company->id]);
-                  break;
-                case 10:
-                    return $this->redirect(['primary-data', 'company_id' => $company->id]);;
-                  break;
-                case 11:
-                    return $this->redirect(['primary-data', 'company_id' => $company->id]);
-                  break;
-                case 100:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 101:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 110:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 111:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 1000:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-              }
-            
+            return $this->redirect(['primary-data', 'company_id' => $company->id]);;
         } 
        
     }
@@ -204,6 +175,7 @@ class ControlController extends Controller
             $model->control_company_id = $company_id;
             $products = [new PrimaryProduct];
             $ovs = [new PrimaryOv];
+            $documents = [new DocumentAnalysis];
 
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
@@ -220,6 +192,7 @@ class ControlController extends Controller
             $model->control_company_id = $company_id;
             $products = [new PrimaryProduct];
             $ovs = [new PrimaryOv];
+            $documents = [new DocumentAnalysis];
 
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
@@ -243,15 +216,18 @@ class ControlController extends Controller
             Model::loadMultiple($products, $this->request->post());
             $ovs = Model::createMultiple(PrimaryOv::classname());
             Model::loadMultiple($ovs, Yii::$app->request->post());
-
-            $valid = $model->validate() && Model::validateMultiple($products) && Model::validateMultiple($ovs);
-                       
+            $documents = Model::createMultiple(DocumentAnalysis::classname());
+            Model::loadMultiple($documents, Yii::$app->request->post());
+          //  VarDumper::dump($ovs,12,true);die();  
+            $valid = $model->validate() && Model::validateMultiple($ovs) && Model::validateMultiple($products) && Model::validateMultiple($documents);
+                 
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                $arrayImage = [];
                 try {
                     $model->save(false);
-               //     VarDumper::dump($model,12,true);
+                    if($ovs[0]->ov_type == 0)
+                    {
                     foreach ($ovs as $key_ov1 => $ov) {
                             if($t)
                             {
@@ -284,6 +260,9 @@ class ControlController extends Controller
                             }
                         } 
                 $id = [];
+                }
+            if($products[0]->product_type == 0)
+                {
                 foreach ($products as $key_p1 => $product)
                 {
                   if($t)
@@ -353,6 +332,7 @@ class ControlController extends Controller
                                }
                             }
                         }
+                }
             $transaction->commit();
                     return $this->redirect(['identification','company_id' => $company_id]);
                 } catch (Exception $e) 
@@ -369,6 +349,7 @@ class ControlController extends Controller
             'pro_cer' => $pro_cer,
             'product' => $products,
             'ov' =>$ovs,
+            'document' => $documents,
             'company_id' => $company_id,
             'pro_ov' => $pro_ovs,
         ]);
@@ -784,9 +765,10 @@ class ControlController extends Controller
                 $re_product[$key]['product_id'] = $value['id'];
                 $re_product[$key]['product_name'] = $value['product_name'];
             }
-            
+           
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
+            print_r( $model->type);
+            die();
             if ($model->type) {
                
                 $model->type = implode(",", $model->type);

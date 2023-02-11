@@ -13,14 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin() ?>
     <div class="row">
         <div class="col-sm-12" style="font-size:24px">
-            <?= $form->field($model, 'start_type')->checkboxList(DocumentAnalysis::typeList(), [
-                'onclick' => 'typeChange(event)',
-                'class' => 'row',
-            ]) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12" style="font-size:24px">
             <?= $form->field($model, 'first_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
         'format' => 'dd.mm.yyyy'

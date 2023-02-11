@@ -70,7 +70,8 @@ class Measure extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_company_id', ], 'required'],
+            [['control_company_id','ov_date' ], 'required', 'when' => function($model) {
+                return $model->type == 1; }],
             [['m212','m213','m214','control_company_id', 'ov_quantity',  'realization_number', 'fine_amount',  'warn_number', 'eco_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [[ 'realization_date', 'ov_date','first_warn_date','ov_name', 'person', 'number_passport', 'band_mjtk','eco_date',  'eco_quantity', 'eco_amount','finish_date'], 'string', 'max' => 255],
             [['claim', 'court_letter', 'explanation_letter',],'file'],
