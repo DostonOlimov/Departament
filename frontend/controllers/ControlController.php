@@ -17,6 +17,7 @@ use common\models\control\PrimaryOvSearch;
 use common\models\control\PrimaryProduct;
 use common\models\control\Laboratory;
 use common\models\control\PrimaryProductSearch;
+use common\models\control\DocumentAnalysisSearch;
 use common\models\control\PrimaryProductNd;
 use common\models\control\ControlPrimaryOvNd;
 use common\models\types\ProductGroup;
@@ -218,9 +219,9 @@ class ControlController extends Controller
             Model::loadMultiple($ovs, Yii::$app->request->post());
             $documents = Model::createMultiple(DocumentAnalysis::classname());
             Model::loadMultiple($documents, Yii::$app->request->post());
-          //  VarDumper::dump($ovs,12,true);die();  
+            
             $valid = $model->validate() && Model::validateMultiple($ovs) && Model::validateMultiple($products) && Model::validateMultiple($documents);
-                 
+           
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                $arrayImage = [];
@@ -333,6 +334,20 @@ class ControlController extends Controller
                             }
                         }
                 }
+               
+                if($documents[0]->document_type == 0)
+                {
+                foreach ($documents as $key_doc1 => $doc) {
+                        
+                        $doc1 = new DocumentAnalysis();
+                        $doc1->primary_data_id = $model->id;
+                        $doc1->reestr_number = $doc->reestr_number;
+                        $doc1->defect = $doc->defect;
+                        $doc1->given_date = $doc->given_date;
+                       
+                        $doc1->save(false);
+                    }
+                }
             $transaction->commit();
                     return $this->redirect(['identification','company_id' => $company_id]);
                 } catch (Exception $e) 
@@ -354,10 +369,7 @@ class ControlController extends Controller
             'pro_ov' => $pro_ovs,
         ]);
     }
-    public function actionPrimaryOv($company_id)
-    {
-        
-    }
+  
     public function actionCodeTnVed($term)
 	{
     
@@ -445,10 +457,14 @@ class ControlController extends Controller
         $searchProduct = new PrimaryProductSearch($id);
         $dataProduct = $searchProduct->search($this->request->queryParams);
 
+        $searchDocument = new DocumentAnalysisSearch($id);
+        $dataDoc = $searchDocument->search($this->request->queryParams);
+
         return $this->render('primary-data-view', [
             'model' => $this->getModel(PrimaryData::className(), $id),
             'searchOv' => $searchOv,
             'dataOv' => $dataOv,
+            'dataDoc' => $dataDoc,
             'searchProduct' => $searchProduct,
             'dataProduct' => $dataProduct,
         ]);

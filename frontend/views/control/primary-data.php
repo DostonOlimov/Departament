@@ -381,7 +381,7 @@ AppAsset::register($this);
                                             <?= $form->field($stan, "[{$i}]given_date")->textInput(['type' => 'date']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
-                                            <?= $form->field($stan, "[{$i}]defect")->textInput(['type' => 'number']) ?>
+                                            <?= $form->field($stan, "[{$i}]defect")->textInput([]) ?>
                                         </div>
                                     </div>
                                 </div>

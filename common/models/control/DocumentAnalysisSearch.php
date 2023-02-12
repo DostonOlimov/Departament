@@ -11,14 +11,21 @@ use common\models\control\DocumentAnalysis;
  * DocumentAnalysisSearch represents the model behind the search form of `common\models\control\DocumentAnalysis`.
  */
 class DocumentAnalysisSearch extends DocumentAnalysis
-{
+{ 
+    public $primaryDataId;
+
+    public function __construct($primaryDataId, $config = [])
+    {
+        $this->primaryDataId = $primaryDataId;
+        parent::__construct($config);
+    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'control_instruction_id', 'given_date', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'primary_data_id', 'given_date', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['reestr_number', 'defect'], 'safe'],
         ];
     }
@@ -41,7 +48,7 @@ class DocumentAnalysisSearch extends DocumentAnalysis
      */
     public function search($params)
     {
-        $query = DocumentAnalysis::find();
+        $query = DocumentAnalysis::find()->where(['primary_data_id' => $this->primaryDataId]);
 
         // add conditions that should always apply here
 
@@ -60,7 +67,7 @@ class DocumentAnalysisSearch extends DocumentAnalysis
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'control_instruction_id' => $this->control_instruction_id,
+            'primary_data_id' => $this->primary_data_id,
             'given_date' => $this->given_date,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
