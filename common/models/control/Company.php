@@ -95,7 +95,7 @@ class Company extends \yii\db\ActiveRecord
     {
         $arr = [
 
-            self::TYPE1 => 'Ishlab chiqaruvshi',
+            self::TYPE1 => 'Ishlab chiqaruvchi',
             self::TYPE2 => 'Importiyor',
             self::TYPE3 => 'Savdo',
             self::TYPE4 => 'Xizmat ko\'rsatish'

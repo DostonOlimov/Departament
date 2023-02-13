@@ -50,7 +50,7 @@ class InstructionController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update', 'delete'],
-                        'roles' => ['admin'],
+                        'roles' => ['admin','supervisor'],
                     ],
                 ],
             ],

@@ -484,4 +484,7 @@ if ($company) { ?>
             ) ?>
         </div>
     <?php }
+}
+else{
+    echo Html::a('Korxona ma\'lumotlarini qo\'shish', ['/control/control/company', 'instruction_id' => $model->id], ['class' => 'btn btn-primary']) ;
 } ?>

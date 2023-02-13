@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var common\models\RegionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Regions';
+$this->title = 'Hududlar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="region-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Region', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -31,9 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'created_by',
-            'updated_by',
-            'created_at',
+           // 'created_by',
+           // 'updated_by',
+           // 'created_at',
             //'updated_at',
             [
                 'class' => ActionColumn::className(),

@@ -78,32 +78,9 @@ use common\models\User;
                 ],
             ], 
                ['label' => 'Davlatlar', 'url' => ['country/index'], 'icon' => 'fas fa-globe'],
+               ['label' => 'Hududlar', 'url' => ['region/index'], 'icon' => 'fa fa-map-marker']
             ];
-            $items = Yii::$app->user->identity->role == 'admin' ? $items : [
-                ['label' => 'Davlat nazorati', 'url' => ['control/control/index'], 'icon' => 'th'],
-                ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-building'],
-                ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-building'],
-                //['label' => 'Berilgan ko\'rsatma va ogohlantirishlar', 'url' => ['caution/caution/index'], 'icon' => 'fa fa-building'],
-                [
-                    'label' => 'Berilgan ko\'rsatma va ogohlantirishlar',
-                    'icon' => 'fa fa-building',
-                    
-    //                        'badge' => '<span class="right badge badge-info">2</span>',
-                    'items' => [
-                        ['label' => 'Ko\'rsatma', 'url' => ['#'], 'iconStyle' => 'far',
-                        'items' => [
-                            ['label' => 'Bartaraf etish ko\'rsatmasi', 'url' => ['caution/prevention/index'], 'iconStyle' => 'far'],
-                            ['label' => 'Taqiqlash ko\'rsatmasi', 'url' => ['caution/embargo/index'], 'iconStyle' => 'far'],
-                           
-                        ]
-                        
-                        ],
-                        ['label' => 'Ogohlantirish xati', 'url' => ['caution/letters/index'], 'iconStyle' => 'far'],
-                       
-                    ],
-                ]    
-            
-            ];
+        
             echo Menu::widget([
                 'items' => $items,
             ]);

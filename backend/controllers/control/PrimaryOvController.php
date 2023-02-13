@@ -27,7 +27,7 @@ class PrimaryOvController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update', 'delete', 'create'],
-                        'roles' => ['admin'],
+                        'roles' => ['admin','supervisor'],
                     ],
                 ],
             ],

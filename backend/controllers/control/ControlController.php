@@ -39,7 +39,7 @@ class ControlController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['admin', 'supervisor'],
+                        'roles' => ['admin', 'supervisor',],
                     ],
                 ],
             ],
