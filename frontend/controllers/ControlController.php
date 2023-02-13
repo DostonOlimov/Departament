@@ -478,6 +478,8 @@ class ControlController extends Controller
         $products = PrimaryProduct::find()
             ->where(['control_primary_data_id' => $id->id])
             ->all();
+        if($products)
+        {
         foreach($products as $key => $value) 
             {   
                 $model[$key] = new PrimaryIdentification();
@@ -608,6 +610,10 @@ class ControlController extends Controller
             'labs' => $labs,
             'company_id' => $company_id,
          ]);
+        }
+        else{
+            return $this->redirect(['laboratory', 'company_id' => $company_id,]);
+        }
     }
 
     public function actionIdentificationView($id)

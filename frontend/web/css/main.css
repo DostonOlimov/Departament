@@ -231,10 +231,9 @@ input[name=panel-2]:checked ~ .accordionD__content.accordionD__content--large {
 
 
 form {
-    width: 40vw;
     height: 60vh;
     color: white;
-    margin: 25vh auto;
+    
 }
 
 .form-outline {

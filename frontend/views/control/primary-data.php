@@ -441,19 +441,7 @@ AppAsset::register($this);
         }
  
 }
-function getProduct(e) {
-        if(e.target.checked && e.target.value == 1)
-        {
-            var  item = document.getElementById('product');
-            item.style.display = 'none';
-        }
-        if(e.target.checked && e.target.value == 0)
-        {
-            var  item = document.getElementById('product');
-            item.style.display = 'block'
-        }
- 
-}
+
 function getDocument(e) {
         if(e.target.checked && e.target.value == 1)
         {
