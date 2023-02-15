@@ -11,11 +11,14 @@ use common\models\shopping\InstructionAdd;
 use common\models\shopping\ShoppingNotice;
 use common\models\shopping\ShoppingNoticeSearch;
 use common\models\shopping\Product;
+use yii\widgets\ActiveForm;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
+use yii\web\Response;
 use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -155,7 +158,7 @@ class ShoppingController extends Controller
                            $product->save(false);
                         }
                         $transaction->commit();
-                       return $this->redirect(['product-view', 'shopping_company' => $company_id]);
+                       return $this->redirect(['laboratory', 'shopping_company' => $company_id]);
                     // }
                 } catch (Exception $e) {
                     $transaction->rollBack();
@@ -190,18 +193,52 @@ class ShoppingController extends Controller
            
         ]);
     }
-    public function actionLaboratory($shopping_company){
-        $model = new Laboratory();
-        $model->shopping_company_id = $shopping_company;
 
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['laboratory-view', 'id' => $model->id]);
+
+    
+    public function actionLaboratory($shopping_company)
+    {
+        $company = Company::findOne($shopping_company);
+        $products = Product::find()->where(['shopping_company_id'=>$shopping_company])->all();
+        
+       
+
+    if ($company->load(Yii::$app->request->post())) {    
+    $t = true;
+    foreach(Yii::$app->request->post('Product') as $key=>$value)
+        {
+            $product = Product::findOne($value['id']);
+            $product->name = $value['name'];
+            $product->sum = $value['sum'];
+            $product->quantity = $value['quantity'];
+            $product->production_date = $value['production_date'];
+            $product->purchase_date = $value['purchase_date'];
+            $product->product_lot = $value['product_lot'];
+            $product->photo = $value['photo'];
+            $product->photo_chek = $value['photo_chek'];
+            if($product->validate()){
+                $product->save();
+            }
+            else{
+                $t = false;
+            }
+        }
+            $company->phone = strval($company->phone);     
+            if( $company->validate() && $t && $company->save())
+            {
+                return $this->redirect(['product-view', 'shopping_company' => $company->id]);
+            }  
+  
         }
 
         return $this->render('laboratory', [
-            'model' => $model
+            'company' => $company,
+            'products' =>  $products,
         ]);
     }
+   
+    
+
 
     private function getModel($className, $id, $attribute = 'id')
     {

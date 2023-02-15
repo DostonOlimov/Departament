@@ -76,7 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     return '';
                 },
-                'format' => 'raw',
+
+                'format' => 'raw', 
             ],
             [   
                 'label' => 'Buyruq nomeri',
