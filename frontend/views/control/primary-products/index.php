@@ -11,6 +11,7 @@ use frontend\widgets\Steps;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
+use frontend\assets\AppAsset;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
@@ -19,7 +20,10 @@ use yii\grid\GridView;
 
 $this->title = 'Mahsulotlar';
 $this->params['breadcrumbs'][] = $this->title;
+AppAsset::register($this);
+
 $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
+
 ?>
 
 
@@ -31,9 +35,10 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
     
 <div class="col-8">
 <h1><?= Html::encode($this->title) ?></h1>
-
 <hr>
-
+<div class="pull-right">
+    <?= Html::a('Mahsulot qo\'shish', ['/control/primary-products/create','primary_data_id'=>$primary_data_id], ['class' => 'btn btn-primary']) ;?>
+   </div>
         <?=  GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -134,39 +139,19 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
                         },
                         'format' => 'raw'
                     ],
+                  
                     [
-                        'attribute' => 'Tashqi ko\'rinish bo\'yicha yaroqligi',
-                        'value' => function (PrimaryProduct $model) {
-                            
-                            return Html::a('Yangilash', ['/control/primary-products/update', 'id' => $model->id,], ['class' => 'btn btn-primary']) ;
-                        },
-                        'format' => 'raw'
+                        'class' => ActionColumn::className(),
+                        'urlCreator' => function ($action, PrimaryProduct $model, $key, $index, $column) {
+                            return Url::toRoute([$action, 'id' => $model->id,'primary_data_id' => $model->control_primary_data_id]);
+                         }
                     ],
-                    [
-                        'attribute' => 'Mahsulotga oid sertifikatlar',
-                        'value' => function (PrimaryProduct $model) {
-                            
-                            return Html::a('Yangilash', ['/control/primary-products/update', 'id' => $model->id,], ['class' => 'btn btn-primary']) ;
-                        },
-                        'format' => 'raw'
-                    ],
-                    [
-                        'attribute' => 'Tahrirlash',
-                        'value' => function (PrimaryProduct $model) {
-                            
-                            return Html::a('Yangilash', ['/control/primary-products/update', 'id' => $model->id,], ['class' => 'btn btn-primary']) ;
-                        },
-                        'format' => 'raw'
-                    ]
                 ],
             ]);
         ?>
     <div>
 <div>   
 
-  <?= $this->render('_form', [
-        'model' => $modelCreate,
-    ]) ?>
 </div>
     </div>
 

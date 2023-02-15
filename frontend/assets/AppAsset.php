@@ -14,7 +14,8 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/main.css',
         'css/bts.css',
-        'css/primary-data.css'
+        'css/primary-data.css',
+        'css/primary-products/index.css'
     ];
     public $js = [
 //        'js/jquery.js',
