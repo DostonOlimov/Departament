@@ -40,9 +40,10 @@ class Company extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['shopping_instruction_id', 'name', 'inn', 'phone', 'address', 'after'], 'required'],
+            [['shopping_instruction_id', 'name', 'inn', 'phone', 'address'], 'required'],
             [['shopping_instruction_id', 'region_id', 'inn'], 'integer'],
             [['name', 'after', 'link', 'address', 'phone'], 'string', 'max' => 255],
+            [['phone'],'safe'],
             [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::className(), 'targetAttribute' => ['region_id' => 'id']],
             [['shopping_instruction_id'], 'exist', 'skipOnError' => true, 'targetClass' => Instruction::className(), 'targetAttribute' => ['shopping_instruction_id' => 'id']],
         ];
@@ -102,7 +103,7 @@ class Company extends \yii\db\ActiveRecord
 
     public function getProduct()
     {
-        return $this->hasOne(Product::className(), ['shopping_company_id' => 'id']);
+        return $this->hasMany(Product::className(), ['shopping_company_id' => 'id']);
     }
 
     public function getRegion()

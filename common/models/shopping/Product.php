@@ -45,7 +45,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['shopping_company_id'], 'required'],
             [['shopping_company_id', 'quantity', 'sum'], 'integer'],
-            [['name','purchase_date','production_date','product_lot'], 'string', 'max' => 255],
+            [['name','purchase_date','production_date','product_lot','lab_conclusion'], 'string', 'max' => 255],
             [['photo', 'photo_chek'], 'image','extensions'=> 'jpg,png,pdf'],
             //[['shopping_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['shopping_company_id' => 'id']],
         ];
@@ -125,6 +125,7 @@ class Product extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'lab_conclusion' => 'Laboratory xulosasi',
         ];
     }
 

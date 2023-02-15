@@ -3,6 +3,8 @@
 use common\models\shopping\Company;
 use common\models\shopping\Instruction;
 use common\models\shopping\Product;
+use common\models\shopping\ShoppingNotice;
+use common\models\User;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -31,21 +33,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
            'id',
-                // [
-                //     'attribute' => 'base',
-                //     'value' => function ($model) {
-                //         return Instruction::getType($model->base);
-                //     }
-                // ],
+                [
+                    'attribute' => 'notice_id',
+                    'value' => function ($model) {
+                        
+                        return $model->shoppingNotice->notice_number;
+                    }
+                ],
                 // 'letter_date:date',
                 // 'letter_number',
-           'product',
-           'phone',
-           'address',
-           'created_by',
-           'updated_by',
-           'created_at',
-           'updated_at',
+           'card_number',
+           'card_given_date',
+           'card_return_date',
+           [
+            'attribute' => 'created_by',
+            
+                'value'=> function($model){
+                    $user = User::findOne($model->created_by);
+                    return $user ? $user->name .' '.$user->surname :'';
+                }
+            
+        ],
+        //    'updated_by',
+        //    'created_at',
+        //    'updated_at',
             ],
         ]) ?>
 
@@ -91,39 +102,48 @@ if ($company) { ?>
     </div>
 
     <?php
-    $answer = Product::findOne(['shopping_company_id' => $company->id]);
-    if ($answer) { ?>
-        <hr>
-        <h2>Mahsulot to'g'risida ma`lumot</h2>
-        <div class="company-view">
-            <p>
-                <?= Html::a('Yangilash', ['/shopping/product/update', 'id' => $answer->id], ['class' => 'btn btn-primary']) ?>
-            </p>
-            <?= DetailView::widget([
-                'model' => $answer,
-                'attributes' => [
-//                    'id',
-//                    'pro_company_id',
 
-                    'name',
-                    'quantity',
-                    'cost',
-                    // [
-                    //     'attribute' => 'photo',
-                    //     'value' => function (Product $model) {
-                    //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
-                    //     },
-                    //     'format' => 'raw'
-                    // ],
-                    // [
-                    //     'attribute' => 'photo_chek',
-                    //     'value' => function (Product $model) {
-                    //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
-                    //     },
-                    //     'format' => 'raw'
-                    // ],
-                ],
-            ]) ?>
-        </div>
-    <?php }
+$answers = Product::find()->where(['shopping_company_id' => $company->id])->all();
+if ($answers) { ?>        
+    <div class="company-view">
+    <h2 >Mahsulotlar</h2>
+            <p>
+                <?= Html::a('Yangilash', ['/shopping/product/update', 'shopping_company_id' => $company->id], ['class' => 'btn btn-primary']) ?>
+            </p>
+        <?php foreach($answers as $answer):?>
+        <hr>
+        <?= DetailView::widget([
+            'model' => $answer,
+            'attributes' => [ 
+               'name',
+                'quantity',
+                'sum',
+                'created_by',
+                'purchase_date',
+                'production_date',
+                'product_lot'
+
+                // [
+                //     'attribute' => 'photo',
+                //     'value' => function (Product $model) {
+                //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
+                //     },
+                //     'format' => 'raw'
+                // ],
+                // [
+                //     'attribute' => 'photo_chek',
+                //     'value' => function (Product $model) {
+                //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
+                //     },
+                //     'format' => 'raw'
+                // ],
+            ],
+        ]) ?>
+        
+        <?php endforeach;?>
+    </div>
+<?php }
+
+
+   
 } ?>
