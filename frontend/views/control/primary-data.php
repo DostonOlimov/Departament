@@ -13,6 +13,8 @@ use common\models\types\ProductSector;
 use common\models\control\PrimaryProductNd;
 use common\models\control\ControlProductCertification;
 use common\models\Countries;
+use frontend\assets\AppAsset;
+use common\models\control\Measure;
 use kartik\date\DatePicker;
 use frontend\widgets\Steps;
 use wbraganca\dynamicform\DynamicFormWidget;
@@ -28,8 +30,9 @@ use kartik\file\FileInput;
 $this->title = 'Birlamchi ma`lumotlar';
 $this->params['breadcrumbs'][] = $this->title;
 $codetnved = [];
-?>
 
+AppAsset::register($this);
+?>
     <div class="page1-1 row">
 
         <?= Steps::widget([
@@ -45,25 +48,28 @@ $codetnved = [];
                 'id' => 'dynamic-form'
             ]
         ]) ?>
-        
-            <i class="fa fa-toggle-right" id = "open1" onclick=openPanel(); style="font-size:24px;color:blue;display:none;"></i> 
-            <i class="fa fa-toggle-down " id = "close1" onclick=closePanel(); style="font-size:24px;color:blue; " ></i> 
-            <h3 style="color:black; display:inline;" >Tashkilotga oid ma'lumotlar</h3>
-                <hr>
-                        <div class="row" id="content1">
-                            <div class="col-sm-6">
-                                <?= $form->field($model, 'smt')->dropDownList(PrimaryData::getSMT(),['prompt'=>'- - -']) ?>
-                            </div>
 
-                            <div class="col-sm-6">
-                                <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab(),['prompt'=>'- - -']) ?>
-                            </div>
-                        </div>
-    
-            <i class="fa fa-toggle-right" id = "open2" onclick=openPanel2(); style="font-size:24px;color:blue;display:none;"></i> 
-            <i class="fa fa-toggle-down " id = "close2" onclick=closePanel2(); style="font-size:24px;color:blue; " ></i> 
-            <h3 style="color:black;display:inline;">Tashkilotda mavjud o'lchov vositalari haqida ma'lumot</h3>
+            <i class="fa fa-toggle-right openPanel" id = "open1" onclick=openPanel(); style="display: none"></i> 
+            <i class="fa fa-toggle-down closePanel" id = "close1" onclick=closePanel(); ></i> 
+            <h3>Tashkilotga oid ma'lumotlar</h3>
                 <hr>
+                    <div class="row" id="content1">
+                        <div class="col-sm-6">
+                            <?= $form->field($model, 'smt')->dropDownList(PrimaryData::getSMT(),['prompt'=>'- - -']) ?>
+                        </div>
+                        <div class="col-sm-6">
+                            <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab(),['prompt'=>'- - -']) ?>
+                        </div>
+                    </div>
+            <div class="col-sm-12 type">
+                <?= $form->field($ov[0], "[0]ov_type")->radioList(['0'=>'ha','1'=>'yo\'q '],['onclick' => "getOv(event)"],); ?>
+            </div>
+
+    <div id = "ov">            
+        <i class="fa fa-toggle-right openPanel" id = "open2" onclick=openPanel2(); style="display:none;"></i> 
+        <i class="fa fa-toggle-down closePanel " id = "close2" onclick=closePanel2(); ></i> 
+        <h3 >Tashkilotda mavjud o'lchov vositalari haqida ma'lumot</h3>
+        <hr>
         <div class="row" id="content2"  >
             <div class="box box-default" style="display: inline-block">
                 <div class="panel-body">
@@ -82,7 +88,6 @@ $codetnved = [];
                             'measurement',
                             'compared',
                             'invalid',
-
                         ],
                     ]); ?>
                 <div class="container-items">        
@@ -91,10 +96,8 @@ $codetnved = [];
                             if ($i == 1) {
                                 continue;
                             } ?>
-                           
                             <div class="item panel panel-default item-product itemlar"  >
                                 <div class="panel-heading" >
-                 
                                     <div class="pull-right">
                                         <button type="button" class="add-item btn btn-success btn-xs">
                                             <i class="fa fa-plus"></i></button>
@@ -102,11 +105,10 @@ $codetnved = [];
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="row ">
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg-3" id="titleOv">
                                             <?= $form->field($stan, "[{$i}]type")->dropDownList(PrimaryOv::getType(),['prompt'=>'- - -']) ?>
                                         </div>
                                         <div class="col-md-6 col-lg-2">
@@ -136,20 +138,25 @@ $codetnved = [];
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]expired")->textInput(['type' => 'number']) ?>
                                         </div>
-                                       
                                     </div>
                                 </div>
                             </div>
-                            
                         <?php endforeach; ?>
                     </div>
                     <?php DynamicFormWidget::end(); ?>
                 </div>
             </div>
         </div>
-        <i class="fa fa-toggle-right" id = "open3" onclick=openPanel3(); style="font-size:24px;color:blue;display:none;"></i> 
-        <i class="fa fa-toggle-down " id = "close3" onclick=closePanel3(); style="font-size:24px;color:blue; " ></i> 
-        <h3 style="color:black;display:inline;">Tashkilotda tekshiruv davrida realizatsiya qilingan mahsulotlar haqida ma'lumot</h3>
+    </div>
+
+
+    <div class="col-sm-12 type">
+        <?= $form->field($product[0], "[0]product_type")->radioList(['0'=>'ha','1'=>'yo\'q '], ['onclick' => "getProduct(event)" ,]); ?>
+    </div>
+    <div id = "product">   
+        <i class="fa fa-toggle-right openPanel" id = "open3" onclick=openPanel3(); style="display:none;"></i> 
+        <i class="fa fa-toggle-down closePanel " id = "close3" onclick=closePanel3();></i> 
+        <h3>Tashkilotda tekshiruv davrida realizatsiya qilingan mahsulotlar haqida ma'lumot</h3>
         <hr>
         <div class="row mt-3" id="content3" >
             <div class="box box-default" style="display: inline-block">
@@ -186,11 +193,9 @@ $codetnved = [];
 
                     <div class="container-items_2">
                         <?php foreach ($product as $i => $stan):
-                           // $stan->category = PrimaryDataForm::CATEGORY_PRODUCT;
                             if ($i == 1) {
                                continue;
                              }
-                            
                             ?>
                             <div class="item_2 panel panel-default item-product itemlar">
                                 <div class="panel-heading">
@@ -198,16 +203,9 @@ $codetnved = [];
                                         <button type="button" class="add-item_2 btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
                                         <button type="button" class="remove-item_2 btn btn-danger btn-xs" id="removeBtn"><i class="fa fa-minus"></i></button>
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-3 categoriya" style="display: none;">
-                                            <?php
-
-                                           // echo $form->field($stan, "[{$i}]category")->dropDownList(PrimaryDataForm::categoryList())
-                                            ?>
-                                        </div>
                                         <div class="col-md-6 col-lg-3 ">
                                             <?= $form->field($stan, "[{$i}]product_name")->textInput() ?>
                                         </div>
@@ -297,7 +295,7 @@ $codetnved = [];
                                         <div class="col-md-6 col-lg-3">
                                             <?= $form->field($stan, "[{$i}]potency")->textInput() ?>
                                         </div>
-                                    <div class = "row" style = "font-size: 18px; font-weight: bold;">
+                                    <div class = "row smallFont">
                                         <div class="col-md-6 col-lg-3">
                                              <?= $form->field($stan, "[{$i}]labaratory_checking")->radioList( [1=>'taqdim etilgan', 0 => 'taqdim etilmagan'] );?>
                                         </div>
@@ -319,7 +317,6 @@ $codetnved = [];
                                             ])
                                             ?>
                                         </div>
-                                   
                                     </div>
                                 </div>
                             </div>
@@ -329,50 +326,80 @@ $codetnved = [];
                 </div>
             </div>
         </div>
- <div class="col-12" style="margin-top:15px">
-            <input type="submit" class="btn btn-info br-btn" value="Saqlash">
-        </div>
-        <?php ActiveForm::end() ?>
-
     </div>
-    
-<?php
-/*
-$script = "
-$(function(){
-	// $('.select2:not(:hidden)').select2();
-	// $('a[data-toggle=tab]').on('shown.bs.tab', function (e) {
-	// 	$('.select2').select2();
-	// });
-	$('.select2222').select2({
-		minimumInputLength: 2,
-		ajax: {
-			url: '".Url::to(['/control/code-tn-ved'])."',
-			type: 'GET',
-			dataType: 'json',
-			data: function (params)
-			{
-				var jsonObj = {
-					term: params.term
-				};
-				jsonObj['$csrf_param'] = '$csrf_token';
-				return jsonObj;
-			},
-			processResults: function (data, params)
-			{
-				console.log(data);
-				return {
-					results: data
-				};
-			}
-		}
-	});
-});
-";
 
-$this->registerJs($script);
-*/
-?>
+
+    <div class="col-sm-12 type">
+        <?= $form->field($document[0], '[0]document_type')->radioList(['0'=>'ha','1'=>'yo\'q '], ['onclick' => "getDocument(event)" ,]) ?>
+    </div>
+    <div id = "document">
+        <i class="fa fa-toggle-right openPanel" id = "open4" onclick=openPanel4(); style="display:none;"></i> 
+        <i class="fa fa-toggle-down closePanel " id = "close4" onclick=closePanel4(); ></i> 
+        <h3>Hujjat tahlili</h3>
+        <hr>
+        <div class="row" id="content4"  >
+            <div class="box box-default" style="display: inline-block">
+                <div class="panel-body">
+                    <?php DynamicFormWidget::begin([
+                        'widgetContainer' => 'dynamicform_wrapper_3', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+                        'widgetBody' => '.container-items_3', // required: css class selector
+                        'widgetItem' => '.item_3', // required: css class
+//                        'limit' => 7, // the maximum times, an element can be cloned (default 999)
+                        'min' => 1, // 0 or 1 (default 1)
+                        'insertButton' => '.add-item_3', // css class
+                        'deleteButton' => '.remove-item_3', // css class
+                        'model' => $document[0],
+                        'formId' => 'dynamic-form',
+                        'formFields' => [
+                            'reestr_number',
+                            'given_date',
+                            'defect',
+                        ],
+                    ]); ?>
+                <div class="container-items_3">        
+                        <?php
+                        foreach ($document as $i => $stan):
+                            if ($i == 1) {
+                                continue;
+                            } ?>
+                            <div class="item_3 panel panel-default item-product itemlar"  >
+                                <div class="panel-heading" >
+                                    <div class="pull-right">
+                                        <button type="button" class="add-item_3 btn btn-success btn-xs">
+                                            <i class="fa fa-plus"></i></button>
+                                        <button type="button" class="remove-item_3 btn btn-danger btn-xs" id="removeBtn">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row ">
+                                        <div class="col-md-6 col-lg-4">
+                                            <?= $form->field($stan, "[{$i}]reestr_number")->textInput() ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <?= $form->field($stan, "[{$i}]given_date")->textInput(['type' => 'date']) ?>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <?= $form->field($stan, "[{$i}]defect")->textInput([]) ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php DynamicFormWidget::end(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12" style="margin-top:15px">
+        <input type="submit" class="btn btn-info br-btn" value="Saqlash">
+    </div>
+        <?php ActiveForm::end() ?>
+    </div>
+
 <script >
     
      function findParent(elem, className){
@@ -400,6 +427,36 @@ $this->registerJs($script);
             }
         }
     }
+
+    function getOv(e) {
+        if(e.target.checked && e.target.value == 1)
+        {
+            var  item = document.getElementById('ov');
+            item.style.display = 'none';
+        }
+        if(e.target.checked && e.target.value == 0)
+        {
+            var  item = document.getElementById('ov');
+            item.style.display = 'block'
+        }
+ 
+}
+
+function getDocument(e) {
+        if(e.target.checked && e.target.value == 1)
+        {
+            var  item = document.getElementById('document');
+            item.style.display = 'none';
+        }
+        if(e.target.checked && e.target.value == 0)
+        {
+            var  item = document.getElementById('document');
+            item.style.display = 'block'
+        }
+ 
+}
+
+
 function openPanel() {
 
     var  item1 = document.getElementById('open1');
@@ -468,10 +525,29 @@ item2.style.display = 'none';
 item3.style.display = 'none'
 
 }
+function openPanel4() {
 
-   
-   
-</script>
+var  item1 = document.getElementById('open4');
+var  item2 = document.getElementById('close4');
+var item3 = document.getElementById('content4');
+
+item1.style.display = 'none';
+item2.style.display = 'inline';
+item3.style.display = 'flex'
+
+}
+function closePanel4() {
+
+var  item1 = document.getElementById('open4');
+var  item2 = document.getElementById('close4');
+var item3 = document.getElementById('content4');
+
+item1.style.display = 'inline';
+item2.style.display = 'none';
+item3.style.display = 'none'
+
+}
+    </script>
 <?php
 
 $this->registerJs("	

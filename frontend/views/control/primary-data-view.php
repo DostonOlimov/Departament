@@ -9,7 +9,10 @@ use common\models\control\PrimaryData;
 use common\models\control\PrimaryOv;
 use common\models\control\PrimaryProduct;
 use common\models\control\PrimaryProductNd;
-use common\models\control\ControlProductCertification;;
+use common\models\control\ControlProductCertification;
+use common\models\control\DocumentAnalysis;
+
+;
 use common\models\types\ProductSubposition;
 use common\models\Countries;
 use frontend\widgets\Steps;
@@ -201,7 +204,25 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
 
+<h3>Hujjat tahlili</h3>
+        <?php
+        //\yii\helpers\VarDumper::dump(PrimaryOv::findOne(['control_primary_data_id' => $model->id]),12,true);die;
+        if ($doc = DocumentAnalysis::findAll(['primary_data_id' => $model->id])) {
 
+            echo GridView::widget([
+                'dataProvider' => $dataDoc,
+//                    'filterModel' => $searchOv,
+                'headerRowOptions' => ['style' => 'background-color: #198754;'],
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'reestr_number',
+                    'defect',
+                    'given_date:date',
+                    
+                ],
+            ]);
+        }
+        ?>
     </div>
    
 </div>

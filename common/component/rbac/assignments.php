@@ -213,4 +213,7 @@ return [
     73 => [
         'inspector',
     ],
+    74 => [
+        'supervisor',
+    ],
 ];

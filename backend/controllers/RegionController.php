@@ -7,6 +7,7 @@ use common\models\RegionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * RegionController implements the CRUD actions for Region model.
@@ -21,6 +22,20 @@ class RegionController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['admin'],
+                        ],
+                        [
+                            'actions' => ['view', 'index'],
+                            'allow' => true,
+                            'roles' => ['admin','supervisor'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

@@ -2,6 +2,7 @@
 use common\models\control\Company;
 use common\models\control\PrimaryProduct;
 use common\models\control\ControlProductCertification;
+use common\models\control\PrimaryData;
 use frontend\widgets\Steps;
 use kartik\file\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
@@ -9,18 +10,22 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 use kartik\date\DatePicker;
 use yii\helpers\VarDumper;
+use yii\helpers\Html;
 
 $this->title = 'Korxona';
 $this->params['breadcrumbs'][] = $this->title;
-
+$primaryData = PrimaryData::findOne(['control_company_id' => $company_id]);
 ?>
-
+  <p>
+    <?php Html::a('Mahsulotlar', ['/control/primary-products/index', 'primary_data_id' => $primaryData->id,'company_id' => $company_id], ['class' => 'btn btn-info']) ?>
+    <?php Html::a('O\'lchov vositalari', ['/control/primary-ov/index', 'primary_data_id' => $primaryData->id,'company_id' => $company_id], ['class' => 'btn btn-info']) ?>
+    </p>
 <div class="page1-1 row">
 
     <?= Steps::widget([
         'control_instruction_id' => Company::findOne($company_id)->control_instruction_id,
         'control_company_id' => $company_id,
-    ]) ?>
+    ]) ?>   
 
     <?php $form = ActiveForm::begin([
 //        'enableClientValidation' => false,

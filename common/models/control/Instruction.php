@@ -85,7 +85,7 @@ class Instruction extends \yii\db\ActiveRecord
     public $dn;
     public $first_date;
     public $finish_date;
-    public $start_type;
+    public $checkup_end_date ;
 
     public static function tableName()
     {
@@ -97,10 +97,10 @@ class Instruction extends \yii\db\ActiveRecord
         return [
             [['base', 'type','checkup_duration','general_status',], 'integer'],
             [['general_status'], 'default', 'value' => self::GENERAL_STATUS_IN_PROCESS],
-            [['employers','checkup_subject','dn','start_type'], 'safe'],
+            [['employers','checkup_subject','dn'], 'safe'],
             [['letter_number'],'unique'],
             [['base', 'type', 'letter_date','checkup_begin_date',
-                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers','start_type'], 'required'],
+                'checkup_duration_finish_date','command_date','command_number','checkup_duration_start_date','checkup_duration','checkup_subject','employers'], 'required'],
             [['letter_number', 'command_number',  'letter_date', 'command_date', 'checkup_begin_date','checkup_finish_date',
                 'checkup_duration_finish_date','checkup_duration_start_date','real_checkup_date','who_send_letter','first_date','finish_date'], 'string', 'max' => 255],
         ];
@@ -118,6 +118,7 @@ class Instruction extends \yii\db\ActiveRecord
         $this->checkup_duration_finish_date = strtotime($this->checkup_duration_finish_date);
         $this->checkup_duration_start_date = strtotime($this->checkup_duration_start_date);
         $this->real_checkup_date= strtotime($this->real_checkup_date);
+        
        // $this->code= preg_replace('/[^0-9]+/', '', $this->code);
        // $this->checkup_finish_date = strtotime($this->checkup_finish_date);
 
@@ -263,7 +264,7 @@ class Instruction extends \yii\db\ActiveRecord
             'checkup_subject' => 'Tekshiruv predmeti',
             'who_send_letter' => 'Tekshirish uchun asos bo’luvchi hujjat jo’natgan tashkilot nomi yoki shaxs FISH',
             'dn' => 'Davlat nazorati turi',
-            'start_type' => 'Tekshiruv davomida quyidagi(lar) tekshiriladi',
+            'checkup_end_date' => 'Tekshiruv tugash sanasi',
 
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
@@ -274,13 +275,15 @@ class Instruction extends \yii\db\ActiveRecord
 
     public function afterFind()
     {
-        $this->letter_date = $this->letter_date ? Yii::$app->formatter->asDate($this->letter_date, 'M/dd/yyyy') : $this->letter_date;
-        $this->command_date = $this->command_date ? Yii::$app->formatter->asDate($this->command_date, 'M/dd/yyyy') : $this->command_date;
-        $this->checkup_finish_date = $this->checkup_finish_date ? Yii::$app->formatter->asDate($this->checkup_finish_date, 'M/dd/yyyy') : $this->checkup_finish_date;
-        $this->checkup_begin_date = $this->checkup_begin_date ? Yii::$app->formatter->asDate($this->checkup_begin_date, 'M/dd/yyyy') : $this->checkup_begin_date;
-        $this->real_checkup_date = $this->real_checkup_date ? Yii::$app->formatter->asDate($this->real_checkup_date, 'M/dd/yyyy') : $this->real_checkup_date;
-        $this->checkup_duration_start_date = $this->checkup_duration_start_date ? Yii::$app->formatter->asDate($this->checkup_duration_start_date, 'M/dd/yyyy') : $this->checkup_duration_start_date;
-        $this->checkup_duration_finish_date = $this->checkup_duration_finish_date ? Yii::$app->formatter->asDate($this->checkup_duration_finish_date, 'M/dd/yyyy') : $this->checkup_duration_finish_date;
+        $this->checkup_end_date = $this->checkup_begin_date + ($this->checkup_duration-1)*60*60*24;
+        $this->letter_date = $this->letter_date ? Yii::$app->formatter->asDate($this->letter_date, 'dd.MM.yyyy') : $this->letter_date;
+        $this->command_date = $this->command_date ? Yii::$app->formatter->asDate($this->command_date, 'dd.MM.yyyy') : $this->command_date;
+        $this->checkup_finish_date = $this->checkup_finish_date ? Yii::$app->formatter->asDate($this->checkup_finish_date, 'dd.MM.yyyy') : $this->checkup_finish_date;
+        $this->checkup_begin_date = $this->checkup_begin_date ? Yii::$app->formatter->asDate($this->checkup_begin_date, 'dd.MM.yyyy') : $this->checkup_begin_date;
+        $this->real_checkup_date = $this->real_checkup_date ? Yii::$app->formatter->asDate($this->real_checkup_date, 'dd.MM.yyyy') : $this->real_checkup_date;
+        $this->checkup_duration_start_date = $this->checkup_duration_start_date ? Yii::$app->formatter->asDate($this->checkup_duration_start_date, 'dd.MM.yyyy') : $this->checkup_duration_start_date;
+        $this->checkup_duration_finish_date = $this->checkup_duration_finish_date ? Yii::$app->formatter->asDate($this->checkup_duration_finish_date, 'dd.MM.yyyy') : $this->checkup_duration_finish_date;
+        $this->checkup_end_date = $this->checkup_end_date ? Yii::$app->formatter->asDate($this->checkup_end_date, 'dd.MM.yyyy') : $this->checkup_end_date;
       parent::afterFind(); // TODO: Change the autogenerated stub
     }
 

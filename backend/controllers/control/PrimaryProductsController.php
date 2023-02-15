@@ -32,7 +32,7 @@ class PrimaryProductsController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update', 'delete', 'create'],
-                        'roles' => ['admin'],
+                        'roles' => ['admin','supervisor'],
                     ],
                 ],
             ],

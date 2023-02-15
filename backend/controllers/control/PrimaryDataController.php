@@ -27,7 +27,7 @@ class PrimaryDataController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update'],
-                        'roles' => ['admin'],
+                        'roles' => ['admin','supervisor'],
                     ],
                 ],
             ],

@@ -27,7 +27,7 @@ class DefectController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update'],
-                        'roles' => ['admin'],
+                        'roles' => ['admin',],
                     ],
                 ],
             ],

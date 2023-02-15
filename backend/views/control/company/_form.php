@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Region;
+use common\models\control\Company;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -31,21 +32,36 @@ use yii\widgets\MaskedInput;
             ]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'soogu')->textInput() ?>
+            <?= $form->field($model, 'soogu')->widget(MaskedInput::className(), [
+                'mask' => '99999'
+            ]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'ifut')->widget(MaskedInput::className(), [
+                'mask' => '99999'
+            ]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'thsht')->widget(MaskedInput::className(), [
+                'mask' => '999'
+            ]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-4">
-            <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'type')->dropDownList(Company::getType(),) ?>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <?= $form->field($model, 'phone')->widget(MaskedInput::className(), [
                 'mask' => '(99)-999-99-99'
             ]) ?>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'ownername')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 

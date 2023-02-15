@@ -17,6 +17,7 @@ use common\models\control\PrimaryOvSearch;
 use common\models\control\PrimaryProduct;
 use common\models\control\Laboratory;
 use common\models\control\PrimaryProductSearch;
+use common\models\control\DocumentAnalysisSearch;
 use common\models\control\PrimaryProductNd;
 use common\models\control\ControlPrimaryOvNd;
 use common\models\types\ProductGroup;
@@ -26,6 +27,7 @@ use common\models\types\ProductClass;
 use common\models\Model;
 use common\models\Codetnved;
 use common\models\control\ControlProductMeasures;
+use common\models\control\DocumentAnalysis;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
@@ -125,39 +127,9 @@ class ControlController extends Controller
             $model->employers = 1;
             if($model->validate() && $model->save(false))
             {
+                
             $company = Company::findOne(['control_instruction_id' => $model->id]);
-            $s = 0;
-            foreach($model->start_type as $key => $value)
-            {
-                $s += $value;
-            }
-             switch ($s) {
-                case 1:
-                    return $this->redirect(['primary-data', 'company_id' => $company->id]);
-                  break;
-                case 10:
-                    return $this->redirect(['primary-data', 'company_id' => $company->id]);;
-                  break;
-                case 11:
-                    return $this->redirect(['primary-data', 'company_id' => $company->id]);
-                  break;
-                case 100:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 101:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 110:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 111:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-                case 1000:
-                    return $this->redirect(['laboratory', 'company_id' => $company->id]);
-                  break;
-              }
-            
+            return $this->redirect(['primary-data', 'company_id' => $company->id]);;
         } 
        
     }
@@ -204,6 +176,7 @@ class ControlController extends Controller
             $model->control_company_id = $company_id;
             $products = [new PrimaryProduct];
             $ovs = [new PrimaryOv];
+            $documents = [new DocumentAnalysis];
 
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
@@ -220,6 +193,7 @@ class ControlController extends Controller
             $model->control_company_id = $company_id;
             $products = [new PrimaryProduct];
             $ovs = [new PrimaryOv];
+            $documents = [new DocumentAnalysis];
 
           $pro_primary[0] = [new PrimaryProductNd];
           $pro_primary[1] = [new PrimaryProductNd];
@@ -243,15 +217,18 @@ class ControlController extends Controller
             Model::loadMultiple($products, $this->request->post());
             $ovs = Model::createMultiple(PrimaryOv::classname());
             Model::loadMultiple($ovs, Yii::$app->request->post());
-
-            $valid = $model->validate() && Model::validateMultiple($products) && Model::validateMultiple($ovs);
-                       
+            $documents = Model::createMultiple(DocumentAnalysis::classname());
+            Model::loadMultiple($documents, Yii::$app->request->post());
+            
+            $valid = $model->validate() && Model::validateMultiple($ovs) && Model::validateMultiple($products) && Model::validateMultiple($documents);
+           
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                $arrayImage = [];
                 try {
                     $model->save(false);
-               //     VarDumper::dump($model,12,true);
+                    if($ovs[0]->ov_type == 0)
+                    {
                     foreach ($ovs as $key_ov1 => $ov) {
                             if($t)
                             {
@@ -284,6 +261,9 @@ class ControlController extends Controller
                             }
                         } 
                 $id = [];
+                }
+            if($products[0]->product_type == 0)
+                {
                 foreach ($products as $key_p1 => $product)
                 {
                   if($t)
@@ -353,6 +333,21 @@ class ControlController extends Controller
                                }
                             }
                         }
+                }
+               
+                if($documents[0]->document_type == 0)
+                {
+                foreach ($documents as $key_doc1 => $doc) {
+                        
+                        $doc1 = new DocumentAnalysis();
+                        $doc1->primary_data_id = $model->id;
+                        $doc1->reestr_number = $doc->reestr_number;
+                        $doc1->defect = $doc->defect;
+                        $doc1->given_date = $doc->given_date;
+                       
+                        $doc1->save(false);
+                    }
+                }
             $transaction->commit();
                     return $this->redirect(['identification','company_id' => $company_id]);
                 } catch (Exception $e) 
@@ -369,14 +364,12 @@ class ControlController extends Controller
             'pro_cer' => $pro_cer,
             'product' => $products,
             'ov' =>$ovs,
+            'document' => $documents,
             'company_id' => $company_id,
             'pro_ov' => $pro_ovs,
         ]);
     }
-    public function actionPrimaryOv($company_id)
-    {
-        
-    }
+  
     public function actionCodeTnVed($term)
 	{
     
@@ -464,10 +457,14 @@ class ControlController extends Controller
         $searchProduct = new PrimaryProductSearch($id);
         $dataProduct = $searchProduct->search($this->request->queryParams);
 
+        $searchDocument = new DocumentAnalysisSearch($id);
+        $dataDoc = $searchDocument->search($this->request->queryParams);
+
         return $this->render('primary-data-view', [
             'model' => $this->getModel(PrimaryData::className(), $id),
             'searchOv' => $searchOv,
             'dataOv' => $dataOv,
+            'dataDoc' => $dataDoc,
             'searchProduct' => $searchProduct,
             'dataProduct' => $dataProduct,
         ]);
@@ -481,6 +478,8 @@ class ControlController extends Controller
         $products = PrimaryProduct::find()
             ->where(['control_primary_data_id' => $id->id])
             ->all();
+        if($products)
+        {
         foreach($products as $key => $value) 
             {   
                 $model[$key] = new PrimaryIdentification();
@@ -611,6 +610,10 @@ class ControlController extends Controller
             'labs' => $labs,
             'company_id' => $company_id,
          ]);
+        }
+        else{
+            return $this->redirect(['laboratory', 'company_id' => $company_id,]);
+        }
     }
 
     public function actionIdentificationView($id)
@@ -784,9 +787,10 @@ class ControlController extends Controller
                 $re_product[$key]['product_id'] = $value['id'];
                 $re_product[$key]['product_name'] = $value['product_name'];
             }
-            
+           
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
+            print_r( $model->type);
+            die();
             if ($model->type) {
                
                 $model->type = implode(",", $model->type);
