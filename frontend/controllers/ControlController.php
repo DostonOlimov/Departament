@@ -207,7 +207,7 @@ class ControlController extends Controller
         }
         $post = $this->request->post();
         if ($model->load($post)) {
-      //    VarDumper::dump($model,12,true);die;
+         // VarDumper::dump($this->request->post('PrimaryOv')[0]['ov_type'],12,true);die;
 
            unset($products[1]);
            unset($pro_primary[1]);
@@ -220,15 +220,23 @@ class ControlController extends Controller
             Model::loadMultiple($ovs, Yii::$app->request->post());
             $documents = Model::createMultiple(DocumentAnalysis::classname());
             Model::loadMultiple($documents, Yii::$app->request->post());
-            
+            foreach($products as $key =>  $product){
+                $product->product_type =$this->request->post('PrimaryProduct')[0]['product_type'];
+            }
+            foreach($documents as $key =>  $doc){
+                $doc->document_type =$this->request->post('DocumentAnalysis')[0]['document_type'];
+            }
+            foreach($ovs as $key =>  $ov){
+                $ov->ov_type =$this->request->post('PrimaryOv')[0]['ov_type'];
+            }
             $valid = $model->validate() && Model::validateMultiple($ovs) && Model::validateMultiple($products) && Model::validateMultiple($documents);
-           
+            
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                $arrayImage = [];
                 try {
                     $model->save(false);
-                    if($ovs[0]->ov_type == 0)
+                    if($ov->ov_type == 0)
                     {
                     foreach ($ovs as $key_ov1 => $ov) {
                             if($t)
@@ -282,6 +290,7 @@ class ControlController extends Controller
                     }
                                 $prod = new PrimaryProduct();
                                 $prod->control_primary_data_id = $model->id;
+                                $prod->product_type = 1;
                                 $prod->product_type_id = $product->subposition;
                                 $prod->product_name = $product->product_name;
                                 $prod->residue_quantity = $product->residue_quantity;
@@ -519,7 +528,7 @@ class ControlController extends Controller
         }
         
         if (Yii::$app->request->post()) {
-           
+        //    VarDumper::dump($products,12,true);die;
              $model = Model::createMultiple(PrimaryIdentification::classname());
              Model::loadMultiple($model, $this->request->post());
 

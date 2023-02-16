@@ -134,30 +134,33 @@ class PrimaryProductsController extends Controller
         return  ['output'=>'', 'selected'=>''];
     }
 
-    public function actionView($id)
+    public function actionView($id,$primary_data_id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'primary_data_id' => $primary_data_id
         ]);
     }
 
     public function actionCreate($primary_data_id)
     {
+        $searchModel = new PrimaryProductSearch($primary_data_id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
         $model = new PrimaryProduct();
         $model->control_primary_data_id = $primary_data_id;
-        echo 'something';
-        die();
+
         if ($model->load($this->request->post()) && $model->save()) {
-            $model = new PrimaryProduct();
-            return $this->render('index', [
-                'modelCreate' => $model,
-                'primary_data_id' => $primary_data_id
-            ]);
+            return $this->redirect(['view', 'id' => $model->id,'primary_data_id'=>$primary_data_id]);
         }
 
-        return $this->render('index', [
+        return $this->render('create', [
             'model' => $model,
-            'primary_data_id' => $primary_data_id
+            'primary_data_id' => $primary_data_id,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+
+
+            
         ]);
     }
 
@@ -168,20 +171,26 @@ class PrimaryProductsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$primary_data_id)
     {
+        $searchModel = new PrimaryProductSearch($primary_data_id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
         $model = $this->findModel($id);
         $model->exsist_certificate = 1;
         if ($this->request->isPost && $model->load($this->request->post())  && $model->validate()) {
             $model->product_type_id = $model->subposition;
             if($model->save()) {
-                return $this->redirect(['index', 'primary_data_id' => $model->control_primary_data_id]);
+                return $this->redirect(['index', 'primary_data_id' => $model->control_primary_data_id,  'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,]);
             }
            
         }
 
         return $this->render('update', [
             'model' => $model,
+            'primary_data_id' =>$primary_data_id,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

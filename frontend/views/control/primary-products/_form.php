@@ -4,14 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\control\PrimaryProduct;
 use common\models\types\ProductSector;
-use common\models\control\PrimaryProductNd;
-use common\models\control\ControlProductCertification;
 use common\models\Countries;
 use kartik\depdrop\DepDrop;
 use kartik\money\MaskMoney;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\MaskedInput;
+use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var common\models\control\PrimaryProduct $model */
@@ -27,14 +26,10 @@ use yii\widgets\MaskedInput;
     color:red;
     
 }
+
 </style>
-<h3>Yangi mahsulot qo'shish</h3>
-<i class="fa fa-plus openPanel btn" id = "open" onclick=openPanel(); style="display:none;"></i> 
-<i class="fa fa-minus closePanel btn" id = "close" onclick=closePanel();></i> 
 
-<hr>
 <div id="content">
-
     <?php $form = ActiveForm::begin([
             'id' => 'dynamic-form',
             'enableClientValidation' => false,
@@ -146,39 +141,4 @@ use yii\widgets\MaskedInput;
     </div>
 </div>
     <?php ActiveForm::end(); ?>
-    <script>
-    function getProduct(e) {
-        if(e.target.checked && e.target.value == 1)
-        {
-            var  item = document.getElementById('product');
-            item.style.display = 'none';
-        }
-        if(e.target.checked && e.target.value == 0)
-        {
-            var  item = document.getElementById('product');
-            item.style.display = 'flex'
-        }
-}
-function openPanel() {
-
-var  item1 = document.getElementById('open');
-var  item2 = document.getElementById('close');
-var item3 = document.getElementById('content');
-
-item1.style.display = 'none';
-item2.style.display = 'inline';
-item3.style.display = 'flex';
-
-}
-function closePanel() {
-
-var  item1 = document.getElementById('open');
-var  item2 = document.getElementById('close');
-var item3 = document.getElementById('content');
-
-item1.style.display = 'inline';
-item2.style.display = 'none';
-item3.style.display = 'none'
-
-}
-</script>
+ 
