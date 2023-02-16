@@ -109,7 +109,7 @@ class ShoppingController extends Controller
         $model->shopping_instruction_id = $instruction_id;
 
         if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['product', 'company_id' => $model->id]);
+            return $this->redirect(['product', 'shopping_company' => $model->id]);
         }
 
         return $this->render('company', [
@@ -126,10 +126,10 @@ class ShoppingController extends Controller
 
    
 
-    public function actionProduct($company_id)
+    public function actionProduct($shopping_company)
     {
         //$id = Yii::$app->request->get('id');
-       $company = Company::findOne($company_id);
+       $company = Company::findOne($shopping_company);
        $user = User::findOne(Yii::$app->user->id);
        
         $modelsPrevent = [new Product];
@@ -158,7 +158,7 @@ class ShoppingController extends Controller
                            $product->save(false);
                         }
                         $transaction->commit();
-                       return $this->redirect(['laboratory', 'shopping_company' => $company_id]);
+                       return $this->redirect(['laboratory', 'shopping_company' => $company->id]);
                     // }
                 } catch (Exception $e) {
                     $transaction->rollBack();
@@ -169,6 +169,7 @@ class ShoppingController extends Controller
         }
         return $this->render('product', [            
             'modelsPrevent' => $modelsPrevent,
+            'company' => $company,
         ]);
     }
 
@@ -207,15 +208,8 @@ class ShoppingController extends Controller
     $t = true;
     foreach(Yii::$app->request->post('Product') as $key=>$value)
         {
-            $product = Product::findOne($value['id']);
-            $product->name = $value['name'];
-            $product->sum = $value['sum'];
-            $product->quantity = $value['quantity'];
-            $product->production_date = $value['production_date'];
-            $product->purchase_date = $value['purchase_date'];
-            $product->product_lot = $value['product_lot'];
-            $product->photo = $value['photo'];
-            $product->photo_chek = $value['photo_chek'];
+            $product = Product::findOne($value['id']);           
+            $product->lab_conclusion = $value['lab_conclusion'];
             if($product->validate()){
                 $product->save();
             }
@@ -226,7 +220,7 @@ class ShoppingController extends Controller
             $company->phone = strval($company->phone);     
             if( $company->validate() && $t && $company->save())
             {
-                return $this->redirect(['product-view', 'shopping_company' => $company->id]);
+                return $this->redirect(['laboratory-view', 'shopping_company' => $company->id]);
             }  
   
         }
@@ -234,6 +228,12 @@ class ShoppingController extends Controller
         return $this->render('laboratory', [
             'company' => $company,
             'products' =>  $products,
+        ]);
+    }
+    public function actionLaboratoryView($shopping_company){
+        return $this->render('laboratory-view', [
+            'model' => Company::findOne($shopping_company),
+           
         ]);
     }
    

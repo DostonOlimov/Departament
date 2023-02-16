@@ -132,6 +132,7 @@ class ControlController extends Controller
             return $this->redirect(['primary-data', 'company_id' => $company->id]);;
         } 
        
+       
     }
         return $this->render('first-step', [
             'model' => $model,

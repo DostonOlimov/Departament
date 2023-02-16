@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
 //            'id',
+
                 [
                     'attribute' => 'region_id',
                     'value' => function (Company $model) {
@@ -36,6 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'phone',
                     'value' => function (Company $model) {
                         return $model->phoneNumber;
+                    },
+                ],
+                [
+                    'attribute' => 'lab_comment',
+                    'value' => function (Company $model) {
+                        return $model->lab_comment;
                     },
                 ],
                 'after',

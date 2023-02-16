@@ -114,7 +114,7 @@ class Product extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '',
             'shopping_company_id' => 'Shopping Company ID',
             'name' => 'Maxsulot nomi',
             'quantity' => 'Maxsulot miqdori',

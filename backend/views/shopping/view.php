@@ -144,6 +144,56 @@ if ($answers) { ?>
     </div>
 <?php }
 
+$labs = Product::find()->where(['shopping_company_id' => $company->id])->all();
+
+if ($answers[0]->lab_conclusion) { ?>        
+    <div class="company-view">
+    <h2 >Laboratoriya</h2>
+            <p>
+                <?= Html::a('Yangilash', ['/shopping/product/update', 'shopping_company_id' => $company->id], ['class' => 'btn btn-primary']) ?>
+            </p>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Laboratoriya xulosasi:</h5>
+                </div>
+                <div class="card-body">                    
+                    <p class="card-text"><?= $company->lab_comment;?></p>                    
+                </div>
+            </div>
+        <?php foreach($answers as $answer):?>
+        <hr>
+        <?= DetailView::widget([
+            'model' => $answer,
+            'attributes' => [ 
+               'name',
+                'lab_conclusion',
+                // 'sum',
+                // 'created_by',
+                // 'purchase_date',
+                // 'production_date',
+                // 'product_lot'
+
+                // [
+                //     'attribute' => 'photo',
+                //     'value' => function (Product $model) {
+                //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
+                //     },
+                //     'format' => 'raw'
+                // ],
+                // [
+                //     'attribute' => 'photo_chek',
+                //     'value' => function (Product $model) {
+                //         return '<img src="' . $model->getThumbFileUrl('photo', 'sm') . '" >';
+                //     },
+                //     'format' => 'raw'
+                // ],
+            ],
+        ]) ?>
+        
+        <?php endforeach;?>
+    </div>
+<?php }
+
 
    
 } ?>

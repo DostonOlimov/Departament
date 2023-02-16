@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <div class="row">
     <?= StepsShopping::widget([
-                'shopping_instruction_id' => null,
-                'shopping_company_id' => null,
+               // 'shopping_instruction_id' => null,
+               // 'shopping_company_id' => null,
     ]) ?>
 
     <div class="col-8"> 
