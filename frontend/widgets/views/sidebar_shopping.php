@@ -10,7 +10,7 @@ use yii\helpers\Url;
 $action = Yii::$app->controller->action->id;
 $hrefIns = '';
 $classIns = 'disabled';
-$hrefIns = ($shopping_instruction_id) ? '/shopping/instruction-view?id=' . $shopping_instruction_id : '/shopping/instruction-add';
+$hrefIns = ($shopping_instruction_id) ? '/shopping/instruction-view?id=' . $shopping_instruction_id : '/shopping/index';
 $classIns = ($action == 'instruction' || $action == 'instruction-view') ? 'active' : ($shopping_instruction_id ? 'actived' : '');
 
 $hrefCom = ($shopping_company_id) ?  Url::to(['/shopping/company-view', 'id' => $shopping_company_id])  : Url::to(['/shopping/company', 'instruction_id' => $shopping_instruction_id]);

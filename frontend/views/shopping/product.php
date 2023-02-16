@@ -6,6 +6,8 @@
 use common\models\shopping\Product;
 use frontend\widgets\StepsShopping;
 use common\models\User;
+use common\models\control\PrimaryProduct;
+use kartik\money\MaskMoney;
 use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\Html;
@@ -73,10 +75,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?= $form->field($prevent, "[{$i}]name")->textInput()?>
                                 </div>
                                 <div class="col-sm-4">
-                                    <?= $form->field($prevent, "[{$i}]sum")->textInput() ?>
+                                    <?= $form->field($prevent, "[{$i}]sum")->widget(MaskMoney::classname(), [
+                                             'pluginOptions' => [
+                                            'prefix' => 'SUMMA : ',
+                                            'suffix' => ' so\'m',
+                                            'allowNegative' => false ]
+                                            ]); ?>
                                 </div>
                                 <div class="col-sm-4">
-                                    <?= $form->field($prevent, "[{$i}]quantity")->textInput()?>
+                                    <div class="row">
+                                    <div class="col-sm-6">
+                                        <?= $form->field($prevent, "[{$i}]measure")->dropDownList(PrimaryProduct::getMeasure(),['prompt'=>'- - -']) ?>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <?= $form->field($prevent, "[{$i}]quantity")->textInput(['type' => 'number'])?>
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">

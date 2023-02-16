@@ -140,6 +140,14 @@ class ShoppingController extends Controller
                 $product->shopping_company_id = $company['id']; 
                 $product->created_by = $user['id'];
                 $product->updated_by = $product->created_by;     
+                $product->s_photo = UploadedFile::getInstance($product, "[{$key}]photo");                
+                    if($product->s_photo)  {
+                         $product->photo = $product->s_photo->name;
+                    }   
+                $product->s_photo_check = UploadedFile::getInstance($product, "[{$key}]photo_chek");                
+                    if($product->s_photo_check)  {
+                        $product->photo_chek = $product->s_photo_check->name;
+                    }
             }    
             //$valid = Model::validateMultiple($modelsPrevent);
             if (Model::validateMultiple($modelsPrevent)) {
@@ -147,14 +155,14 @@ class ShoppingController extends Controller
                 
                 try {
                         foreach ($modelsPrevent as $key=>$product) {
-                            $product->s_photo = UploadedFile::getInstance($product, "[{$key}]photo");                
-                            if($product->s_photo)  {
-                                $product->photo = $product->s_photo->name;
-                            }   
-                            $product->s_photo_check = UploadedFile::getInstance($product, "[{$key}]photo_chek");                
-                            if($product->s_photo_check)  {
-                                $product->photo_chek = $product->s_photo_check->name;
-                            }                                               
+                            // $product->s_photo = UploadedFile::getInstance($product, "[{$key}]photo");                
+                            // if($product->s_photo)  {
+                            //     $product->photo = $product->s_photo->name;
+                            // }   
+                            // $product->s_photo_check = UploadedFile::getInstance($product, "[{$key}]photo_chek");                
+                            // if($product->s_photo_check)  {
+                            //     $product->photo_chek = $product->s_photo_check->name;
+                            // }                                               
                            $product->save(false);
                         }
                         $transaction->commit();

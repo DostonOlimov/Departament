@@ -94,15 +94,15 @@ class Instruction extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
+            'created_by' => 'Inspektor',
+            'updated_by' => 'Nazoratchi',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'notice_id' => 'Notice ID',
-            'card_number' => 'Card Number',
-            'card_given_date' => 'Card Given Date',
-            'card_return_date' => 'Card Return Date',
-            'status' => 'Status',
+            'notice_id' => 'Bildirgi raqami',
+            'card_number' => 'Karta raqami',
+            'card_given_date' => 'Karta olingan vaqti',
+            'card_return_date' => 'Karta topshirilgan vaqti',
+            'status' => 'Holati',
         ];
     }
 

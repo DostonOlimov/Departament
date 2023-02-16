@@ -6,6 +6,7 @@
 use common\models\shopping\Instruction;
 use common\models\shopping\ShoppingNotice;
 use frontend\widgets\StepsShopping;
+use yii\widgets\MaskedInput;
 use common\models\user;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
@@ -33,12 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'card_number')->textInput() ?>
+            <?= $form->field($model, 'card_number')->widget(MaskedInput::className(),[
+        'mask' => '9999-999999999999'
+    ]) ?>
         </div>
+       
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'card_given_date')->textInput() ?>
+            <?= $form->field($model, 'card_given_date')->textInput(['type'=>'date']) ?>
         </div>
     </div>
     <div class="row">

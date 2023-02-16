@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-8"> 
     <p>
-        <?= Html::a('Bildirgo qo\'shish', ['/shopping/notice'], ['class' => 'btn btn-success'])  ?>
+        <?= Html::a('Bildirgi qo\'shish', ['/shopping/notice'], ['class' => 'btn btn-success'])  ?>
         <!--?= Html::a('Qo\'shish', ['/shopping/instruction'], ['class' => 'btn btn-success'])  ?-->
     </p>
             <?= GridView::widget([
