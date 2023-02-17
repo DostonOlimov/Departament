@@ -5,6 +5,7 @@ namespace backend\controllers\shopping;
 use common\models\shopping\Product;
 use common\models\shopping\Company;
 use common\models\shopping\ProductSearch;
+use yii\web\UploadedFile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,6 +16,7 @@ use Yii;
  */
 class ProductController extends Controller
 {
+    
     /**
      * @inheritDoc
      */
@@ -72,14 +74,28 @@ class ProductController extends Controller
        
 
     if ($company->load(Yii::$app->request->post())) { 
-        echo '<pre>';
-        var_dump(Yii::$app->request->post());die();
-        echo '<pre>';   
+        // echo '<pre>';
+        // var_dump(Yii::$app->request->post());die();
+        // echo '<pre>';   
     $t = true;
     foreach(Yii::$app->request->post('Product') as $key=>$value)
         {
             $product = Product::findOne($value['id']);           
-            $product->lab_conclusion = $value['lab_conclusion'];
+            $product->name = $value['name'];
+            $product->quantity = $value['quantity'];
+            $product->sum = $value['sum'];
+            $product->purchase_date = $value['purchase_date'];
+            $product->production_date = $value['production_date'];
+            $product->product_lot = $value['product_lot'];
+            $product->s_photo = UploadedFile::getInstance($product, "[{$key}]photo");                
+            if($product->s_photo)  {
+                 $product->photo = $product->s_photo->name;
+            }   
+        $product->s_photo_check = UploadedFile::getInstance($product, "[{$key}]photo_chek");                
+            if($product->s_photo_check)  {
+                $product->photo_chek = $product->s_photo_check->name;
+            }
+
             if($product->validate()){
                 $product->save();
             }
