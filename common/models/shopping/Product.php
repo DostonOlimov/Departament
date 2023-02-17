@@ -32,12 +32,11 @@ class Product extends \yii\db\ActiveRecord
 {
     public $s_photo;
     public $s_photo_check;
-    public $measure;
-    const   MEASURE1 = 1;
-    const   MEASURE2 = 2;
-    const   MEASURE3 = 3;
-    const   MEASURE4 = 4;
-    const   MEASURE5 = 5;
+    const   MEASURE1 = 'dona';
+    const   MEASURE2 = '(kg)';
+    const   MEASURE3 = '(m)';
+    const   MEASURE4 = '(m2)';
+    const   MEASURE5 = '(m3)';
     /**
      * {@inheritdoc}
      */
@@ -51,7 +50,7 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['shopping_company_id'], 'required'],
             [['shopping_company_id', 'quantity', 'sum'], 'integer'],
-            [['name','purchase_date','production_date','product_lot','lab_conclusion'], 'string', 'max' => 255],
+            [['name','purchase_date','measure','production_date','product_lot','lab_conclusion'], 'string', 'max' => 255],
             [['photo', 'photo_chek'], 'image','extensions'=> 'jpg,png,pdf'],
             //[['shopping_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['shopping_company_id' => 'id']],
         ];
@@ -65,14 +64,14 @@ class Product extends \yii\db\ActiveRecord
                     'class' => ImageUploadBehavior::class,
                     'attribute' => 's_photo',
                     'filePath' => '@webroot/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
-                    'fileUrl' => '/uploads/letters/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
+                    'fileUrl' => '/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
                 ],           
             
                 [
                     'class' => ImageUploadBehavior::class,
                     'attribute' => 's_photo_check',
                     'filePath' => '@webroot/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
-                    'fileUrl' => '/uploads/letters/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
+                    'fileUrl' => '/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
                 ], 
             
             

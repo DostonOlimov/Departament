@@ -122,8 +122,27 @@ if ($answers) { ?>
                 'created_by',
                 'purchase_date',
                 'production_date',
-                'product_lot'
+                'product_lot',
+                [
+                    'attribute' => 'photo',
+                    'value' => function ($model) {
+                        $model->s_photo = $model->photo;
+                        return $model->s_photo ? $model->getUploadedFileUrl('s_photo')  : 'Yuklanmagan';
 
+                    },                       
+
+                    'format' => ['image',['width'=>200]],
+                ],
+                [
+                    'attribute' => 'photo_chek',
+                    'value' => function ($model) {
+                        $model->s_photo_check = $model->photo_chek;
+                        return $model->s_photo_check ? $model->getUploadedFileUrl('s_photo_check')  : 'Yuklanmagan';
+
+                    },                       
+
+                    'format' => ['image',['width'=>200]],
+                ],
                 // [
                 //     'attribute' => 'photo',
                 //     'value' => function (Product $model) {
