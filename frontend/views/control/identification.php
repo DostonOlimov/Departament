@@ -8,7 +8,6 @@ use kartik\file\FileInput;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
-use kartik\date\DatePicker;
 use yii\helpers\VarDumper;
 use yii\helpers\Html;
 

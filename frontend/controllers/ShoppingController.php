@@ -20,6 +20,7 @@ use yii\web\Response;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use Yii;
+use Exception;
 
 /**
  * Site controller

@@ -83,7 +83,7 @@ class PrimaryProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate'], 'required',
+            [[ 'product_measure', 'made_country','labaratory_checking','certification','exsist_certificate','product_name'], 'required',
             'when' => function($model) { return $model->product_type == 0; }],
             [['product_type'],'required'],
             [['control_primary_data_id', 'made_country', 'product_measure','sector_id','labaratory_checking','certification','quality',], 'integer'],
@@ -227,7 +227,8 @@ public function behaviors()
             'codetnved' => 'Mahsulotning TIF TN kodi',
             'photo' =>'Mahsulotning rasmi',
             'defect_type' =>'Mahsulotning kamchilikgi',
-            'product_type' => 'Mahsulot qo\'shish'
+            'product_type' => 'Mahsulot qo\'shish',
+            'created_at' => 'Mahsulotning yaratilgan sanasi'
 
         ];
     }
@@ -242,7 +243,7 @@ public function behaviors()
     {
         return $this->hasOne(PrimaryData::class, ['id' => 'control_primary_data_id']);
     }
-
+  
     /**
      * Gets query for [[ControlPrimaryProductNds]].
      *

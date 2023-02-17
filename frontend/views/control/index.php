@@ -16,6 +16,7 @@ use yii\helpers\Url;
 $this->title = 'Korxonalar';
 $this->params['breadcrumbs'][] = $this->title;
 
+
 ?>
 <style>
     .pagination li a {
