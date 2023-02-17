@@ -36,13 +36,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'first_warn_date')->textInput(['type' => 'date']) ?>
+            <?= $form->field($model, 'first_warn_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'warn_number')->textInput(['type'=>'number']) ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'eco_date')->textInput(['type'=>'date']) ?>
+            <?= $form->field($model, 'eco_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
         </div>
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'eco_number')->textInput(['type'=>'number']) ?>

@@ -14,14 +14,14 @@ use yii\helpers\Url;?>
         <div class="box3">
             <i class="fas fa-user-tie fa-2x"></i>
             <h5>
-                <?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->username : 'Inspektor F.I.О' ?>
+                <?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->name. ' ' .User::findOne(Yii::$app->user->id)->surname .' '.User::findOne(Yii::$app->user->id)->fathers_name: 'Inspektor F.I.О' ?>
             </h5>
             <button class="btn btn btn-danger logOut"><?= Html::a(
-                    'Chiqish',
+                    'Chiqish<i style="display: inline-block" class="fas fa-sign-out-alt ml-2"></i>',
                     ['/site/logout'],
                     ['data-method' => 'post',]
                 ) ?>
-                <i style="display: inline-block" class="fas fa-sign-out-alt ml-2"></i>
+                
             </button>
         </div>
     </div>

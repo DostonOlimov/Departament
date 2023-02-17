@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /** @var yii\web\View $this */
 /** @var common\models\measure\Executions $model */
@@ -14,17 +15,18 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'control_instruction_id')->hiddenInput()->label(false); ?>
 
-    <?= $form->field($model, 'person')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'person')->textInput(['style'=>"text-transform:uppercase"]) ?>
 
-    <?= $form->field($model, 'number_passport')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'number_passport')->widget(MaskedInput::className(), [
+                        'mask' => 'AA9999999'
+                    ]) ?>
+    <?= $form->field($model, 'fine_amount')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'fine_amount')->textInput() ?>
+    <?= $form->field($model, 'paid_amount')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'paid_amount')->textInput() ?>
+    <?= $form->field($model, 'person_position')->textarea(['rows' => 2]) ?>
 
-    <?= $form->field($model, 'person_position')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'caution_number')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'caution_number')->textInput(['maxlength' => true, 'type' => 'number']) ?>
 
     <div class="row">
                     <div class="col-sm-4">

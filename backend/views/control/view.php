@@ -166,7 +166,7 @@ if ($company) { ?>
                     },
                 ],
                 [
-                    'label' => 'Mutaxasis',
+                    'label' => 'Mutaxassis',
                     'value' => function (Company $model) {
                         return $model->createdBy->name.' '.$model->createdBy->surname;
                     },

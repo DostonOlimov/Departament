@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="panel-body">
                 <div class="row">
                 <div class="col-md-12 col-lg-6">
-                    <?= $form->field($stan, "[{$i}]person")->textInput() ?>
+                    <?= $form->field($stan, "[{$i}]person")->textInput(['style'=>"text-transform:uppercase"]) ?>
                 </div>
                 <div class="col-md-12 col-lg-6">
                     <?= $form->field($stan, "[{$i}]person_position")->textInput() ?>
@@ -84,7 +84,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
                  </div>
                 <div class="col-md-12 col-lg-6">
-                    <?= $form->field($stan, "[{$i}]first_date")->textInput(['type'=>'date']) ?>
+                    <?= $form->field($stan, "[{$i}]first_date")->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]])  ?>
                 </div>
                 <div class="col-md-12 col-lg-6">
                     <?= $form->field($stan, "[{$i}]fine_amount")->textInput() ?>
