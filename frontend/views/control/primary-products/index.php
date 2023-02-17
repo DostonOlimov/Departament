@@ -27,7 +27,7 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
 ?>
 
 
-<div class="page1-1 row">
+<div class="page1-1 row sss">
   <?= Steps::widget([
         'control_instruction_id' => Company::findOne($primaryData->control_company_id)->control_instruction_id,
         'control_company_id' => $primaryData->control_company_id,
@@ -42,7 +42,7 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
         <?=  GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
-                'headerRowOptions' => ['style' => 'background-color: #198754;'],
+                'headerRowOptions' => ['style' => 'background-color: rgb(86, 212, 13);'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
@@ -66,38 +66,6 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
                         },
                         'format' => 'raw'
                     ],
-                 
-                  /*  [
-                        'attribute' => 'residue_quantity',
-                        'value' => function ($pro) {
-                            return $pro->residue_quantity ? $pro->residue_quantity . ' so\'m' : '';
-                        }
-
-                    ],
-                    [
-                        'attribute' => 'residue_amount',
-                        'value' => function ($pro) {
-                            $mesure = PrimaryProduct::getMeasure($pro->product_measure);
-                            return $pro->residue_amount ? $pro->residue_amount. ' '.$mesure : '';
-                        }
-
-                    ],
-                    [
-                        'attribute' => 'year_quantity',
-                        'value' => function ($pro) {
-                            return $pro->year_quantity ? $pro->year_quantity . ' so\'m' : '';
-                        }
-
-                    ],
-                    [
-                        'attribute' => 'year_amount',
-                        'value' => function ($pro) {
-                            $mesure = PrimaryProduct::getMeasure($pro->product_measure);
-                            return $pro->year_amount ? $pro->year_amount. ' '.$mesure:'';
-                        }
-
-                    ],*/
-                //    'exsist_certificate',
                     'codetnved',
                     [
                         'attribute' => 'photo',
@@ -120,32 +88,36 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
                         },
                         'format' => 'raw'
                     ],
-                    [
-                        'attribute' => 'Sinov laboratoriyasi xulosasi',
-                       /* 'class' => 'yii\grid\ActionColumn',
-                        'template' => '{view}',
-                        'buttonOptions' => [
-                            'class' => 'text-primary'
-                        ],
-                        'urlCreator' => function ($action, $searchmodel, $key, $index) {
-                            if ($action === 'view') {
-                                $url = Url::to(['view', 'id' => $searchmodel->id]);
-                                return $url;
-                            }
-                        },*/
-                        'value' => function (PrimaryProduct $model) {
-                            
-                            return Html::a('Yangilash', ['/control/primary-products/update', 'id' => $model->id,], ['class' => 'btn btn-primary']) ;
-                        },
-                        'format' => 'raw'
-                    ],
+                 
                   
-                    [
-                        'class' => ActionColumn::className(),
-                        'urlCreator' => function ($action, PrimaryProduct $model, $key, $index, $column) {
-                            return Url::toRoute([$action, 'id' => $model->id,'primary_data_id' => $model->control_primary_data_id]);
-                         }
+                    // [
+                    //     'class' => ActionColumn::className(),
+                    //     'contentOptions' => ['style' => 'color:red;size:34px;',],
+                    //     'buttonOptions' => [
+                    //         'class' => 'text-primary'
+                    //     ],
+                    //     'urlCreator' => function ($action, PrimaryProduct $model, $key, $index, $column) {
+                    //         return Url::toRoute([$action, 'id' => $model->id,'primary_data_id' => $model->control_primary_data_id]);
+                    //      }
+                    // ],
+                   
+                    [  'label' => 'Normativ hujjat(lar) turi va nomi',
+                        'value' => function($pro){
+                        return
+                            Html::a('<span class="fa fa-eye"></span> ', ['view','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'view','class'=>'btn btn-success']).' '.
+                            Html::a('<span class="fa fa-pencil"></span> ', ['update','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'edit','class'=>'btn btn-info']).' '.
+                            Html::a('<span class="fa fa-trash"></span> ', ['delete', 'id' => $pro->id], [
+                                'class' => 'btn btn-danger',
+                                'data' => [
+                                    'confirm' => 'Are you sure you want to delete this item?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        },
+                        'format'=>'raw',
                     ],
+                   
+
                 ],
             ]);
         ?>

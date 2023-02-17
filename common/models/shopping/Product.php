@@ -78,46 +78,6 @@ class Product extends \yii\db\ActiveRecord
             
         ];
     }
-
-    // public function behaviors()
-    // {
-    //     return [
-    //         TimestampBehavior::class,
-    //         BlameableBehavior::class,
-            
-    //         // [
-    //         //     'class' => ImageUploadBehavior::class,
-    //         //     'attribute' => 'photo',
-    //         //     'createThumbsOnRequest' => true,
-    //         //     'filePath' => '@frontend/web/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-    //         //     'fileUrl' => '@url/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-    //         //     'thumbPath' => '@frontend/web/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-    //         //     'thumbUrl' => '@url/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-    //         //     'thumbs' => [
-    //         //         'xs' => ['width' => 64, 'height' => 48],
-    //         //         'sm' => ['width' => 120, 'height' => 67],
-    //         //         'md' => ['width' => 240, 'height' => 135],
-    //         //         'lg' => ['width' => 960, 'height' => 540],
-    //         //     ],
-    //         // ],
-    //         // [
-    //         //     'class' => ImageUploadBehavior::class,
-    //         //     'attribute' => 'photo_chek',
-    //         //     'createThumbsOnRequest' => true,
-    //         //     'filePath' => '@frontend/web/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-    //         //     'fileUrl' => '@url/app-images/store/shopping-product/[[attribute_id]]/[[filename]].[[extension]]',
-    //         //     'thumbPath' => '@frontend/web/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-    //         //     'thumbUrl' => '@url/app-images/cache/shopping-product/[[attribute_id]]/[[profile]]_[[filename]].[[extension]]',
-    //         //     'thumbs' => [
-    //         //         'xs' => ['width' => 64, 'height' => 48],
-    //         //         'sm' => ['width' => 120, 'height' => 67],
-    //         //         'md' => ['width' => 240, 'height' => 135],
-    //         //         'lg' => ['width' => 960, 'height' => 540],
-    //         //     ],
-    //         // ],
-    //     ];
-    // }
-
     public function attributeLabels()
     {
         return [

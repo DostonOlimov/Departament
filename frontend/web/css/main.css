@@ -232,7 +232,7 @@ input[name=panel-2]:checked ~ .accordionD__content.accordionD__content--large {
 
 form {
     height: 60vh;
-    color: white;
+    color: red ;
     
 }
 
@@ -560,9 +560,6 @@ width: 70% !important;
 .s2-togall-select .s2-unselect-label, .s2-togall-unselect .s2-select-label {
     display: block !important;
 }
-
-
-
 
 
 

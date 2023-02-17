@@ -14,8 +14,6 @@ use common\models\control\PrimaryProductNd;
 use common\models\control\ControlProductCertification;
 use common\models\Countries;
 use frontend\assets\AppAsset;
-use common\models\control\Measure;
-use kartik\date\DatePicker;
 use frontend\widgets\Steps;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\widgets\ActiveForm;
@@ -25,7 +23,6 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\MaskedInput;
-use kartik\file\FileInput;
 
 $this->title = 'Birlamchi ma`lumotlar';
 $this->params['breadcrumbs'][] = $this->title;
@@ -59,6 +56,12 @@ AppAsset::register($this);
                         </div>
                         <div class="col-sm-6">
                             <?= $form->field($model, 'laboratory')->dropDownList(PrimaryData::getLab(),['prompt'=>'- - -']) ?>
+                        </div>
+                        <div class="col-sm-6">
+                            <?= $form->field($model, 'repeat_instruction')->dropDownList(PrimaryData::getRepeat(),['prompt'=>'- - -','onchange'=>'getRepeat(event)']) ?>
+                        </div>
+                        <div class="col-sm-6" style = "display:none" id = "repeat">
+                            <?= $form->field($model, 'repeat_comment')->textarea(['rows' => 6]) ?>
                         </div>
                     </div>
             <div class="col-sm-12 type">
@@ -439,9 +442,34 @@ AppAsset::register($this);
             var  item = document.getElementById('ov');
             item.style.display = 'block'
         }
+        
  
 }
-
+function getRepeat(e) {
+   // alert(e.target.selected);
+        if(e.target.value == 0)
+        {
+            var  item = document.getElementById('repeat');
+            item.style.display = 'none';
+        }
+        if( e.target.value == 1)
+        {
+            var  item = document.getElementById('repeat');
+            item.style.display = 'block'
+        }
+    }
+function getProduct(e) {
+        if(e.target.checked && e.target.value == 1)
+        {
+            var  item = document.getElementById('product');
+            item.style.display = 'none';
+        }
+        if(e.target.checked && e.target.value == 0)
+        {
+            var  item = document.getElementById('product');
+            item.style.display = 'block'
+        }
+    }
 function getDocument(e) {
         if(e.target.checked && e.target.value == 1)
         {

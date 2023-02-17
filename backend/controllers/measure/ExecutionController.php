@@ -70,8 +70,27 @@ class ExecutionController extends Controller
         $model = new Executions();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            
+            if ($model->load($this->request->post())) {
+                $model->s_claim = \yii\web\UploadedFile::getInstance($model, "claim");
+                $model->s_explanation_letter = \yii\web\UploadedFile::getInstance($model, "explanation_letter");
+                $model->s_court_letter = \yii\web\UploadedFile::getInstance($model, "court_letter");
+                if ($model->s_explanation_letter) {
+                    $model->explanation_letter = $model->s_explanation_letter->name;
+                }
+                if($model->s_claim)  {
+                    $model->claim = $model->s_claim->name;
+                }   
+                if($model->s_court_letter){    
+                    $model->court_letter = $model->s_court_letter->name;
+                
+                }
+                $model->band_mjtk = ','.$model->m212.','.$model->m213.','.$model->m214;
+                die();
+                if($model->save(false)){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                
             }
         } else {
             $model->loadDefaultValues();
@@ -92,9 +111,31 @@ class ExecutionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->band_mjtk = explode(',', substr($model->band_mjtk, 1));
+        // \yii\helpers\VarDumper::dump($model->band_mjtk);die;
+        if($model->band_mjtk[0]){$model->m212 = $model->band_mjtk[0];}
+        if($model->band_mjtk[1]){$model->m213 = $model->band_mjtk[1];}
+        if($model->band_mjtk[2]){$model->m214 = $model->band_mjtk[2];}
+       
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->s_claim = \yii\web\UploadedFile::getInstance($model, "claim");
+                $model->s_explanation_letter = \yii\web\UploadedFile::getInstance($model, "explanation_letter");
+                $model->s_court_letter = \yii\web\UploadedFile::getInstance($model, "court_letter");
+                if ($model->s_explanation_letter) {
+                    $model->explanation_letter = $model->s_explanation_letter->name;
+                }
+                if($model->s_claim)  {
+                    $model->claim = $model->s_claim->name;
+                }   
+                if($model->s_court_letter){    
+                    $model->court_letter = $model->s_court_letter->name;
+                
+                }
+                $model->band_mjtk = ','.$model->m212.','.$model->m213.','.$model->m214;
+               
+                if($model->save(false)){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
         }
 
         return $this->render('update', [

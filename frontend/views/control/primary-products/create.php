@@ -21,23 +21,29 @@ $this->title = 'Mahsulot qo\'shish';
 $this->params['breadcrumbs'][] = ['label' => 'Primary Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
+
 ?>
 
 
-<div class="page1-1 row">
+<div class="page1-1 row" style="padding-bottom: 200px;">
+
   <?= Steps::widget([
         'control_instruction_id' => Company::findOne($primaryData->control_company_id)->control_instruction_id,
         'control_company_id' => $primaryData->control_company_id,
     ]) ?>
     <div class="col-8">
     <h1 style="display:inline;"><?= Html::encode($this->title) ?></h1>
-
+    <?= Html::a('Yopish', ['index', 'primary_data_id' => $primary_data_id], ['class' => 'btn btn-primary']) ?>
 
     <?= $this->render('_form', [
         'model' => $model,
+        'nds' => $nds,
+        'cers' => $cers,
     ]) ?>
+</div>
 
-<?=  GridView::widget([
+<div>
+<?php  GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'headerRowOptions' => ['style' => 'background-color: #198754;'],
@@ -121,14 +127,24 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
                         },
                         'format' => 'raw'
                     ],
-                    [
-                        'class' => ActionColumn::className(),
-                        'urlCreator' => function ($action, PrimaryProduct $model, $key, $index, $column) {
-                            return Url::toRoute([$action, 'id' => $model->id,'primary_data_id' => $model->control_primary_data_id]);
-                         }
-                    ],
+                    [  'label' => 'Normativ hujjat(lar) turi va nomi',
+                    'value' => function($pro){
+                    return
+                        Html::a('<span class="fa fa-eye"></span> ', ['view','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'view','class'=>'btn btn-success']).' '.
+                        Html::a('<span class="fa fa-pencil"></span> ', ['update','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'edit','class'=>'btn btn-info']).' '.
+                        Html::a('<span class="fa fa-trash"></span> ', ['delete', 'id' => $pro->id], [
+                            'class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to delete this item?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    },
+                    'format'=>'raw',
+                ],
                 ],
             ]);
         ?>
 </div>
 </div>
+

@@ -235,6 +235,10 @@ class ControlController extends Controller
                 $transaction = Yii::$app->db->beginTransaction();
                $arrayImage = [];
                 try {
+                    if($products[0]->product_type == 0)
+                        $model->product_exsist = 1;
+                    else
+                        $model->product_exsist = 0;
                     $model->save(false);
                     if($ov->ov_type == 0)
                     {
@@ -553,6 +557,7 @@ class ControlController extends Controller
                             $typeRes .= $type.'.';
                         }
                        }
+                       $pro_pr->product_type = 0;
                        $pro_pr->description = $value->description;
                        $pro_pr->quality = $value->quality;
                        $pro_pr->exsist_certificate = 1;
