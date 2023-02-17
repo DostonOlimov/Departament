@@ -18,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="page1-1 row ">
 
     <?= StepsShopping::widget([
-        'shopping_instruction_id' => $model->shopping_instruction_id,
-        'shopping_company_id' => null,
+        // 'shopping_instruction_id' => $model->shopping_instruction_id,
+        // 'shopping_company_id' => null,
     ]) ?>
 
 

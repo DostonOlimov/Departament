@@ -3,10 +3,12 @@
 namespace backend\controllers\shopping;
 
 use common\models\shopping\Product;
+use common\models\shopping\Company;
 use common\models\shopping\ProductSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -62,20 +64,43 @@ class ProductController extends Controller
             'model' => $model,
         ]);
     }*/
-
-    public function actionUpdate($id)
+    public function actionUpdate($shopping_company_id)
     {
-        $model = $this->findModel($id);
+        $company = Company::findOne($shopping_company_id);
+        $products = Product::find()->where(['shopping_company_id'=>$shopping_company_id])->all();
+        
+       
 
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['shopping/shopping/view', 'id' => $model->shoppingCompany->shopping_instruction_id]);
+    if ($company->load(Yii::$app->request->post())) { 
+        echo '<pre>';
+        var_dump(Yii::$app->request->post());die();
+        echo '<pre>';   
+    $t = true;
+    foreach(Yii::$app->request->post('Product') as $key=>$value)
+        {
+            $product = Product::findOne($value['id']);           
+            $product->lab_conclusion = $value['lab_conclusion'];
+            if($product->validate()){
+                $product->save();
+            }
+            else{
+                $t = false;
+            }
+        }
+            $company->phone = strval($company->phone);     
+            if( $company->validate() && $t && $company->save())
+            {
+                return $this->redirect(['laboratory-view', 'shopping_company_id' => $company->id]);
+            }  
+  
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'company' => $company,
+            'products' =>  $products,
         ]);
     }
-
+    
     /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();

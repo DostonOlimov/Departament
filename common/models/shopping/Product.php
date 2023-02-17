@@ -6,7 +6,7 @@ use common\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yiidreamteam\upload\ImageUploadBehavior;
+use yiidreamteam\upload\FileUploadBehavior;
 
 
 /**
@@ -32,6 +32,7 @@ class Product extends \yii\db\ActiveRecord
 {
     public $s_photo;
     public $s_photo_check;
+    public $measure;
     /**
      * {@inheritdoc}
      */
@@ -46,7 +47,7 @@ class Product extends \yii\db\ActiveRecord
             [['shopping_company_id'], 'required'],
             [['shopping_company_id', 'quantity', 'sum'], 'integer'],
             [['name','purchase_date','production_date','product_lot','lab_conclusion'], 'string', 'max' => 255],
-            [['photo', 'photo_chek'], 'image','extensions'=> 'jpg,png,pdf'],
+            [['photo', 'photo_chek'], 'file','extensions'=> 'jpg,png,pdf'],
             //[['shopping_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['shopping_company_id' => 'id']],
         ];
     }
@@ -54,19 +55,20 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
-            BlameableBehavior::class,
-            [
-                'class' => ImageUploadBehavior::class,
-                'attribute' => 's_photo',
-                'filePath' => '@webroot/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
-                'fileUrl' => '/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
-            ],
-            [
-                'class' => ImageUploadBehavior::class,
-                'attribute' => 's_photo_check',
-                'filePath' => '@webroot/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
-                'fileUrl' => '/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
-            ],
+            BlameableBehavior::class,         
+                [
+                    'class' => FileUploadBehavior::class,
+                    'attribute' => 's_photo',
+                    'filePath' => '@webroot/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
+                    'fileUrl' => '/uploads/letters/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
+                ],           
+            
+                [
+                    'class' => FileUploadBehavior::class,
+                    'attribute' => 's_photo_check',
+                    'filePath' => '@webroot/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
+                    'fileUrl' => '/uploads/letters/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
+                ], 
             
             
         ];
@@ -74,18 +76,19 @@ class Product extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '',
             'shopping_company_id' => 'Shopping Company ID',
             'name' => 'Maxsulot nomi',
             'quantity' => 'Maxsulot miqdori',
-            'sum' => 'Na`muna narxi',
+            'sum' => 'Mahsulot narxi',
             'photo' => 'Mahsulot rasmi',
             'photo_chek' => 'Chek rasmi',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
+            'created_by' => 'Inspector',
+            'updated_by' => 'Nazoratchi',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'lab_conclusion' => 'Laboratory xulosasi',
+            'measure'=> 'Hajmi',
         ];
     }
 
