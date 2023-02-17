@@ -26,10 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'enctype' => 'multipart/form-data',
             ]
         ]) ?>
-         <?= $form->field($company, 'lab_comment')->Input(['maxlength' => true]) ?>
+         <?= $form->field($company, 'name')->Input(['maxlength' => true]) ?>
             <h3 style="color:black;display:inline;">Mahsulotlar </h3>
                 <hr>
-    <div class="row" id="content2"  >
+                <div class="row" id="content2"  >
         <div class="box box-default" style="display: inline-block">
            
             <div class="panel-body">
@@ -39,8 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'widgetItem' => '.item', // required: css class
                     'limit' => 4, // the maximum times, an element can be cloned (default 999)
                     'min' => 1, // 0 or 1 (default 1)
-                    // 'insertButton' => '.add-item', // css class
-                    // 'deleteButton' => '.remove-item', // css class
+                    'insertButton' => '.add-item', // css class
+                    'deleteButton' => '.remove-item', // css class
                     'model' => $products[0],
                     'formId' => 'dynamic-form',
                     'formFields' => [
@@ -93,6 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col-sm-4">
                                     <?= $form->field($products, "[{$i}]photo_chek")->fileInput()?>
+                                    <?= $form->field($products, "[{$i}]id")->hiddenInput()?> 
                                 </div>
                             </div>
                                 

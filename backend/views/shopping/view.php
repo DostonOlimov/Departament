@@ -11,7 +11,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\profilactic\Instruction */
 
-$this->title = 'Profilaktika uchun asos';
+$this->title = 'Nazorat xaridi o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = ['label' => 'Korxonalar', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -20,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <p>
             <?= Html::a('Yangilash', ['/shopping/instruction/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Hamma ma`lumotni o\'chirish', ['/shopping/instruction/delete', 'id' => $model->id], [
+            <?= Html::a('Xaridni yakunlash', ['/shopping/instruction/upgrade', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+           <?= Html::a('Hamma ma`lumotni o\'chirish', ['/shopping/instruction/delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Haqiqatan ham bu elementni o‘chirmoqchimisiz?',
@@ -121,8 +122,27 @@ if ($answers) { ?>
                 'created_by',
                 'purchase_date',
                 'production_date',
-                'product_lot'
+                'product_lot',
+                [
+                    'attribute' => 'photo',
+                    'value' => function ($model) {
+                        $model->s_photo = $model->photo;
+                        return $model->s_photo ? $model->getUploadedFileUrl('s_photo')  : 'Yuklanmagan';
 
+                    },                       
+
+                    'format' => ['image',['width'=>200]],
+                ],
+                [
+                    'attribute' => 'photo_chek',
+                    'value' => function ($model) {
+                        $model->s_photo_check = $model->photo_chek;
+                        return $model->s_photo_check ? $model->getUploadedFileUrl('s_photo_check')  : 'Yuklanmagan';
+
+                    },                       
+
+                    'format' => ['image',['width'=>200]],
+                ],
                 // [
                 //     'attribute' => 'photo',
                 //     'value' => function (Product $model) {

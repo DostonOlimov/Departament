@@ -78,6 +78,18 @@ class InstructionController extends Controller
             'model' => $model,
         ]);
     }
+    public function actionUpgrade($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['/shopping/shopping/view', 'id' => $model->id]);
+        }
+
+        return $this->render('upgrade', [
+            'model' => $model,
+        ]);
+    }
 
     public function actionDelete($id)
     {

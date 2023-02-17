@@ -52,12 +52,12 @@ class ShoppingNotice extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'notice_number' => 'Notice Number',
-            'notice_sum' => 'Notice Sum',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
-            'status' => 'Status',
-            'attachment_user_id' => 'Attachment User ID',
+            'notice_number' => 'Bildirgi raqami',
+            'notice_sum' => 'Bildirgi summasi',
+            'created_by' => 'Inspector',
+            'updated_by' => 'Nazoratchi',
+            'status' => 'Holati',
+            'attachment_user_id' => 'Biriktirilgan shaxs',
         ];
     }
 

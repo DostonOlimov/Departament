@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-sm-4">
                                     <div class="row">
                                     <div class="col-sm-6">
-                                        <?= $form->field($prevent, "[{$i}]measure")->dropDownList(PrimaryProduct::getMeasure(),['prompt'=>'- - -']) ?>
+                                        <?= $form->field($prevent, "[{$i}]measure")->dropDownList(Product::getMeasure(),['prompt'=>'- - -']) ?>
                                     </div>
                                     <div class="col-sm-6">
                                         <?= $form->field($prevent, "[{$i}]quantity")->textInput(['type' => 'number'])?>
