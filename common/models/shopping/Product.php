@@ -6,7 +6,7 @@ use common\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yiidreamteam\upload\FileUploadBehavior;
+use yiidreamteam\upload\ImageUploadBehavior;
 
 
 /**
@@ -33,6 +33,11 @@ class Product extends \yii\db\ActiveRecord
     public $s_photo;
     public $s_photo_check;
     public $measure;
+    const   MEASURE1 = 1;
+    const   MEASURE2 = 2;
+    const   MEASURE3 = 3;
+    const   MEASURE4 = 4;
+    const   MEASURE5 = 5;
     /**
      * {@inheritdoc}
      */
@@ -47,7 +52,7 @@ class Product extends \yii\db\ActiveRecord
             [['shopping_company_id'], 'required'],
             [['shopping_company_id', 'quantity', 'sum'], 'integer'],
             [['name','purchase_date','production_date','product_lot','lab_conclusion'], 'string', 'max' => 255],
-            [['photo', 'photo_chek'], 'file','extensions'=> 'jpg,png,pdf'],
+            [['photo', 'photo_chek'], 'image','extensions'=> 'jpg,png,pdf'],
             //[['shopping_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['shopping_company_id' => 'id']],
         ];
     }
@@ -57,14 +62,14 @@ class Product extends \yii\db\ActiveRecord
             TimestampBehavior::class,
             BlameableBehavior::class,         
                 [
-                    'class' => FileUploadBehavior::class,
+                    'class' => ImageUploadBehavior::class,
                     'attribute' => 's_photo',
                     'filePath' => '@webroot/uploads/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
                     'fileUrl' => '/uploads/letters/nazorat-xaridi/mahsulotlar/[[pk]].[[extension]]',
                 ],           
             
                 [
-                    'class' => FileUploadBehavior::class,
+                    'class' => ImageUploadBehavior::class,
                     'attribute' => 's_photo_check',
                     'filePath' => '@webroot/uploads/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
                     'fileUrl' => '/uploads/letters/nazorat-xaridi/cheklar/[[pk]].[[extension]]',
@@ -123,6 +128,9 @@ class Product extends \yii\db\ActiveRecord
             'sum' => 'Mahsulot narxi',
             'photo' => 'Mahsulot rasmi',
             'photo_chek' => 'Chek rasmi',
+            'production_date' => 'Mahsulot ishlab chiqarilgan sanasi',
+            'purchase_date' => 'Xarid o\'tkazilgan sanasi',
+            'product_lot' => 'Partiya raqami',
             'created_by' => 'Inspector',
             'updated_by' => 'Nazoratchi',
             'created_at' => 'Created At',
@@ -130,6 +138,23 @@ class Product extends \yii\db\ActiveRecord
             'lab_conclusion' => 'Laboratory xulosasi',
             'measure'=> 'Hajmi',
         ];
+    }
+    public static function getMeasure($type = null)
+    {
+        $arr = [
+
+            self::MEASURE3 => '(m)',
+            self::MEASURE2 => '(kg)',
+            self::MEASURE1 => 'dona',
+            self::MEASURE4 => '(m2)',
+            self::MEASURE5 => '(m3)',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
     }
 
     public function getCreatedBy()

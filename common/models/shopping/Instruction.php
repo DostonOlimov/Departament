@@ -93,7 +93,7 @@ class Instruction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Xarid raqami',
             'created_by' => 'Inspektor',
             'updated_by' => 'Nazoratchi',
             'created_at' => 'Created At',

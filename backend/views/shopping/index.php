@@ -94,12 +94,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
+            // [
+            //     'label' => 'Status',
+            //     'value' => function ($model) {
+            //         $company = Company::findOne(['shopping_instruction_id' => $model->id]);
+            //         if ($company) {
+            //             if (Product::findOne(['shopping_company_id' => $company->id])) {
+            //                 return '<label style="color: blue">Bajarildi</labelsty>';
+            //             } else {
+            //                 return '<label style="color: orange">Jarayonda</labelsty>';
+            //             }
+            //         } else {
+            //             return '<label style="color: orange">Jarayonda</labelsty>';
+            //         }
+            //     },
+            //     'format' => 'raw'
+            // ],
             [
                 'label' => 'Status',
                 'value' => function ($model) {
-                    $company = Company::findOne(['shopping_instruction_id' => $model->id]);
-                    if ($company) {
-                        if (Product::findOne(['shopping_company_id' => $company->id])) {
+                    $instruction = Instruction::findOne(['id' => $model->id]);
+                    if ($instruction) {
+                        if (!empty($instruction->card_return_date)) {
                             return '<label style="color: blue">Bajarildi</labelsty>';
                         } else {
                             return '<label style="color: orange">Jarayonda</labelsty>';

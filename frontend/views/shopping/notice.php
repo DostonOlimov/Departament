@@ -8,7 +8,7 @@ use common\models\User;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-
+use kartik\money\MaskMoney;
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,8 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <?= $form->field($model, 'notice_sum')->textInput() ?>
+            <div class="col-sm-12">                
+                <?= $form->field($model, 'notice_sum')->widget(MaskMoney::classname(), [
+                'pluginOptions' => [
+                'prefix' => 'SUMMA : ',
+                'suffix' => ' so\'m',
+                'allowNegative' => false ]
+                ]); ?>
             </div>
         </div>
 
@@ -42,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Saqlash', ['class' => 'btn btn-success']) ?>
         </div>
 
     <?php ActiveForm::end(); ?>
