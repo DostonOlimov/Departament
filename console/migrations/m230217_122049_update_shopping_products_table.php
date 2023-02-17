@@ -12,7 +12,7 @@ class m230217_122049_update_shopping_products_table extends Migration
      */
     public function safeUp()
     {
-
+        $this->addColumn("shopping_products", "measure", $this->string(255));
     }
 
     /**
