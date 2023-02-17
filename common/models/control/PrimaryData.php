@@ -34,6 +34,9 @@ class PrimaryData extends \yii\db\ActiveRecord
     const SMT_HAVE = 0;
     const SMT_NO = 1;
 
+    const REPEAT_ONE = 0;
+    const REPEAT_MANY = 1;
+
     public static function tableName()
     {
         return 'control_primary_data';
@@ -43,7 +46,9 @@ class PrimaryData extends \yii\db\ActiveRecord
     {
         return [
             [['control_company_id', 'laboratory','smt'], 'required'],
-            [['control_company_id', 'laboratory', 'smt'], 'integer'],
+            [['repeat_comment'],'required', 'when' => function($model) { return $model->repeat_instruction == 1; }],
+            [['control_company_id', 'laboratory', 'smt','product_exsist','repeat_instruction'], 'integer'],
+            [['repeat_comment'],'string'],
             [['control_company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['control_company_id' => 'id']],
         ];
     }
@@ -67,6 +72,9 @@ class PrimaryData extends \yii\db\ActiveRecord
 //            'year_amount' => 'Summasi(12 oy mobaynida)(so\'m)',
             'laboratory' => 'Sinov laboratoriyasining mavjudligi',
             'smt' => 'SMT joriy etilganligi',
+            'product_exsist' => 'Mahsulot mavjudligi',
+            'repeat_instruction' => 'Tekshiruv o\'tkazilganlik holati',
+            'repeat_comment' => 'Oldingi tekshiruv natijalari',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',
@@ -102,6 +110,21 @@ class PrimaryData extends \yii\db\ActiveRecord
         $arr = [
             self::SMT_HAVE => 'Joriy etilgan',
             self::SMT_NO => 'Joriy etilmagan ',
+
+        ];
+
+        if ($lab === null) {
+            return $arr;
+        }
+
+        return $arr[$lab];
+    }
+
+    public static function getRepeat($lab = null)
+    {
+        $arr = [
+            self::REPEAT_ONE => 'Tekshiruv birinchi marta o\'tkazilmoqda',
+            self::REPEAT_MANY => 'Avval tekshiruv o\'tkazilgan',
 
         ];
 

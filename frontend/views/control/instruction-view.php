@@ -41,11 +41,12 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                             return Instruction::getType($model->type);
                         }
                     ],
-                'letter_date:date',
+                'letter_date',
                 'letter_number',
-                'command_date:date',
+                'command_date',
                 'command_number',
-                'checkup_begin_date:date',
+                'checkup_begin_date',
+                'checkup_end_date',
                 'who_send_letter',
                 [
                     'attribute' => 'Tekshiruv predmeti',
@@ -75,8 +76,8 @@ $company = Company::findOne(['control_instruction_id' => $model->id])
                         return $model->checkup_finish_date ? $model->checkup_finish_date : 'Yakunlanmagan';
                     }
                 ],
-                'checkup_duration_start_date:date',
-                'checkup_duration_finish_date:date',
+                'checkup_duration_start_date',
+                'checkup_duration_finish_date',
                 'checkup_duration',
                 [
                     'label' => 'Inspektorlar',

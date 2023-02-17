@@ -227,7 +227,7 @@ public function behaviors()
             'codetnved' => 'Mahsulotning TIF TN kodi',
             'photo' =>'Mahsulotning rasmi',
             'defect_type' =>'Mahsulotning kamchilikgi',
-            'product_type' => 'Mahsulot qo\'shish',
+            'product_type' => 'Mahsulot tekshirildi',
             'created_at' => 'Mahsulotning yaratilgan sanasi'
 
         ];
