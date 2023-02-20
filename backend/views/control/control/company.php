@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'address')->textInput() ?>
         </div>
         <div class="col-md-6 col-sm-12">
-            <?= $form->field($model, 'ownername')->textInput();?>
+            <?= $form->field($model, 'ownername')->textInput(['style'=>"text-transform:uppercase"]);?>
         </div>
     </div>
 

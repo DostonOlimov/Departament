@@ -20,7 +20,7 @@ use common\models\User;
                 <img src="<?= $assetDir ?>/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block"><?= User::findOne(Yii::$app->user->id)->username ?></a>
+                <a href="#" class="d-block"><?= User::findOne(Yii::$app->user->id)->name.' '.User::findOne(Yii::$app->user->id)->surname ?></a>
             </div>
         </div>
 

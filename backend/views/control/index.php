@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $users->name.' '.$users->surname;
                  }), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
-            'created_at:date',  
+            'created_at',  
             [
                 'label' => 'Status',
                 'value' => function ($model) {

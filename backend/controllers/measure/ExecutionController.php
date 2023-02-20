@@ -133,7 +133,8 @@ class ExecutionController extends Controller
                 }
                 $model->band_mjtk = ','.$model->m212.','.$model->m213.','.$model->m214;
                
-                if($model->save(false)){
+                if($model->validate()){
+                    $model->save(false);
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
         }

@@ -11,7 +11,7 @@ use common\models\User;
 /** @var common\models\measure\ExecutionsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Ma\'jburiy bayonnomalar';
+$this->title = 'Ma\'muriy bayonnomalar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="executions-index">
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
              ],
             //'updated_by',
-            'created_at:date',
+            'created_at',
             //'updated_at',
             [
                 'class' => ActionColumn::className(),
