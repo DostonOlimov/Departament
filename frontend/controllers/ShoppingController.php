@@ -74,11 +74,13 @@ class ShoppingController extends Controller
     }
     public function actionInstructionAdd()
     {
+        $notice = ShoppingNotice::findOne(['attachment_user_id'=>\Yii::$app->user->id]);  
         $searchModel = new InstructionAdd();
         $dataProvider = $searchModel->search($this->request->queryParams);
         return $this->render('instruction-add', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'notice' => $notice,
         ]);
     }
 

@@ -95,17 +95,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                     ],
 
-                    [
-                        'label' => 'Nazorat xaridi qo\'shish',
-                        'value' => function ($model) {
-                            $notice = ShoppingNotice::findOne(['id' => $model->id]);
-                            if ($notice) {
-                                return Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['/shopping/instruction', 'notice_id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
-                            }
-                            return '';
-                        },
-                        'format' => 'raw',
-                    ],
+                    // [
+                    //     'label' => 'Nazorat xaridi qo\'shish',
+                    //     'value' => function ($model) {
+                    //         $notice = ShoppingNotice::findOne(['id' => $model->id]);
+                    //         if ($notice) {
+                    //             return Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['/shopping/instruction', 'notice_id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
+                    //         }
+                    //         return '';
+                    //     },
+                    //     'format' => 'raw',
+                    // ],
                 ],
             ]); ?>
     </div>
