@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Hudud',
                 'value' => function ($model) {
+        
                     $company = Company::findOne(['control_instruction_id' => $model->id]);
                     return $company ? $company->region->name : '';
                 }
