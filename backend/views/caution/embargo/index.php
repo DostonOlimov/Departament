@@ -150,9 +150,9 @@ echo ExportMenu::widget([
                 'attribute'=> 'updated_by',
                 'value'=> function($model){
                     $user = User::findOne($model->updated_by);
-                    if($model->status == 1){               
+                           
                     return $user ? $user->name .' '.$user->surname :'';
-                    }return '';
+                   
                 }
             ],
             //'created_at',

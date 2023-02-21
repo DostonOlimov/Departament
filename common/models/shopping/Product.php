@@ -83,7 +83,7 @@ class Product extends \yii\db\ActiveRecord
             'id' => '',
             'shopping_company_id' => 'Shopping Company ID',
             'name' => 'Maxsulot nomi',
-            'quantity' => 'Maxsulot miqdori',
+            'quantity' => 'Mahsulot miqdori',
             'sum' => 'Mahsulot narxi',
             'photo' => 'Mahsulot rasmi',
             'photo_chek' => 'Chek rasmi',
