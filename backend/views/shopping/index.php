@@ -74,11 +74,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             [
-                'label' => 'Xyus yuridik manzili',
+                'label' => 'Bildirgi raqami',
                 'value' => function ($model) {
-                    $company = Company::findOne(['shopping_instruction_id' => $model->id]);
-                    if ($company) {
-                        return $company->address;
+                    $instruction = Instruction::findOne(['id' => $model->id]);
+                    if ($instruction) {
+                        return $instruction->shoppingNotice->notice_number;
                     } else {
                         return '';
                     }
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'created_by',
                 'label' => 'Mutaxasis',
                 'value' => function ($model) {
-                    return $model->createdBy->username;
+                    return $model ? $model->createdBy->name .' '.$model->createdBy->surname : '' ;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],

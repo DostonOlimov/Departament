@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             
                             <div class="row">
                                 <div class="col-sm-4"> 
-                                    <?= $form->field($product, "[{$i}]name")->textInput()?>
+                                <?= $form->field($product, "[{$i}]name")->textInput(['readonly' => true, 'value' => $product->isNewRecord ? 'Your Value' : $product->name]) ?>
                                 </div>
                                 <div class="col-sm-4">
                                 <?= $form->field($product, "[{$i}]lab_conclusion")->radioList(['sifatli'=>'Sifatli','sifatsiz'=>'Sifatsiz']); ?>
