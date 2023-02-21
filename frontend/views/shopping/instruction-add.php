@@ -44,6 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="col-8"> 
             
+            <p>
+                 <?= Html::a('Xarid qo\'shish', ['/shopping/instruction', 'notice_id' => $notice->id], ['class' => 'btn btn-success'])  ?>
+                <!--?= Html::a('Qo\'shish', ['/shopping/instruction'], ['class' => 'btn btn-success'])  ?-->
+            </p>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -103,7 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'created_by',
                         'label' => 'Mutaxasis',
                         'value' => function ($model) {
-                            return $model->createdBy->username .' '.$model->createdBy->surname ;
+                            return $model->createdBy->name .' '.$model->createdBy->surname ;
                         },
                         
                     ],
@@ -111,15 +115,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Status',
                         'value' => function ($model) {
                             $company = Company::findOne(['shopping_instruction_id' => $model->id]);
-                            if ($company) {
-                                if (Product::findOne(['shopping_company_id' => $company->id])) {
+                            $products = Product::find()->where(['shopping_company_id'=> $company->id])->all(); 
+                           if(!empty($products))
+                            foreach($products as $product){                          
+                                if (!empty($product->lab_conclusion)) {
                                     return '<label style="color: blue">Bajarildi</labelsty>';
                                 } else {
                                     return '<label style="color: orange">Jarayonda</labelsty>';
                                 }
-                            } else {
-                                return '<label style="color: orange">Jarayonda</labelsty>';
+                           
                             }
+                            return '<label style="color: orange">Jarayonda</labelsty>';
+                           
                         },
                         'format' => 'raw'
                     ],

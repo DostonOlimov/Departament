@@ -21,13 +21,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <p>
             <?= Html::a('Yangilash', ['/shopping/instruction/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Xaridni yakunlash', ['/shopping/instruction/upgrade', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-           <?= Html::a('Hamma ma`lumotni o\'chirish', ['/shopping/instruction/delete', 'id' => $model->id], [
+           <!--?= Html::a('Hamma ma`lumotni o\'chirish', ['/shopping/instruction/delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Haqiqatan ham bu elementni o‘chirmoqchimisiz?',
                     'method' => 'post',
                 ],
-            ]) ?>
+            ]) ?-->
         </p>
 
         <?= DetailView::widget([
@@ -170,7 +170,7 @@ if ($answers[0]->lab_conclusion) { ?>
     <div class="company-view">
     <h2 >Laboratoriya</h2>
             <p>
-                <?= Html::a('Yangilash', ['/shopping/product/update', 'shopping_company_id' => $company->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Yangilash', ['/shopping/product/laboratory', 'shopping_company_id' => $company->id], ['class' => 'btn btn-primary']) ?>
             </p>
             <div class="card">
                 <div class="card-header">

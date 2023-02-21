@@ -26,10 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'enctype' => 'multipart/form-data',
             ]
         ]) ?>
-         <?= $form->field($company, 'id')->hiddenInput(['maxlength' => true])->label(false) ?>
+         <?= $form->field($company, 'lab_comment')->textInput(['maxlength' => true]) ?>
             <h3 style="color:black;display:inline;">Mahsulotlar </h3>
                 <hr>
-                <div class="row" id="content2"  >
+    <div class="row" id="content2"  >
         <div class="box box-default" style="display: inline-block">
            
             <div class="panel-body">
@@ -52,52 +52,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]); ?>
 
-<div class="container-items"><!-- widgetContainer -->
-                <?php foreach ($products as $i => $products): ?>
+                <div class="container-items"><!-- widgetContainer -->
+                <?php foreach ($products as $i => $product): ?>
                     <div class="item panel panel-default"><!-- widgetBody -->
                         <div class="panel-heading">
-                            <!-- <div class="pull-right">
-                                <button type="button" class="add-item btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
-                                <button type="button" class="remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
-                            </div> -->
+                            
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
                             
                             <div class="row">
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]name")->textInput()?>
+                                <div class="col-sm-4"> 
+                                    <?= $form->field($product, "[{$i}]name")->textInput()?>
                                 </div>
                                 <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]sum")->textInput() ?>
+                                <?= $form->field($product, "[{$i}]lab_conclusion")->radioList(['sifatli'=>'Sifatli','sifatsiz'=>'Sifatsiz']); ?>
+                                    <?= $form->field($product, "[{$i}]id")->hiddenInput()?>  
                                 </div>
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]quantity")->textInput()?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]production_date")->textInput(['type'=>'date'])?>
-                                </div>
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]purchase_date")->textInput(['type'=>'date'])?>
-                                </div>
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]product_lot")->textInput()?>
-                                </div>
-                            </div>
-                            <div class="row">
                                 
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]photo")->fileInput()?>
-                                </div>
-                                <div class="col-sm-4">
-                                    <?= $form->field($products, "[{$i}]photo_chek")->fileInput()?>
-                                    <?= $form->field($products, "[{$i}]id")->hiddenInput()?> 
-                                </div>
                             </div>
-                                
-                            
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -108,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Saqlash', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Saqlash'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

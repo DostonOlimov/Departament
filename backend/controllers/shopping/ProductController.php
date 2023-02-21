@@ -103,6 +103,7 @@ class ProductController extends Controller
                 $t = false;
             }
         }
+            $company->name = $company->name;
             $company->phone = strval($company->phone);     
             if( $company->validate() && $t && $company->save())
             {
@@ -112,6 +113,46 @@ class ProductController extends Controller
         }
 
         return $this->render('update', [
+            'company' => $company,
+            'products' =>  $products,
+        ]);
+    }
+
+    public function actionLaboratory($shopping_company_id)
+    {
+        $company = Company::findOne($shopping_company_id);
+        $products = Product::find()->where(['shopping_company_id'=>$shopping_company_id])->all();
+        
+       
+
+    if ($company->load(Yii::$app->request->post())) { 
+        // echo '<pre>';
+        // var_dump(Yii::$app->request->post());die();
+        // echo '<pre>';   
+    $t = true;
+    foreach(Yii::$app->request->post('Product') as $key=>$value)
+        {
+            $product = Product::findOne($value['id']);           
+            $product->name = $value['name'];
+            $product->lab_conclusion = $value['lab_conclusion'];
+
+            if($product->validate()){
+                $product->save();
+            }
+            else{
+                $t = false;
+            }
+        }
+            
+            $company->phone = strval($company->phone);     
+            if( $company->validate() && $t && $company->save())
+            {
+                return $this->redirect(['laboratory-view', 'shopping_company_id' => $company->id]);
+            }  
+  
+        }
+
+        return $this->render('laboratory', [
             'company' => $company,
             'products' =>  $products,
         ]);
