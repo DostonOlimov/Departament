@@ -18,7 +18,6 @@ use Yii;
  */
 class PrimaryOv extends \yii\db\ActiveRecord
 {
-    public $ov_type;
 
     const TYPE_ENER = 1;
     const TYPE_PRODUCT = 2;
@@ -33,10 +32,8 @@ class PrimaryOv extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'type', 'measurement', 'compared', 'invalid'], 'required', 'when' => function($model) {
-                return $model->ov_type == 0; }],
-            [['ov_type'],'required'],    
-            [['control_primary_data_id', 'type','ov_type'], 'integer'],
+            [[ 'type', 'measurement', 'compared', 'invalid'], 'required',],   
+            [['control_primary_data_id', 'type'], 'integer'],
             [['measurement', 'compared', 'invalid','uncompared','expired','unworked'], 'string', 'max' => 255],
             [['control_primary_data_id'], 'exist', 'skipOnError' => true, 'targetClass' => PrimaryData::className(), 'targetAttribute' => ['control_primary_data_id' => 'id']],
         ];
@@ -57,7 +54,6 @@ class PrimaryOv extends \yii\db\ActiveRecord
             'uncompared' => 'Qiyoslash muddati o\'tgan O\'V soni',
             'expired' => 'Qiyoslanmagan O\'V soni',
             'unworked' => 'Ish faoliyatida bo\'lmagan(yaroqsiz O\'Vni hisoblamaganda) O\'V soni',
-            'ov_type' => 'O\'V tekshirildi'
         ];
     }
 

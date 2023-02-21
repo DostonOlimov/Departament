@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'region_id', ArrayHelper::map(Region::find()->all(), 'id', 'name'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
+            'id',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}',

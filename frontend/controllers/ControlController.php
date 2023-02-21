@@ -28,6 +28,7 @@ use common\models\Model;
 use common\models\Codetnved;
 use common\models\control\ControlProductMeasures;
 use common\models\control\DocumentAnalysis;
+use common\models\control\InstructionType;
 use frontend\models\PrimaryIdentification;
 use Exception;
 use Yii;
@@ -119,20 +120,45 @@ class ControlController extends Controller
 
     public function actionFirstStep($id)
     {
-        $model = Instruction::findOne(['id' => $id]);
-        
+    
+        $product = Instruction::findOne(['id' => $id]);
+        $model = new InstructionType();
         if ($model->load($this->request->post()) ) {
-            $model->real_checkup_date = $model->first_date;
-            $model->checkup_finish_date = '';
-            $model->employers = 1;
+            $model->product = 0;
+            $model->ov = 0;
+            $model->document = 0;
+            $model->canceled = 0;
+            foreach ($model->type as $key => $value) {
+                if($value == 1){
+                    $model->product = 1;
+                }
+                if($value == 2){
+                    $model->ov = 1;
+                }
+                if($value == 3){
+                    $model->document = 1;
+                }
+                if($value == 4){
+                    $model->canceled = 1;
+                }
+            }
+            $model->instruction_id = $id;
+
+            $product->real_checkup_date = $model->date;
             if($model->validate() && $model->save(false))
             {
-                
-            $company = Company::findOne(['control_instruction_id' => $model->id]);
-            return $this->redirect(['primary-data', 'company_id' => $company->id]);;
+            $product->save(false);
+            $company = Company::findOne(['control_instruction_id' => $id]);
+            if($model->canceled == 1 )
+            {
+                return $this->redirect(['laboratory', 'company_id' => $company->id]);
+            }
+            else{
+                return $this->redirect(['primary-data', 'company_id' => $company->id]);
+            }
+            
         } 
-       
-       
+          
     }
         return $this->render('first-step', [
             'model' => $model,
@@ -171,83 +197,37 @@ class ControlController extends Controller
     {
 
         $model = PrimaryData::findOne(['control_company_id' => $company_id]);
-        $t = false;
-        if(!$model){
+        $company = Company::findOne($company_id);
+        $type = InstructionType::findOne(['instruction_id' => $company->control_instruction_id ]);
+
             $model = new PrimaryData();
             $model->control_company_id = $company_id;
-            $products = [new PrimaryProduct];
+
             $ovs = [new PrimaryOv];
             $documents = [new DocumentAnalysis];
-
-          $pro_primary[0] = [new PrimaryProductNd];
-          $pro_primary[1] = [new PrimaryProductNd];
 
           $pro_ovs[0] = [new ControlPrimaryOvNd];
           $pro_ovs[1] = [new ControlPrimaryOvNd];
 
-          $pro_cer[0] = [new ControlProductCertification];
-          $pro_cer[1] = [new ControlProductCertification];
-        }
-        else
-        {
-            $t = true;
-            $model->control_company_id = $company_id;
-            $products = [new PrimaryProduct];
-            $ovs = [new PrimaryOv];
-            $documents = [new DocumentAnalysis];
-
-          $pro_primary[0] = [new PrimaryProductNd];
-          $pro_primary[1] = [new PrimaryProductNd];
-
-          $pro_ovs[0] = [new ControlPrimaryOvNd];
-          $pro_ovs[1] = [new ControlPrimaryOvNd];
-
-          $pro_cer[0] = [new ControlProductCertification];
-          $pro_cer[1] = [new ControlProductCertification];
-        }
         $post = $this->request->post();
         if ($model->load($post)) {
          // VarDumper::dump($this->request->post('PrimaryOv')[0]['ov_type'],12,true);die;
 
-           unset($products[1]);
-           unset($pro_primary[1]);
-           unset($pro_cer[1]);
-           unset($pro_ovs[1]);
-
-            $products = Model::createMultiple(PrimaryProduct::classname());
-            Model::loadMultiple($products, $this->request->post());
             $ovs = Model::createMultiple(PrimaryOv::classname());
             Model::loadMultiple($ovs, Yii::$app->request->post());
             $documents = Model::createMultiple(DocumentAnalysis::classname());
             Model::loadMultiple($documents, Yii::$app->request->post());
-            foreach($products as $key =>  $product){
-                $product->product_type =$this->request->post('PrimaryProduct')[0]['product_type'];
-            }
-            foreach($documents as $key =>  $doc){
-                $doc->document_type =$this->request->post('DocumentAnalysis')[0]['document_type'];
-            }
-            foreach($ovs as $key =>  $ov){
-                $ov->ov_type =$this->request->post('PrimaryOv')[0]['ov_type'];
-            }
-            $valid = $model->validate() && Model::validateMultiple($ovs) && Model::validateMultiple($products) && Model::validateMultiple($documents);
+            
+            $valid = $model->validate() && Model::validateMultiple($ovs)  && Model::validateMultiple($documents); //&& Model::validateMultiple($products);
             
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                $arrayImage = [];
                 try {
-                    if($products[0]->product_type == 0)
-                        $model->product_exsist = 1;
-                    else
-                        $model->product_exsist = 0;
                     $model->save(false);
-                    if($ov->ov_type == 0)
-                    {
+                if($type->ov == 1){
                     foreach ($ovs as $key_ov1 => $ov) {
-                            if($t)
-                            {
-                            PrimaryOv::deleteAll(['control_primary_data_id' => $model->id]);
-                            ControlPrimaryOvNd::deleteAll(['ov_id' => $ov->id]);
-                            }
+                           
                             $ov1 = new PrimaryOv();
                             $ov1->control_primary_data_id = $model->id;
                             $ov1->type = $ov->type;
@@ -272,85 +252,83 @@ class ControlController extends Controller
                                 }
                                }
                             }
-                        } 
-                $id = [];
-                }
-            if($products[0]->product_type == 0)
-                {
-                foreach ($products as $key_p1 => $product)
-                {
-                  if($t)
-                    { 
-                        $old_pro = PrimaryProduct::findAll(['control_primary_data_id' => $model->id]);        
-                        foreach ($old_pro as $key_p2 => $old)
-                        {   
-                            PrimaryProductNd::deleteAll(['control_primary_product_id' => $old->id]);
-                            if(ControlProductCertification::findAll(['product_id' => $old->id]))
-                            { 
-                                ControlProductCertification::deleteAll(['product_id' => $old->id]);
-                            }        
-                            $old->delete();
-                        }       
-                    }
-                                $prod = new PrimaryProduct();
-                                $prod->control_primary_data_id = $model->id;
-                                $prod->product_type = 1;
-                                $prod->product_type_id = $product->subposition;
-                                $prod->product_name = $product->product_name;
-                                $prod->residue_quantity = $product->residue_quantity;
-                                $prod->residue_amount = $product->residue_amount;
-                                $prod->year_quantity = $product->year_quantity;
-                                $prod->year_amount = $product->year_amount;
-                                $prod->potency = $product->potency;
-                                $prod->made_country = $product->made_country;
-                                $prod->product_measure = $product->product_measure;
-                                $prod->labaratory_checking = $product->labaratory_checking;
-                                $prod->certification = $product->certification;
-                                $prod->codetnved = $product->codetnved;
-                                $prod->exsist_certificate = $product->exsist_certificate;
-                                $prod->img = \yii\web\UploadedFile::getInstance($prod, "[{$key_p1}]photo");
-                                if ($prod->img) {
-                                    $prod->photo = $prod->img->name;
-                                }
-                                $prod->save(false);
-                                $id[$key_p1] = $prod->id; 
-                }      
-               // VarDumper::dump($prod,12,true);;die();
-                        foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
-                            {
-                               foreach($proData as $k2 => $v)
-                               {
-                               
-                              $pro = new PrimaryProductNd();
-                                $pro->control_primary_product_id = $id[$k1];
-                                $pro->name = $v['name'];
-                                $pro->type_id = $v['type_id'];
-                                if($pro->validate()){
-                                    $pro->save(false);
-                                }
-                               }
-                            }
-                        if($post['ControlProductCertification'])
-                            {
-                            foreach ($post['ControlProductCertification'] as  $key_c1 => $proCer) 
-                             {
-                               foreach($proCer as $key_c2 => $v)
-                               {
-                                $pro1 = new ControlProductCertification();
-                                $pro1->product_id = $id[$key_c1];
-                                $pro1->number_reestr = $v['number_reestr'];
-                                $pro1->date_to = $v['date_to'];
-                                $pro1->date_from = $v['date_from'];
-                                if($pro1->validate()){
-                                $pro1->save(false);
-                                }
-                               }
-                            }
                         }
-                }
+                    }
+            // if($products[0]->product_type == 0)
+            //     {
+            //     foreach ($products as $key_p1 => $product)
+            //     {
+            //       if($t)
+            //         { 
+            //             $old_pro = PrimaryProduct::findAll(['control_primary_data_id' => $model->id]);        
+            //             foreach ($old_pro as $key_p2 => $old)
+            //             {   
+            //                 PrimaryProductNd::deleteAll(['control_primary_product_id' => $old->id]);
+            //                 if(ControlProductCertification::findAll(['product_id' => $old->id]))
+            //                 { 
+            //                     ControlProductCertification::deleteAll(['product_id' => $old->id]);
+            //                 }        
+            //                 $old->delete();
+            //             }       
+            //         }
+            //                     $prod = new PrimaryProduct();
+            //                     $prod->control_primary_data_id = $model->id;
+            //                     $prod->product_type = 1;
+            //                     $prod->product_type_id = $product->subposition;
+            //                     $prod->product_name = $product->product_name;
+            //                     $prod->residue_quantity = $product->residue_quantity;
+            //                     $prod->residue_amount = $product->residue_amount;
+            //                     $prod->year_quantity = $product->year_quantity;
+            //                     $prod->year_amount = $product->year_amount;
+            //                     $prod->potency = $product->potency;
+            //                     $prod->made_country = $product->made_country;
+            //                     $prod->product_measure = $product->product_measure;
+            //                     $prod->labaratory_checking = $product->labaratory_checking;
+            //                     $prod->certification = $product->certification;
+            //                     $prod->codetnved = $product->codetnved;
+            //                     $prod->exsist_certificate = $product->exsist_certificate;
+            //                     $prod->img = \yii\web\UploadedFile::getInstance($prod, "[{$key_p1}]photo");
+            //                     if ($prod->img) {
+            //                         $prod->photo = $prod->img->name;
+            //                     }
+            //                     $prod->save(false);
+            //                     $id[$key_p1] = $prod->id; 
+            //     }      
+            //    // VarDumper::dump($prod,12,true);;die();
+            //             foreach ($post['PrimaryProductNd'] as $k1 => $proData) 
+            //                 {
+            //                    foreach($proData as $k2 => $v)
+            //                    {
+                               
+            //                   $pro = new PrimaryProductNd();
+            //                     $pro->control_primary_product_id = $id[$k1];
+            //                     $pro->name = $v['name'];
+            //                     $pro->type_id = $v['type_id'];
+            //                     if($pro->validate()){
+            //                         $pro->save(false);
+            //                     }
+            //                    }
+            //                 }
+            //             if($post['ControlProductCertification'])
+            //                 {
+            //                 foreach ($post['ControlProductCertification'] as  $key_c1 => $proCer) 
+            //                  {
+            //                    foreach($proCer as $key_c2 => $v)
+            //                    {
+            //                     $pro1 = new ControlProductCertification();
+            //                     $pro1->product_id = $id[$key_c1];
+            //                     $pro1->number_reestr = $v['number_reestr'];
+            //                     $pro1->date_to = $v['date_to'];
+            //                     $pro1->date_from = $v['date_from'];
+            //                     if($pro1->validate()){
+            //                     $pro1->save(false);
+            //                     }
+            //                    }
+            //                 }
+            //             }
+            //     }
                
-                if($documents[0]->document_type == 0)
-                {
+             if($type->document == 1){
                 foreach ($documents as $key_doc1 => $doc) {
                         
                         $doc1 = new DocumentAnalysis();
@@ -362,8 +340,14 @@ class ControlController extends Controller
                         $doc1->save(false);
                     }
                 }
+                    
             $transaction->commit();
-                    return $this->redirect(['identification','company_id' => $company_id]);
+            if($type->product == 1){
+                return $this->redirect(['/control/primary-products/index','primary_data_id' => $model->id]);
+            }
+            else{
+                return $this->redirect(['laboratory','company_id' => $company_id]);
+            }
                 } catch (Exception $e) 
                 {
                     $transaction->rollBack();
@@ -374,95 +358,14 @@ class ControlController extends Controller
 
         return $this->render('primary-data', [
             'model' => $model,
-            'pro_primary' => $pro_primary,
-            'pro_cer' => $pro_cer,
-            'product' => $products,
             'ov' =>$ovs,
             'document' => $documents,
             'company_id' => $company_id,
             'pro_ov' => $pro_ovs,
+            'type' => $type,
         ]);
     }
   
-    public function actionCodeTnVed($term)
-	{
-    
-		$kodtnved = Codetnved::find()->select(['kod as id', 'concat(kod, " - ", name) as text'])->where('kod like "%'.$term.'%" or name like "%'.$term.'%"')->asArray()->all();
-		return json_encode($kodtnved);
-	}
-
-    public function actionGroup():array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-            $cat_id = $parents[0];
-            $out = ProductGroup::find()
-                ->where(['sector_id' => $cat_id])
-                ->select(['kode as id','name'])
-                ->orderBy('name', 'ASC')
-                ->asArray()
-                ->all();
-            return ['output'=>$out, 'selected'=>''];
-        }
-        return  ['output'=>'', 'selected'=>''];
-    }
-
-
-    public function actionClass():array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-                $cat_id = $parents[0].'%';
-                $out = ProductClass::find()
-                    ->where(['like', 'kode', $cat_id, false])
-                    ->select(['kode as id','name'])
-                    ->orderBy('name', 'ASC')
-                    ->asArray()
-                    ->all();
-                return ['output'=>$out, 'selected'=>''];
-        }
-       return  ['output'=>'', 'selected'=>''];
-    }
-
-
-    public function actionPosition() :array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-            $cat_id = $parents[0].'%';
-            $out = ProductPosition::find()
-                ->where(['like', 'kode', $cat_id, false])
-                ->select(['kode as id','name'])
-                ->orderBy('name', 'ASC')
-                ->asArray()
-                ->all();
-            return ['output'=>$out, 'selected'=>''];
-        }
-        return  ['output'=>'', 'selected'=>''];
-    }
-
-    public function actionSubposition():array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-            $cat_id = $parents[0].'%';
-            $out = ProductSubposition::find()
-                ->where(['like', 'kode', $cat_id, false])
-                ->select(['kode as id','name'])
-                ->orderBy('name', 'ASC')
-                ->asArray()
-                ->all();
-            return ['output'=>$out, 'selected'=>''];
-        }
-        return  ['output'=>'', 'selected'=>''];
-    }
-
-
-
     public function actionPrimaryDataView($id)
     {
         $searchOv = new PrimaryOvSearch($id);
@@ -486,14 +389,12 @@ class ControlController extends Controller
 
     public function actionIdentification($company_id)
     {
-       $id = PrimaryData::find()
+       $data_id = PrimaryData::find()
             ->where(['control_company_id' => $company_id])
             ->one();
         $products = PrimaryProduct::find()
-            ->where(['control_primary_data_id' => $id->id])
+            ->where(['control_primary_data_id' => $data_id->id])
             ->all();
-        if($products)
-        {
         foreach($products as $key => $value) 
             {   
                 $model[$key] = new PrimaryIdentification();
@@ -504,7 +405,7 @@ class ControlController extends Controller
             
         $labs = [];
         $products_lab = PrimaryProduct::find()
-            ->where(['control_primary_data_id' => $id->id])
+            ->where(['control_primary_data_id' => $data_id->id])
             ->andWhere(['labaratory_checking'=>1])
             ->all();
         foreach($products_lab as $key => $value) 
@@ -517,7 +418,7 @@ class ControlController extends Controller
 
         $certificates = [];
         $products_certificate = PrimaryProduct::find()
-            ->where(['control_primary_data_id' => $id->id])
+            ->where(['control_primary_data_id' => $data_id->id])
             ->andWhere(['>=', 'certification', 1])
             ->all();
         foreach($products_certificate as $key => $value) 
@@ -570,9 +471,12 @@ class ControlController extends Controller
                        if($pro_pr->validate())
                        {
                         $pro_pr->save(false);
+                       $data_id->identification_status = 1;
+                       $data_id->save(false);   
                        
                        }
                     }
+                   
                     foreach ($labs as $key => $value) 
                     {
                       $lab = new ControlProductLabaratoryChecking;
@@ -625,10 +529,7 @@ class ControlController extends Controller
             'labs' => $labs,
             'company_id' => $company_id,
          ]);
-        }
-        else{
-            return $this->redirect(['laboratory', 'company_id' => $company_id,]);
-        }
+       
     }
 
     public function actionIdentificationView($id)
@@ -869,9 +770,8 @@ class ControlController extends Controller
         if ($model->load($this->request->post()) ) {
             $model->checkup_finish_date = $model->finish_date;
             $model->employers = 1;
-            $model->start_type = 2;
             $model->general_status = Instruction::GENERAL_STATUS_SEND;
-            if($model->validate() && $model->save(false))
+            if( $model->save(false))
             {
             return $this->redirect(['index',]);
         } 
@@ -882,5 +782,83 @@ class ControlController extends Controller
             'id' => $id,
             'company_id' => $company_id,
         ]);
+    }
+
+
+    public function actionCodeTnVed($term)
+	{
+    
+		$kodtnved = Codetnved::find()->select(['kod as id', 'concat(kod, " - ", name) as text'])->where('kod like "%'.$term.'%" or name like "%'.$term.'%"')->asArray()->all();
+		return json_encode($kodtnved);
+	}
+
+    public function actionGroup():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0];
+            $out = ProductGroup::find()
+                ->where(['sector_id' => $cat_id])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
+
+
+    public function actionClass():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+                $cat_id = $parents[0].'%';
+                $out = ProductClass::find()
+                    ->where(['like', 'kode', $cat_id, false])
+                    ->select(['kode as id','name'])
+                    ->orderBy('name', 'ASC')
+                    ->asArray()
+                    ->all();
+                return ['output'=>$out, 'selected'=>''];
+        }
+       return  ['output'=>'', 'selected'=>''];
+    }
+
+
+    public function actionPosition() :array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductPosition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
+
+    public function actionSubposition():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductSubposition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
     }
 }

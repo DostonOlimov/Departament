@@ -12,7 +12,6 @@ use yii\widgets\DetailView;
 
 $this->title = 'Davlat nazoratini o\'tkazish uchun asos';
 $this->params['breadcrumbs'][] = $this->title;
-
 $company = Company::findOne(['control_instruction_id' => $model->id])
 ?>
 

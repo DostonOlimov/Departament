@@ -25,6 +25,7 @@ use common\models\prevention\Prevention;
 use common\models\embargo\Embargo;
 use common\models\control\InstructionFile;
 use common\models\measure\Economics;
+use common\models\control\InstructionType;
 use Exception;
 use Yii;
 use yii\filters\AccessControl;
@@ -122,6 +123,7 @@ class InstructionController extends Controller
                 Caution::deleteAll(['control_company_id' => $company->id]);
 		        Measure::deleteAll(['control_company_id' => $company->id]);
                 $company->delete();
+                InstructionType::deleteAll(['instruction_id' => $id]);
                 InstructionUser::deleteAll(['instruction_id' => $id]);
                 Executions::deleteAll(['control_instruction_id' => $id]);
                 Economics::deleteAll(['control_instruction_id' => $id]);

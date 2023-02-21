@@ -72,75 +72,6 @@ class PrimaryProductsController extends Controller
             'primary_data_id' => $primary_data_id,
         ]);
     }
-    public function actionGroup():array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-            $cat_id = $parents[0];
-            $out = ProductGroup::find()
-                ->where(['sector_id' => $cat_id])
-                ->select(['kode as id','name'])
-                ->orderBy('name', 'ASC')
-                ->asArray()
-                ->all();
-            return ['output'=>$out, 'selected'=>''];
-        }
-        return  ['output'=>'', 'selected'=>''];
-    }
-
-
-    public function actionClass():array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-                $cat_id = $parents[0].'%';
-                $out = ProductClass::find()
-                    ->where(['like', 'kode', $cat_id, false])
-                    ->select(['kode as id','name'])
-                    ->orderBy('name', 'ASC')
-                    ->asArray()
-                    ->all();
-                return ['output'=>$out, 'selected'=>''];
-        }
-       return  ['output'=>'', 'selected'=>''];
-    }
-
-
-    public function actionPosition() :array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-            $cat_id = $parents[0].'%';
-            $out = ProductPosition::find()
-                ->where(['like', 'kode', $cat_id, false])
-                ->select(['kode as id','name'])
-                ->orderBy('name', 'ASC')
-                ->asArray()
-                ->all();
-            return ['output'=>$out, 'selected'=>''];
-        }
-        return  ['output'=>'', 'selected'=>''];
-    }
-
-    public function actionSubposition():array {
-        $out = [];
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $post = $this->request->post();
-        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
-            $cat_id = $parents[0].'%';
-            $out = ProductSubposition::find()
-                ->where(['like', 'kode', $cat_id, false])
-                ->select(['kode as id','name'])
-                ->orderBy('name', 'ASC')
-                ->asArray()
-                ->all();
-            return ['output'=>$out, 'selected'=>''];
-        }
-        return  ['output'=>'', 'selected'=>''];
-    }
 
     public function actionView($id,$primary_data_id)
     {
@@ -321,5 +252,75 @@ class PrimaryProductsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionGroup():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0];
+            $out = ProductGroup::find()
+                ->where(['sector_id' => $cat_id])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
+
+
+    public function actionClass():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+                $cat_id = $parents[0].'%';
+                $out = ProductClass::find()
+                    ->where(['like', 'kode', $cat_id, false])
+                    ->select(['kode as id','name'])
+                    ->orderBy('name', 'ASC')
+                    ->asArray()
+                    ->all();
+                return ['output'=>$out, 'selected'=>''];
+        }
+       return  ['output'=>'', 'selected'=>''];
+    }
+
+
+    public function actionPosition() :array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductPosition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
+    }
+
+    public function actionSubposition():array {
+        $out = [];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = $this->request->post();
+        if ($parents = ArrayHelper::getValue($post, 'depdrop_parents', false)) {
+            $cat_id = $parents[0].'%';
+            $out = ProductSubposition::find()
+                ->where(['like', 'kode', $cat_id, false])
+                ->select(['kode as id','name'])
+                ->orderBy('name', 'ASC')
+                ->asArray()
+                ->all();
+            return ['output'=>$out, 'selected'=>''];
+        }
+        return  ['output'=>'', 'selected'=>''];
     }
 }

@@ -26,9 +26,6 @@ use yii\behaviors\TimestampBehavior;
  */
 class DocumentAnalysis extends \yii\db\ActiveRecord
 {
-    public $document_type;
-
-
     /**
      * {@inheritdoc}
      */
@@ -62,7 +59,6 @@ class DocumentAnalysis extends \yii\db\ActiveRecord
             'reestr_number' => 'Hujjat reestr raqami',
             'given_date' => 'Hujjat berilgan sana',
             'defect' => 'Kamchilik',
-            'document_type' => 'Hujjat tahlili',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'created_at' => 'Created At',

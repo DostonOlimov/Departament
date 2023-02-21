@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 AppAsset::register($this);
 
 $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
-
+$product = PrimaryProduct::findOne(['control_primary_data_id' => $primary_data_id]);
 ?>
 
 
@@ -37,7 +37,7 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
 <h1><?= Html::encode($this->title) ?></h1>
 <hr>
 <div class="pull-right">
-    <?= Html::a('Mahsulot qo\'shish', ['/control/primary-products/create','primary_data_id'=>$primary_data_id], ['class' => 'btn btn-primary']) ;?>
+    <?php if($primaryData->identification_status == 0) { echo  Html::a('Mahsulot qo\'shish', ['/control/primary-products/create','primary_data_id'=>$primary_data_id], ['class' => 'btn btn-primary']) ;}?>
    </div>
         <?=  GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -87,20 +87,8 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
                             return $result;
                         },
                         'format' => 'raw'
-                    ],
-                 
-                  
-                    // [
-                    //     'class' => ActionColumn::className(),
-                    //     'contentOptions' => ['style' => 'color:red;size:34px;',],
-                    //     'buttonOptions' => [
-                    //         'class' => 'text-primary'
-                    //     ],
-                    //     'urlCreator' => function ($action, PrimaryProduct $model, $key, $index, $column) {
-                    //         return Url::toRoute([$action, 'id' => $model->id,'primary_data_id' => $model->control_primary_data_id]);
-                    //      }
-                    // ],
-                   
+                    ],    
+                    'control_primary_data_id',           
                     [  'label' => 'Normativ hujjat(lar) turi va nomi',
                         'value' => function($pro){
                         return
@@ -123,7 +111,10 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
         ?>
     <div>
 <div>   
-
+<?php if($product && $primaryData->identification_status != 1) {
+    echo Html::a('Mahsulot qo\'shishni yakunlash', ['/control/identification','company_id'=>$primaryData->control_company_id], ['class' => 'btn btn-danger']);
+    } 
+    ?>
 </div>
-    </div>
+</div>
 
