@@ -14,8 +14,12 @@ use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\embargo\Embargo $model */
-
-$this->title = $model->id;
+if($model->status == 2){
+    $this->title = $model->instruction->controlCompany->name;
+}else{
+    $this->title = $model->message_number; 
+}
+// $this->title = $model->instruction->controlCompany->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taqiqlash'), 'url' => ['embargo']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -45,10 +49,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     [
                         'label' => 'Yozma ko\'rsatma raqami',
-                        'value' => function ($data) {   
-                            return $data ? $data->id : '';
+                        'value'=>function($model){
+                            if($model->status === 1){
+                            return $model->message_number;
+                            }else{
+                                return '';
+                            }
                         }
                     ],
+                   
                         
                         [
                             'label' => 'Korxona',
@@ -123,10 +132,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute'=> 'updated_by',
                             'value'=> function($model){
                                 $user = User::findOne($model->updated_by);
-                                if($model->status == 1){               
+                                          
                                 return $user ? $user->name .' '.$user->surname :'';
-                                }return '';
                             }
+                            
                         ],
                     //'created_at',
                     'updated_at',
