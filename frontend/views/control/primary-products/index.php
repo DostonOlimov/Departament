@@ -3,6 +3,7 @@
 use common\models\control\PrimaryProduct;
 use common\models\types\ProductSubposition;
 use common\models\control\PrimaryProductNd;
+use common\models\control\Instruction;
 use common\models\NdType;
 use common\models\Countries;
 use common\models\control\Company;
@@ -24,6 +25,7 @@ AppAsset::register($this);
 
 $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
 $product = PrimaryProduct::findOne(['control_primary_data_id' => $primary_data_id]);
+
 ?>
 
 
@@ -42,7 +44,7 @@ $product = PrimaryProduct::findOne(['control_primary_data_id' => $primary_data_i
         <?=  GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
-                'headerRowOptions' => ['style' => 'background-color: rgb(86, 212, 13);'],
+                'headerRowOptions' => ['style' => 'background-color: #0072b5 '],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
@@ -91,8 +93,9 @@ $product = PrimaryProduct::findOne(['control_primary_data_id' => $primary_data_i
                     'control_primary_data_id',           
                     [  'label' => 'Normativ hujjat(lar) turi va nomi',
                         'value' => function($pro){
-                        return
-                            Html::a('<span class="fa fa-eye"></span> ', ['view','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'view','class'=>'btn btn-success']).' '.
+                            $instruction = Instruction::findOne(Company::findOne(PrimaryData::findOne($pro->control_primary_data_id)->control_company_id)->control_instruction_id);
+                        if($instruction->general_status == Instruction::GENERAL_STATUS_IN_PROCESS){
+                         return   Html::a('<span class="fa fa-eye"></span> ', ['view','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'view','class'=>'btn btn-success']).' '.
                             Html::a('<span class="fa fa-pencil"></span> ', ['update','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'edit','class'=>'btn btn-info']).' '.
                             Html::a('<span class="fa fa-trash"></span> ', ['delete', 'id' => $pro->id], [
                                 'class' => 'btn btn-danger',
@@ -101,7 +104,11 @@ $product = PrimaryProduct::findOne(['control_primary_data_id' => $primary_data_i
                                     'method' => 'post',
                                 ],
                             ]);
-                        },
+                        }
+                        else{
+                            return Html::a('<span class="fa fa-eye"></span> ', ['view','id'=>$pro->id,'primary_data_id' => $pro->control_primary_data_id], ['title' => 'view','class'=>'btn btn-success']);
+                        }
+                    },
                         'format'=>'raw',
                     ],
                    

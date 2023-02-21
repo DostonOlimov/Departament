@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\control\Instruction;
 use common\models\control\Company;
 use common\models\control\PrimaryData;
 use frontend\widgets\Steps;
@@ -20,6 +21,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Primary Products', 'url' => ['inde
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
+$instruction = Instruction::findOne(Company::findOne($primaryData->control_company_id)->control_instruction_id);
 ?>
 <div class="page1-1 row">
   <?= Steps::widget([
@@ -30,6 +32,7 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p> <?= Html::a('Asosiyga qaytish', ['index', 'primary_data_id' => $primary_data_id], ['class' => 'btn btn-primary']) ?>
+       <?php if($instruction->general_status == Instruction::GENERAL_STATUS_IN_PROCESS) :?>
         <?= Html::a('Tahrirlash', ['update', 'id' => $model->id,'primary_data_id' => $primary_data_id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('O\'chirish', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -37,7 +40,7 @@ $primaryData = PrimaryData::findOne(['id' => $primary_data_id]);
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]); endif; ?>
     </p>
 
     <?= DetailView::widget([

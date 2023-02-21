@@ -21,6 +21,7 @@ use common\models\control\ControlProductMeasures;
 use common\models\control\ControlPrimaryOvNd;
 use common\models\measure\Executions;
 use common\models\caution\CautionLetters;
+use common\models\control\DocumentAnalysis;
 use common\models\prevention\Prevention;
 use common\models\embargo\Embargo;
 use common\models\control\InstructionFile;
@@ -113,9 +114,11 @@ class InstructionController extends Controller
                             ControlPrimaryOvNd::deleteAll(['ov_id' => $ov->id]);
                              }
                         }
+                        DocumentAnalysis::deleteAll(['primary_data_id' => $primaryData->id]);
 		            PrimaryProduct::deleteAll(['control_primary_data_id' => $primaryData->id]);    
                     PrimaryOv::deleteAll(['control_primary_data_id' => $primaryData->id]);
                     PrimaryData::deleteAll(['control_company_id' => $company->id]);
+
                 }
                 Identification::deleteAll(['control_company_id' => $company->id]);
                 Laboratory::deleteAll(['control_company_id' => $company->id]);
@@ -123,6 +126,7 @@ class InstructionController extends Controller
                 Caution::deleteAll(['control_company_id' => $company->id]);
 		        Measure::deleteAll(['control_company_id' => $company->id]);
                 $company->delete();
+               
                 InstructionType::deleteAll(['instruction_id' => $id]);
                 InstructionUser::deleteAll(['instruction_id' => $id]);
                 Executions::deleteAll(['control_instruction_id' => $id]);

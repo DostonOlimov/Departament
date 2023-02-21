@@ -26,6 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
     <div class="col-sm-6">
+            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
+        </div>
+    <div class="col-sm-6">
+            <?= $form->field($model, 'letter_date')->widget(DatePicker::className(),['pluginOptions' => [
+        'autoclose' => true,
+        'format' => 'dd.mm.yyyy'
+    ]]) ?>
+        </div>
+    <div class="col-sm-6">
             <?= $form->field($model, 'dn')->dropDownList(Instruction::getDN(),['onclick' => "typeChange(event,this)",]) ?>
         </div>
         <div class="col-sm-6">
@@ -38,8 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-6" id = "type">
             <?= $form->field($model, 'type')->dropDownList(Instruction::getType()) ?>
         </div>
-    </div>
-    <div class="row">
     <div class="col-sm-6">
             <?= $form->field($model, 'command_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
@@ -49,20 +56,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-6">
             <?= $form->field($model, 'command_number')->textInput(['type' => 'number']) ?>
         </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'letter_date')->widget(DatePicker::className(),['pluginOptions' => [
-        'autoclose' => true,
-        'format' => 'dd.mm.yyyy'
-    ]]) ?>
-        </div>
+     
         <div class="col-sm-6">
             <?= $form->field($model, 'checkup_begin_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
         'format' => 'dd.mm.yyyy'
     ]]) ?>
         </div>
-    </div>
-    <div class="row">
         <div class="col-sm-6">
             <?= $form->field($model, 'checkup_duration_start_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
@@ -75,16 +75,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'format' => 'dd.mm.yyyy'
     ]]) ?>
         </div>
-    </div>
-    <div class="row">
-    <div class="col-sm-6">
-            <?= $form->field($model, 'who_send_letter')->TextInput(['type' =>'text']) ?>
-        </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'checkup_duration')->dropDownList(Instruction::getDuration()) ?>
         </div>
-    </div>
-    <div class="row">
         <div class="col-sm-12">
             <?= $form->field($model, 'checkup_subject')->widget(Select2::class, [
                 'data' => Instruction::getSubject(),
@@ -93,8 +86,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'showToggleAll' => false,
             ]) ?>
         </div>
-    </div>
-    <div class="row">
         <div class="col-sm-6">
             <label>Ijrochi:</label>
             <label class="form-control" readonly><?= Yii::$app->user->id ? User::findOne(Yii::$app->user->id)->name . ' ' . User::findOne(Yii::$app->user->id)->surname : 'Inspektor F.I.О' ?></label>

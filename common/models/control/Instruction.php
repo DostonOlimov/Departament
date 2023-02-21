@@ -262,7 +262,7 @@ class Instruction extends \yii\db\ActiveRecord
             'might_be_breakdown_letter' => 'Buzilishi mumkin bo\'lgan normativ hujjat',
             'finish_date' => 'Tekshiruvning haqiqatda yakunlangan sanasi',
             'checkup_subject' => 'Tekshiruv predmeti',
-            'who_send_letter' => 'Tekshirish uchun asos bo’luvchi hujjat jo’natgan tashkilot nomi yoki shaxs FISH',
+            'who_send_letter' => 'Asos bo’luvchi hujjat jo’natuvchi shaxs,xat raqami',
             'dn' => 'Davlat nazorati turi',
             'checkup_end_date' => 'Tekshiruv tugash sanasi',
 
