@@ -37,8 +37,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'notice_id',
                     'value' => function ($model) {
+                        if ($model->notice_id) {
+                            return $model->shoppingNotice->notice_number;
+                        } else {
+                            return '';
+                        }
                         
-                        return $model->shoppingNotice->notice_number;
+                       
                     }
                 ],
                 // 'letter_date:date',
@@ -166,7 +171,8 @@ if ($answers) { ?>
 
 $labs = Product::find()->where(['shopping_company_id' => $company->id])->all();
 
-if ($answers[0]->lab_conclusion) { ?>        
+
+if (!empty($answers[0]->lab_conclusion)) { ?>        
     <div class="company-view">
     <h2 >Laboratoriya</h2>
             <p>
