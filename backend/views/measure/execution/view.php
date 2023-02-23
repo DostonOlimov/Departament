@@ -46,8 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'person',
             'person_position:ntext',
             'number_passport',
-            'fine_amount',
-            'paid_amount',
             [
                 'attribute' => 'band_mjtk',
                 'value' => function ($model) {

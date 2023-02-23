@@ -55,7 +55,7 @@ class Executions extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_instruction_id', 'fine_amount', 'paid_amount', 'm212','m213','m214', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['control_instruction_id', 'm212','m213','m214', 'created_by', 'updated_by',], 'integer'],
             [['person_position'], 'string'],
             [['person'],'match', 'pattern' => '/^[a-zA-Z\s]+$/', 'message' => 'Faqat lotin harflaridan foydalaning'],
             [['person','number_passport'], 'required'],
@@ -76,7 +76,6 @@ class Executions extends \yii\db\ActiveRecord
             'control_instruction_id' => 'Control Instruction ID',
             'person' => 'Jarimaga tortilgan shaxs F.I.O',
             'number_passport' => 'Passport seriya',
-            'fine_amount' => 'Jarima summasi',
             'realization_date' => 'Realizatsiyasni taqiqlash sanasi',
             'realization_number' => 'Realizatsiyasni taqiqlash raqami',
             'band_mjtk' => 'MJtK moddalari',

@@ -20,9 +20,6 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'number_passport')->widget(MaskedInput::className(), [
                         'mask' => 'AA9999999'
                     ]) ?>
-    <?= $form->field($model, 'fine_amount')->textInput(['type' => 'number']) ?>
-
-    <?= $form->field($model, 'paid_amount')->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, 'person_position')->textarea(['rows' => 2]) ?>
 

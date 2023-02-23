@@ -84,16 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
                  </div>
                 <div class="col-md-12 col-lg-6">
-                    <?= $form->field($stan, "[{$i}]first_date")->widget(DatePicker::className(),['pluginOptions' => [
-        'autoclose' => true,
-        'format' => 'dd.mm.yyyy'
-    ]])  ?>
-                </div>
-                <div class="col-md-12 col-lg-6">
-                    <?= $form->field($stan, "[{$i}]fine_amount")->textInput() ?>
-                </div>
-                <div class="col-md-12 col-lg-6">
-                    <?= $form->field($stan, "[{$i}]paid_amount")->textInput() ?>
+                    <?= $form->field($stan, "[{$i}]first_date")->textInput(['type' => 'date',])  ?>
                 </div>
                 <div class="col-md-12 col-lg-6">
                     <?= $form->field($stan, "[{$i}]caution_number")->textInput(['type'=>'number']) ?>

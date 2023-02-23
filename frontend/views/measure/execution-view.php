@@ -32,8 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'number_passport',
                         'first_date:date',
                         'caution_number',
-                        'fine_amount',
-                        'paid_amount',
                         [
                             'attribute' => 'band_mjtk',
                             'value' => function ($model) {

@@ -137,6 +137,7 @@ class ExecutionController extends Controller
                     $model->save(false);
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
+                
         }
 
         return $this->render('update', [
