@@ -1,6 +1,7 @@
 <?php
 
 namespace common\models\shopping;
+use common\models\shopping\Instruction;
 use common\models\User;
 
 use Yii;
@@ -39,9 +40,9 @@ class ShoppingNotice extends \yii\db\ActiveRecord
             [['created_by', 'updated_by','notice_number','notice_sum'], 'required'],
             [['created_by', 'updated_by', 'attachment_user_id'], 'integer'],
             [['notice_number', 'notice_sum', 'status'], 'string', 'max' => 255],
-            [['attachment_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['attachment_user_id' => 'id']],
-            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
+          //  [['attachment_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['attachment_user_id' => 'id']],
+            // [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            // [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }
 
@@ -89,5 +90,9 @@ class ShoppingNotice extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+    public function getInstruction()
+    {
+        return $this->hasMany(Instruction::class, ['notice_id' => 'id']);
     }
 }

@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Bildirgi raqami',
                 'value' => function ($model) {
                     $instruction = Instruction::findOne(['id' => $model->id]);
-                    if ($instruction) {
+                    if ($instruction->notice_id) {
                         return $instruction->shoppingNotice->notice_number;
                     } else {
                         return '';
