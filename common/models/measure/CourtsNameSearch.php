@@ -4,12 +4,12 @@ namespace common\models\measure;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\measure\Executions;
+use common\models\measure\CourtsName;
 
 /**
- * ExecutionsSearch represents the model behind the search form of `common\models\measure\Executions`.
+ * CourtsNameSearch represents the model behind the search form of `common\models\measure\CourtsName`.
  */
-class ExecutionsSearch extends Executions
+class CourtsNameSearch extends CourtsName
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class ExecutionsSearch extends Executions
     public function rules()
     {
         return [
-            [['id', 'control_instruction_id', 'first_date', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['person', 'number_passport', 'band_mjtk', 'explanation_letter', 'claim', 'court_letter', 'person_position', 'caution_number'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class ExecutionsSearch extends Executions
      */
     public function search($params)
     {
-        $query = Executions::find();
+        $query = CourtsName::find();
 
         // add conditions that should always apply here
 
@@ -59,22 +59,13 @@ class ExecutionsSearch extends Executions
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'control_instruction_id' => $this->control_instruction_id,
-            'first_date' => $this->first_date,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'person', $this->person])
-            ->andFilterWhere(['like', 'number_passport', $this->number_passport])
-            ->andFilterWhere(['like', 'band_mjtk', $this->band_mjtk])
-            ->andFilterWhere(['like', 'explanation_letter', $this->explanation_letter])
-            ->andFilterWhere(['like', 'claim', $this->claim])
-            ->andFilterWhere(['like', 'court_letter', $this->court_letter])
-            ->andFilterWhere(['like', 'person_position', $this->person_position])
-            ->andFilterWhere(['like', 'caution_number', $this->caution_number]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

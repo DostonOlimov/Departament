@@ -1,6 +1,7 @@
 <?php
 
 use common\models\measure\Executions;
+use common\models\measure\CourtDecision;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -28,15 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'person',
             'number_passport',
-            'fine_amount',
-            'paid_amount',
-            //'band_mjtk',
-            //'explanation_letter',
-            //'claim',
-            //'court_letter',
-            //'person_position:ntext',
-            //'first_date',
-            //'caution_number',
             [
                 'attribute' => 'created_by',
                 'label' => 'Mutaxassis',
@@ -58,6 +50,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],
+            [  'label' => 'Sud qarori',
+            'value' => function($model){
+            $decision = CourtDecision::findOne(['execution_id' => $model->id]);
+             return  $decision ? Html::a('<span>Ko\'rish</span> ', ['..\court-decision\view','id'=>$model->id], ['title' => 'view','class'=>'btn btn-success'])
+             : Html::a('<span>Qo\'shish</span> ', ['..\court-decision\create','id'=>$model->id], ['title' => 'view','class'=>'btn btn-success']);
+           
+        },
+            'format'=>'raw',
+        ],
         ],
     ]); ?>
 
