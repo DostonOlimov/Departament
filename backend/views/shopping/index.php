@@ -20,8 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
     <p>
-        <?= Html::a('Bildirgilar', ['/shopping/notice/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Bildirgi status', ['/shopping/notice/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Bildirgilar', ['/shopping/shopping/notice-view'], ['class' => 'btn btn-primary']) ?>
     </p>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
