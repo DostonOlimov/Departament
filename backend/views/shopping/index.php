@@ -15,13 +15,13 @@ use yii\helpers\Url;
 /* @var $searchModel common\models\shopping\InstructionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Korxonalar';
+$this->title = 'Nazorat xaridi';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
     <p>
-        <?= Html::a('Bildirgi status', ['/shopping/notice/index'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Bildirgilar', ['/shopping/shopping/notice-view'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Bildirgilar', ['/shopping/notice/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Mahsulotlar', ['/shopping/shopping/notice-view'], ['class' => 'btn btn-primary']) ?>
     </p>
 
 
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'name',
-                'label' => 'Xyus nomi',
+                'label' => 'XYUS nomi',
                 'value' => function (Instruction $model) {
                     return $model->company ? $model->company->name : '';
                 }, 
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'inn',
-                'label' => 'Xyus inn',
+                'label' => 'XYUS STIR',
                 'value' => function (Instruction $model) {
                     return $model->company ? $model->company->inn : '';
                 },
@@ -90,28 +90,13 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'attribute' => 'created_by',
-                'label' => 'Mutaxasis',
+                'label' => 'Mutaxassis',
                 'value' => function ($model) {
                     return $model ? $model->createdBy->name .' '.$model->createdBy->surname : '' ;
                 },
                 'filter' => Html::activeDropDownList($searchModel, 'created_by', ArrayHelper::map(User::find()->all(), 'id', 'username'), ['class' => 'form-control', 'prompt' => '- - -'])
             ],
-            // [
-            //     'label' => 'Status',
-            //     'value' => function ($model) {
-            //         $company = Company::findOne(['shopping_instruction_id' => $model->id]);
-            //         if ($company) {
-            //             if (Product::findOne(['shopping_company_id' => $company->id])) {
-            //                 return '<label style="color: blue">Bajarildi</labelsty>';
-            //             } else {
-            //                 return '<label style="color: orange">Jarayonda</labelsty>';
-            //             }
-            //         } else {
-            //             return '<label style="color: orange">Jarayonda</labelsty>';
-            //         }
-            //     },
-            //     'format' => 'raw'
-            // ],
+          
             [
                 'label' => 'Status',
                 'value' => function ($model) {

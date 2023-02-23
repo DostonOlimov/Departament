@@ -98,9 +98,9 @@ if ($company) { ?>
                 'after',
                 'address',
                 [
-                    'label' => 'Mutaxasis',
+                    'label' => 'Mutaxassis',
                     'value' => function (Company $model) {
-                        return $model->createdBy->username;
+                        return $model ? $model->createdBy->name .' '.$model->createdBy->surname : '';
                     },
                 ],
             ],

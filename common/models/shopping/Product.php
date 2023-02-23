@@ -82,19 +82,19 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => '',
             'shopping_company_id' => 'Shopping Company ID',
-            'name' => 'Maxsulot nomi',
+            'name' => 'Mahsulot nomi',
             'quantity' => 'Mahsulot miqdori',
             'sum' => 'Mahsulot narxi',
             'photo' => 'Mahsulot rasmi',
             'photo_chek' => 'Chek rasmi',
-            'production_date' => 'Mahsulot ishlab chiqarilgan sanasi',
-            'purchase_date' => 'Xarid o\'tkazilgan sanasi',
+            'production_date' => 'Mahsulot ishlab chiqarilgan sana',
+            'purchase_date' => 'Xarid o\'tkazish sanasi',
             'product_lot' => 'Partiya raqami',
-            'created_by' => 'Inspector',
+            'created_by' => 'Inspektor',
             'updated_by' => 'Nazoratchi',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'lab_conclusion' => 'Laboratory xulosasi',
+            'lab_conclusion' => 'Laboratoriya xulosasi',
             'measure'=> 'Hajmi',
         ];
     }
@@ -104,7 +104,7 @@ class Product extends \yii\db\ActiveRecord
 
             self::MEASURE3 => '(m)',
             self::MEASURE2 => '(kg)',
-            self::MEASURE1 => 'dona',
+            self::MEASURE1 => '(dona)',
             self::MEASURE4 => '(m2)',
             self::MEASURE5 => '(m3)',
         ];

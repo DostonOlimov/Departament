@@ -56,7 +56,7 @@ class Company extends \yii\db\ActiveRecord
             'shopping_instruction_id' => 'Shopping Instruction ID',
             'region_id' => 'Hudud',
             'name' => 'XYUS nomi',
-            'inn' => 'XYUS INN',
+            'inn' => 'XYUS STIR',
             'after' => 'XYUS Rahbari F.I.SH',
             'phone' => 'XYUS tel',
             'link' => 'Link',
