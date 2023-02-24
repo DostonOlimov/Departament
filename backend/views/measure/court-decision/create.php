@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\measure\CourtDecision $model */
 
-$this->title = 'Create Court Decision';
+$this->title = 'Sud qarorini qo\'shish';
 $this->params['breadcrumbs'][] = ['label' => 'Court Decisions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

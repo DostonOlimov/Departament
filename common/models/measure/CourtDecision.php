@@ -49,12 +49,12 @@ class CourtDecision extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['execution_id', 'court_id'], 'required'],
-            [['execution_id', 'court_id','fine_amount', 'paid_amount', 'discont'], 'integer'],
+            [['execution_id', 'court_id',], 'required'],
+            [['execution_id', 'court_id','fine_amount', 'paid_amount', 'discont','created_by','updated_by'], 'integer'],
             [['decision_file', 'comment','paid_date', 'decision_date', 'paid_acount' ], 'string', 'max' => 255],
             [['court_id'], 'exist', 'skipOnError' => true, 'targetClass' => CourtsName::class, 'targetAttribute' => ['court_id' => 'id']],
-            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['execution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Executions::class, 'targetAttribute' => ['execution_id' => 'id']],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }

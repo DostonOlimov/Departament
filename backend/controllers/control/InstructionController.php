@@ -149,6 +149,60 @@ class InstructionController extends Controller
         return $this->redirect(['/control/control/index']);
     }
 
+    public function actionExtend($id){
+        $model = $this->findModel($id);
+        $exmodel = new Instruction();
+        if ($exmodel->load($this->request->post()) ) {
+            $exmodel->checkup_finish_date = '';
+            $exmodel->real_checkup_date = '';
+            $exmodel->base = $model->base;
+            $exmodel->type = $model->type;
+            $exmodel->checkup_subject = $model->checkup_subject;
+            $exmodel->who_send_letter = $model->who_send_letter;
+            $exmodel->letter_number = $model->letter_number;
+            $exmodel->employers = 1;
+            $user_id = InstructionUser::findALl(['instruction_id' => $model->id]);
+            if($exmodel->validate() && $exmodel->save()) {
+                foreach ($user_id as $user) {
+                    $insUser = new InstructionUser();
+                    $insUser->instruction_id = $exmodel->id;
+                    $insUser->user_id = $user->user_id;
+                   $insUser->save(false);
+                }
+                $company = Company::findOne(['control_instruction_id' => $model->id]);
+                $newCompany = new Company();
+                $newCompany->control_instruction_id = $exmodel->id;
+                $newCompany->region_id = $company->region_id;
+                $newCompany->name = $company->name;
+                $newCompany->inn = $company->inn;
+                $newCompany->soogu = $company->soogu;
+                $newCompany->thsht = $company->thsht;
+                $newCompany->ifut = $company->ifut;
+                $newCompany->mhobt = $company->mhobt;
+                $newCompany->ownername = $company->ownername;
+                $newCompany->type = $company->type;
+                $newCompany->phone = $company->phone;
+                $newCompany->link = $company->link;
+                $newCompany->address = $company->address;
+                if($newCompany->save(false)) {
+                    $model->general_status = 101;
+                    return $this->redirect(['/control/control/index', ]);
+                }
+                
+            }
+            
+        }
+        
+
+        return $this->render('extend', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionTransfer($id) {
+
+    }
+
     protected function findModel($id)
     {
         if (($model = Instruction::findOne($id)) !== null) {

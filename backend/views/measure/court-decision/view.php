@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var common\models\measure\CourtDecision $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Court Decisions', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Sud qarori', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

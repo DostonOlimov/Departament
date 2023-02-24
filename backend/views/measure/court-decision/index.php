@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var common\models\measure\CourtDecisionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Court Decisions';
+$this->title = 'Sud qarorlari';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="court-decision-index">
