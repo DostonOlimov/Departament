@@ -66,7 +66,7 @@ class ProductSearch extends Product
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'lot_conclusion' => $this->lot_conclusion,
+           // 'lot_conclusion' => $this->lot_conclusion,
             'product_lot' => $this->product_lot,
             'purchase_date' => $this->purchase_date,
             'production_date' => $this->production_date,       

@@ -4,9 +4,11 @@ namespace backend\controllers\shopping;
 use common\models\shopping\ShoppingNotice;
 use common\models\shopping\NoticeSearch;
 use common\models\shopping\InstructionSearch;
+use common\models\shopping\ProductSearch;
 use common\models\shopping\Instruction;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use Yii;
 
 class ShoppingController extends Controller
 {
@@ -28,6 +30,19 @@ class ShoppingController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('/shopping/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    
+
+    public function actionNoticeView()
+    {
+        $searchModel = new InstructionSearch(null);
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('/shopping/notice-view', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
