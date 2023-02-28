@@ -32,18 +32,28 @@ class ProductController extends Controller
         ];
     }
 
-    /*public function actionIndex()
-    {
-        $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+    // public function actionIndex()
+    // {
+    //     $searchModel = new ProductSearch();
+    //     $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
+    // public function actionNoticePro()
+    // {
+    //     $searchModel = new ProductSearch();
+    //     $dataProvider = $searchModel->search($this->request->queryParams);
 
-    public function actionView($id)
+    //     return $this->render('notice-pro', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
+
+    /*public function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),

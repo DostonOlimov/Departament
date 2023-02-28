@@ -50,6 +50,7 @@ use common\models\User;
                         ['label' => 'Normativ hujjat toifalari', 'url' => ['nd-type/index'], 'iconStyle' => 'far'],
                         ['label' => 'Dastur turi', 'url' => ['profilactic/program-type/index'], 'iconStyle' => 'far'],
                         ['label' => 'Soha nomi', 'url' => ['types/product-sector/index'], 'iconStyle' => 'far'],
+                        ['label' => 'Sud nomi', 'url' => ['measure/courts-name/index'], 'iconStyle' => 'far'],
                     ]
                 ],
                 ['label' => 'Foydalanuvchilar', 'url' => ['user/index'], 'icon' => 'fa fa-users'],
@@ -85,6 +86,7 @@ use common\models\User;
                     ['label' => 'Hududiy sudlar', 'url' => ['court/index'], 'icon' => 'fa fa-map-marker'],
                     ['label' => 'XYUS faoliyat turlari', 'url' => ['#'], 'iconStyle' => 'far'],
                     ['label' => 'Xavf tahlili', 'url' => [''], 'iconStyle' => 'far'],
+                    /// git
                     
                 ],
             

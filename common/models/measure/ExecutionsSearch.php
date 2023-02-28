@@ -17,7 +17,7 @@ class ExecutionsSearch extends Executions
     public function rules()
     {
         return [
-            [['id', 'control_instruction_id', 'fine_amount', 'paid_amount', 'first_date', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'control_instruction_id', 'first_date', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['person', 'number_passport', 'band_mjtk', 'explanation_letter', 'claim', 'court_letter', 'person_position', 'caution_number'], 'safe'],
         ];
     }
@@ -60,8 +60,6 @@ class ExecutionsSearch extends Executions
         $query->andFilterWhere([
             'id' => $this->id,
             'control_instruction_id' => $this->control_instruction_id,
-            'fine_amount' => $this->fine_amount,
-            'paid_amount' => $this->paid_amount,
             'first_date' => $this->first_date,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,

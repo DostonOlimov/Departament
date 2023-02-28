@@ -26,9 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <p  style="display:inline-block">
-        <?= Html::a('Qo\'shish', ['/control/control/instruction'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Qo\'shish', ['/control/control/instruction'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

@@ -31,6 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Yangilash', ['/control/instruction/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Inspektorlar qo\'shish', ['/control/instruction-user/index', 'instruction_id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php Html::a('Tekshiruvni ko\'chirish', ['/control/instruction/transfer','id' => $model->id], ['class' => 'btn btn-secondary']) ?>
+        <?php Html::a('Tekshiruvni uzaytirish', ['/control/instruction/extend','id' => $model->id], ['class' => 'btn btn-warning']) ?>
         <?php
             if ($model->general_status == Instruction::GENERAL_STATUS_SEND) {
                 echo Html::a('Tasdiqlash', ['/control/control/done', 'id' => $model->id], ['class' => 'btn btn-warning']);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66142d844b9ac8a093dd88e7068a6193",
+    "content-hash": "e81fe64648dd28d698aad9b0b71f9faa",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -12,12 +12,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ColorlibHQ/AdminLTE.git",
+<<<<<<< HEAD
                 "reference": "a8620a02bb2b2edba074a8b86e8cc5514d355b51"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/a8620a02bb2b2edba074a8b86e8cc5514d355b51",
                 "reference": "a8620a02bb2b2edba074a8b86e8cc5514d355b51",
+=======
+                "reference": "6c04fb8be708a491671ae6a1775a5c5484ca9267"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/6c04fb8be708a491671ae6a1775a5c5484ca9267",
+                "reference": "6c04fb8be708a491671ae6a1775a5c5484ca9267",
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "default-branch": true,
@@ -48,7 +57,11 @@
                 "issues": "https://github.com/ColorlibHQ/AdminLTE/issues",
                 "source": "https://github.com/ColorlibHQ/AdminLTE/tree/master"
             },
+<<<<<<< HEAD
             "time": "2023-02-23T12:24:07+00:00"
+=======
+            "time": "2023-02-13T09:05:30+00:00"
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "bower-asset/inputmask",
@@ -621,6 +634,65 @@
                 "source": "https://github.com/kartik-v/yii2-bootstrap4-dropdown/tree/v1.0.4"
             },
             "time": "2022-01-10T04:03:23+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-bootstrap5-dropdown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-bootstrap5-dropdown.git",
+                "reference": "459e4c06c64e49f89ac372ce7c2cabb961f56ec9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-bootstrap5-dropdown/zipball/459e4c06c64e49f89ac372ce7c2cabb961f56ec9",
+                "reference": "459e4c06c64e49f89ac372ce7c2cabb961f56ec9",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": ">=2.0"
+            },
+            "suggest": {
+                "yiisoft/yii2-bootstrap5": "The Yii 2 Bootstrap 4 extension must be installed separately for this extension to work."
+            },
+            "default-branch": true,
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\bs5dropdown\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Enhanced Bootstrap 4 dropdown widget for Yii2 with nested submenu support",
+            "homepage": "https://github.com/kartik-v/yii2-bootstrap5-dropdown",
+            "keywords": [
+                "bootstrap",
+                "dropdown",
+                "jquery",
+                "nested",
+                "submenu",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/kartik-v/yii2-bootstrap5-dropdown/issues",
+                "source": "https://github.com/kartik-v/yii2-bootstrap5-dropdown/tree/v1.0.2"
+            },
+            "time": "2022-01-10T04:05:31+00:00"
         },
         {
             "name": "kartik-v/yii2-date-range",
@@ -2048,6 +2120,7 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
+<<<<<<< HEAD
             "version": "1.28.0",
             "source": {
                 "type": "git",
@@ -2058,6 +2131,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a",
                 "reference": "6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a",
+=======
+            "version": "1.27.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "ef4e6ef74990239946d3983451a9bbed5ef1be5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/ef4e6ef74990239946d3983451a9bbed5ef1be5d",
+                "reference": "ef4e6ef74990239946d3983451a9bbed5ef1be5d",
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -2147,9 +2232,15 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.28.0"
             },
             "time": "2023-02-25T12:24:49+00:00"
+=======
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.27.1"
+            },
+            "time": "2023-02-08T07:02:13+00:00"
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "psr/http-client",
@@ -5047,12 +5138,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
+<<<<<<< HEAD
                 "reference": "cb67d43db2103845027cc8d2e3671bc216f7aa8a"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/cb67d43db2103845027cc8d2e3671bc216f7aa8a",
                 "reference": "cb67d43db2103845027cc8d2e3671bc216f7aa8a",
+=======
+                "reference": "22daac5f9e53bdaa4c274f55b47fbd78ef3d421e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/22daac5f9e53bdaa4c274f55b47fbd78ef3d421e",
+                "reference": "22daac5f9e53bdaa4c274f55b47fbd78ef3d421e",
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -5136,7 +5236,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-02-25T09:16:21+00:00"
+=======
+            "time": "2023-02-21T09:56:27+00:00"
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "psr/container",
@@ -6096,12 +6200,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
+<<<<<<< HEAD
                 "reference": "c77433ddc6cdc689caf48065d9ea22ca0853fbd9"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/console/zipball/c77433ddc6cdc689caf48065d9ea22ca0853fbd9",
                 "reference": "c77433ddc6cdc689caf48065d9ea22ca0853fbd9",
+=======
+                "reference": "bc04b7a3c23fd36e4b165afe7947b3d00989677b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/console/zipball/bc04b7a3c23fd36e4b165afe7947b3d00989677b",
+                "reference": "bc04b7a3c23fd36e4b165afe7947b3d00989677b",
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -6187,7 +6300,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-02-25T16:59:41+00:00"
+=======
+            "time": "2023-02-14T14:10:40+00:00"
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6796,12 +6913,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
+<<<<<<< HEAD
                 "reference": "edac10d167b78b1d90f46a80320d632de0bd9f2f"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/edac10d167b78b1d90f46a80320d632de0bd9f2f",
                 "reference": "edac10d167b78b1d90f46a80320d632de0bd9f2f",
+=======
+                "reference": "6515bacc98212164f10db4371fa70ee7b8c70b80"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/string/zipball/6515bacc98212164f10db4371fa70ee7b8c70b80",
+                "reference": "6515bacc98212164f10db4371fa70ee7b8c70b80",
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -6874,7 +7000,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-02-22T08:00:55+00:00"
+=======
+            "time": "2023-02-14T09:04:20+00:00"
+>>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "symfony/yaml",
@@ -7270,7 +7400,8 @@
         "kartik-v/yii2-widget-depdrop": 20,
         "kartik-v/yii2-krajee-base": 20,
         "kartik-v/yii2-grid": 20,
-        "kartik-v/yii2-bootstrap4-dropdown": 20
+        "kartik-v/yii2-bootstrap4-dropdown": 20,
+        "kartik-v/yii2-bootstrap5-dropdown": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

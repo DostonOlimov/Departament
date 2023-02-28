@@ -1,15 +1,15 @@
 <?php
 
-namespace common\models\shopping;
+namespace common\models\measure;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\shopping\Product;
+use common\models\measure\CourtsName;
 
 /**
- * ProductSearch represents the model behind the search form of `common\models\shopping\Product`.
+ * CourtsNameSearch represents the model behind the search form of `common\models\measure\CourtsName`.
  */
-class ProductSearch extends Product
+class CourtsNameSearch extends CourtsName
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'shopping_company_id', 'quantity', 'sum', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'photo', 'photo_chek','lab_conclusion','purchase_date','production_date','product_lot'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find();
+        $query = CourtsName::find();
 
         // add conditions that should always apply here
 
@@ -59,23 +59,13 @@ class ProductSearch extends Product
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'shopping_company_id' => $this->shopping_company_id,
-            'quantity' => $this->quantity,
-            'sum' => $this->sum,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-           // 'lot_conclusion' => $this->lot_conclusion,
-            'product_lot' => $this->product_lot,
-            'purchase_date' => $this->purchase_date,
-            'production_date' => $this->production_date,       
-            
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'photo', $this->photo])
-            ->andFilterWhere(['like', 'photo_chek', $this->photo_chek]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

@@ -11,13 +11,17 @@ use yii\grid\GridView;
 /** @var common\models\shopping\ShoppingNoticeSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Shopping Notices';
+$this->title = 'Bildirgilar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="shopping-notice-index">
 
     <p>
-        <?= Html::a('Create Shopping Notice', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Bildirgi qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <p>
+        <?= Html::a('Nazorat xaridi', ['/shopping/shopping/index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Mahsulotlar', ['/shopping/shopping/notice-view'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

@@ -43,6 +43,8 @@ class Instruction extends \yii\db\ActiveRecord
     const GENERAL_STATUS_IN_PROCESS = 11;
     const GENERAL_STATUS_SEND = 20;
     const GENERAL_STATUS_DONE = 21;
+    const GENERAL_STATUS_TRANSFER = 100;
+    const GENERAL_STATUS_EXTEND = 101;
 
     const DN = 0;
     const DT = 1;
@@ -179,6 +181,8 @@ class Instruction extends \yii\db\ActiveRecord
             self::GENERAL_STATUS_IN_PROCESS => 'Bajarilmoqda&nbsp&nbsp&nbsp',
             self::GENERAL_STATUS_SEND => 'Nazoratchiga yuborildi',
             self::GENERAL_STATUS_DONE => 'Bajarildi&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp',
+            self::GENERAL_STATUS_TRANSFER => 'Ko\'chirilgan',
+            self::GENERAL_STATUS_EXTEND => 'Uzaytirilgan',
         ];
 
         if ($status === null) {
