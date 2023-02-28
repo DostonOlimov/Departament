@@ -77,8 +77,20 @@ use common\models\User;
                    
                 ],
             ], 
-               ['label' => 'Davlatlar', 'url' => ['country/index'], 'icon' => 'fas fa-globe'],
-               ['label' => 'Hududlar', 'url' => ['region/index'], 'icon' => 'fa fa-map-marker']
+               
+            ['label'=>'Sozlamalar', 'url' => ['#'], 'iconStyle' => 'fa fa-cog',
+                'items'=>[
+                    ['label' => 'Davlatlar', 'url' => ['country/index'], 'icon' => 'fas fa-globe'],
+                    ['label' => 'Hududlar', 'url' => ['region/index'], 'icon' => 'fa fa-map-marker'],
+                    ['label' => 'Hududiy sudlar', 'url' => ['court/index'], 'icon' => 'fa fa-map-marker'],
+                    ['label' => 'XYUS faoliyat turlari', 'url' => ['#'], 'iconStyle' => 'far'],
+                    ['label' => 'Xavf tahlili', 'url' => [''], 'iconStyle' => 'far'],
+                    
+                ],
+            
+        ],
+            
+            
             ];
         
             echo Menu::widget([
