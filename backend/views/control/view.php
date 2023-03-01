@@ -29,10 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="instruction-view">
 
     <p>
+        <?php if($model->general_status < 100) { ?>
         <?= Html::a('Yangilash', ['/control/instruction/update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Inspektorlar qo\'shish', ['/control/instruction-user/index', 'instruction_id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php Html::a('Tekshiruvni ko\'chirish', ['/control/instruction/transfer','id' => $model->id], ['class' => 'btn btn-secondary']) ?>
-        <?php Html::a('Tekshiruvni uzaytirish', ['/control/instruction/extend','id' => $model->id], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Tekshiruvni ko\'chirish', ['/control/instruction/transfer','id' => $model->id], ['class' => 'btn btn-secondary']) ?>
+        <?= Html::a('Tekshiruvni uzaytirish', ['/control/instruction/extend','id' => $model->id], ['class' => 'btn btn-warning']) ?>
+        <?php } ?>
         <?php
             if ($model->general_status == Instruction::GENERAL_STATUS_SEND) {
                 echo Html::a('Tasdiqlash', ['/control/control/done', 'id' => $model->id], ['class' => 'btn btn-warning']);
@@ -133,8 +135,9 @@ if ($company) { ?>
     <h2>Xyus to'g'risida ma`lumot</h2>
     <div class="company-view">
         <p>
+        <?php if($model->general_status < 100) { ?>
             <?= Html::a('Yangilash', ['/control/company/update', 'id' => $company->id], ['class' => 'btn btn-primary']) ?>
-         
+         <?php } ?>
         </p>
         <?= DetailView::widget([
             'model' => $company,
@@ -184,10 +187,12 @@ if ($company) { ?>
         <h2>Birlamchi ma`lumotlar</h2>
         <div class="company-view">
             <p>
+            <?php if($model->general_status < 100) { ?>
                 <?= Html::a('Yangilash', ['/control/primary-data/update', 'id' => $primaryData->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Mahsulotlar', ['/control/primary-products/index', 'primary_data_id' => $primaryData->id], ['class' => 'btn btn-info']) ?>
                 <?= Html::a('O\'lchov vositalari', ['/control/primary-ov/index', 'primary_data_id' => $primaryData->id], ['class' => 'btn btn-info']) ?>
             </p>
+            <?php } ?>
             <?= DetailView::widget([
                 'model' => $primaryData,
                 'attributes' => [
@@ -329,7 +334,9 @@ if ($company) { ?>
         <h2>Namuna olish va laboratoriya natijalari</h2>
         <div class="company-view">
             <p>
+            <?php if($model->general_status < 100) { ?>
                 <?= Html::a('Yangilash', ['/control/laboratory/update', 'id' => $laboratory->id], ['class' => 'btn btn-primary']) ?>
+           <?php } ?>
             </p>
             <?= DetailView::widget([
                 'model' => $laboratory,

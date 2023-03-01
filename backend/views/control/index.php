@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-           
+            'general_status',
             [
                 'attribute' => 'name',
                 'label' => 'XYUS nomi',
@@ -119,14 +119,20 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Status',
                 'value' => function ($model) {
-                    if($model->real_checkup_date)
-                    {
+                    if($model->general_status >= 100){
                         return StatusHelper::getLabel($model->general_status);
                     }
-                    else
-                    {
-                        return '<label class="btn bg-warning" style="font-weight:bold;">Yangi tekshiruv </label>';
+                    else{
+                        if($model->real_checkup_date)
+                        {
+                            return StatusHelper::getLabel($model->general_status);
+                        }
+                        else
+                        {
+                            return '<label class="btn bg-warning" style="font-weight:bold;">Yangi tekshiruv </label>';
+                        }
                     }
+                    
                 },
                 'format' => 'raw'
             ],

@@ -184,6 +184,11 @@ class InstructionController extends Controller
                 $newCompany->phone = $company->phone;
                 $newCompany->link = $company->link;
                 $newCompany->address = $company->address;
+                $model->general_status = Instruction::GENERAL_STATUS_EXTEND;
+                $model->employers = 1;
+                $model->real_checkup_date = '';
+                $model->checkup_finish_date = '';
+                $model->save();
                 if($newCompany->save(false)) {
                     $model->general_status = 101;
                     return $this->redirect(['/control/control/index', ]);
@@ -200,7 +205,14 @@ class InstructionController extends Controller
     }
 
     public function actionTransfer($id) {
+        $model = $this->findModel($id);
+        $model->general_status = Instruction::GENERAL_STATUS_TRANSFER;
+        $model->employers = 1;
+        $model->real_checkup_date = '';
+        $model->checkup_finish_date = '';
+        $model->save();
 
+        return $this->redirect(['/control/control/index', ]);
     }
 
     protected function findModel($id)

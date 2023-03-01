@@ -127,6 +127,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Holat',
                 'value' => function ($model) {
+                    if($model->general_status >= 100){
+                        return Html::a('To\'xtatilgan', ['#', 'id' => $model->id], ['class' => 'btn bg-danger','style'=>'font-weight:bold; color:white;']);
+                    }
+                    else{
                     if ($model->real_checkup_date) {
                         return Html::a('Ko\'rish&nbsp&nbsp&nbsp&nbsp', ['/control/instruction-view', 'id' => $model->id], ['class' => 'btn bg-primary','style'=>'font-weight:bold; color:white;']);
                     }
@@ -134,13 +138,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     {
                         return Html::a('Boshlash', ['/control/first-step', 'id' => $model->id], ['class' => 'btn bg-success','style'=>'font-weight:bold; color:white;']);
                     }
-                   
+                }
                 },
                 'format' => 'raw',
             ],
             [
                 'label' => 'Status',
                 'value' => function ($model) {
+                    if($model->general_status >= 100){
+                        return StatusHelper::getLabel($model->general_status);
+                    }
+                    else{
                     if($model->real_checkup_date)
                     {
                         return StatusHelper::getLabel($model->general_status);
@@ -149,6 +157,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     {
                         return '<label class="btn bg-warning" style="font-weight:bold;">Yangi tekshiruv </label>';
                     }
+                }
                 },
                 'format' => 'raw'
             ],

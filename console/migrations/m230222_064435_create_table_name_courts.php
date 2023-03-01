@@ -38,7 +38,7 @@ class m230222_064435_create_table_name_courts extends Migration
             'paid_amount' => $this->integer()->defaultValue(0),
             'paid_date' => $this->integer(),
             'discont' => $this->integer()->defaultValue(0),
-            'paid_acount' => $this->integer(15)->defaultValue(0),
+            'paid_acount' => $this->string(),
             'comment' => $this->string(),
 
             'created_by' => $this->integer()->notNull(),

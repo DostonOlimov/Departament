@@ -40,41 +40,6 @@ class CompanyController extends Controller
         ];
     }
 
-    /*public function actionIndex()
-    {
-        $searchModel = new CompanySearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    public function actionCreate()
-    {
-        $model = new Company();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }*/
-
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -87,14 +52,6 @@ class CompanyController extends Controller
             'model' => $model,
         ]);
     }
-
-    /*public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }*/
-
     protected function findModel($id)
     {
         if (($model = Company::findOne($id)) !== null) {

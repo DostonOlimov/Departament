@@ -15,6 +15,12 @@ class StatusHelper
         if ($status == Instruction::GENERAL_STATUS_DONE) {
             $class = 'success';
         }
+        if ($status == Instruction::GENERAL_STATUS_EXTEND) {
+            $class = 'info';
+        }
+        if ($status == Instruction::GENERAL_STATUS_TRANSFER) {
+            $class = 'danger';
+        }
         return '<label class="btn bg-' . $class . '" style="font-weight:bold;color:white;">' . Instruction::getStatus($status) . '</label>';
 
     }

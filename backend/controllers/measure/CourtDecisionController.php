@@ -7,7 +7,7 @@ use common\models\measure\CourtDecisionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * CourtDecisionController implements the CRUD actions for CourtDecision model.
  */
@@ -71,13 +71,13 @@ class CourtDecisionController extends Controller
         $model->execution_id = $id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-        //         if($model->fine_excist == 1){
-        //           $model->fine_amount = $model->paid_acount = $model->paid_date = $model->paid_amount = 0;
-        //         }
-        //         $model->s_decision_file = \yii\web\UploadedFile::getInstance($model, "decision_file");
-        //    if ($model->s_decision_file) {
-        //             $model->decision_file = $model->s_decision_file->name;
-        //         }
+                if($model->fine_excist == 1){
+                  $model->fine_amount = $model->paid_acount = $model->paid_date = $model->paid_amount = 0;
+                }
+                $model->s_decision_file = \yii\web\UploadedFile::getInstance($model, "decision_file");
+           if ($model->s_decision_file) {
+                    $model->decision_file = $model->s_decision_file->name;
+                }
                 if($model->validate()){     
                     $model->save();
                     return $this->redirect(['view', 'id' => $model->id]);

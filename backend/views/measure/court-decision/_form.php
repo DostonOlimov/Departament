@@ -10,6 +10,11 @@ use yii\widgets\MaskedInput;
 /** @var yii\web\View $this */
 /** @var common\models\measure\CourtDecision $model */
 /** @var yii\widgets\ActiveForm $form */
+// if($model->paid_acount){
+//     echo $model->paid_acount;
+//     $model->paid_acount = trim($model->paid_acount);
+// }
+// die();
 ?>
 
 <div class="court-decision-form">

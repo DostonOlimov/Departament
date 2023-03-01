@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [  'label' => 'Sud qarori',
             'value' => function($model){
             $decision = CourtDecision::findOne(['execution_id' => $model->id]);
-             return  $decision ? Html::a('<span>Ko\'rish</span> ', ['..\court-decision\view','id'=>$model->id], ['title' => 'view','class'=>'btn btn-success'])
+             return  $decision ? Html::a('<span>Ko\'rish</span> ', ['..\court-decision\view','id'=>$decision->id], ['title' => 'view','class'=>'btn btn-primary'])
              : Html::a('<span>Qo\'shish</span> ', ['..\court-decision\create','id'=>$model->id], ['title' => 'view','class'=>'btn btn-success']);
            
         },
