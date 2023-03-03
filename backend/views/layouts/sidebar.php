@@ -41,51 +41,54 @@ use common\models\User;
         <nav class="mt-2">
             <?php
             $items = [
-                [
-                    'label' => 'Qo\'shimcha ma`lumotlar',
-                    'icon' => 'th',
-//                        'badge' => '<span class="right badge badge-info">2</span>',
-                    'items' => [
-                        ['label' => 'Muhsulot normativ hujjatlari', 'url' => ['nd/index'], 'iconStyle' => 'far'],
-                        ['label' => 'Normativ hujjat toifalari', 'url' => ['nd-type/index'], 'iconStyle' => 'far'],
-                        ['label' => 'Dastur turi', 'url' => ['profilactic/program-type/index'], 'iconStyle' => 'far'],
-                        ['label' => 'Soha nomi', 'url' => ['types/product-sector/index'], 'iconStyle' => 'far'],
-                        ['label' => 'Sud nomi', 'url' => ['measure/courts-name/index'], 'iconStyle' => 'far'],
-                    ]
-                ],
-                ['label' => 'Foydalanuvchilar', 'url' => ['user/index'], 'icon' => 'fa fa-users'],
+                
                 ['label' => 'Davlat nazorati', 'url' => ['control/control/index'], 'icon' => 'fa fa-briefcase'],
                 ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-address-book'],
                 ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-university'],
                 ['label' => 'Iqtisodiy jarimalar', 'url' => ['measure/economic/index'], 'icon' => 'fa fa-percent'],
                 ['label' => 'Ma\'muriy bayonnomalar', 'url' => ['measure/execution/index'], 'icon' => 'fa fa-credit-card'],
-               // ['label' => 'Berilgan ko\'rsatma va ogohlantirishlar', 'url' => ['caution/caution/index'], 'icon' => 'fa fa-building'],
-               [
-                'label' => 'Berilgan ko\'rsatma va ogohlantirishlar',
-                'icon' => 'fa fa-exclamation-circle',
-                
-//                        'badge' => '<span class="right badge badge-info">2</span>',
-                'items' => [
-                    ['label' => 'Ko\'rsatma', 'url' => ['#'], 'iconStyle' => 'far',
-                    'items' => [
-                        ['label' => 'Bartaraf etish ko\'rsatmasi', 'url' => ['caution/prevention/index'], 'iconStyle' => 'far'],
-                        ['label' => 'Taqiqlash ko\'rsatmasi', 'url' => ['caution/embargo/index'], 'iconStyle' => 'far'],
-                       
-                    ]
+                // ['label' => 'Berilgan ko\'rsatma va ogohlantirishlar', 'url' => ['caution/caution/index'], 'icon' => 'fa fa-building'],
+                [
+                    'label' => 'Berilgan ko\'rsatma va ogohlantirishlar',
+                    'icon' => 'fa fa-exclamation-circle',
                     
+                    //                        'badge' => '<span class="right badge badge-info">2</span>',
+                    'items' => [
+                        ['label' => 'Ko\'rsatma', 'url' => ['#'], 'iconStyle' => 'far',
+                        'items' => [
+                            ['label' => 'Bartaraf etish ko\'rsatmasi', 'url' => ['caution/prevention/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Taqiqlash ko\'rsatmasi', 'url' => ['caution/embargo/index'], 'iconStyle' => 'far'],
+                            
+                            ]
+                            
+                        ],
+                        ['label' => 'Ogohlantirish xati', 'url' => ['caution/letters/index'], 'iconStyle' => 'far'],
+                        
                     ],
-                    ['label' => 'Ogohlantirish xati', 'url' => ['caution/letters/index'], 'iconStyle' => 'far'],
-                   
-                ],
-            ], 
-               
-            ['label'=>'Sozlamalar', 'url' => ['#'], 'iconStyle' => 'fa fa-cog',
+                ], 
+                
+                ['label'=>'Sozlamalar', 'url' => ['#'], 'iconStyle' => 'fa fa-cog',
                 'items'=>[
-                    ['label' => 'Davlatlar', 'url' => ['country/index'], 'icon' => 'fas fa-globe'],
-                    ['label' => 'Hududlar', 'url' => ['region/index'], 'icon' => 'fa fa-map-marker'],
-                    ['label' => 'Hududiy sudlar', 'url' => ['court/index'], 'icon' => 'fa fa-map-marker'],
+                    ['label' => 'Foydalanuvchilar', 'url' => ['user/index'], 'icon' => 'fa fa-users'],
+                    ['label'=>'Hudud', 'url' => ['#'], 'iconStyle' => 'fa fa-map-marker',
+                    'items'=>[
+                        ['label' => 'Davlatlar', 'url' => ['country/index'], 'icon' => 'fas fa-globe'],
+                        ['label' => 'Hududlar', 'url' => ['region/index'], 'icon' => 'far'],
+                        ['label' => 'Hududiy sudlar', 'url' => ['court/index'], 'icon' => 'far'],
+                        ['label' => 'Hududiy sudlar ro\'yxati', 'url' => ['measure/courts-name/index'], 'iconStyle' => 'far'],
+                        ],
+                    ],
+                ['label'=>'Me\'yoriy hujjat', 'url' => ['#'], 'iconStyle' => 'far',
+                    'items'=>[
+                        ['label' => 'Mahsulot normativ hujjatlari', 'url' => ['nd/index'], 'icon' => 'far'],
+                        ['label' => 'Normativ hujjat toifalari', 'url' => ['nd-type/index'], 'icon' => 'far'],
+                        ['label' => 'Xavf tahlili mezonlari', 'url' => ['risk-analisys-criteria/index'], 'icon' => 'far'],
+
+                    ],
+                ],
+                    //['label' => 'Dastur turi', 'url' => ['profilactic/program-type/index'], 'iconStyle' => 'far'],
+                    ['label' => 'Soha nomi', 'url' => ['types/product-sector/index'], 'iconStyle' => 'far'],
                     ['label' => 'XYUS faoliyat turlari', 'url' => ['#'], 'iconStyle' => 'far'],
-                    ['label' => 'Xavf tahlili', 'url' => [''], 'iconStyle' => 'far'],
                     /// git
                     
                 ],

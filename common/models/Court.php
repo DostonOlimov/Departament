@@ -1,8 +1,11 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
+use common\models\Region;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "court".
@@ -33,10 +36,9 @@ class Court extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['region_id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['created_by', 'updated_by', 'created_at', 'updated_at'], 'required'],
+            [['region_id',], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Regions::class, 'targetAttribute' => ['region_id' => 'id']],
+            [['region_id'], 'exist', 'skipOnError' => true, 'targetClass' => Region::class, 'targetAttribute' => ['region_id' => 'id']],
         ];
     }
 
@@ -47,15 +49,21 @@ class Court extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'region_id' => 'Region ID',
+            'region_id' => 'Hudud nomi',
             'name' => 'Name',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_by' => 'Yaratgan foydalanuvchi',
+            'updated_by' => 'O\'zgartirgan foydalanuvchi',
+            'created_at' => 'Yaratilgan sana',
+            'updated_at' => 'O\'zgartirilgan sana',
         ];
     }
-
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class,
+        ];
+    }
     /**
      * Gets query for [[Region]].
      *

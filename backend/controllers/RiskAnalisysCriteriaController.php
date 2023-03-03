@@ -2,17 +2,16 @@
 
 namespace backend\controllers;
 
-use common\models\Court;
-use common\models\CourtSearch;
+use common\models\RiskAnalisysCriteria;
+use common\models\RiskAnalisysCriteriaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * CourtController implements the CRUD actions for Court model.
+ * RiskAnalisysCriteriaController implements the CRUD actions for RiskAnalisysCriteria model.
  */
-class CourtController extends Controller
+class RiskAnalisysCriteriaController extends Controller
 {
     /**
      * @inheritDoc
@@ -33,13 +32,13 @@ class CourtController extends Controller
     }
 
     /**
-     * Lists all Court models.
+     * Lists all RiskAnalisysCriteria models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new CourtSearch();
+        $searchModel = new RiskAnalisysCriteriaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +48,7 @@ class CourtController extends Controller
     }
 
     /**
-     * Displays a single Court model.
+     * Displays a single RiskAnalisysCriteria model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,13 +61,13 @@ class CourtController extends Controller
     }
 
     /**
-     * Creates a new Court model.
+     * Creates a new RiskAnalisysCriteria model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Court();
+        $model = new RiskAnalisysCriteria();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -84,7 +83,7 @@ class CourtController extends Controller
     }
 
     /**
-     * Updates an existing Court model.
+     * Updates an existing RiskAnalisysCriteria model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -104,7 +103,7 @@ class CourtController extends Controller
     }
 
     /**
-     * Deletes an existing Court model.
+     * Deletes an existing RiskAnalisysCriteria model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -118,15 +117,15 @@ class CourtController extends Controller
     }
 
     /**
-     * Finds the Court model based on its primary key value.
+     * Finds the RiskAnalisysCriteria model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Court the loaded model
+     * @return RiskAnalisysCriteria the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Court::findOne(['id' => $id])) !== null) {
+        if (($model = RiskAnalisysCriteria::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

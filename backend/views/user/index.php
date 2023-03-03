@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\UserSearch */
@@ -15,6 +16,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+<?php    
+$gridColumns = [
+    'username',
+    'name',
+    'surname',
+    'fathers_name',
+    'created_at',
+    'updated_at',
+    'status',
+];
+    echo ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+]);
+?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
