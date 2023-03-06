@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'timePicker'=>false,
             'timePickerIncrement'=>30,
             'locale'=>[
-                'format'=>'Y/m/d',
+                'format'=>'d.m.Y',
                 'separator'=>' - ',
             ],
         ]

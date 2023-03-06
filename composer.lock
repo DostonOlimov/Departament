@@ -12,21 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ColorlibHQ/AdminLTE.git",
-<<<<<<< HEAD
                 "reference": "a8620a02bb2b2edba074a8b86e8cc5514d355b51"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/a8620a02bb2b2edba074a8b86e8cc5514d355b51",
                 "reference": "a8620a02bb2b2edba074a8b86e8cc5514d355b51",
-=======
-                "reference": "6c04fb8be708a491671ae6a1775a5c5484ca9267"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/6c04fb8be708a491671ae6a1775a5c5484ca9267",
-                "reference": "6c04fb8be708a491671ae6a1775a5c5484ca9267",
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "default-branch": true,
@@ -57,11 +48,7 @@
                 "issues": "https://github.com/ColorlibHQ/AdminLTE/issues",
                 "source": "https://github.com/ColorlibHQ/AdminLTE/tree/master"
             },
-<<<<<<< HEAD
             "time": "2023-02-23T12:24:07+00:00"
-=======
-            "time": "2023-02-13T09:05:30+00:00"
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "bower-asset/inputmask",
@@ -89,7 +76,7 @@
             "version": "3.6.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "da0f228131a578aea168b799fe4d7fe01764c98b"
             },
             "dist": {
@@ -2120,7 +2107,6 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-<<<<<<< HEAD
             "version": "1.28.0",
             "source": {
                 "type": "git",
@@ -2131,18 +2117,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a",
                 "reference": "6e81cf39bbd93ebc3a4e8150444c41e8aa9b769a",
-=======
-            "version": "1.27.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "ef4e6ef74990239946d3983451a9bbed5ef1be5d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/ef4e6ef74990239946d3983451a9bbed5ef1be5d",
-                "reference": "ef4e6ef74990239946d3983451a9bbed5ef1be5d",
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -2232,15 +2206,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.28.0"
             },
             "time": "2023-02-25T12:24:49+00:00"
-=======
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.27.1"
-            },
-            "time": "2023-02-08T07:02:13+00:00"
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "psr/http-client",
@@ -2512,12 +2480,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/select2/select2.git",
-                "reference": "0a186ebb4875b080f70e5f48d957f025e97194f5"
+                "reference": "bafba7b536ab21c0c5d4c560227bd4da4b0c8fc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/0a186ebb4875b080f70e5f48d957f025e97194f5",
-                "reference": "0a186ebb4875b080f70e5f48d957f025e97194f5",
+                "url": "https://api.github.com/repos/select2/select2/zipball/bafba7b536ab21c0c5d4c560227bd4da4b0c8fc5",
+                "reference": "bafba7b536ab21c0c5d4c560227bd4da4b0c8fc5",
                 "shasum": ""
             },
             "default-branch": true,
@@ -2557,7 +2525,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-01-29T17:50:54+00:00"
+            "time": "2023-02-21T20:21:36+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -3456,12 +3424,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "62c69ac7a32b9b3698fb72a1d55af996c814f726"
+                "reference": "344ce388c65a3ce8866abdf033212c9323713317"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/62c69ac7a32b9b3698fb72a1d55af996c814f726",
-                "reference": "62c69ac7a32b9b3698fb72a1d55af996c814f726",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/344ce388c65a3ce8866abdf033212c9323713317",
+                "reference": "344ce388c65a3ce8866abdf033212c9323713317",
                 "shasum": ""
             },
             "require": {
@@ -3571,7 +3539,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-20T15:21:00+00:00"
+            "time": "2023-02-27T11:48:22+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap4",
@@ -5138,21 +5106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-<<<<<<< HEAD
-                "reference": "cb67d43db2103845027cc8d2e3671bc216f7aa8a"
+                "reference": "7d1ff0e8c6b35db78ff13e3e05517d7cbf7aa32e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/cb67d43db2103845027cc8d2e3671bc216f7aa8a",
-                "reference": "cb67d43db2103845027cc8d2e3671bc216f7aa8a",
-=======
-                "reference": "22daac5f9e53bdaa4c274f55b47fbd78ef3d421e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/22daac5f9e53bdaa4c274f55b47fbd78ef3d421e",
-                "reference": "22daac5f9e53bdaa4c274f55b47fbd78ef3d421e",
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7d1ff0e8c6b35db78ff13e3e05517d7cbf7aa32e",
+                "reference": "7d1ff0e8c6b35db78ff13e3e05517d7cbf7aa32e",
                 "shasum": ""
             },
             "require": {
@@ -5220,7 +5179,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/8.5.33"
             },
             "funding": [
                 {
@@ -5236,11 +5195,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2023-02-25T09:16:21+00:00"
-=======
-            "time": "2023-02-21T09:56:27+00:00"
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
+            "time": "2023-02-27T13:04:50+00:00"
         },
         {
             "name": "psr/container",
@@ -6200,21 +6155,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-<<<<<<< HEAD
                 "reference": "c77433ddc6cdc689caf48065d9ea22ca0853fbd9"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/console/zipball/c77433ddc6cdc689caf48065d9ea22ca0853fbd9",
                 "reference": "c77433ddc6cdc689caf48065d9ea22ca0853fbd9",
-=======
-                "reference": "bc04b7a3c23fd36e4b165afe7947b3d00989677b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/bc04b7a3c23fd36e4b165afe7947b3d00989677b",
-                "reference": "bc04b7a3c23fd36e4b165afe7947b3d00989677b",
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -6300,11 +6246,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
             "time": "2023-02-25T16:59:41+00:00"
-=======
-            "time": "2023-02-14T14:10:40+00:00"
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6543,12 +6485,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "e366fab251e6f45ca84c783ed35b2a6202068519"
+                "reference": "078e9a5e1871fcfe6a5ce421b539344c21afef19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/e366fab251e6f45ca84c783ed35b2a6202068519",
-                "reference": "e366fab251e6f45ca84c783ed35b2a6202068519",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/078e9a5e1871fcfe6a5ce421b539344c21afef19",
+                "reference": "078e9a5e1871fcfe6a5ce421b539344c21afef19",
                 "shasum": ""
             },
             "require": {
@@ -6598,7 +6540,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-14T08:03:56+00:00"
+            "time": "2023-02-16T09:33:00+00:00"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
@@ -6913,21 +6855,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-<<<<<<< HEAD
                 "reference": "edac10d167b78b1d90f46a80320d632de0bd9f2f"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/edac10d167b78b1d90f46a80320d632de0bd9f2f",
                 "reference": "edac10d167b78b1d90f46a80320d632de0bd9f2f",
-=======
-                "reference": "6515bacc98212164f10db4371fa70ee7b8c70b80"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/6515bacc98212164f10db4371fa70ee7b8c70b80",
-                "reference": "6515bacc98212164f10db4371fa70ee7b8c70b80",
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
                 "shasum": ""
             },
             "require": {
@@ -7000,11 +6933,7 @@
                     "type": "tidelift"
                 }
             ],
-<<<<<<< HEAD
             "time": "2023-02-22T08:00:55+00:00"
-=======
-            "time": "2023-02-14T09:04:20+00:00"
->>>>>>> 9c5e03f52103328ceb089cc913e69f65975b12d7
         },
         {
             "name": "symfony/yaml",

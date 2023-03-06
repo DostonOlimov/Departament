@@ -1,15 +1,15 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Court;
+use common\models\RiskAnalisysCriteria;
 
 /**
- * CourtSearch represents the model behind the search form of `backend\models\Court`.
+ * RiskAnalisysCriteriaSearch represents the model behind the search form of `common\models\RiskAnalisysCriteria`.
  */
-class CourtSearch extends Court
+class RiskAnalisysCriteriaSearch extends RiskAnalisysCriteria
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class CourtSearch extends Court
     public function rules()
     {
         return [
-            [['id', 'region_id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'criteria_score', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['document_paragraph', 'criteria_category', 'criteria', 'company_field_category'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class CourtSearch extends Court
      */
     public function search($params)
     {
-        $query = Court::find();
+        $query = RiskAnalisysCriteria::find();
 
         // add conditions that should always apply here
 
@@ -59,14 +59,17 @@ class CourtSearch extends Court
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'region_id' => $this->region_id,
+            'criteria_score' => $this->criteria_score,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'document_paragraph', $this->document_paragraph])
+            ->andFilterWhere(['like', 'criteria_category', $this->criteria_category])
+            ->andFilterWhere(['like', 'criteria', $this->criteria])
+            ->andFilterWhere(['like', 'company_field_category', $this->company_field_category]);
 
         return $dataProvider;
     }
