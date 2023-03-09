@@ -12,6 +12,7 @@ class m230302_123524_insert_data_risk_analisys_criteria extends Migration
      */
     public function safeUp()
     {
+        $this->alterColumn('risk_analisys_criteria', 'criteria',$this->text());
         $this->insert('{{%risk_analisys_criteria}}', [
             'document_paragraph'=> '1.1',
             'criteria_category' => '1',
@@ -107,7 +108,7 @@ class m230302_123524_insert_data_risk_analisys_criteria extends Migration
             'created_at' => time(),
             'updated_at' => time(),
             ]);
-            
+           
             $this->insert('{{%risk_analisys_criteria}}', [
             'document_paragraph'=> '1.9',
             'criteria_category' => '1',
@@ -131,7 +132,7 @@ class m230302_123524_insert_data_risk_analisys_criteria extends Migration
             'created_at' => time(),
             'updated_at' => time(),
             ]);
-            
+             
             $this->insert('{{%risk_analisys_criteria}}', [
             'document_paragraph'=> '2.1',
             'criteria_category' => '2',

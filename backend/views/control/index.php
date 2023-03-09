@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-            'general_status',
             [
                 'attribute' => 'name',
                 'label' => 'XYUS nomi',
