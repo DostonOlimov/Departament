@@ -71,6 +71,6 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getRegion()
     {
-        return $this->hasOne(Regions::class, ['id' => 'region_id']);
+        return $this->hasOne(Region::class, ['id' => 'region_id']);
     }
 }

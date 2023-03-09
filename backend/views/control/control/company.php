@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <label class="control-label" for="company-name">Xo'jalik yurutuvchi subyekt nomi (XYUS)</label>
             <?= $form->field($model, 'name')->textInput()->label(false) ?>
         </div>
+        
         <div class="col-md-6 col-sm-12">
             <?= $form->field($model, 'inn')->widget(MaskedInput::className(), [
                 'mask' => '999999999'

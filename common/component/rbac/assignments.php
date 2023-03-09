@@ -10,6 +10,7 @@ return [
     ],
     18 => [
         'inspector',
+        'supervisor',
     ],
     19 => [
         'supervisor',

@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\RiskAnalisysCriteria;
+use common\models\User;
+use common\models\Region;
 
 /** @var yii\web\View $this */
 /** @var common\models\RiskAnalisysCriteria $model */
@@ -27,14 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'document_paragraph',
-            'criteria_category',
+            ['attribute'=> 'criteria_category','value'=> function($model)
+                {$model = RiskAnalisysCriteria::getField($model->criteria_category);
+                    return $model;}],
             'criteria',
-            'company_field_category',
+            ['attribute'=> 'company_field_category','value'=> function($model)
+                {$model = RiskAnalisysCriteria::getActivity($model->company_field_category);
+                    return $model;}],
             'criteria_score',
-            'created_by',
-            'updated_by',
+            ['attribute'=>'created_by', 'value'=>function($model)
+                {$user = User::findOne($model->created_by);
+                    return $user ? $user->name.' '.$user->surname:' ';}],
+            ['attribute'=>'updated_by', 'value'=>function($model)
+            {$user = User::findOne($model->updated_by);
+                return $user ? $user->name.' '.$user->surname:' ';}],
             'created_at',
             'updated_at',
         ],

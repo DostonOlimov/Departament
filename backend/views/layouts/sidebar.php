@@ -6,7 +6,7 @@ use common\models\User;
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="<?=\yii\helpers\Url::home()?>" class="brand-link">
         <img src="<?= $assetDir ?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">Departament</span>
@@ -47,6 +47,7 @@ use common\models\User;
                 ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-university'],
                 ['label' => 'Iqtisodiy jarimalar', 'url' => ['measure/economic/index'], 'icon' => 'fa fa-percent'],
                 ['label' => 'Ma\'muriy bayonnomalar', 'url' => ['measure/execution/index'], 'icon' => 'fa fa-credit-card'],
+                ['label' => 'Tashkilotlar ro\'yxati', 'url' => ['company/index'], 'iconType' => 'far'],
                 // ['label' => 'Berilgan ko\'rsatma va ogohlantirishlar', 'url' => ['caution/caution/index'], 'icon' => 'fa fa-building'],
                 [
                     'label' => 'Berilgan ko\'rsatma va ogohlantirishlar',

@@ -1,5 +1,6 @@
 <?php
 
+use common\models\RiskAnalisysCriteria;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
@@ -15,11 +16,11 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'document_paragraph')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'criteria_category')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'criteria_category')->dropDownList(RiskAnalisysCriteria::getField()) ?>
 
     <?= $form->field($model, 'criteria')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'company_field_category')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'company_field_category')->dropDownList(RiskAnalisysCriteria::getActivity()) ?>
 
     <?= $form->field($model, 'criteria_score')->widget(MaskedInput::className(), ['mask' => '99']) ?>
 
@@ -30,3 +31,7 @@ use yii\widgets\MaskedInput;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+
+        

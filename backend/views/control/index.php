@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     
                 },
-                'format' => 'raw'
+                'filter' => array('1', '2'),
             ],
         ],
     ]); ?>

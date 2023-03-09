@@ -6,6 +6,8 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use kartik\export\ExportMenu;
+use common\models\User;
+use common\models\Region;
 
 /** @var yii\web\View $this */
 /** @var common\models\RiskAnalisysCriteriaSearch $searchModel */
@@ -17,33 +19,36 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="risk-analisys-criteria-index">
 <?php $gridColumns = [
     ['class' => 'yii\grid\SerialColumn'],
-        [
-            'attribute' => 'region_id',
-            'value' => function ( $model) {
-                return Region::findOne($model->region_id)->name;
-            },
-            'format' => 'raw',
-        ],
-        'name',
-        [
-            'attribute'=> 'created_by',
+        
+    'document_paragraph',
+        
+        ['attribute'=> 'criteria_category',
             'value'=> function($model){
-                $user = User::findOne($model->created_by);
-                return $user ? $user->name .' '.$user->surname :'';
-            }
-            ],
-        [
-            'attribute'=> 'updated_by',
-            'value'=> function($model){
-                $user = User::findOne($model->updated_by);
-                return $user ? $user->name .' '.$user->surname :'';
-            }
-            ],
+                $model = RiskAnalisysCriteria::getField($model->criteria_category);
+                return $model;}],
+        
+        'criteria',
+        
+        ['attribute'=> 'company_field_category',
+                'value'=> function($model){
+                    $model = RiskAnalisysCriteria::getActivity($model->company_field_category);
+                    return $model;}],
+        
+        'criteria_score',
+
+        ['class' => ActionColumn::className(),
+                'urlCreator' => function ($action, RiskAnalisysCriteria $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);}],
 ];
 ?>
     <p>
         <?= Html::a('Yaratish', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
+<?php    echo ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+]);?>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -55,14 +60,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
             
             'document_paragraph',
-            'criteria_category',
+            
+            [
+                'attribute'=> 'criteria_category',
+                'value'=> function($model){
+                    $model = RiskAnalisysCriteria::getField($model->criteria_category);
+                    return $model;
+                }
+                ],
+            
             'criteria',
-            'company_field_category',
+            [
+                'attribute'=> 'company_field_category',
+                'value'=> function($model){
+                    $model = RiskAnalisysCriteria::getActivity($model->company_field_category);
+                    return $model;
+                }
+                ],
             'criteria_score',
-            //'created_by',
-            //'updated_by',
-            'created_at',
-            'updated_at',
+            
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, RiskAnalisysCriteria $model, $key, $index, $column) {

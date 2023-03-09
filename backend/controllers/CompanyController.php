@@ -2,21 +2,17 @@
 
 namespace backend\controllers;
 
-use common\models\RiskAnalisysCriteria;
-use common\models\RiskAnalisysCriteriaSearch;
+use common\models\Company;
+use common\models\CompanySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RiskAnalisysCriteriaController implements the CRUD actions for RiskAnalisysCriteria model.
+ * CompanyController implements the CRUD actions for Company model.
  */
-
-
- class RiskAnalisysCriteriaController extends Controller
+class CompanyController extends Controller
 {
-   
-    
     /**
      * @inheritDoc
      */
@@ -36,21 +32,23 @@ use yii\filters\VerbFilter;
     }
 
     /**
-     * Lists all RiskAnalisysCriteria models.
+     * Lists all Company models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new RiskAnalisysCriteriaSearch();
+        $searchModel = new CompanySearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        
 
-        return $this->render('index', compact('searchModel', 'dataProvider'));
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
-     * Displays a single RiskAnalisysCriteria model.
+     * Displays a single Company model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,13 +61,13 @@ use yii\filters\VerbFilter;
     }
 
     /**
-     * Creates a new RiskAnalisysCriteria model.
+     * Creates a new Company model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new RiskAnalisysCriteria();
+        $model = new Company();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -79,11 +77,13 @@ use yii\filters\VerbFilter;
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', compact('model'));
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing RiskAnalisysCriteria model.
+     * Updates an existing Company model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -97,11 +97,13 @@ use yii\filters\VerbFilter;
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', compact('model'));
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Deletes an existing RiskAnalisysCriteria model.
+     * Deletes an existing Company model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -115,15 +117,15 @@ use yii\filters\VerbFilter;
     }
 
     /**
-     * Finds the RiskAnalisysCriteria model based on its primary key value.
+     * Finds the Company model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return RiskAnalisysCriteria the loaded model
+     * @return Company the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = RiskAnalisysCriteria::findOne(['id' => $id])) !== null) {
+        if (($model = Company::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

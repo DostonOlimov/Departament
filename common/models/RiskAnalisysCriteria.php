@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "risk_analisys_criteria".
@@ -23,8 +24,68 @@ use yii\behaviors\TimestampBehavior;
  * @property User $createdBy
  * @property User $updatedBy
  */
+
+
 class RiskAnalisysCriteria extends \yii\db\ActiveRecord
 {
+    const TECHNIC_AND_STANDARD_FIELD = 1;
+    const SERTIFICATION_FIELD = 2;
+    const METROLOGY_FIELD = 3;
+    const ACCREDITATION_FIELD = 4;
+    const MASS_MEDIA_FIELD = 5;
+
+    const ALL_ACTIVITY = 0;
+    const PRODUCTION_ACTIVITY = 10;
+    const SERVICE_ACTIVITY = 20;
+    const TRADE_ACTIVITY = 21;
+    const IMPORT_ACTIVITY = 22;
+    const SERTIFICATION_ACTIVITY = 23;
+    const TESTING_ACTIVITY = 24;
+    
+    
+    
+    
+    public static function getField($type = null)
+    {
+        $arr = [
+    
+            self::TECHNIC_AND_STANDARD_FIELD => 'Texnik jihatdan tartibga solish va standartlashtirish sohasida qonun buzilish',
+            self::SERTIFICATION_FIELD => 'Sertifikatlashtirish sohasidagi qonun buzilish',
+            self::METROLOGY_FIELD => 'Metrologiya sohasidagi qonun buzilish',
+            self::ACCREDITATION_FIELD => 'Muvofiqlikni baholashda qonun buzish',
+            self::MASS_MEDIA_FIELD=>'Ommaviy axborot vositalari va ijtimoiy tarmoqlarda mahsulot 
+            va xizmatlar yuzasidan qonun buzilish',
+        ];
+    
+        if ($type === null) {
+            return $arr;
+        }
+    
+        return $arr[$type];
+    }
+
+    public static function getActivity($type = null)
+    {
+        $arr = [
+    
+            self::ALL_ACTIVITY => 'Barcha faoliyat turlari',
+            self::PRODUCTION_ACTIVITY => 'Ishlab chiqarish',
+            self::SERVICE_ACTIVITY => 'Xizmat ko\'rsatish',
+            self::TRADE_ACTIVITY => 'Savdo',
+            self::IMPORT_ACTIVITY => 'Import',
+            self::SERTIFICATION_ACTIVITY => 'Sertifikatlashtirish idorasi',
+            self::TESTING_ACTIVITY => 'Sinov laboratoriyasi',
+        ];
+    
+        if ($type === null) {
+            return $arr;
+        }
+    
+        return $arr[$type];
+    }
+
+
+    
     /**
      * {@inheritdoc}
      */
@@ -32,7 +93,7 @@ class RiskAnalisysCriteria extends \yii\db\ActiveRecord
     {
         return 'risk_analisys_criteria';
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -46,7 +107,7 @@ class RiskAnalisysCriteria extends \yii\db\ActiveRecord
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -68,7 +129,14 @@ class RiskAnalisysCriteria extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::class,
+            [
+                'class' => TimesTampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+
+            ],
+            //TimestampBehavior::class,
             BlameableBehavior::class,
           
         ];
@@ -92,4 +160,5 @@ class RiskAnalisysCriteria extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
+    
 }
