@@ -63,7 +63,7 @@ use yii\helpers\Url;?>
                 
                 <li class="nav-item">
                     <button class="btn btn-none  text-white btn-drop" onclick="changeColor(event, 'btn4')" id ="btn4" type="button" >
-                        <a href="<?= Url::to(['/risk-anlisys/index']) ?>">  Xavf tahlili</a>
+                        <a href="<?= Url::to(['/risk-analisys/index']) ?>">  Xavf tahlili</a>
                     </button>
                 </li>
 
