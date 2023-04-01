@@ -48,6 +48,7 @@ class Company extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['stir',],'unique'],
             [['stir', 'company_name', 'registration_date', 'region_id', 'address', 'thsht', 'ifut', 'ownername', 'phone', 'status'], 'required'],
             [['stir', 'registration_date', 'region_id', 'thsht', 'ifut', 'phone', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['company_name', 'address', 'ownername'], 'string', 'max' => 255],

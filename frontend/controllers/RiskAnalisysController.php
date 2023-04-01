@@ -2,8 +2,10 @@
 
 namespace frontend\controllers;
 
+use common\models\Company;
 use common\models\RiskAnalisys;
 use common\models\RiskAnalisysSearch;
+use frontend\models\CompanySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -112,9 +114,49 @@ class RiskAnalisysController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        
 
         return $this->redirect(['index']);
+    }
+
+     /**
+     * Deletes an existing RiskAnalisys model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionSearch()
+    {
+        $model = new CompanySearch();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) ) {
+               
+                $company = Company::findOne(['stir' => $model->stir]);
+                if($company){
+                   // $model = new RiskAnalisys();
+                    return $this->render('search', [
+                    'model' => $model,
+                    'company' => $company,
+                    't' => 1
+                ]);
+                }
+                else{
+                    return $this->render('search', [
+                        'model' => $model,
+                        'company' => null,
+                        't' => 0
+                    ]);
+                }
+                
+            }
+        }
+        return $this->render('search', [
+            'model' => $model,
+            'company' => null,
+            't' => 2
+        ]);
     }
 
     /**
