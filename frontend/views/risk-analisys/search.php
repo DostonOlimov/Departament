@@ -30,7 +30,7 @@ if($t == 1 ) :?>
       <div class = "text-danger>">  <?= $company->status ?>  </div>
       <div class = "text-danger>">  <?= $company->ifut ?>  </div>
       <p>
-        <?= Html::a('Create Risk Analisys', ['create',$company->id], ['class' => 'btn btn-success']) ?>
+      <?= Html::a('Yaratish', ['create', 'id' => $company->id], ['class' => 'btn btn-success']) ?>
     </p>
  <?php endif; ?>
 

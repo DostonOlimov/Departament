@@ -4,8 +4,11 @@ namespace frontend\controllers;
 
 use common\models\Company;
 use common\models\RiskAnalisys;
+use common\models\RiskAnalisysCriteria;
 use common\models\RiskAnalisysSearch;
+use common\models\RisksCriteria;
 use frontend\models\CompanySearch;
+use common\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,10 +71,11 @@ class RiskAnalisysController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new RiskAnalisys();
-
+        $company_id = Company::findOne([$id]);
+        $model->company_id = $company_id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -82,6 +86,45 @@ class RiskAnalisysController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionAddCriteria($id)
+    {
+        $criteria = RiskAnalisysCriteria::find()->All();
+        foreach ($criteria as $key => $value)
+            {
+                $model[$key] = new RisksCriteria();
+                $model[$key]['risk_analisys_id'] = $id;
+                $model[$key]['name'] = $value->criteria;
+                $model[$key]['ball'] = $value->criteria_score;
+                $model[$key]['criteria_id'] = $value->id;
+            }
+        if ($this->request->isPost) {
+
+            $model = Model::createMultiple(RisksCriteria::classname());
+            Model::loadMultiple($model, $this->request->post());
+
+           $valid = Model::validateMultiple($model);
+           
+            if ($valid) {
+                foreach ($model as $key => $value) 
+                    {
+                     if($value->status == 1){
+                        $lab = new RisksCriteria();
+                        $lab->risk_analisys_id = $value->risk_analisys_id;
+                        $lab->criteria_id = $value->criteria_id;
+                        $lab->comment = $value->comment;
+                        $lab->save();
+                     }
+                    }
+                return $this->redirect(['index']);
+            }
+        } 
+
+        return $this->render('add_criteria', [
+            'model' => $model,
+            'criteria' => $criteria
         ]);
     }
 

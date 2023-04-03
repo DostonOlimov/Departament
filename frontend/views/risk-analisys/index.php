@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'company_id',
-            'user_id',
             'risk_analisys_date',
             'risk_analisys_number',
             //'criteria',
@@ -44,6 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'urlCreator' => function ($action, RiskAnalisys $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
+            ],
+            [
+                'label' => 'Mezon qo\'shish',
+                'value' => function ($model) {
+                  
+                    {
+                        return Html::a('Yaratish', ['add-criteria', 'id' => $model->id], ['class' => 'btn btn-success']);
+                    }
+                },
+                'format' => 'raw'
             ],
         ],
     ]); ?>

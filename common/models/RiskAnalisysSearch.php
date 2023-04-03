@@ -17,8 +17,7 @@ class RiskAnalisysSearch extends RiskAnalisys
     public function rules()
     {
         return [
-            [['id', 'company_id', 'user_id', 'risk_analisys_date', 'risk_analisys_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['criteria'], 'safe'],
+            [['id', 'company_id',  'risk_analisys_date', 'risk_analisys_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -60,7 +59,6 @@ class RiskAnalisysSearch extends RiskAnalisys
         $query->andFilterWhere([
             'id' => $this->id,
             'company_id' => $this->company_id,
-            'user_id' => $this->user_id,
             'risk_analisys_date' => $this->risk_analisys_date,
             'risk_analisys_number' => $this->risk_analisys_number,
             'created_by' => $this->created_by,
@@ -68,8 +66,6 @@ class RiskAnalisysSearch extends RiskAnalisys
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-
-        $query->andFilterWhere(['like', 'criteria', $this->criteria]);
 
         return $dataProvider;
     }
