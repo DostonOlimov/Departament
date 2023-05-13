@@ -34,6 +34,8 @@ use Yii;
  */
 class Company extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_PASSIVE = 0;
     /**
      * {@inheritdoc}
      */
@@ -104,7 +106,21 @@ class Company extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
-    
+
+    public static function getStatus($type = null)
+    {
+        $arr = [
+
+            self::STATUS_ACTIVE => 'Faoliyat yuritayotgan',
+            self::STATUS_PASSIVE => 'Faoliyati to\'xtatilgan',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
     /**
      * Gets query for [[UpdatedBy]].
      *

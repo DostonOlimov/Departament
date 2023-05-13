@@ -9,6 +9,7 @@ use common\models\RiskAnalisysSearch;
 use common\models\RisksCriteria;
 use frontend\models\CompanySearch;
 use common\models\Model;
+use common\models\RisksCriteriaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -71,10 +72,10 @@ class RiskAnalisysController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($id)
+    public function actionCreate($company_id)
     {
         $model = new RiskAnalisys();
-        $company_id = Company::findOne([$id]);
+        $company_id = Company::findOne([$company_id]);
         $model->company_id = $company_id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -171,23 +172,23 @@ class RiskAnalisysController extends Controller
      */
     public function actionSearch()
     {
-        $model = new CompanySearch();
+        $company_search = new CompanySearch();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
+            if ($company_search->load($this->request->post()) ) {
                
-                $company = Company::findOne(['stir' => $model->stir]);
+                $company = Company::findOne(['stir' => $company_search->stir]);
                 if($company){
                    // $model = new RiskAnalisys();
                     return $this->render('search', [
-                    'model' => $model,
+                    'company_search' => $company_search,
                     'company' => $company,
-                    't' => 1
+                    't' => 2
                 ]);
                 }
                 else{
                     return $this->render('search', [
-                        'model' => $model,
+                        'company_search' => $company_search,
                         'company' => null,
                         't' => 0
                     ]);
@@ -196,9 +197,100 @@ class RiskAnalisysController extends Controller
             }
         }
         return $this->render('search', [
-            'model' => $model,
+            'company_search' => $company_search,
             'company' => null,
-            't' => 2
+            't' => 1
+        ]);
+    }
+    public function actionViewCompany($company_id = null, $id = null)
+    {
+        return $this->render('view-company', compact('company_id', 'id'));
+
+    }
+    public function actionViewCriteria($risk_analisys_id)
+    {
+        $searchModel = new RisksCriteriaSearch($risk_analisys_id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('view-criteria', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+      //  return $this->render('view-criteria', compact('criteria',));
+
+    }
+
+    public function actionCreateCompany()
+    {   // $model = new RiskAnalisys();
+        $company_search = new CompanySearch();
+        $company = new Company();
+        $model = new RiskAnalisys();
+        
+
+        if ($this->request->isPost) {
+            if ($company_search->load($this->request->post()) ) {
+                $company = Company::findOne(['stir' => $company_search->stir]);
+            // -----if company found-----
+                if($company){
+                    $model = new RiskAnalisys();
+                    $model->company_id = $company->id;
+                    return $this->render('search', [
+                    'company_search' => $company_search,
+                    'company' => $company,
+                    'model' => $model,
+                    't' => 2
+                ]);
+                }
+
+            // -----if company not found-----
+                else{
+                    return $this->render('search', [
+                        'company_search' => $company_search,
+                        'company' => null,
+                        't' => 0
+                    ]);
+                }
+                
+            }
+        }
+    }
+    public function actionCreateCriteria($id, $company_id)
+    {
+        $criteria = RiskAnalisysCriteria::find()->All();
+        foreach ($criteria as $key => $value)
+            {
+                $model[$key] = new RisksCriteria();
+                $model[$key]['risk_analisys_id'] = $id;
+                // debug($value->id,false);
+                // $model[$key]['name'] = $value->criteria;
+                // $model[$key]['ball'] = $value->criteria_score;
+                $model[$key]['criteria_id'] = $value->id;
+            }
+        if ($this->request->isPost) {
+
+            $model = Model::createMultiple(RisksCriteria::class);
+            Model::loadMultiple($model, $this->request->post());
+
+            $valid = Model::validateMultiple($model);
+            
+            if ($valid) {
+                foreach ($model as $key => $value) 
+                    {
+                        if($value->status == 1){
+                        $lab = new RisksCriteria();
+                        $lab->id = $value->id;
+                        $lab->criteria_id = $value->criteria_id;
+                        $lab->comment = $value->comment;
+                        $lab->save();
+                        }
+                    }
+                return $this->redirect(['index']);
+            }
+        } 
+
+        return $this->render('criteria/add-create', [
+            'model' => $model,
+            'criteria' => $criteria
         ]);
     }
 

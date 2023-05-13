@@ -42,7 +42,16 @@ class RisksCriteria extends \yii\db\ActiveRecord
             [['risk_analisys_id'], 'exist', 'skipOnError' => true, 'targetClass' => RiskAnalisys::class, 'targetAttribute' => ['risk_analisys_id' => 'id']],
         ];
     }
+    public function getCriteriaBall($risk_analisys_id)
+    {
+        $criteria = $this::find()->where(['risk_analisys_id' => $risk_analisys_id])->all();
+        $ball =0;
+        foreach($criteria as $cr){
+            $ball += RiskAnalisysCriteria::find($cr->criteria_id)->one()->criteria_score ?? 0;
 
+        }
+        return $ball;
+    }
     /**
      * {@inheritdoc}
      */
