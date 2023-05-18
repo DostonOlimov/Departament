@@ -58,6 +58,7 @@ class RiskAnalisysSearch extends RiskAnalisys
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            // 'stir' => $this->stir,
             'company_id' => $this->company_id,
             'risk_analisys_date' => $this->risk_analisys_date,
             'risk_analisys_number' => $this->risk_analisys_number,

@@ -59,6 +59,7 @@ class RiskAnalisysCriteriaSearch extends RiskAnalisysCriteria
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            // 'stir' => $this->stir,
             'criteria_score' => $this->criteria_score,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,

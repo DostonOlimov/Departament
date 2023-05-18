@@ -20,6 +20,7 @@ use yii\filters\AccessControl;
  */
 class RiskAnalisysController extends Controller
 {
+
     /**
      * @inheritDoc
      */
@@ -73,9 +74,9 @@ class RiskAnalisysController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionCreate($company_id)
-    {
+    {   $company_id;
         $model = new RiskAnalisys();
-        $company_id = Company::findOne([$company_id]);
+        //$company = Company::findOne([$company_id]);
         $model->company_id = $company_id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -87,6 +88,7 @@ class RiskAnalisysController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'company_id' => $company_id,
         ]);
     }
 
@@ -97,7 +99,7 @@ class RiskAnalisysController extends Controller
             {
                 $model[$key] = new RisksCriteria();
                 $model[$key]['risk_analisys_id'] = $id;
-                $model[$key]['name'] = $value->criteria;
+                $model[$key]['name'] = $value->document_paragraph  . " . ". $value->criteria . " (" . $value->criteria_score . " ball)";
                 $model[$key]['ball'] = $value->criteria_score;
                 $model[$key]['criteria_id'] = $value->id;
             }
@@ -202,19 +204,21 @@ class RiskAnalisysController extends Controller
             't' => 1
         ]);
     }
-    public function actionViewCompany($company_id = null, $id = null)
+    public function actionViewCompany($company_id = null, $id = null, $view_id = null)
     {
         return $this->render('view-company', compact('company_id', 'id'));
 
     }
-    public function actionViewCriteria($risk_analisys_id)
+    public function actionViewCriteria($id)
     {
-        $searchModel = new RisksCriteriaSearch($risk_analisys_id);
+        $searchModel = new RisksCriteriaSearch($id);
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $model = $this->findModel($id);
 
         return $this->render('view-criteria', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model,
         ]);
       //  return $this->render('view-criteria', compact('criteria',));
 
@@ -305,6 +309,15 @@ class RiskAnalisysController extends Controller
     {
         if (($model = RiskAnalisys::findOne(['id' => $id])) !== null) {
             return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findView($id)
+    {
+        if (RisksCriteria::findOne(['risk_analisys_id' => $id]) !== null) {
+            return $id;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

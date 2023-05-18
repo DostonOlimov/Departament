@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use common\models\LocalActiveRecord;
 
 /**
  * This is the model class for table "risk_analisys_criteria".
@@ -26,7 +27,7 @@ use yii\db\Expression;
  */
 
 
-class RiskAnalisysCriteria extends \yii\db\ActiveRecord
+class RiskAnalisysCriteria extends LocalActiveRecord
 {
     const TECHNIC_AND_STANDARD_FIELD = 1;
     const SERTIFICATION_FIELD = 2;
@@ -112,20 +113,23 @@ class RiskAnalisysCriteria extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
     public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'document_paragraph' => 'Hujjat bandi raqami',
-            'criteria_category' => 'Mezon kategoriyasi',
-            'criteria' => 'Mezon',
-            'company_field_category' => 'Qo\'llanilish sohasi',
-            'criteria_score' => 'Ball',
-            'created_by' => 'Yaratgan foydalanuvchi',
-            'updated_by' => 'O\'zgartirgan foydalanuvchi',
-            'created_at' => 'Yaratildi',
-            'updated_at' => 'O\'zgartirildi',
+    {   $ParentAttrLbl = parent::AttributeLabels();
+        $AttrLbl = [
+        // 'id' => 'ID',
+        // 'document_paragraph' => 'Hujjat bandi raqami',
+        // 'criteria_category' => 'Mezon kategoriyasi',
+        // 'criteria' => 'Mezon',
+        // 'company_field_category' => 'Qo\'llanilish sohasi',
+        // 'criteria_score' => 'Ball',
+        // 'created_by' => 'Yaratgan foydalanuvchi',
+        // 'updated_by' => 'O\'zgartirgan foydalanuvchi',
+        // 'created_at' => 'Yaratildi',
+        // 'updated_at' => 'O\'zgartirildi',
         ];
+
+        return array_merge($ParentAttrLbl, $AttrLbl);
     }
+
     public function behaviors()
     {
         return [

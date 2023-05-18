@@ -15,7 +15,7 @@ use Yii;
  * @property RiskAnalisysCriteria $criteria
  * @property RiskAnalisys $riskAnalisys
  */
-class RisksCriteria extends \yii\db\ActiveRecord
+class RisksCriteria extends LocalActiveRecord
 {
     public $name;
     public $ball;
@@ -43,6 +43,7 @@ class RisksCriteria extends \yii\db\ActiveRecord
         ];
     }
     public function getCriteriaBall($risk_analisys_id)
+    
     {
         $criteria = $this::find()->where(['risk_analisys_id' => $risk_analisys_id])->all();
         $ball =0;
@@ -51,18 +52,21 @@ class RisksCriteria extends \yii\db\ActiveRecord
 
         }
         return $ball;
+        // return $risk_analisys_id;
     }
     /**
      * {@inheritdoc}
      */
     public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'risk_analisys_id' => 'Risk Analisys ID',
-            'criteria_id' => 'Criteria ID',
-            'comment' => 'Comment',
+    {   $ParentAttrLbl = parent::AttributeLabels();
+        $AttrLbl = [
+            // 'id' => 'ID',
+            // 'risk_analisys_id' => 'Risk Analisys ID',
+            // 'criteria_id' => 'Criteria ID',
+            // 'comment' => 'Comment',
         ];
+
+        return array_merge($ParentAttrLbl, $AttrLbl);
     }
 
     /**

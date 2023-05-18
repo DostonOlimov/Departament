@@ -23,7 +23,7 @@ use Yii;
  * @property Company $company
  * @property User $user
  */
-class RiskAnalisys extends \yii\db\ActiveRecord
+class RiskAnalisys extends LocalActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -50,18 +50,20 @@ class RiskAnalisys extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
     public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'company_id' => 'Company ID',
-            'risk_analisys_date' => 'Risk Analisys Date',
-            'risk_analisys_number' => 'Risk Analisys Number',
-            'criteria' => 'Criteria',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+    {   $ParentAttrLbl = parent::AttributeLabels();
+        $AttrLbl = [
+            // 'id' => 'ID',
+            // 'company_id' => 'Company ID',
+            // 'risk_analisys_date' => 'Risk Analisys Date',
+            // 'risk_analisys_number' => 'Risk Analisys Number',
+            // 'criteria' => 'Criteria',
+            // 'created_by' => 'Created By',
+            // 'updated_by' => 'Updated By',
+            // 'created_at' => 'Created At',
+            // 'updated_at' => 'Updated At',
         ];
+
+        return array_merge($ParentAttrLbl, $AttrLbl);
     }
     public function beforeSave($insert)
     {

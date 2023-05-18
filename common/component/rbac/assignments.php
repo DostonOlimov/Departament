@@ -14,6 +14,7 @@ return [
     ],
     19 => [
         'supervisor',
+        'admin',
     ],
     20 => [
         'inspector',

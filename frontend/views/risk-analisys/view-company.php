@@ -10,6 +10,9 @@ $criteria = RisksCriteria::findOne(['risk_analisys_id' => $id]);
 if ($criteria){
     $view_id = $id;
 }
+else {
+    $view_id = null;
+}
 ?>
 
 <div class="row">
@@ -17,7 +20,7 @@ if ($criteria){
         <?php echo StepsRiskAnalisys::widget([
             'company_id' => $company_id,
             'id' => $id,
-            'view_id' => 1,
+            'view_id' => $view_id,
             ])
         // echo debug($model);die;?>
     </div>
