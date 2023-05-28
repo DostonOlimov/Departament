@@ -61,11 +61,21 @@ class RiskAnalisysController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+
+    public function actionDocument($id)
+    {   $model = $this->findModel($id);
+        $company = Company::findOne($model->company_id);
+        $risks_criteria = new RisksCriteria();
+        $sumscore = $risks_criteria->getCriteriaBall($id);
+        // echo $sumscore;die;
+        $score = RisksCriteria::find()
+        ->select('criteria_id')
+        ->Where(['risk_analisys_id' => $id])
+        ->asArray()
+        ->all();
+
+
+        return $this->render('document', compact('model', 'company', 'score','sumscore'));
     }
 
     /**
@@ -224,6 +234,19 @@ class RiskAnalisysController extends Controller
 
     }
 
+    public function actionView($company_id = null, $id = null, $print_doc = null)
+    {
+        $searchModel = new RisksCriteriaSearch($id);
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        $model = $this->findModel($id);
+        return $this->render('document', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'id' => $id,
+            'company_id' => $company_id,
+        ]);
+    }
     public function actionCreateCompany()
     {   // $model = new RiskAnalisys();
         $company_search = new CompanySearch();

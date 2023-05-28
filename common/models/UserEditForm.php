@@ -19,6 +19,7 @@ class UserEditForm extends \yii\base\Model
     public $fathers_name;
     public $phone;
     public $role;
+    public $position_id;
 
     public function __construct($id, $config = [])
     {
@@ -37,6 +38,7 @@ class UserEditForm extends \yii\base\Model
             'surname' => 'Familiyasi',
             'fathers_name' => 'Otasining ismi',
             'role' => 'Rol',
+            'position_id' => 'Lavozimi',
         ];
     }
 
@@ -53,7 +55,7 @@ class UserEditForm extends \yii\base\Model
             [['username', 'email'], 'unique', 'targetClass' => User::class, 'filter' => ['<>', 'id', $this->id]],
 
             [['name', 'surname', 'fathers_name', 'role', 'phone'], 'string', 'max' => 255],
-            [['name', 'surname', 'fathers_name', 'role', 'username'], 'required'],
+            [['name', 'surname', 'fathers_name', 'role', 'username', 'position_id'], 'required'],
 
             [['pass'], 'string', 'min' => 5],
 

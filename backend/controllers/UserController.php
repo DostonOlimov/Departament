@@ -100,6 +100,7 @@ class UserController extends Controller
         $form->surname = $model->surname;
         $form->fathers_name = $model->fathers_name;
         $form->phone = $model->phone;
+        $form->position_id = $model->position_id;
 
         if ($form->load($this->request->post()) /*&& $form->validate()*/) {
 
@@ -109,6 +110,7 @@ class UserController extends Controller
             $model->surname = $form->surname;
             $model->fathers_name = $form->fathers_name;
             $model->phone = $form->phone;
+            $model->position_id = $form->position_id;
             if ($form->pass) {
                 $model->setPassword($form->pass);
             }

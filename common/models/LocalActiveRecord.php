@@ -35,6 +35,13 @@ class LocalActiveRecord extends ActiveRecord
             'ifut' => 'IFUT',
             'ownername' => 'Rahbar',
             'phone' => 'Tel. raqami',
+            // User
+            'username' => 'Login',
+            'pass' => 'Parol',
+            'surname' => 'Familiyasi',
+            'fathers_name' => 'Otasining ismi',
+            'role' => 'Rol',
+            'position_id' => 'Lavozimi',
         ];
     }
 }

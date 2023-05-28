@@ -1,6 +1,7 @@
 <?php
 
 use common\models\User;
+use common\models\UserPosition;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -43,6 +44,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'role',
                 'value' => function (User $model) {
                     return $model->role ? User::rolesList()[$model->role] : '';
+                },
+            ],
+            [
+                'attribute' => 'position_id',
+                'value' => function (User $model) {
+                    return $model->position_id ? 
+                    UserPosition::findOne(['id' =>$model->position_id])->position 
+                    : '';
                 },
             ],
         ],

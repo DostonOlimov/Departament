@@ -71,6 +71,7 @@ use common\models\User;
                 ['label'=>'Sozlamalar', 'url' => ['#'], 'iconStyle' => 'fa fa-cog',
                 'items'=>[
                     ['label' => 'Foydalanuvchilar', 'url' => ['user/index'], 'icon' => 'fa fa-users'],
+                    ['label' => 'Lavozimlar', 'url' => ['user-position/index'], 'icon' => 'fa fa-users'],
                     ['label'=>'Hudud', 'url' => ['#'], 'iconStyle' => 'fa fa-map-marker',
                     'items'=>[
                         ['label' => 'Davlatlar', 'url' => ['country/index'], 'icon' => 'fas fa-globe'],

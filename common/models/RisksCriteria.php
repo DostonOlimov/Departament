@@ -54,6 +54,14 @@ class RisksCriteria extends LocalActiveRecord
         return $ball;
         // return $risk_analisys_id;
     }
+    public function getCriterion($criteria_id)
+    { 
+        // return "1";
+        $criteria = RiskAnalisysCriteria::findOne(['id' => $criteria_id]);
+        return $criteria->document_paragraph  . " . ". 
+        $criteria->criteria . " (" . $criteria->criteria_score . " ball)";
+    }
+    
     /**
      * {@inheritdoc}
      */
