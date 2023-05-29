@@ -234,18 +234,15 @@ class RiskAnalisysController extends Controller
 
     }
 
-    public function actionView($company_id = null, $id = null, $print_doc = null)
+    public function actionView($id = null)
     {
         $searchModel = new RisksCriteriaSearch($id);
         $dataProvider = $searchModel->search($this->request->queryParams);
         $model = $this->findModel($id);
-        return $this->render('document', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-            'id' => $id,
-            'company_id' => $company_id,
-        ]);
+        $company = Company::findOne(['id' => $model->company_id]);
+        // debug($model);
+        return $this->render('view', compact('searchModel', 'dataProvider', 
+        'model', 'company'));
     }
     public function actionCreateCompany()
     {   // $model = new RiskAnalisys();

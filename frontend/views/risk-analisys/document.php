@@ -58,12 +58,9 @@ use common\models\UserPosition;
     
     // variables
     $stir = $company->stir;
-
     $company_name = $company->company_name;
     $user = User::findOne(['id' => $model->created_by]);
-    
     $user_position = UserPosition::findOne(['id' => $user->position_id])->position;
-    
     $user_name = $user->name.' '.$user->surname;
     // $user_position = 'Bosh mutaxassis';
     
