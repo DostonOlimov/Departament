@@ -6,8 +6,24 @@ use yii\db\ActiveRecord;
 /**
  * No comment yet.
  */
+
+
+
 class LocalActiveRecord extends ActiveRecord
 {
+    const YANVAR_UZ = 1;
+    const FEVRAL_UZ = 2;
+    const MART_UZ = 3;
+    const APREL_UZ = 4;
+    const MAY_UZ = 5;
+    const IYUN_UZ = 6;
+    const IYUL_UZ = 7;
+    const AVGUST_UZ = 8;
+    const SENTABR_UZ = 9;
+    const OKTABR_UZ = 10;
+    const NOYABR_UZ = 11;
+    const DEKABR_UZ = 12;
+
     public function AttributeLabels()
     {
         return [
@@ -44,5 +60,30 @@ class LocalActiveRecord extends ActiveRecord
             'position_id' => 'Lavozimi',
         ];
     }
+
+    public static function getDate_uz($type = null)
+    {
+        $arr = [
+            self::YANVAR_UZ => 'yanvar',
+            self::FEVRAL_UZ => 'fevral',
+            self::MART_UZ => 'mart',
+            self::APREL_UZ => 'aprel',
+            self::MAY_UZ => 'may',
+            self::IYUN_UZ => 'iyun',
+            self::IYUL_UZ => 'iyul',
+            self::AVGUST_UZ => 'avgust',
+            self::SENTABR_UZ => 'senrtabr',
+            self::OKTABR_UZ => 'oktabr',
+            self::NOYABR_UZ => 'noyabr',
+            self::DEKABR_UZ => 'dekabr',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
 }
+
 ?>

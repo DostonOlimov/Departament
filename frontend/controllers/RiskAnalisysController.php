@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\User;
 
 /**
  * RiskAnalisysController implements the CRUD actions for RiskAnalisys model.
@@ -65,6 +66,7 @@ class RiskAnalisysController extends Controller
     public function actionDocument($id)
     {   $model = $this->findModel($id);
         $company = Company::findOne($model->company_id);
+        $user = User::findOne(['id' => $model->created_by]);
         $risks_criteria = new RisksCriteria();
         $sumscore = $risks_criteria->getCriteriaBall($id);
         // echo $sumscore;die;
@@ -73,9 +75,15 @@ class RiskAnalisysController extends Controller
         ->Where(['risk_analisys_id' => $id])
         ->asArray()
         ->all();
+        $comment = RisksCriteria::find()
+        ->select('comment')
+        ->Where(['risk_analisys_id' => $id])
+        ->asArray()
+        ->all();
 
 
-        return $this->render('document', compact('model', 'company', 'score','sumscore'));
+        return $this->render('document', 
+        compact('model', 'company', 'user', 'score','sumscore', 'comment'));
     }
 
     /**
