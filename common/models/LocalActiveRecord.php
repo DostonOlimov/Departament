@@ -57,7 +57,9 @@ class LocalActiveRecord extends ActiveRecord
             'surname' => 'Familiyasi',
             'fathers_name' => 'Otasining ismi',
             'role' => 'Rol',
-            'position_id' => 'Lavozimi',
+            'position' => 'Lavozimi(to\'liq)',
+            'position_id' => 'Lavozimi(id)',
+            'alias' => 'Lavozimi',
         ];
     }
 

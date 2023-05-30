@@ -24,11 +24,13 @@ $gridColumns = [
     'fathers_name',
     'created_at',
     'updated_at',
+    'role',
     'status',
 ];
     echo ExportMenu::widget([
     'dataProvider' => $dataProvider,
     'columns' => $gridColumns,
+    'filename' => 'Foydalanuvchilar ro\'yxati '. date('d.m.Y'),
 ]);
 ?>
 
@@ -43,6 +45,9 @@ $gridColumns = [
             'name',
             'surname',
             'fathers_name',
+            'role',
+            'status',
+            'position_id',
             //'created_at',
             //'updated_at',
             //'verification_token',

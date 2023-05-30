@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Company;
+use common\models\Region;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -10,15 +11,13 @@ use yii\grid\GridView;
 /** @var common\models\CompanySearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Companies';
+$this->title = 'Tashkilotlar ro\'yxati';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Company', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Yaratish', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,11 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'stir',
             'company_name',
             'registration_date',
-            'region_id',
+            [
+                'attribute' => 'region_id',
+                'value' => function($model){
+                    return Region::findOne(['id' => $model->region_id])->name ;
+                }
+            ],
+            
             //'address',
             //'thsht',
             //'ifut',

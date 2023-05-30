@@ -36,7 +36,7 @@ class UserPosition extends LocalActiveRecord
             [['status'], 'integer'],
             [['position', 'alias'], 'string', 'max' => 255],
             [['position'], 'unique'],
-            [['alias'], 'unique'],
+            // [['alias'], 'unique'],
         ];
     }
 
