@@ -29,7 +29,7 @@ class RiskAnalisysController extends Controller
         {
             return [
                 'access' => [
-                    'class' => AccessControl::class,
+                    'class' => AccessControl::className(),
                     'rules' => [
                         [
                             'allow' => true,
@@ -123,7 +123,7 @@ class RiskAnalisysController extends Controller
             }
         if ($this->request->isPost) {
 
-            $model = Model::createMultiple(RisksCriteria::class);
+            $model = Model::createMultiple(RisksCriteria::classname());
             Model::loadMultiple($model, $this->request->post());
 
            $valid = Model::validateMultiple($model);

@@ -13,10 +13,9 @@ class RisksCriteriaSearch extends RisksCriteria
 {
     public $risk_analisys_id;
 
-    public function __construct($risk_analisys_id = null, $config = [])
+    public function __construct($risk_analisys_id, $config = [])
     {
-        if ($risk_analisys_id)
-        {$this->risk_analisys_id = $risk_analisys_id;}
+        $this->risk_analisys_id = $risk_analisys_id;
         parent::__construct($config);
     }
     /**
@@ -49,7 +48,7 @@ class RisksCriteriaSearch extends RisksCriteria
     public function search($params)
     {
         $query = RisksCriteria::find();
-        
+
         // add conditions that should always apply here
         if ($this->risk_analisys_id) {
             $query->where(['risk_analisys_id' => $this->risk_analisys_id]);

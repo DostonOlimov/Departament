@@ -21,7 +21,7 @@ class StatusHelper
         if ($status == Instruction::GENERAL_STATUS_TRANSFER) {
             $class = 'danger';
         }
-        return '<label class="btn bg-' . $class . '"; style="font-weight:bold;color:white">"' . Instruction::getStatus($status) . "</label>";
+        return '<label class="btn bg-' . $class . '" style="font-weight:bold;color:white;">' . Instruction::getStatus($status) . '</label>';
 
     }
 
