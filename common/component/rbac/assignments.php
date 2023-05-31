@@ -4,6 +4,7 @@ return [
     17 => [
         'supervisor',
         'inspector',
+        'admin',
     ],
     1 => [
         'admin',

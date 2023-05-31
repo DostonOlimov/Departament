@@ -22,7 +22,7 @@ class RiskCriteriaController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -38,13 +38,11 @@ class RiskCriteriaController extends Controller
      */
     public function actionIndex()
     {
+        $model = new RisksCriteria();
         $searchModel = new RisksCriteriaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index', compact('searchModel', 'dataProvider', 'model'));
     }
 
     /**

@@ -42,6 +42,7 @@ use common\models\User;
             <?php
             $items = [
                 
+                ['label' => 'Xavf tahlili', 'url' => ['risk-analisys/index'], 'icon' => 'fa fa-briefcase'],
                 ['label' => 'Davlat nazorati', 'url' => ['control/control/index'], 'icon' => 'fa fa-briefcase'],
                 ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-address-book'],
                 ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-university'],
