@@ -118,8 +118,6 @@ class LocalActiveRecord extends ActiveRecord
                 $function = $onearray[1];
                 if(isset($this->$attribute)){
                     if(!empty($this->$attribute)){
-
-                        $this->$attribute = $function($this->$attribute);
                         if($function == 'trimPhoneNumber'){
                             $this->$attribute = $this->$function($this->$attribute);
                                 }
