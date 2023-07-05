@@ -87,6 +87,17 @@ class LocalActiveRecord extends ActiveRecord
         
         return $arr[$type];
     }
+
+    public function getPhoneNumber($value)
+    {
+        return '(' . substr($value,0, 2) . ')-' . substr($value,2,3) . '-' .
+            substr($value,5,2) . '-' . substr($value,7,2);
+    }
+
+    public function trimPhoneNumber($value)
+    {
+        return substr(preg_replace('#[^0-9]#', '', $value),-9);
+    }
     
     public function beforeSave($insert)
     {
@@ -107,7 +118,12 @@ class LocalActiveRecord extends ActiveRecord
                 $function = $onearray[1];
                 if(isset($this->$attribute)){
                     if(!empty($this->$attribute)){
+
                         $this->$attribute = $function($this->$attribute);
+                        if($function == 'trimPhoneNumber'){
+                            $this->$attribute = $this->$function($this->$attribute);
+                                }
+                        else{$this->$attribute = $function($this->$attribute);}
                     }
                 }
             }
@@ -134,6 +150,9 @@ class LocalActiveRecord extends ActiveRecord
                 if(isset($this->$attribute)){
                     if($function == 'integertotime'){
                         $this->$attribute = $this->$attribute ? Yii::$app->formatter->asDate($this->$attribute, 'dd.MM.yyyy') : $this->$attribute;
+                            }
+                    else if($function == 'getPhoneNumber'){
+                        $this->$attribute = $this->$function($this->$attribute);
                             }
                     else{$this->$attribute = $function($this->$attribute);}
                 }
