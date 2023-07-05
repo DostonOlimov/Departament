@@ -42,7 +42,11 @@ use common\models\User;
             <?php
             $items = [
                 
-                ['label' => 'Davlat nazorati', 'url' => ['control/control/index'], 'icon' => 'fa fa-briefcase'],
+                ['label' => 'Davlat nazorati', 'icon' => 'fa fa-briefcase',
+                'items' => [
+                    ['label' => 'Tekshiruv dasturlari', 'url' => ['govcontrol/program/index'], 'iconStyle' => 'far'],
+                    ['label' => 'Tekshiruv buyrug\'lari', 'url' => ['govcontrol/order/index'], 'iconStyle' => 'far'],
+                ]],
                 ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-address-book'],
                 ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-university'],
                 ['label' => 'Iqtisodiy jarimalar', 'url' => ['measure/economic/index'], 'icon' => 'fa fa-percent'],
