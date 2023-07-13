@@ -42,7 +42,7 @@ use yii\helpers\Url;?>
             <ul class="navbar-nav nav-menu">
                 <li class="nav-item">
                     <button class="btn btn-none text-white btn-drop" type="button">
-                        <a href="<?= Url::to(['/control/index']) ?>">Davlat nazorati</a>
+                        <a href="<?= Url::to(['/govcontrol/gov-control/index']) ?>">Davlat nazorati</a>
                     </button>
                 </li>
                 <li class="nav-item">

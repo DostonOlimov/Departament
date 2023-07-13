@@ -52,7 +52,7 @@ use common\models\User;
                 ['label' => 'Iqtisodiy jarimalar', 'url' => ['measure/economic/index'], 'icon' => 'fa fa-percent'],
                 ['label' => 'Ma\'muriy bayonnomalar', 'url' => ['measure/execution/index'], 'icon' => 'fa fa-credit-card'],
                 ['label' => 'Tashkilotlar ro\'yxati', 'url' => ['company/index'], 'iconType' => 'far'],
-                // ['label' => 'Berilgan ko\'rsatma va ogohlantirishlar', 'url' => ['caution/caution/index'], 'icon' => 'fa fa-building'],
+                ['label' => 'Normativ hujjatlar', 'url' => ['normativedocument/normative-document/index'], 'icon' => 'fa fa-briefcase'],
                 [
                     'label' => 'Berilgan ko\'rsatma va ogohlantirishlar',
                     'icon' => 'fa fa-exclamation-circle',

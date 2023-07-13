@@ -42,6 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'risk_analisys_date',
             [
                 'class' => ActionColumn::class,
+                'buttonOptions' => [
+                    'class' => 'text-primary'
+                ],
                 'urlCreator' => function ($action, RiskAnalisys $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  },

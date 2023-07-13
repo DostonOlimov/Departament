@@ -24,8 +24,7 @@ else {
     $view_id = null;
 }
 ?>
-<div class="risk-analisys-view">
-<div class="row">
+<div class="risk-analisys-view row">
     <div class="col-3 mt-5">
         <?php echo StepsRiskAnalisys::widget([
             'company_id' => $model->company_id,
@@ -92,6 +91,5 @@ else {
         );} ?>
         
     </div>
-</div>
 </div>
 

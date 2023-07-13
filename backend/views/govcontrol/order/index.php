@@ -10,12 +10,10 @@ use yii\grid\GridView;
 /** @var common\models\govcontrol\OrderSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Orders';
+$this->title = 'Tekshiruv buyrug\'lari';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
 
 

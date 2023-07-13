@@ -45,10 +45,15 @@ class RisksCriteria extends LocalActiveRecord
     public function getCriteriaBall($risk_analisys_id)
     
     {
-        $criteria = $this::find()->where(['risk_analisys_id' => $risk_analisys_id])->all();
+        $criteria = $this::find()
+        ->where(['risk_analisys_id' => $risk_analisys_id])
+        ->select('criteria_id')
+        ->asArray()
+        ->all();
+        // debug($criteria);
         $ball =0;
         foreach($criteria as $cr){
-            $ball += RiskAnalisysCriteria::find($cr->criteria_id)->one()->criteria_score ?? 0;
+            $ball += RiskAnalisysCriteria::find($cr)->one()->criteria_score ?? 0;
 
         }
         return $ball;
@@ -58,6 +63,7 @@ class RisksCriteria extends LocalActiveRecord
     { 
         // return "1";
         $criteria = RiskAnalisysCriteria::findOne(['id' => $criteria_id]);
+        // debug($criteria);
         return $criteria->document_paragraph  . " . ". 
         $criteria->criteria . " (" . $criteria->criteria_score . " ball)";
     }

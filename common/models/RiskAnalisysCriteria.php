@@ -34,17 +34,6 @@ class RiskAnalisysCriteria extends LocalActiveRecord
     const METROLOGY_FIELD = 3;
     const ACCREDITATION_FIELD = 4;
     const MASS_MEDIA_FIELD = 5;
-
-    const ALL_ACTIVITY = 0;
-    const PRODUCTION_ACTIVITY = 10;
-    const SERVICE_ACTIVITY = 20;
-    const TRADE_ACTIVITY = 21;
-    const IMPORT_ACTIVITY = 22;
-    const SERTIFICATION_ACTIVITY = 23;
-    const TESTING_ACTIVITY = 24;
-    
-    
-    
     
     public static function getField($type = null)
     {
@@ -56,26 +45,6 @@ class RiskAnalisysCriteria extends LocalActiveRecord
             self::ACCREDITATION_FIELD => 'Muvofiqlikni baholashda qonun buzish',
             self::MASS_MEDIA_FIELD=>'Ommaviy axborot vositalari va ijtimoiy tarmoqlarda mahsulot 
             va xizmatlar yuzasidan qonun buzilish',
-        ];
-    
-        if ($type === null) {
-            return $arr;
-        }
-    
-        return $arr[$type];
-    }
-
-    public static function getActivity($type = null)
-    {
-        $arr = [
-    
-            self::ALL_ACTIVITY => 'Barcha faoliyat turlari',
-            self::PRODUCTION_ACTIVITY => 'Ishlab chiqarish',
-            self::SERVICE_ACTIVITY => 'Xizmat ko\'rsatish',
-            self::TRADE_ACTIVITY => 'Savdo',
-            self::IMPORT_ACTIVITY => 'Import',
-            self::SERTIFICATION_ACTIVITY => 'Sertifikatlashtirish idorasi',
-            self::TESTING_ACTIVITY => 'Sinov laboratoriyasi',
         ];
     
         if ($type === null) {
