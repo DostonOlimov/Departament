@@ -40,8 +40,11 @@ class NormativeDocumentContentSearch extends NormativeDocumentContent
      */
     public function search($params)
     {
+        // debug($this->parent_id);
         $query = NormativeDocumentContent::find();
         $query->orderBy(['content' => SORT_ASC]);
+        $query->orderBy(['position' => SORT_ASC]);
+        $query->where(['parent_id' => $this->parent_id]);
 
         // add conditions that should always apply here
 

@@ -21,6 +21,7 @@ use Yii;
 class NormativeDocumentContent extends NormativeDocumentSection
 {
     public $parent_name;
+    public $section;
     // public $parent_name;
     /**
      * {@inheritdoc}
@@ -55,6 +56,7 @@ class NormativeDocumentContent extends NormativeDocumentSection
             'document_section_id' => 'Bob nomi',
             'content' => 'Me\'yoriy hujjat talabi',
             'position' => 'Tartib raqami',
+            // 'section' => 'paragraf nomi',
         ];
     }
 

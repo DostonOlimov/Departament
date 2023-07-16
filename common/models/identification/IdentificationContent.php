@@ -2,6 +2,7 @@
 
 namespace common\models\identification;
 
+use common\models\actselection\SelectedProduct;
 use common\models\normativedocument\NormativeDocumentContent;
 use common\models\normativedocument\SelectedNormativeDocument;
 use Yii;
@@ -84,5 +85,10 @@ class IdentificationContent extends \common\models\LocalActiveRecord
         $arr = [self::CONFORM => 'Muvofiq',self::NONCONFORM => 'Nomuvofiq'];
         if ($type === null) {return $arr;}
         return $arr[$type];
+    }
+    public function getIdentification()
+    {
+        return $this->hasone(Identification::class, ['id' => 'identification_id'])
+        ->viaTable('selected_normative_document', ['id' => 'selected_normative_document_id']);
     }
 }

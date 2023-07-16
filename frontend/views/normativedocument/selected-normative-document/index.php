@@ -34,12 +34,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'identification_id',
             [
                 'class' => ActionColumn::class,
-                'template' => '{view}',
-                'buttonOptions' => [
-                    'class' => 'text-primary',
-                    
-                ],
-                'urlCreator' => function ($action, SelectedNormativeDocument $model, $key, $index, $column) {
+                'template' =>  
+                // '{update}',
+                // function (SelectedNormativeDocument $model) {
+                    // debug('test'),
+                    // $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->id]);
+                    // if($identification_content){
+                        // return 
+                        '{view}',
+                //     }
+                //     return '{update}';
+                // },
+
+                'buttonOptions' => ['class' => 'text-primary',],
+                
+                'urlCreator' => function ($action, SelectedNormativeDocument $model) {
                     $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->id]);
                     if($identification_content){
                         return Url::toRoute(['identification/identification-content/index', 'id' => $model->id]);

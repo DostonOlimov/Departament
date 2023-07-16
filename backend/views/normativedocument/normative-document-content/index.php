@@ -1,10 +1,12 @@
 <?php
 
 use common\models\normativedocument\NormativeDocumentContent;
-use yii\helpers\Html;
+// use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\bootstrap4;
+use yii\bootstrap4\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\normativedocument\NormativeDocumentContentSearch $searchModel */
@@ -14,12 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="normative-document-content-index">
 
-
-    <p>
-        <?= Html::a('Band yaratish', 
-        ['normativedocument/normative-document-content/create' , 'document_section_id' => $model->id], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -28,19 +24,38 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'parent_id',
+            // 'id',
+            // [
+            //     'attribute' => 'parent_id',
+            //     'visible' => $parent_id_visible
+            // ],
             // 'document_section_id',
-            'content:ntext',
+            [
+                'attribute' =>'content',
+                'value' => function(NormativeDocumentContent $model){
+                    return ($model->parent_id)? '- '.$model->content: $model->content;
+                }
+            ],
             // 'position',
             [
                 'class' => ActionColumn::class,
-                'urlCreator' => function ($action, NormativeDocumentContent $model, $key, $index, $column) {
-                    return Url::toRoute(['normativedocument/normative-document-content/'.$action, 'id' => $model->id]);
-                 }
-            ],
+                'buttons' => [
+                    'custom' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-arrow-down"></span>',
+                            ['normativedocument/normative-document-content/'.'down', 'id' => $model->id],
+                            ['title' => 'Pastga']
+                        );
+                    },
+                ],
+                'template' => '{custom} {view} {update} {delete}',
+                'urlCreator' => function ($action, NormativeDocumentContent $model, $key, $index, $column) 
+                {
+                    return Url::toRoute(['normativedocument/normative-document-content/'.$action, 'id' => $model->id
+                ]);
+                },
         ],
-    ]); ?>
+    ]]); ?>
 
 
 </div>

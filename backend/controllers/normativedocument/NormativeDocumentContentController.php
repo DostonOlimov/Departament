@@ -7,6 +7,7 @@ use common\models\normativedocument\NormativeDocumentContentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * NormativeDocumentContentController implements the CRUD actions for NormativeDocumentContent model.
@@ -55,9 +56,14 @@ class NormativeDocumentContentController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        $searchModel = new NormativeDocumentContentSearch();
+        $searchModel->parent_id = $id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider);
+
+
+        return $this->render('view', compact('model', 'searchModel', 'dataProvider'));
     }
 
     /**
@@ -131,9 +137,27 @@ class NormativeDocumentContentController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->delete();
+        if($model->parent_id){
+            return $this->redirect(['normativedocument/normative-document-content/view', 'id' => $model->parent_id]);
+        }
+        return $this->redirect(['normativedocument/normative-document-section/view', 'id' => $model->document_section_id]);
+        
+        // debug($model);
 
-        return $this->redirect(['index']);
+        // return $this->redirect(['index']);
+    }
+    public function actionDown($id)
+    {
+        $model = $this->findModel($id);
+        $model->position += 1;
+        $model->save();
+        
+        if($model->parent_id){
+            return $this->redirect(['normativedocument/normative-document-content/view', 'id' => $model->parent_id]);
+        }
+        return $this->redirect(['normativedocument/normative-document-section/view', 'id' => $model->document_section_id]);
     }
 
     /**

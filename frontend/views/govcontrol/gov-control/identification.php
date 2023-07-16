@@ -59,12 +59,19 @@ $cont = 'actselection/selected-product/';
                 'buttonOptions' => [
                     'class' => 'text-primary'
                 ],
+                'template' => '{view}{update}',
                 'urlCreator' => function ($action, SelectedProduct $model) {
-                    return Url::toRoute(['actselection/selected-product/'.$action, 'id' => $model->id]);
-                 }
+                    if ($action === 'update') {
+                        return Url::toRoute(['actselection/selected-product/view', 'id' => $model->id]);
+                    }
+                    if ($action === 'view') {
+                        return Url::toRoute(['govcontrol/gov-control/identification-view', 'id' => $model->id]);
+                    }
+                     }
+                ]
             ],
         ],
-    ]); ?>
+    ); ?>
 
 
 </div>

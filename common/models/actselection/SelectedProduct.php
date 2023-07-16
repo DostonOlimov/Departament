@@ -96,4 +96,5 @@ class SelectedProduct extends \common\models\LocalActiveRecord
     {
         return $this->hasMany(Identification::class, ['selected_product_id' => 'id'])->inverseOf('selectedProduct');
     }
+
 }

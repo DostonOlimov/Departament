@@ -11,6 +11,7 @@ use common\models\identification\IdentificationContent;
  */
 class IdentificationContentSearch extends IdentificationContent
 {
+    public $selected_product_id;
     /**
      * {@inheritdoc}
      */
@@ -41,6 +42,11 @@ class IdentificationContentSearch extends IdentificationContent
     public function search($params)
     {
         $query = IdentificationContent::find();
+        if($this->selected_product_id!==null){
+            $query->joinWith('identification')
+            ->where(['identification.selected_product_id' => $this->selected_product_id]);
+        }
+        // debug($query);
 
         // add conditions that should always apply here
 

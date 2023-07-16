@@ -2,6 +2,7 @@
 
 namespace frontend\controllers\identification;
 
+use common\models\identification\Identification;
 use common\models\identification\IdentificationContent;
 use common\models\identification\IdentificationContentSearch;
 use common\models\Model;
@@ -43,7 +44,9 @@ class IdentificationContentController extends Controller
     public function actionIndex($id = null)
     {
         $searchModel = new IdentificationContentSearch();
-        $searchModel->selected_normative_document_id = $id;
+        if($id){
+            $searchModel->selected_normative_document_id = $id;
+        }
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -71,17 +74,18 @@ class IdentificationContentController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionCreate($id)
-    {
-        $selected_normative_document = SelectedNormativeDocument::findOne($id);
-        $test = NormativeDocumentSection::find()
-        ->where(['normative_document_id' =>$selected_normative_document->normative_document_id])
-        ->select('id')
-        ->asArray()
-        ->all()
-        ;
-        // debug($test);
+    {   $selected_nd = SelectedNormativeDocument::findOne($id);
+        // debug($selected_nd);
+        // debug($id, false);
         $criteria = NormativeDocumentContent::find()
-        ->where(['id' => $test])
+        ->where(['normative_document_section.normative_document_id' => $selected_nd->normative_document_id])
+        // ->asArray()
+        ->orderBy([
+            'position' => SORT_ASC,
+            'content' => SORT_ASC,
+            ])
+        ->joinWith('documentSection')
+        // ->select(['content', 'position'])
         ->all()
         ;
         // debug($criteria);
@@ -93,6 +97,7 @@ class IdentificationContentController extends Controller
                 $model[$key]['normative_document_content_id'] = $value->id;
                 $model[$key]['name'] = $value->content;
                 // debug($model[$key]);
+                // debug($value);
 
                 // $model[$key]['criteria_id'] = $value->id;
             }

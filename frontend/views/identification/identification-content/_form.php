@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
     <?= $form->field($model, 'selected_normative_document_id')->textInput() ?>
     <?= $form->field($model, 'normative_document_content_id')->textInput() ?>
-
+    
     <div class="row">    
         <div class="col-3">    
             <?= $form->field($model, 'name')->textInput([

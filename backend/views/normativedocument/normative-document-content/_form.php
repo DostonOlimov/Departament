@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'parent_id')->hiddenInput()->label(false) ?>
+
+    <?= $form->field($model, 'section')->textInput(['readonly' => true]) ?>
     
     <?= $form->field($model, 'document_section_id')->textInput(['readonly' => true]) ?>
 

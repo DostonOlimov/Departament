@@ -1,7 +1,10 @@
 <?php
 
 use common\models\identification\IdentificationContent;
+use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\NormativeDocumentContent;
+use common\models\normativedocument\NormativeDocumentSection;
+use common\models\normativedocument\SelectedNormativeDocument;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -10,17 +13,30 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var common\models\identification\IdentificationContentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-
-$this->title = 'Tashqi ko\'rinish bayonnomasi';
+// debug($model);
+$this->title = 'Identification Contents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="identification-view container">
 <style>
-    /* h1{} */
+  h2 {
+    text-align: center;
+    }
 </style>
-<div class="identification-content-index container">
+<?= Html::a('Ortga', ['govcontrol/gov-control/identification', 'id' => $act_selection->gov_control_order_id], ['class' => 'btn btn-info']) ?>
 
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<h2>
+    <?= $company->company_name."dan sinash uchun olingan na`munalarni sezgi a'zolari orqali (tashqi ko‘rikdan o‘tkazish, tamg‘alash,  qadoqlash va saqlash) tekshirish
+<br>B A Y O N N O M A S I"
+?>
+    </h2>
+    <h3>
+        Mahsulot nomi: 
+        </h3>
+        <br>
+
+    <?= Html::a('Yuklab olish', ['govcontrol/gov-control/document', 'id' => $act_selection->gov_control_order_id], ['class' => 'btn btn-info']) ?>
 
     <p>
         <?php  // echo Html::a('Qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
@@ -37,6 +53,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             // 'selected_normative_document_id',
+            [
+                'attribute' => 'selected_normative_document_id',
+                'value' => function(IdentificationContent $model){
+                    $selected_normative_document = 
+                    SelectedNormativeDocument::findOne(['id' => $model->selected_normative_document_id]);
+                    $normative_document = NormativeDocument::findOne($selected_normative_document->normative_document_id);                
+                    $normative_document_content = 
+                    NormativeDocumentContent::findOne($model->normative_document_content_id);
+                    $normative_document_section = 
+                    NormativeDocumentSection::findOne($normative_document_content->document_section_id);                
+                    return $normative_document->determination.' '.
+                    $normative_document_section->section_number.' '.
+                    $normative_document_section->section_name;
+                }
+                ],
             // 'normative_document_content_id',
             [
                 'attribute' => 'normative_document_content_id',
@@ -46,7 +77,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'comment:ntext',
-            // 'conformity',
             [
                 'attribute' => 'conformity',
                 'value' => function(IdentificationContent $model){
@@ -54,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'template' => '{update}',
                 'buttonOptions' => [
                     'class' => 'text-primary'

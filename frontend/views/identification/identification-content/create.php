@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
     <div class="col-3">    
-        <?= $form->field($value, "[{$key}]comment")->textInput() ?>
+        <?= $form->field($value, "[{$key}]comment")->textArea() ?>
     </div>
     <div class="col-3">    
         <?= $form->field($value, "[{$key}]conformity")->dropDownList($value->getConformity()) ?>

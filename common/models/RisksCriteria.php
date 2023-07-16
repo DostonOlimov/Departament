@@ -50,37 +50,18 @@ class RisksCriteria extends LocalActiveRecord
         ->select('criteria_id')
         ->asArray()
         ->all();
-        // debug($criteria);
-        $ball =0;
-        foreach($criteria as $cr){
-            $ball += RiskAnalisysCriteria::find($cr)->one()->criteria_score ?? 0;
-
+        $score_sum = 0;
+        foreach($criteria as $criterion){
+            $score_sum += RiskAnalisysCriteria::findOne($criterion['criteria_id'])
+            ->criteria_score ?? 0;
         }
-        return $ball;
-        // return $risk_analisys_id;
+        return $score_sum;
     }
     public function getCriterion($criteria_id)
     { 
-        // return "1";
         $criteria = RiskAnalisysCriteria::findOne(['id' => $criteria_id]);
-        // debug($criteria);
         return $criteria->document_paragraph  . " . ". 
         $criteria->criteria . " (" . $criteria->criteria_score . " ball)";
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {   $ParentAttrLbl = parent::AttributeLabels();
-        $AttrLbl = [
-            // 'id' => 'ID',
-            // 'risk_analisys_id' => 'Risk Analisys ID',
-            // 'criteria_id' => 'Criteria ID',
-            // 'comment' => 'Comment',
-        ];
-
-        return array_merge($ParentAttrLbl, $AttrLbl);
     }
 
     /**

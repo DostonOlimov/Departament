@@ -41,11 +41,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'section_name',
         ],
     ]) ?>
+    <p>
+        <?= Html::a('Band yaratish', 
+        ['normativedocument/normative-document-content/create' , 'document_section_id' => $model->id], ['class' => 'btn btn-success']) ?>
+    </p>
     <?php
     echo $this->render('/normativedocument/normative-document-content/index', 
     compact(
-        'dataProvider', 
+        'dataProvider',
         'searchModel', 
-        'model')) ?>
+        'model',
+    ) ) ?>
 
 </div>

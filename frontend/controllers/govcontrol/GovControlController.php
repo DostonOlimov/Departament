@@ -2,11 +2,17 @@
 
 namespace frontend\controllers\govcontrol;
 
+use common\models\actselection\ActSelection;
+use common\models\actselection\SelectedProduct;
 use common\models\actselection\SelectedProductSearch;
 use common\models\Company;
 use common\models\govcontrol\Order;
 use common\models\govcontrol\OrderSearch;
 use common\models\govcontrol\Program;
+use common\models\identification\Identification;
+use common\models\identification\IdentificationContent;
+use common\models\identification\IdentificationContentSearch;
+use common\models\identification\IdentificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -57,6 +63,26 @@ class GovControlController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('identification', compact('searchModel', 'dataProvider', 'orderModel'));
+
+    }
+
+    public function actionIdentificationView($id)
+    {
+        $act_selection = $this->findActSelection($id);
+        $company = $this->findCompany($act_selection->gov_control_order_id);
+        $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
+        $searchModel = new IdentificationContentSearch();
+        $searchModel->selected_product_id = $id;
+        // $searchModel->gov_control_order_id = $id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('identification-view', compact(
+            'searchModel', 
+            'dataProvider', 
+            // 'orderModel',
+            'act_selection',
+            'company',
+        ));
 
     }
 
@@ -142,6 +168,34 @@ class GovControlController extends Controller
 
         return $this->redirect(['index']);
     }
+    public function actionDocument($id)
+    {   
+        $act_selection = $this->findActSelection($id);
+        $company = $this->findCompany($act_selection->gov_control_order_id);
+        $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
+        echo 'Xali tayyor emas';
+
+        // $model = $this->findModel($id);
+        // $company = Company::findOne($model->company_id);
+        // $user = User::findOne(['id' => $model->created_by]);
+        // $risks_criteria = new RisksCriteria();
+        // $sumscore = $risks_criteria->getCriteriaBall($id);
+        // // echo $sumscore;die;
+        // $score = RisksCriteria::find()
+        // ->select('criteria_id')
+        // ->Where(['risk_analisys_id' => $id])
+        // ->asArray()
+        // ->all();
+        // $comment = RisksCriteria::find()
+        // ->select('comment')
+        // ->Where(['risk_analisys_id' => $id])
+        // ->asArray()
+        // ->all();
+
+
+        // return $this->render('document', 
+        // compact('model', 'company', 'user', 'score','sumscore', 'comment'));
+    }
 
     /**
      * Finds the Order model based on its primary key value.
@@ -164,6 +218,19 @@ class GovControlController extends Controller
             if (($program = Program::findOne($model->gov_control_program_id)) !== null) {
                 if (($company = Company::findOne($program->company_id)) !== null) {
                     return $company;
+                }
+            }
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findActSelection($id)
+    {
+        if (($model = Identification::findOne(['id' => $id])) !== null) {
+            if (($model = SelectedProduct::findOne(['id' => $model->id])) !== null) {
+                if (($model = ActSelection::findOne(['id' => $model->id])) !== null) {
+                    return $model;
                 }
             }
         }

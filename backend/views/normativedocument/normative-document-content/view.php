@@ -1,5 +1,6 @@
 <?php
 
+use common\models\normativedocument\NormativeDocumentContent;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -32,6 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' =>'parent_id',
                 'visible' => $model->parent_id !== null,
+                'value' => function($model){
+                    return ($model->parent_id) ? NormativeDocumentContent::findOne($model->parent_id)->content : null;
+                }
             ],
             'document_section_id',
             'content:ntext',
@@ -44,7 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
     <?php if(!$model->parent_id){
         echo Html::a('Ko\'rsatkich qo\'shish', ['create-indicator', 'parent_id' => $model->id], ['class' => 'btn btn-primary']);
-    } 
+    }
+    echo $this->render('/normativedocument/normative-document-content/index', 
+    compact(
+        'dataProvider',
+        'searchModel', 
+        'model',
+    ) ) ?>
 ?>
 
 </div>
