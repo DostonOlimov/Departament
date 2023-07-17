@@ -1,5 +1,6 @@
 <?php
 
+use common\models\actselection\SelectedProduct;
 use common\models\identification\IdentificationContent;
 use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\NormativeDocumentContent;
@@ -32,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     </h2>
     <h3>
-        Mahsulot nomi: 
+        Mahsulot nomi: <?= $product->name?>
         </h3>
         <br>
 
@@ -90,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'text-primary'
                 ],
                 'urlCreator' => function ($action, IdentificationContent $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
+                    return Url::toRoute(['identification/identification-content/'.$action, 'id' => $model->id]);
                  }
             ],
         ],

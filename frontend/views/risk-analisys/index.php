@@ -51,11 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
                  'template' => '{view}',
                 ],
                 //'criteria',
-                ['attribute' => 'created_by',
-                'value' => function($model){
-                    $user = User::findOne(['id' => $model->created_by]);
-                    return $user->name ." ". $user->surname;}
-                ],
+                // ['attribute' => 'created_by',
+                // 'value' => function($model){
+                //     $user = User::findOne(['id' => $model->created_by]);
+                //     return $user->name ." ". $user->surname;}
+                // ],
                 //'updated_by',
                 'created_at',
                 //'updated_at',

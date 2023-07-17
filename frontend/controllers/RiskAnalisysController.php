@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\User;
+use Yii;
 
 /**
  * RiskAnalisysController implements the CRUD actions for RiskAnalisys model.
@@ -48,6 +49,7 @@ class RiskAnalisysController extends Controller
     public function actionIndex()
     {
         $searchModel = new RiskAnalisysSearch();
+        $searchModel->created_by = Yii::$app->user->id;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [

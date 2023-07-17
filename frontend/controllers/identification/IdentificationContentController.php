@@ -75,20 +75,11 @@ class IdentificationContentController extends Controller
      */
     public function actionCreate($id)
     {   $selected_nd = SelectedNormativeDocument::findOne($id);
-        // debug($selected_nd);
-        // debug($id, false);
         $criteria = NormativeDocumentContent::find()
         ->where(['normative_document_section.normative_document_id' => $selected_nd->normative_document_id])
-        // ->asArray()
-        ->orderBy([
-            'position' => SORT_ASC,
-            'content' => SORT_ASC,
-            ])
+        ->orderBy(['position' => SORT_ASC, 'content' => SORT_ASC,])
         ->joinWith('documentSection')
-        // ->select(['content', 'position'])
-        ->all()
-        ;
-        // debug($criteria);
+        ->all();
 
         foreach ($criteria as $key => $value)
             {
@@ -96,10 +87,6 @@ class IdentificationContentController extends Controller
                 $model[$key]['selected_normative_document_id'] = $id;
                 $model[$key]['normative_document_content_id'] = $value->id;
                 $model[$key]['name'] = $value->content;
-                // debug($model[$key]);
-                // debug($value);
-
-                // $model[$key]['criteria_id'] = $value->id;
             }
         if ($this->request->isPost) {
 
@@ -111,20 +98,17 @@ class IdentificationContentController extends Controller
             if ($valid) {
                 foreach ($model as $key => $value) 
                     {
-                        // debug($value);
                         if($value->status == 1){
                             $identification = new IdentificationContent();
-                            // $identification->id = $value->id;
                             $identification->selected_normative_document_id = $value->selected_normative_document_id;
                             $identification->normative_document_content_id = $value->normative_document_content_id;
                             $identification->comment = $value->comment;
                             $identification->conformity = $value->conformity;
-                            // debug($identification);
                             
                             $identification->save();
                         }
                     }
-                return $this->redirect(['index']);
+                return $this->redirect(['index', 'id' => $selected_nd->id]);
             }
         } 
 

@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'text-primary'
                 ],
                 'urlCreator' => function ($action, IdentificationContent $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
+                    return Url::toRoute(['identification/identification-content/'.$action, 'id' => $model->id]);
                  }
             ],
         ],

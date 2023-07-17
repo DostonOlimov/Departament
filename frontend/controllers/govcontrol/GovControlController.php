@@ -69,11 +69,12 @@ class GovControlController extends Controller
     public function actionIdentificationView($id)
     {
         $act_selection = $this->findActSelection($id);
+        $product = $this->findProduct($id);
         $company = $this->findCompany($act_selection->gov_control_order_id);
         $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
+        
         $searchModel = new IdentificationContentSearch();
         $searchModel->selected_product_id = $id;
-        // $searchModel->gov_control_order_id = $id;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('identification-view', compact(
@@ -82,6 +83,7 @@ class GovControlController extends Controller
             // 'orderModel',
             'act_selection',
             'company',
+            'product',
         ));
 
     }
@@ -227,12 +229,20 @@ class GovControlController extends Controller
 
     protected function findActSelection($id)
     {
-        if (($model = Identification::findOne(['id' => $id])) !== null) {
-            if (($model = SelectedProduct::findOne(['id' => $model->id])) !== null) {
-                if (($model = ActSelection::findOne(['id' => $model->id])) !== null) {
+        // debug($id);
+            if (($model = SelectedProduct::findOne($id)) !== null) {
+                if (($model = ActSelection::findOne(['id' => $model->act_selection_id])) !== null) {
+                    // debug($model);
                     return $model;
-                }
             }
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findProduct($id)
+    {
+            if (($model = SelectedProduct::findOne($id)) !== null) {
+                return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
