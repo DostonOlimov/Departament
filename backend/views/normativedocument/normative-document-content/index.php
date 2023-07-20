@@ -30,12 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
             //     'visible' => $parent_id_visible
             // ],
             // 'document_section_id',
-            [
-                'attribute' =>'content',
-                'value' => function(NormativeDocumentContent $model){
-                    return ($model->parent_id)? '- '.$model->content: $model->content;
-                }
-            ],
+            'content',
+            // [
+            //     'attribute' =>'content',
+            //     'value' => function(NormativeDocumentContent $model){
+            //         return ($model->parent_id)? '- '.$model->content: $model->content;
+            //     }
+            // ],
+            
             // 'position',
             [
                 'class' => ActionColumn::class,

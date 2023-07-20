@@ -15,10 +15,10 @@ $old = NormativeDocumentSection::find()
 ->asArray()
 ->all();
 $keysToDelete = [];
-foreach($old as $key => $value){
-    // debug($value);
-    $keysToDelete[$key] = $value['section_category_id'];
-}
+// foreach($old as $key => $value){
+//     // debug($value);
+//     $keysToDelete[$key] = $value['section_category_id'];
+// }
 // debug($keysToDelete);
 // die;
 ?>

@@ -2,6 +2,7 @@
 
 namespace backend\controllers\normativedocument;
 
+use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\NormativeDocumentContentSearch;
 use common\models\normativedocument\NormativeDocumentSection;
 use common\models\normativedocument\NormativeDocumentSectionSearch;
@@ -120,9 +121,9 @@ class NormativeDocumentSectionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->delete();
+        return $this->redirect(['normativedocument/normative-document/view', 'id' => $model->normative_document_id]);
     }
 
     /**
