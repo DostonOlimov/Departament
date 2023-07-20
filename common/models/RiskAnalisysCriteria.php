@@ -29,30 +29,7 @@ use common\models\LocalActiveRecord;
 
 class RiskAnalisysCriteria extends LocalActiveRecord
 {
-    const TECHNIC_AND_STANDARD_FIELD = 1;
-    const SERTIFICATION_FIELD = 2;
-    const METROLOGY_FIELD = 3;
-    const ACCREDITATION_FIELD = 4;
-    const MASS_MEDIA_FIELD = 5;
-    
-    public static function getField($type = null)
-    {
-        $arr = [
-    
-            self::TECHNIC_AND_STANDARD_FIELD => 'Texnik jihatdan tartibga solish va standartlashtirish sohasida qonun buzilish',
-            self::SERTIFICATION_FIELD => 'Sertifikatlashtirish sohasidagi qonun buzilish',
-            self::METROLOGY_FIELD => 'Metrologiya sohasidagi qonun buzilish',
-            self::ACCREDITATION_FIELD => 'Muvofiqlikni baholashda qonun buzish',
-            self::MASS_MEDIA_FIELD=>'Ommaviy axborot vositalari va ijtimoiy tarmoqlarda mahsulot 
-            va xizmatlar yuzasidan qonun buzilish',
-        ];
-    
-        if ($type === null) {
-            return $arr;
-        }
-    
-        return $arr[$type];
-    }
+
 
 
     
@@ -123,6 +100,7 @@ class RiskAnalisysCriteria extends LocalActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
+
 
     /**
      * Gets query for [[UpdatedBy]].

@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'custom' => function ($url, $model, $key) {
                         return Html::a(
-                            '<span class="glyphicon glyphicon-arrow-down"></span>',
+                            '<span class="fa fa-arrow-circle-down"></span>',
                             ['normativedocument/normative-document-content/'.'down', 'id' => $model->id],
                             ['title' => 'Pastga']
                         );

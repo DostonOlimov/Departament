@@ -3,8 +3,10 @@ use frontend\widgets\StepsRiskAnalisys;
 use yii\widgets\DetailView;
 use common\models\Region;
 use common\models\Company;
+use common\models\RiskAnalisys;
 use common\models\RiskAnalisysCriteria;
 use common\models\RisksCriteria;
+use common\models\User;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -57,6 +59,17 @@ else {
                         // 'id',
                         'risk_analisys_date',
                         'risk_analisys_number',
+                        [
+                            'attribute' => 'summary_user_id',
+                            'value'  => function(RiskAnalisys $model){
+                                $summary_user = User::findOne($model->summary_user_id);
+                                if(!$summary_user){
+                                    return "Kiritilmagan";
+                                }
+                                return ($summary_user->name).' '.($summary_user->surname) ?? "Xatolik";
+                            }
+        
+                        ],
                         [
                             'label' => 'To\'plagan ball',
                             'value' => function($model){

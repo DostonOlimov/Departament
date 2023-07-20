@@ -3,17 +3,19 @@
 use common\models\Company;
 use common\models\RiskAnalisys;
 use common\models\User;
-use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\date\DatePicker;
 use kartik\export\ExportMenu;
+use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\UserSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/** @var yii\web\View $this */
+/** @var common\models\RiskAnalisysSearch $searchModel */
+/** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Inspektorlar';
+$this->title = 'Xavf tahlili';
 $this->params['breadcrumbs'][] = $this->title;
 $gridColumns = 
 [

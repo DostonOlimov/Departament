@@ -51,6 +51,17 @@ class RiskAnalisysController extends Controller
         $searchModel = new RiskAnalisysSearch();
         $searchModel->created_by = Yii::$app->user->id;
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $user = User::findOne(Yii::$app->user->id);
+        if ($searchModel->load($this->request->get())) {
+            $models = RiskAnalisys::find()
+            ->andFilterWhere(['between', 'created_at',strtotime($searchModel->start_date),strtotime($searchModel->end_date. ' +1 day -1 second')])
+            ->all();
+            // debug($models);
+        
+            return $this->render('application-one', compact('searchModel', 'models', 'user'));
+            
+            // debug($searchModel);
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,

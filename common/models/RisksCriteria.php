@@ -42,21 +42,7 @@ class RisksCriteria extends LocalActiveRecord
             [['risk_analisys_id'], 'exist', 'skipOnError' => true, 'targetClass' => RiskAnalisys::class, 'targetAttribute' => ['risk_analisys_id' => 'id']],
         ];
     }
-    public function getCriteriaBall($risk_analisys_id)
     
-    {
-        $criteria = $this::find()
-        ->where(['risk_analisys_id' => $risk_analisys_id])
-        ->select('criteria_id')
-        ->asArray()
-        ->all();
-        $score_sum = 0;
-        foreach($criteria as $criterion){
-            $score_sum += RiskAnalisysCriteria::findOne($criterion['criteria_id'])
-            ->criteria_score ?? 0;
-        }
-        return $score_sum;
-    }
     public function getCriterion($criteria_id)
     { 
         $criteria = RiskAnalisysCriteria::findOne(['id' => $criteria_id]);

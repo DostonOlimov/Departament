@@ -33,6 +33,12 @@ class LocalActiveRecord extends ActiveRecord
     const SERTIFICATION_ACTIVITY = 23;
     const TESTING_ACTIVITY = 24;
 
+    const TECHNIC_AND_STANDARD_FIELD = 1;
+    const SERTIFICATION_FIELD = 2;
+    const METROLOGY_FIELD = 3;
+    const ACCREDITATION_FIELD = 4;
+    const MASS_MEDIA_FIELD = 5;
+
     public function AttributeLabels()
     {
         return [
@@ -50,6 +56,7 @@ class LocalActiveRecord extends ActiveRecord
             'real_control_date_from' => 'Haqiqatda tekshiriv boshlanish sanasi',
             'real_control_date_to' => 'Haqiqatda tekshiriv tugash sanasi',
             'act_selection_id' => 'Namuna tanlab olish dalolatnomasi raqami',
+            'summary_user_id' => 'Umumlashtiruvchi',
             //RiskAnalisys
             'risk_analisys_date' => 'Xavf tahlili sanasi',
             'risk_analisys_number' => 'Xavf tahlili raqami',
@@ -129,7 +136,7 @@ class LocalActiveRecord extends ActiveRecord
                     'control_period_to', 'control_date_from', 'control_date_to', 
                     'ombudsman_code_date', 'activation_date', 'deactivation_date', 
                     'real_control_date_from', 'real_control_date_to', 'last_gov_control_date', 
-                    'mfrd_date'
+                    'mfrd_date', 'start_date', 'end_date', 'risk_analisys_date'
                 ],'strtotime'
             ],
             [['ownername'], 'strtoupper'],
@@ -158,7 +165,8 @@ class LocalActiveRecord extends ActiveRecord
             [['created_at', 'updated_at', 'registration_date', 'control_period_from',
             'control_period_to', 'control_date_from', 'control_date_to', 'ombudsman_code_date',
             'activation_date', 'deactivation_date', 'real_control_date_from', 'real_control_date_to', 
-            'last_gov_control_date', 'mfrd_date'],'integertotime'],
+            'last_gov_control_date', 'mfrd_date', 'start_date', 'end_date', 'risk_analisys_date'
+        ],'integertotime'],
             [['phone'], 'getPhoneNumber'],
         ];
 
@@ -189,6 +197,71 @@ class LocalActiveRecord extends ActiveRecord
             self::IMPORT_ACTIVITY => 'Import',
             self::SERTIFICATION_ACTIVITY => 'Sertifikatlashtirish idorasi',
             self::TESTING_ACTIVITY => 'Sinov laboratoriyasi',
+        ];
+    
+        if ($type === null) {
+            return $arr;
+        }
+    
+        return $arr[$type];
+    }
+
+    public static function getUsers()
+    {
+        $result = [];
+        foreach (User::find()->where(['role' => 'inspector', 'status' => User::STATUS_ACTIVE])->all() as $user){
+            $result[$user->id] = $user->name . ' ' . $user->surname;
+        }
+        return $result;
+    }
+    public function getCriteriaBall($risk_analisys_id, $category_id = null)
+    
+    {
+        // debug($category_id);
+        $criteria_ids = $this->getCriteriaByCategory($category_id);
+        // debug($criteria_ids);
+        $search = ($criteria_ids)?
+        ['risk_analisys_id' => $risk_analisys_id,'criteria_id' => $criteria_ids ]:
+        ['risk_analisys_id' => $risk_analisys_id];
+        // debug($search);
+        $criteria = RisksCriteria::find()
+        ->where($search)
+        ->select('criteria_id')
+        ->asArray()
+        ->all();
+        // debug($criteria);
+        $score_sum = 0;
+        foreach($criteria as $criterion){
+            $score_sum += RiskAnalisysCriteria::findOne($criterion['criteria_id'])
+            ->criteria_score ?? 0;
+        }
+        // debug($score_sum);
+        return $score_sum;
+    }
+    public function getCriteriaByCategory($criteria_category_id){
+        $arr = RiskAnalisysCriteria::find()
+        ->where(['criteria_category' => $criteria_category_id])
+        ->select('id')
+        ->asArray()
+        ->all();
+        foreach($arr as $key => $value){
+            $arr[$key] = $value['id'];
+        }
+        return $arr;
+        // debug($arr);
+    }
+
+    
+    public static function getField($type = null)
+    {
+        $arr = [
+    
+            self::TECHNIC_AND_STANDARD_FIELD => 'Texnik jihatdan tartibga solish va standartlashtirish sohasida qonun buzilish',
+            self::SERTIFICATION_FIELD => 'Sertifikatlashtirish sohasidagi qonun buzilish',
+            self::METROLOGY_FIELD => 'Metrologiya sohasidagi qonun buzilish',
+            self::ACCREDITATION_FIELD => 'Muvofiqlikni baholashda qonun buzish',
+            self::MASS_MEDIA_FIELD=>'Ommaviy axborot vositalari va ijtimoiy tarmoqlarda mahsulot 
+            va xizmatlar yuzasidan qonun buzilish',
         ];
     
         if ($type === null) {

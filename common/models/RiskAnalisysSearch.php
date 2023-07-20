@@ -5,19 +5,25 @@ namespace common\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\RiskAnalisys;
+use Yii;
 
 /**
  * RiskAnalisysSearch represents the model behind the search form of `common\models\RiskAnalisys`.
  */
 class RiskAnalisysSearch extends RiskAnalisys
 {
+    public $start_date;
+    public $end_date;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'company_id',  'risk_analisys_date', 'risk_analisys_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['start_date', 'end_date'], 'required'],
+            [['id', 'company_id', 'risk_analisys_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['risk_analisys_date'], 'string'],
+
         ];
     }
 
@@ -60,13 +66,21 @@ class RiskAnalisysSearch extends RiskAnalisys
             'id' => $this->id,
             // 'stir' => $this->stir,
             'company_id' => $this->company_id,
-            'risk_analisys_date' => $this->risk_analisys_date,
+            // 'risk_analisys_date' => $this->risk_analisys_date,
             'risk_analisys_number' => $this->risk_analisys_number,
+            'summary_user_id' => $this->risk_analisys_number,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+        if($this->start_date or $this->end_date){
+            $query->andFilterWhere(['between', 'created_at', 
+            strtotime($this->start_date), 
+            strtotime($this->end_date. ' +1 day -1 second')]);
+        }
+        $query->andFilterWhere(['like', 'risk_analisys_date', $this->risk_analisys_date,]);
+        // debug($query);
 
         return $dataProvider;
     }

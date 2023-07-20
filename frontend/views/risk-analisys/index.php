@@ -7,60 +7,120 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use common\models\Company;
 use common\models\User;
+use kartik\date\DatePicker;
+use kartik\export\ExportMenu;
+use yii\widgets\ActiveForm;
+
 /** @var yii\web\View $this */
 /** @var common\models\RiskAnalisysSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Xavf tahlili';
 $this->params['breadcrumbs'][] = $this->title;
+// debug($searchModel);
+
+
 ?>
+
 <div class="risk-analisys-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php 
+    
+    // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+<?php $form = ActiveForm::begin([
+    'action' => ['index'],
+    'method' => 'get',
+]); ?>
+    <div class="col-3">
+        <?= $form->field($searchModel, 'start_date')->label(false)->widget(DatePicker::class, [
+            'options' => ['placeholder' => 'Boshlanish vaqti'],
+            'pluginOptions' => [
+                'autoclose'=>true,
+                'format' => 'dd.mm.yyyy'
+                ]
+            ]); ?>
+    </div>
+    <div class="col-3">
+        <?= $form->field($searchModel, 'end_date')->label(false)->widget(DatePicker::class, [
+            'options' => ['placeholder' => 'Tugash vaqti'],
+            'pluginOptions' => [
+                'autoclose'=>true,
+                'format' => 'dd.mm.yyyy'
+                ]
+            ]); 
+            // echo Html::a('Yuklab olish', ['document','id' => 1], ['class' => 'btn btn-primary']);
+            ?>  
+            <?php echo Html::submitButton('Yuklab olish', ['class' => 'btn btn-primary']) ?>
+    </div>
+    <div class="form-group">
+        <p>
+            
+        <?php 
+        
+        
+        
+        
+        ?>
+        </p>
+        <?php ActiveForm::end(); ?>
+
+
     <p>
         <?= Html::a('Yaratish', ['search'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'headerRowOptions' => ['style' => 'background-color: #0072B5'],       
-        
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            // 'id',
-            [
-                'attribute' => 'company_id',
-                'value' => function($model){
-                    return Company::findOne(['id' => $model->company_id])->company_name;
-                }
-            ],
-            'risk_analisys_date',
-            [
-                'class' => ActionColumn::class,
-                'buttonOptions' => [
-                    'class' => 'text-primary'
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'headerRowOptions' => ['style' => 'background-color: #0072B5'],       
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'attribute' => 'company_id',
+                    'value' => function($model){
+                        return Company::findOne(['id' => $model->company_id])->company_name;
+                    }
                 ],
-                'urlCreator' => function ($action, RiskAnalisys $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 },
-                 'template' => '{view}',
+                'risk_analisys_date',
+                'risk_analisys_number',
+                [
+                    'class' => ActionColumn::class,
+                    'buttonOptions' => [
+                        'class' => 'text-primary'
+                    ],
+                    'urlCreator' => function ($action, RiskAnalisys $model, $key, $index, $column) {
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    },
+                    'template' => '{view}',
+                ],
+                [
+                    'attribute' => 'summary_user_id',
+                    'value'  => function(RiskAnalisys $model){
+                        $summary_user = User::findOne($model->summary_user_id);
+                        if(!$summary_user){
+                            return "Kiritilmagan";
+                        }
+                        return ($summary_user->name).' '.($summary_user->surname) ?? "Xatolik";
+                    }
+                    
                 ],
                 //'criteria',
                 // ['attribute' => 'created_by',
                 // 'value' => function($model){
-                //     $user = User::findOne(['id' => $model->created_by]);
-                //     return $user->name ." ". $user->surname;}
-                // ],
-                //'updated_by',
-                'created_at',
-                //'updated_at',
-        ]]
-    ); ?>
+                    //     $user = User::findOne(['id' => $model->created_by]);
+                    //     return $user->name ." ". $user->surname;}
+                    // ],
+                    //'updated_by',
+                    'created_at',
+                    //'updated_at',
+            ]
+                ]); ?>
 
 
 </div>
+</div>
+
+
+

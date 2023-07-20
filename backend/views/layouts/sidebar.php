@@ -42,6 +42,7 @@ use common\models\User;
             <?php
             $items = [
                 
+                ['label' => 'Xavf tahlili', 'url' => ['risk-analisys/index'], 'icon' => 'fa fa-percent'],
                 ['label' => 'Davlat nazorati', 'icon' => 'fa fa-briefcase',
                 'items' => [
                     ['label' => 'Tekshiruv dasturlari', 'url' => ['govcontrol/program/index'], 'iconStyle' => 'far'],
