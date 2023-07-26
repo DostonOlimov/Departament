@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Normative Document Sections', 'url
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="normative-document-section-view">
+<div class="normative-document-section-view row">
 
     <p>
         <?= Html::a('Ortga', ['normativedocument/normative-document/view', 'id' => $model->normative_document_id], ['class' => 'btn btn-info']) ?>
@@ -41,16 +41,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'section_name',
         ],
     ]) ?>
-    <p>
-        <?= Html::a('Band yaratish', 
-        ['normativedocument/normative-document-content/create' , 'document_section_id' => $model->id], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?php
-    echo $this->render('/normativedocument/normative-document-content/index', 
-    compact(
-        'dataProvider',
-        'searchModel', 
-        'model',
-    ) ) ?>
+    </div>
+    <div class="row">
+    <div class="col-1">
+            <?= Html::a('Band yaratish', 
+            ['normativedocument/normative-document-content/create' , 'document_section_id' => $model->id], ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <div class="col-2">
+        <?= Html::a('Quyi turuvchi bob qo\'shish', ['create-lower-section', 'parent_id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    </div>
+
+
+    </div>
+        <?php
+        echo $this->render('/normativedocument/normative-document-content/index', 
+        compact(
+            'dataProvider',
+            'searchModel', 
+            'model',
+        ) ) ?>
 
 </div>

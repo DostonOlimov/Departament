@@ -20,9 +20,10 @@ class RiskAnalisysSearch extends RiskAnalisys
     public function rules()
     {
         return [
-            [['start_date', 'end_date'], 'required'],
-            [['id', 'company_id', 'risk_analisys_number', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
-            [['risk_analisys_date'], 'string'],
+            [['id', 'company_id', 'risk_analisys_number', 'created_by', 'updated_by', 'created_at', 'updated_at','summary_user_id'], 'integer'],
+            [[
+                // 'risk_analisys_date', 
+                'start_date', 'end_date'], 'string'],
 
         ];
     }
@@ -46,6 +47,12 @@ class RiskAnalisysSearch extends RiskAnalisys
     public function search($params)
     {
         $query = RiskAnalisys::find();
+        if($this->summary_user_id){
+            $query->Where(['summary_user_id' => $this->summary_user_id])
+            ->orWhere(['created_by' => $this->created_by,]);
+        }
+        $query->orderBy(['risk_analisys_date' => SORT_DESC]);
+    
 
         // add conditions that should always apply here
 
@@ -68,18 +75,15 @@ class RiskAnalisysSearch extends RiskAnalisys
             'company_id' => $this->company_id,
             // 'risk_analisys_date' => $this->risk_analisys_date,
             'risk_analisys_number' => $this->risk_analisys_number,
-            'summary_user_id' => $this->risk_analisys_number,
-            'created_by' => $this->created_by,
+            // 'summary_user_id' => $this->risk_analisys_number,
+            // 'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
-            'created_at' => $this->created_at,
+            // 'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-        if($this->start_date or $this->end_date){
-            $query->andFilterWhere(['between', 'created_at', 
-            strtotime($this->start_date), 
-            strtotime($this->end_date. ' +1 day -1 second')]);
-        }
-        $query->andFilterWhere(['like', 'risk_analisys_date', $this->risk_analisys_date,]);
+        
+        $query->andFilterWhere(['between', 'risk_analisys_date',strtotime($this->start_date),strtotime($this->end_date. ' +1 day -1 second')]);
+
         // debug($query);
 
         return $dataProvider;

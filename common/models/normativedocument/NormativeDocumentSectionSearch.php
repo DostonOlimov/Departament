@@ -17,7 +17,7 @@ class NormativeDocumentSectionSearch extends NormativeDocumentSection
     public function rules()
     {
         return [
-            [['id', 'normative_document_id', 'section_name'], 'integer'],
+            [['id', 'parent_id','section_category_id', 'normative_document_id', 'section_name', 'position'], 'integer'],
             [['section_category_id', 'section_number'], 'safe'],
         ];
     }
@@ -42,6 +42,10 @@ class NormativeDocumentSectionSearch extends NormativeDocumentSection
     {
         $query = NormativeDocumentSection::find();
         $query->orderBy(['section_number' => SORT_ASC]);
+        $query->orderBy(['position' => SORT_ASC]);
+        $query->where(['parent_id' => $this->parent_id]);
+
+
 
         // add conditions that should always apply here
 
@@ -60,6 +64,7 @@ class NormativeDocumentSectionSearch extends NormativeDocumentSection
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'parent_id' => $this->parent_id,
             'normative_document_id' => $this->normative_document_id,
             'section_name' => $this->section_name,
         ]);

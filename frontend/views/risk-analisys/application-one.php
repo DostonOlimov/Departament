@@ -186,19 +186,19 @@ for ($i = 1; $i <= 8; $i++) {
     $row->addCell(null)->addText($i, $TableFontStyle, $TableCellStyle);
 }
 
-foreach($models as $key => $model){
+foreach($models as $key => $oneModel){
     
-    $company = Company::findOne($model->company_id);
+    $company = Company::findOne($oneModel->company_id);
     $row = $table->addRow();
     $key = $key+1;
     $table->addCell()->addText("{$key}.", null, $TableCellStyle);
     $table->addCell(null, $TableCellStyle)->addText($company->company_name, null, $TableCellStyle);
-    $table->addCell(null, $TableCellStyle)->addText($model->getCriteriaBall($model->id,$model::TECHNIC_AND_STANDARD_FIELD), null, $TableCellStyle);
-    $table->addCell(null, $TableCellStyle)->addText($model->getCriteriaBall($model->id,$model::SERTIFICATION_FIELD), null, $TableCellStyle);
-    $table->addCell(null, $TableCellStyle)->addText($model->getCriteriaBall($model->id,$model::METROLOGY_FIELD), null, $TableCellStyle);
-    $table->addCell(null, $TableCellStyle)->addText($model->getCriteriaBall($model->id,$model::ACCREDITATION_FIELD), null, $TableCellStyle);
-    $table->addCell(null, $TableCellStyle)->addText($model->getCriteriaBall($model->id,$model::MASS_MEDIA_FIELD), null, $TableCellStyle);
-    $table->addCell(null, $TableCellStyle)->addText($model->getCriteriaBall($model->id), null, $TableCellStyle);
+    $table->addCell(null, $TableCellStyle)->addText($oneModel->getCriteriaBall($oneModel->id,$oneModel::TECHNIC_AND_STANDARD_FIELD), null, $TableCellStyle);
+    $table->addCell(null, $TableCellStyle)->addText($oneModel->getCriteriaBall($oneModel->id,$oneModel::SERTIFICATION_FIELD), null, $TableCellStyle);
+    $table->addCell(null, $TableCellStyle)->addText($oneModel->getCriteriaBall($oneModel->id,$oneModel::METROLOGY_FIELD), null, $TableCellStyle);
+    $table->addCell(null, $TableCellStyle)->addText($oneModel->getCriteriaBall($oneModel->id,$oneModel::ACCREDITATION_FIELD), null, $TableCellStyle);
+    $table->addCell(null, $TableCellStyle)->addText($oneModel->getCriteriaBall($oneModel->id,$oneModel::MASS_MEDIA_FIELD), null, $TableCellStyle);
+    $table->addCell(null, $TableCellStyle)->addText($oneModel->getCriteriaBall($oneModel->id), null, $TableCellStyle);
     }
 
     $body4 = $section->addTextRun(['align' => 'both']);
@@ -206,7 +206,7 @@ foreach($models as $key => $model){
     $section->addText(htmlspecialchars($user_position."\t".$user_name), null, 'rightTab');
     $section->addText(htmlspecialchars($date_uz));
 
-    $file = 'Xavf tahlili nizomiga 1-ilova '.$searchModel->start_date.' - '.$searchModel->end_date.'.docx';
+    $file = 'Xavf tahlili nizomiga 1-ilova '.$model->start_date.' - '.$model->end_date.'.docx';
     header("Content-Description: File Transfer");
     header('Content-Disposition: attachment; filename="' . $file . '"');
     header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');

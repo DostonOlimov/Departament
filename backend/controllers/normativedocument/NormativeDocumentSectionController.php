@@ -4,6 +4,7 @@ namespace backend\controllers\normativedocument;
 
 use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\NormativeDocumentContentSearch;
+use common\models\normativedocument\NormativeDocumentSearch;
 use common\models\normativedocument\NormativeDocumentSection;
 use common\models\normativedocument\NormativeDocumentSectionSearch;
 use yii\web\Controller;
@@ -90,6 +91,41 @@ class NormativeDocumentSectionController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCreateLowerSection($parent_id)
+    {   $old_model = $this->findModel($parent_id);
+        $model = new NormativeDocumentSection();
+        $model->parent_id = $old_model->id;
+        $model->normative_document_id = $old_model->normative_document_id;
+        $model->section_category_id = $old_model->section_category_id;
+        
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['normativedocument/normative-document/view', 'id' => $model->normative_document_id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+    public function actionDown($id)
+    {
+        $model = $this->findModel($id);
+        $model->position += 1;
+        $model->save();
+        // debug($model->errors);
+        // $model = $this->findModel($id);
+        
+        // debug($model);
+        if($model->parent_id){
+            return $this->redirect(['normativedocument/normative-document-section/view', 'id' => $model->parent_id]);
+        }
+        return $this->redirect(['normativedocument/normative-document/view', 'id' => $model->normative_document_id]);
     }
 
     /**

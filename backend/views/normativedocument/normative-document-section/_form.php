@@ -27,6 +27,8 @@ $keysToDelete = [];
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->field($model, 'parent_id')->textInput(['readonly' => true]) ?>
+
     <?= $form->field($model, 'normative_document_id')->textInput(['readonly' => true]) ?>
 
     <?= $form->field($model, 'section_category_id')->dropDownList($model->getSectionDropDown($keysToDelete)) ?>
@@ -34,6 +36,8 @@ $keysToDelete = [];
     <?= $form->field($model, 'section_number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'section_name')->textInput() ?>
+
+    <?= $form->field($model, 'position')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

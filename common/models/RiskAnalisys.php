@@ -25,8 +25,6 @@ use Yii;
  */
 class RiskAnalisys extends LocalActiveRecord
 {
-    public $start_date;
-    public $end_date;
     /**
      * {@inheritdoc}
      */

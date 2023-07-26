@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\User;
+use frontend\models\RiskAnalisysForm;
 use Yii;
 
 /**
@@ -50,23 +51,38 @@ class RiskAnalisysController extends Controller
     {
         $searchModel = new RiskAnalisysSearch();
         $searchModel->created_by = Yii::$app->user->id;
+        $searchModel->summary_user_id = Yii::$app->user->id;
+        // debug($this->request->queryParams);  
         $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($searchModel);
+        // debug($dataProvider);
         $user = User::findOne(Yii::$app->user->id);
-        if ($searchModel->load($this->request->get())) {
-            $models = RiskAnalisys::find()
-            ->andFilterWhere(['between', 'created_at',strtotime($searchModel->start_date),strtotime($searchModel->end_date. ' +1 day -1 second')])
-            ->all();
-            // debug($models);
-        
-            return $this->render('application-one', compact('searchModel', 'models', 'user'));
-            
-            // debug($searchModel);
-        }
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionExport()
+    {
+        $model = new RiskAnalisysForm();
+        $user = User::findOne(Yii::$app->user->id);
+        // debug($this->request->post());
+        if ($model->load($this->request->post())) {
+            // debug($model);
+            $models = RiskAnalisys::find()
+            ->andFilterWhere(['between', 'risk_analisys_date',strtotime($model->start_date),strtotime($model->end_date. ' +1 day -1 second')])
+            ->andFilterWhere(['summary_user_id' => $user->id])
+            ->all();
+            // debug($model);
+            // debug($models);
+        
+            return $this->render('application-one', compact('model', 'models', 'user'));
+            
+            // debug($searchModel);
+        }
+
+        return $this->render('export', compact('model'));
     }
 
     /**

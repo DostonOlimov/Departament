@@ -27,7 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            // 'id',
+            'id',
+            'parent_id',
+            [
+                'attribute' => 'parent_id',
+                'value' => function(NormativeDocumentSection $model){
+                    $model = NormativeDocumentSection::findOne($model->parent_id);
+                    return ($model)?$model->section_number.'. '.$model->section_name:'';
+                }
+            ],
             // 'normative_document_id',
             // 'section_category_id',
             [
@@ -44,14 +52,26 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // 'section_number',
             // 'section_name',
+            // 'position',
             [
                 'class' => ActionColumn::class,
+                'buttons' => [
+                    'down' => function ($url, $model, $key) {
+                        return Html::a(
+                            '<span class="fa fa-arrow-circle-down"></span>',
+                            ['normativedocument/normative-document-section/'.'down', 'id' => $model->id],
+                            ['title' => 'Pastga']
+                        );
+                    },
+                ],
+                'template' => '{down} {view} {update} {delete}',
                 'urlCreator' => function ($action, NormativeDocumentSection $model, $key, $index, $column) {
                     return Url::toRoute(['normativedocument/normative-document-section/'.$action, 'id' => $model->id]);
                  }
             ],
         ],
     ]); ?>
+    
 
 
 </div>

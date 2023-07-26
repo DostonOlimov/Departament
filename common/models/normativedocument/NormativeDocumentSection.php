@@ -32,9 +32,10 @@ class NormativeDocumentSection extends NormativeDocument
     public function rules()
     {
         return [
-            [['normative_document_id'], 'integer'],
-            [['section_category_id', 'section_number', 'section_name'], 'string', 'max' => 255],
+            [['section_category_id','normative_document_id',  'parent_id', 'position'], 'integer'],
+            [[ 'section_number', 'section_name'], 'string', 'max' => 255],
             [['normative_document_id'], 'exist', 'skipOnError' => true, 'targetClass' => NormativeDocument::class, 'targetAttribute' => ['normative_document_id' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => NormativeDocumentSection::class, 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
@@ -45,10 +46,13 @@ class NormativeDocumentSection extends NormativeDocument
     {
         return [
             'id' => 'ID',
+            'parent_id' => 'Tegishliligi',
             'normative_document_id' => 'Me\'yoriy hujjat nomi',
             'section_category_id' => 'Bob turi',
             'section_number' => 'Bob raqami',
             'section_name' => 'Bob nomi',
+            'position' => 'Tartib raqami',
+
         ];
     }
 

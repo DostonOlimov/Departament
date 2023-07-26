@@ -30,50 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
     
     // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<?php $form = ActiveForm::begin([
-    'action' => ['index'],
-    'method' => 'get',
-]); ?>
-    <div class="col-3">
-        <?= $form->field($searchModel, 'start_date')->label(false)->widget(DatePicker::class, [
-            'options' => ['placeholder' => 'Boshlanish vaqti'],
-            'pluginOptions' => [
-                'autoclose'=>true,
-                'format' => 'dd.mm.yyyy'
-                ]
-            ]); ?>
-    </div>
-    <div class="col-3">
-        <?= $form->field($searchModel, 'end_date')->label(false)->widget(DatePicker::class, [
-            'options' => ['placeholder' => 'Tugash vaqti'],
-            'pluginOptions' => [
-                'autoclose'=>true,
-                'format' => 'dd.mm.yyyy'
-                ]
-            ]); 
-            // echo Html::a('Yuklab olish', ['document','id' => 1], ['class' => 'btn btn-primary']);
-            ?>  
-            <?php echo Html::submitButton('Yuklab olish', ['class' => 'btn btn-primary']) ?>
-    </div>
-    <div class="form-group">
-        <p>
-            
-        <?php 
-        
-        
-        
-        
-        ?>
-        </p>
-        <?php ActiveForm::end(); ?>
+
 
 
     <p>
         <?= Html::a('Yaratish', ['search'], ['class' => 'btn btn-success']) ?>
     </p>
+    <p>
+        <?= Html::a('Yuklab olish (ilova-1)', ['export'], ['class' => 'btn btn-info']) ?>
+    </p>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
+            // 'filterModel' => $searchModel,
             'headerRowOptions' => ['style' => 'background-color: #0072B5'],       
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
@@ -95,6 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'template' => '{view}',
                 ],
+                // 'summary_user_id',
                 [
                     'attribute' => 'summary_user_id',
                     'value'  => function(RiskAnalisys $model){
@@ -106,14 +75,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     
                 ],
-                //'criteria',
-                // ['attribute' => 'created_by',
-                // 'value' => function($model){
-                    //     $user = User::findOne(['id' => $model->created_by]);
-                    //     return $user->name ." ". $user->surname;}
-                    // ],
+                // 'criteria',
+
+                // 'created_by',
+                
+                ['attribute' => 'created_by',
+                'value' => function($model){
+                        $user = User::findOne(['id' => $model->created_by]);
+                        return $user->name ." ". $user->surname;}
+                    ],
                     //'updated_by',
-                    'created_at',
+                    // 'created_at',
                     //'updated_at',
             ]
                 ]); ?>

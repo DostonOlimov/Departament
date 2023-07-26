@@ -37,8 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //         return ($model->parent_id)? '- '.$model->content: $model->content;
             //     }
             // ],
-            
-            // 'position',
+
+            'position',
             [
                 'class' => ActionColumn::class,
                 'buttons' => [
