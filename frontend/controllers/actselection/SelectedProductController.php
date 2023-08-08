@@ -58,17 +58,17 @@ class SelectedProductController extends Controller
     public function actionView($id)
     {   
         $model = $this->findModel($id);
-        $identification = Identification::findOne(['selected_product_id' => $id]);
-        if(empty($identification)){
+        $identificationModel = Identification::findOne(['selected_product_id' => $id]);
+        if(empty($identificationModel)){
             $nd_status = false;
             return $this->render('view', compact('model', 'nd_status'));
         }
         else{
             $nd_status = true;
             $searchModel = new SelectedNormativeDocumentSearch();
-            $searchModel->identification_id = $identification->id;
+            $searchModel->identification_id = $identificationModel->id;
             $dataProvider = $searchModel->search($this->request->queryParams);
-            return $this->render('view', compact('model', 'searchModel', 'dataProvider', 'nd_status'));
+            return $this->render('view', compact('model', 'identificationModel', 'searchModel', 'dataProvider', 'nd_status'));
         }
         
     }

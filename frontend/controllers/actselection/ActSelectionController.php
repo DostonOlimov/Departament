@@ -54,6 +54,7 @@ class ActSelectionController extends OrderController
         $searchModel->gov_control_order_id = $gov_control_order_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+
         return $this->render('index', compact('searchModel', 'dataProvider', 'order'));
     }
 
@@ -66,9 +67,13 @@ class ActSelectionController extends OrderController
     public function actionView($id)
     {   
         $model = $this->findModel($id);
+        // debug($model);
         $searchModel = new SelectedProductSearch();
         $searchModel->act_selection_id = $id;
+        // debug($searchModel);
         $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider->getKeys());
+        // debug($dataProvider->getModels());
 
         return $this->render('view', compact(
             'model',

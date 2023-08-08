@@ -1,7 +1,9 @@
 <?php
 
+use common\models\Countries;
 use kartik\date\DatePicker;
 use wbraganca\dynamicform\DynamicFormWidget;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
@@ -84,7 +86,7 @@ $date_pluginOptions =['pluginOptions' => ['autoclose' => true,'format' => 'dd.mm
                                 <?= $form->field($modelProduct, "[{$i}]batch_number")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($modelProduct, "[{$i}]ctry_ogn_code")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelProduct, "[{$i}]ctry_ogn_code")->dropDownList(ArrayHelper::map(Countries::find()->all(),'id', 'name' ), ['prompt' => '- - -']) ?>
                             </div>
                             <div class="col-sm-3">
                                 <?= $form->field($modelProduct, "[{$i}]mfr_name")->textInput(['maxlength' => true]) ?>
@@ -98,7 +100,7 @@ $date_pluginOptions =['pluginOptions' => ['autoclose' => true,'format' => 'dd.mm
                                 <?= $form->field($modelProduct, "[{$i}]mfrd_date")->widget(DatePicker::class,$date_pluginOptions) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($modelProduct, "[{$i}]exptr_ctry_code")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelProduct, "[{$i}]exptr_ctry_code")->dropDownList(ArrayHelper::map(Countries::find()->all(),'id', 'name' ), ['prompt' => '- - -']) ?>
                             </div>
                             <div class="col-sm-3">
                                 <?= $form->field($modelProduct, "[{$i}]imptr_name")->textInput(['maxlength' => true]) ?>

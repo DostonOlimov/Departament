@@ -1,5 +1,7 @@
 <?php
 
+use common\models\actselection\SelectedProduct;
+use common\models\Countries;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -34,11 +36,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'act_selection_id',
             'name',
             'batch_number',
-            'ctry_ogn_code',
+            // 'ctry_ogn_code',
+            [
+                'attribute' => 'ctry_ogn_code',
+                'value' => function(SelectedProduct $model){
+                    return (Countries::findOne($model->ctry_ogn_code))?Countries::findOne($model->ctry_ogn_code)->name:'';
+                } 
+            ],
             'mfr_name',
             'mfr_id',
             'mfrd_date',
-            'exptr_ctry_code',
+            // 'exptr_ctry_code',
+            [
+                'attribute' => 'exptr_ctry_code',
+                'value' => function(SelectedProduct $model){
+                    return (Countries::findOne($model->exptr_ctry_code))?Countries::findOne($model->exptr_ctry_code)->name:'';
+                } 
+            ],
             'imptr_name',
             'imptr_id',
             'prod_netto',
@@ -58,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
     else {
     echo $this->render('/normativedocument/selected-normative-document/index', compact(
             'model',
+            'identificationModel',
             'searchModel',
             'dataProvider'
 

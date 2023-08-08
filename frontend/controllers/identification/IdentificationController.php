@@ -44,7 +44,6 @@ class IdentificationController extends Controller
     {
         $searchModel = new IdentificationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

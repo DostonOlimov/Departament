@@ -13,6 +13,8 @@ use common\models\identification\Identification;
 use common\models\identification\IdentificationContent;
 use common\models\identification\IdentificationContentSearch;
 use common\models\identification\IdentificationSearch;
+use common\models\User;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -55,23 +57,23 @@ class GovControlController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionIdentification($id)
+    public function actionIdentification($gov_control_order_id)
     {
-        $orderModel = $this->findModel($id);
         $searchModel = new SelectedProductSearch();
-        $searchModel->gov_control_order_id = $id;
+        $searchModel->gov_control_order_id = $gov_control_order_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider->getModels());
 
-        return $this->render('identification', compact('searchModel', 'dataProvider', 'orderModel'));
+        return $this->render('identification', compact('searchModel', 'dataProvider', 'gov_control_order_id'));
 
     }
 
     public function actionIdentificationView($id)
     {
-        $act_selection = $this->findActSelection($id);
-        $product = $this->findProduct($id);
-        $company = $this->findCompany($act_selection->gov_control_order_id);
-        $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
+        // $act_selection = $this->findActSelection($id);
+        // $product = $this->findProduct($id);
+        // $company = $this->findCompany($act_selection->gov_control_order_id);
+        // $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
         
         $searchModel = new IdentificationContentSearch();
         $searchModel->selected_product_id = $id;
@@ -81,9 +83,9 @@ class GovControlController extends Controller
             'searchModel', 
             'dataProvider', 
             // 'orderModel',
-            'act_selection',
-            'company',
-            'product',
+            // 'act_selection',
+            // 'company',
+            // 'product',
         ));
 
     }
@@ -170,12 +172,18 @@ class GovControlController extends Controller
 
         return $this->redirect(['index']);
     }
-    public function actionDocument($id)
+    public function actionIdentificationDocument($id)
     {   
-        $act_selection = $this->findActSelection($id);
-        $company = $this->findCompany($act_selection->gov_control_order_id);
-        $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
-        echo 'Xali tayyor emas';
+        $user = User::findOne(Yii::$app->user->id);
+        $searchModel = new IdentificationContentSearch();
+        $searchModel->selected_product_id = $id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('identification-document', compact(
+            'searchModel', 
+            'dataProvider', 
+            'user',
+        ));
 
         // $model = $this->findModel($id);
         // $company = Company::findOne($model->company_id);

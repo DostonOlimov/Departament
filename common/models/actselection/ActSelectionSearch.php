@@ -11,6 +11,7 @@ use common\models\actselection\ActSelection;
  */
 class ActSelectionSearch extends ActSelection
 {
+    public $act_selection_id;
     /**
      * {@inheritdoc}
      */
@@ -18,6 +19,7 @@ class ActSelectionSearch extends ActSelection
     {
         return [
             [['id', 'gov_control_order_id'], 'integer'],
+            [['act_selection_id'], 'safe'],
         ];
     }
 
@@ -40,6 +42,14 @@ class ActSelectionSearch extends ActSelection
     public function search($params)
     {
         $query = ActSelection::find();
+        $query->joinWith('selectedProducts');
+        if($this->act_selection_id){
+            $query->where(['selected_product.act_selection_id' => $this->act_selection_id]);
+        }
+        if($this->gov_control_order_id){
+            $query->where(['gov_control_order_id' => $this->gov_control_order_id]);
+        }
+        // debug($query);
 
         // add conditions that should always apply here
 

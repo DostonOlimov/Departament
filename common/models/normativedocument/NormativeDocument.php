@@ -128,12 +128,25 @@ const SECTION_TRANSPORTING = 3;
             // debug($arr);
             return $arr;
     }
-    public static function getNormativeDocumentNames()
+    public static function getNormativeDocumentNames($nd_unset = null)
     {
+
+        // debug($nd_unset);
+        $nd_unset = SelectedNormativeDocument::findAll(['identification_id' => $nd_unset]);
+        // debug($nd_unset);
         $result = [];
-        foreach (NormativeDocument::find()->all() as $nd){
-            $result[$nd->id] = $nd->determination;
+        $nd = NormativeDocument::find()->all();
+        foreach ($nd as $one_nd){
+            $result[$one_nd->id] = $one_nd->determination;
         }
+        // debug($result);
+
+        foreach ($nd_unset as $nd) {
+            // debug($nd->id);
+            unset($result[$nd->normative_document_id]);
+        }
+
+        // debug($result);
         return $result;
     }
     public static function getNormativeDocumentIndicators($id)

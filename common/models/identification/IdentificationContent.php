@@ -2,8 +2,14 @@
 
 namespace common\models\identification;
 
+use common\models\actselection\ActSelection;
 use common\models\actselection\SelectedProduct;
+use common\models\Company;
+use common\models\govcontrol\Order;
+use common\models\govcontrol\Program;
+use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\NormativeDocumentContent;
+use common\models\normativedocument\NormativeDocumentSection;
 use common\models\normativedocument\SelectedNormativeDocument;
 use Yii;
 
@@ -25,6 +31,7 @@ class IdentificationContent extends \common\models\LocalActiveRecord
     const NONCONFORM = 1;
     public $name;
     public $status;
+    public $section_name;
     /**
      * {@inheritdoc}
      */
@@ -41,7 +48,7 @@ class IdentificationContent extends \common\models\LocalActiveRecord
         return [
             [['selected_normative_document_id', 'normative_document_content_id', 'conformity'], 'integer'],
             [['comment'], 'string'],
-            [['name' , 'status'], 'safe'],
+            [['section_name', 'name', 'status'], 'safe'],
             [['normative_document_content_id'], 'exist', 'skipOnError' => true, 'targetClass' => NormativeDocumentContent::class, 'targetAttribute' => ['normative_document_content_id' => 'id']],
             [['selected_normative_document_id'], 'exist', 'skipOnError' => true, 'targetClass' => SelectedNormativeDocument::class, 'targetAttribute' => ['selected_normative_document_id' => 'id']],
         ];
@@ -66,11 +73,7 @@ class IdentificationContent extends \common\models\LocalActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getNormativeDocumentContent()
-    {
-        return $this->hasOne(NormativeDocumentContent::class, ['id' => 'normative_document_content_id'])->inverseOf('identificationContents');
-    }
-
+    
     /**
      * Gets query for [[SelectedNormativeDocument]].
      *
@@ -78,7 +81,7 @@ class IdentificationContent extends \common\models\LocalActiveRecord
      */
     public function getSelectedNormativeDocument()
     {
-        return $this->hasOne(SelectedNormativeDocument::class, ['id' => 'selected_normative_document_id'])->inverseOf('identificationContents');
+        return $this->hasOne(SelectedNormativeDocument::class, ['id' => 'selected_normative_document_id']);
     }
     public function getConformity($type = null)
     {
@@ -88,7 +91,54 @@ class IdentificationContent extends \common\models\LocalActiveRecord
     }
     public function getIdentification()
     {
-        return $this->hasone(Identification::class, ['id' => 'identification_id'])
-        ->viaTable('selected_normative_document', ['id' => 'selected_normative_document_id']);
+        return $this
+        ->hasone(Identification::class, ['id' => 'identification_id'])
+        ->via('selectedNormativeDocument');
+    }
+    public function getSelectedProduct()
+    {
+        return $this
+        ->hasone(SelectedProduct::class, ['id' => 'selected_product_id'])
+        ->via('identification');
+    }
+    public function getActSelection()
+    {
+        return $this
+        ->hasone(ActSelection::class, ['id' => 'act_selection_id'])
+        ->via('selectedProduct');
+    }
+    public function getGovControlOrder()
+    {
+        return $this
+        ->hasone(Order::class, ['id' => 'gov_control_order_id'])
+        ->via('actSelection');
+    }
+    public function getGovControlProgram()
+    {
+        return $this
+        ->hasone(Program::class, ['id' => 'gov_control_program_id'])
+        ->via('govControlOrder');
+    }
+    public function getCompany()
+    {
+        return $this
+        ->hasone(Company::class, ['id' => 'company_id'])
+        ->via('govControlProgram');
+    }
+    public function getNormativeDocumentContent()
+    {
+        return $this->hasOne(NormativeDocumentContent::class, ['id' => 'normative_document_content_id']);
+    }
+    public function getNormativeDocumentSection()
+    {
+        return $this
+        ->hasOne(NormativeDocumentSection::class, ['id' => 'document_section_id'])
+        ->via('normativeDocumentContent');
+    }
+    public function getNormativeDocument()
+    {
+        return $this
+        ->hasOne(NormativeDocument::class, ['id' => 'normative_document_id'])
+        ->via('normativeDocumentSection');
     }
 }

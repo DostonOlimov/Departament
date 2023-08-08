@@ -1,6 +1,7 @@
 <?php
 
 use common\models\actselection\SelectedProduct;
+use common\models\identification\IdentificationContent;
 use frontend\controllers\actselection\SelectedProductController;
 use frontend\widgets\StepsGovControl;
 use yii\helpers\Html;
@@ -19,11 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
 $cont = 'actselection/selected-product/';
-// debug($orderModel);
+// debug($dataProvider->getModels()[0]);
 ?>
         <div class="col-3 mt-5">
             <?php echo StepsGovControl::widget([
-                'gov_control_order_id' => $orderModel->id
+                'gov_control_order_id' => $gov_control_order_id
                 ])?>
     </div>
     <div class="col-5 mt-5">
@@ -56,16 +57,20 @@ $cont = 'actselection/selected-product/';
             //'bar_code',
             [
                 'class' => ActionColumn::class,
-                'buttonOptions' => [
-                    'class' => 'text-primary'
-                ],
+                
+                'buttonOptions' => ['class' => 'text-primary'],
+
                 'template' => '{view}{update}',
                 'urlCreator' => function ($action, SelectedProduct $model) {
+                    // debug($model->status);
+                    $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->selectedNormativeDocuments[0]->id]);
+                    // debug($identification_content);
                     if ($action === 'update') {
                         return Url::toRoute(['actselection/selected-product/view', 'id' => $model->id]);
                     }
                     if ($action === 'view') {
-                        return Url::toRoute(['govcontrol/gov-control/identification-view', 'id' => $model->id]);
+                        return ($identification_content) ? Url::toRoute(['govcontrol/gov-control/identification-view', 'id' => $model->id]) : 
+                            Url::toRoute(['actselection/selected-product/view', 'id' => $model->id]);
                     }
                      }
                 ]

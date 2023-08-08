@@ -1,12 +1,20 @@
 <?php
 
 use common\models\normativedocument\NormativeDocument;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\normativedocument\SelectedNormativeDocument $model */
 /** @var yii\widgets\ActiveForm $form */
+
+// $nd = NormativeDocument::find($model->identification_id)
+// ->select('id')
+// ->asArray()
+// ->all();
+// debug($nd->id);
+// debug($model);
 ?>
 
 <div class="selected-normative-document-form">
@@ -15,10 +23,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'identification_id')->textInput() ?>
 
-    <?= $form->field($model, 'normative_document')->widget(Select2::class, [
-                'data' => NormativeDocument::getNormativeDocumentNames(),
+    <?= $form->field($model, 'normative_document_id')->widget(Select2::class, [
+                'data' => NormativeDocument::getNormativeDocumentNames($model->identification_id),
                 'language' => 'uz',
-                'options' => ['multiple' => true],
+                'options' => ['multiple' => false, 'prompt' => 'Me\'yoriy hujjatni tanlang'],
                 'showToggleAll' => false,
             ]) ?>
 

@@ -1,6 +1,7 @@
 <?php
 
 use common\models\identification\IdentificationContent;
+use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\SelectedNormativeDocument;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -13,12 +14,12 @@ use yii\grid\GridView;
 
 $this->title = 'Selected Normative Documents';
 $this->params['breadcrumbs'][] = $this->title;
-// debug($model->act_selection_id);
+// debug(Identification::findOne($model->id));
 ?>
 <div class="selected-normative-document-index">
 
     <p>
-        <?= Html::a('Me\'yoriy hujjat qo\'shish', ['create', 'act_selection_id' => $model->act_selection_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Me\'yoriy hujjat qo\'shish', ['/normativedocument/selected-normative-document/create', 'identification_id' => $identificationModel->id], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -31,7 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'identification_id',
+            // 'identification_id',
+            [
+                'attribute' => 'normative_document_id',
+                'value' => function(SelectedNormativeDocument $model){
+                    $document = NormativeDocument::findOne($model->normative_document_id);
+                    // debug($document);
+                    return $document->determination;
+                }
+            ],
             [
                 'class' => ActionColumn::class,
                 'template' =>  
@@ -50,6 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                 'urlCreator' => function ($action, SelectedNormativeDocument $model) {
                     $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->id]);
+                    // debug($model);
+                    // debug($identification_content);
                     if($identification_content){
                         return Url::toRoute(['identification/identification-content/index', 'id' => $model->id]);
                     }
@@ -58,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     } 
                  }
             ],
-            'normative_document_id',
+            // 'normative_document_id',
         ],
     ]); ?>
 

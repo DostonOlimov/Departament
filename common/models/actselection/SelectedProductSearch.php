@@ -5,6 +5,7 @@ namespace common\models\actselection;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\actselection\SelectedProduct;
+use common\models\identification\Identification;
 
 /**
  * SelectedProductSearch represents the model behind the search form of `common\models\actselection\SelectedProduct`.
@@ -12,6 +13,7 @@ use common\models\actselection\SelectedProduct;
 class SelectedProductSearch extends SelectedProduct
 {
     public $gov_control_order_id;
+    // public $gov_control_order_id;
     /**
      * {@inheritdoc}
      */
@@ -45,10 +47,15 @@ class SelectedProductSearch extends SelectedProduct
         $query = SelectedProduct::find();
 
         // add conditions that should always apply here
-        if($this->gov_control_order_id){
+            $query->joinWith('identification');
             $query->joinWith('actSelection');
-            $query->where(['act_selection.gov_control_order_id' => $this->gov_control_order_id]);
-        }
+            $query->joinWith('selectedNormativeDocuments');
+            // debug($this->gov_control_order_id);
+            if($this->gov_control_order_id){
+                $query->where(['gov_control_order_id' => $this->gov_control_order_id]);
+            }
+            
+            // debug($query);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -73,6 +73,6 @@ class NormativeDocumentSection extends NormativeDocument
      */
     public function getNormativeDocumentContents()
     {
-        return $this->hasMany(NormativeDocumentContent::class, ['document_section_id' => 'id'])->inverseOf('documentSection');
+        return $this->hasMany(NormativeDocumentContent::class, ['document_section_id' => 'id'])->orderBy(['position' => SORT_ASC]);
     }
 }

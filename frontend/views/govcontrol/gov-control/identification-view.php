@@ -14,7 +14,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var common\models\identification\IdentificationContentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-// debug($model);
+// debug($dataProvider->getModels());
 $this->title = 'Identification Contents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -24,20 +24,20 @@ $this->params['breadcrumbs'][] = $this->title;
     text-align: center;
     }
 </style>
-<?= Html::a('Ortga', ['govcontrol/gov-control/identification', 'id' => $act_selection->gov_control_order_id], ['class' => 'btn btn-info']) ?>
+<?= Html::a('Ortga', ['govcontrol/gov-control/identification', 'gov_control_order_id' => $dataProvider->getModels()[0]->govControlOrder->id], ['class' => 'btn btn-info']) ?>
 
 
 <h2>
-    <?= $company->company_name."dan sinash uchun olingan na`munalarni sezgi a'zolari orqali (tashqi ko‘rikdan o‘tkazish, tamg‘alash,  qadoqlash va saqlash) tekshirish
+    <?= $dataProvider->getModels()[0]->company->company_name."dan sinash uchun olingan na`munalarni sezgi a'zolari orqali (tashqi ko‘rikdan o‘tkazish, tamg‘alash,  qadoqlash va saqlash) tekshirish
 <br>B A Y O N N O M A S I"
 ?>
     </h2>
     <h3>
-        Mahsulot nomi: <?= $product->name?>
+        Mahsulot nomi: <?= $dataProvider->getModels()[0]->selectedProduct->name?>
         </h3>
         <br>
 
-    <?= Html::a('Yuklab olish', ['govcontrol/gov-control/document', 'id' => $act_selection->gov_control_order_id], ['class' => 'btn btn-info']) ?>
+    <?= Html::a('Yuklab olish', ['govcontrol/gov-control/identification-document', 'id' => $dataProvider->getModels()[0]->selectedProduct->id], ['class' => 'btn btn-info']) ?>
 
     <p>
         <?php  // echo Html::a('Qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>

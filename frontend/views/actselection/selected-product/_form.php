@@ -1,7 +1,11 @@
 <?php
 
+use common\models\Countries;
+use kartik\date\DatePicker;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /** @var yii\web\View $this */
 /** @var common\models\actselection\SelectedProduct $model */
@@ -26,27 +30,38 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'batch_number')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'ctry_ogn_code')->textInput() ?>
+            <?= $form->field($model, 'ctry_ogn_code')->dropDownList(ArrayHelper::map(Countries::find()->all(),'id', 'name' ), ['prompt' => '- - -']) ?>
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'mfr_name')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'mfr_id')->textInput() ?>
+            <?= $form->field($model, 'mfr_id')->widget(MaskedInput::class, [
+                'mask' => '999999999'
+            ])?>
         </div>
     </div><!-- .row -->
     <div class="row">
         <div class="col-sm-3">
-            <?= $form->field($model, 'mfrd_date')->textInput() ?>
+            <?= $form->field($model, 'mfrd_date')->widget(DatePicker::class,
+    [
+        'pluginOptions' => 
+        [
+            'autoclose' => true,
+            'format' => 'dd.mm.yyyy'
+        ]
+    ]) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'exptr_ctry_code')->textInput() ?>
+            <?= $form->field($model, 'exptr_ctry_code')->dropDownList(ArrayHelper::map(Countries::find()->all(),'id', 'name' ), ['prompt' => '- - -']) ?>
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'imptr_name')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'imptr_id')->textInput() ?>
+            <?= $form->field($model, 'imptr_id')->widget(MaskedInput::class, [
+                'mask' => '999999999'
+            ])?>
         </div>
     </div><!-- .row -->
     <div class="row">
@@ -60,7 +75,9 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'xtra_unit_om')->textInput() ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'cnfea_code')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'cnfea_code')->widget(MaskedInput::class, [
+                'mask' => '9999999999'
+            ])?>
         </div>
     </div><!-- .row -->
     <div class="row">

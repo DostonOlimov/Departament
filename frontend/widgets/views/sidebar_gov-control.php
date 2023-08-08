@@ -25,7 +25,7 @@ $current_page == 'govcontrol/primary-data/view') ? 'active': '';
 $href_act_selection = Url::to(['actselection/act-selection/index', 'gov_control_order_id' => $gov_control_order_id]);
 $class_act_selection = ($controller == 'actselection/act-selection')?'active':'';
 
-$href_identification = Url::to(['govcontrol/gov-control/identification', 'id' => $gov_control_order_id]);
+$href_identification = Url::to(['govcontrol/gov-control/identification', 'gov_control_order_id' => $gov_control_order_id]);
 $class_identification = ($current_page == 'govcontrol/gov-control/identification') ? 'active': '';
 
 ?>

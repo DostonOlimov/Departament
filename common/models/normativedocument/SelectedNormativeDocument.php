@@ -2,6 +2,7 @@
 
 namespace common\models\normativedocument;
 
+use common\models\identification\Identification;
 use Yii;
 
 /**
@@ -47,7 +48,7 @@ class SelectedNormativeDocument extends \common\models\LocalActiveRecord
         return [
             'id' => 'ID',
             'identification_id' => 'Identification ID',
-            'normative_document_id' => 'Normative Document ID',
+            'normative_document_id' => 'Me\'yoriy hujjat nomi',
             'normative_document' => 'Me\'yoriy hujjatlar',
 
         ];

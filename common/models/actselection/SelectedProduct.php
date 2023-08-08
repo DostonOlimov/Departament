@@ -2,6 +2,8 @@
 
 namespace common\models\actselection;
 
+use common\models\identification\Identification;
+use common\models\normativedocument\SelectedNormativeDocument;
 use Yii;
 
 /**
@@ -84,7 +86,7 @@ class SelectedProduct extends \common\models\LocalActiveRecord
      */
     public function getActSelection()
     {
-        return $this->hasOne(ActSelection::class, ['id' => 'act_selection_id'])->inverseOf('selectedProducts');
+        return $this->hasOne(ActSelection::class, ['id' => 'act_selection_id']);
     }
 
     /**
@@ -92,9 +94,13 @@ class SelectedProduct extends \common\models\LocalActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getIdentifications()
+    public function getIdentification()
     {
-        return $this->hasMany(Identification::class, ['selected_product_id' => 'id'])->inverseOf('selectedProduct');
+        return $this->hasOne(Identification::class, ['selected_product_id' => 'id']);
+    }
+    public function getSelectedNormativeDocuments()
+    {
+        return $this->hasMany(SelectedNormativeDocument::class, ['identification_id' => 'id'])->via('identification');
     }
 
 }

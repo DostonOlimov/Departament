@@ -43,8 +43,21 @@ class IdentificationContentSearch extends IdentificationContent
     {
         $query = IdentificationContent::find();
         if($this->selected_product_id!==null){
-            $query->joinWith('identification')
-            ->where(['identification.selected_product_id' => $this->selected_product_id]);
+            $query
+            ->joinWith('selectedNormativeDocument')
+            ->joinWith('identification')
+            ->joinWith('selectedProduct')
+            ->joinWith('actSelection')
+            ->joinWith('govControlOrder')
+            ->joinWith('govControlProgram')
+            ->joinWith('company')
+            // ->joinWith('normativeDocumentContent')
+            // ->joinWith('normativeDocumentSection')
+            // ->joinWith('normativeDocument')
+            // ->joinWith('normativeDocument')
+            ->where(['identification.selected_product_id' => $this->selected_product_id])
+            ;
+            // debug($query);
         }
         // debug($query);
 

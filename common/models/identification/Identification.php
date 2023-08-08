@@ -55,7 +55,12 @@ class Identification extends \common\models\LocalActiveRecord
      */
     public function getSelectedNormativeDocuments()
     {
-        return $this->hasMany(SelectedNormativeDocument::class, ['identification_id' => 'id'])->inverseOf('identification');
+        return $this->hasMany(SelectedNormativeDocument::class, ['identification_id' => 'id']);
+    }
+
+    public function getSelectedIdentificationContents()
+    {
+        return $this->hasMany(IdentificationContent::class, ['selected_normative_document_id' => 'normative_document_id'])->via('SelectedNormativeDocuments');
     }
 
     /**
@@ -65,6 +70,6 @@ class Identification extends \common\models\LocalActiveRecord
      */
     public function getSelectedProduct()
     {
-        return $this->hasOne(SelectedProduct::class, ['id' => 'selected_product_id'])->inverseOf('identifications');
+        return $this->hasOne(SelectedProduct::class, ['id' => 'selected_product_id']);
     }
 }
