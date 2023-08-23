@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Company;
+use common\models\govcontrol\Program;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -17,15 +18,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-    <?= Html::a('Buyrug\' yaratish', ['govcontrol/order/create', 'gov_control_program_id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        
+        <?php if ($model->status <> $model::DOCUMENT_STATUS_CONFIRMED):?>
+            <?= Html::a('Yangilash', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?php endif ?>
+            
+        <?php if ($model->status == $model::DOCUMENT_STATUS_SENT):?>
+            <?= Html::a('Buyrug\' yaratish', ['govcontrol/order/create', 'gov_control_program_id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Tasqidlash', ['view', 'id' => $model->id, 'status' => $model::DOCUMENT_STATUS_CONFIRMED], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Tahrirlashga qaytarish', ['view', 'id' => $model->id, 'status' => $model::DOCUMENT_STATUS_RETURNED], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Rad etish', ['view', 'id' => $model->id, 'status' => $model::DOCUMENT_STATUS_DENIED], ['class' => 'btn btn-danger']) ?>
+            <?php endif ?>
+        <?php if ($model->status == $model::DOCUMENT_STATUS_NEW):?>
+            <?= Html::a('O\'chirish', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                    ],
+                    ]) ?>
+        <?php endif ?>
+        <?php if ($model->status == $model::DOCUMENT_STATUS_RETURNED):?>
+            <?= Html::a('O\'chirish', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                    ],
+                    ]) ?>
+            <?php endif ?>
     </p>
 
     <?= DetailView::widget([
@@ -49,6 +70,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'gov_control_type',
                 'value' => function($model){
                     return $model->getGovcontrolType($model->gov_control_type);
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function(Program $model){
+                    return $model->getDocumentStatus($model->status);
                 }
             ],
         ],

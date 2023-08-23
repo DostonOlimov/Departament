@@ -24,6 +24,16 @@ class LocalActiveRecord extends ActiveRecord
     const OKTABR_UZ = 10;
     const NOYABR_UZ = 11;
     const DEKABR_UZ = 12;
+    
+
+    const DOCUMENT_STATUS_NEW = 1;
+    const DOCUMENT_STATUS_SENT = 2;
+    const DOCUMENT_STATUS_RETURNED = 3;
+    const DOCUMENT_STATUS_DENIED = 4;
+    const DOCUMENT_STATUS_CONFIRMED = 5;
+    const DOCUMENT_STATUS_READ = 6;
+    const DOCUMENT_STATUS_NOTREAD = 7;
+
 
     const ALL_ACTIVITY = 0;
     const PRODUCTION_ACTIVITY = 10;
@@ -99,6 +109,24 @@ class LocalActiveRecord extends ActiveRecord
             self::OKTABR_UZ => 'oktabr',
             self::NOYABR_UZ => 'noyabr',
             self::DEKABR_UZ => 'dekabr',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+        
+        return $arr[$type];
+    }
+    public static function getDocumentStatus($type = null)
+    {
+        $arr = [
+            self::DOCUMENT_STATUS_NEW => 'Yangi',
+            self::DOCUMENT_STATUS_SENT => 'Jo\'natilgan',
+            self::DOCUMENT_STATUS_RETURNED => 'Qaytarilgan',
+            self::DOCUMENT_STATUS_DENIED => 'Rad etilgan',
+            self::DOCUMENT_STATUS_CONFIRMED => 'Tasdiqlangan',
+            self::DOCUMENT_STATUS_READ => 'O\'qilgan',
+            self::DOCUMENT_STATUS_NOTREAD => 'O\'qilmagan',
         ];
 
         if ($type === null) {

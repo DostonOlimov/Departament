@@ -6,10 +6,10 @@ use yii\helpers\Url;?>
 <div class="list-group margin-topSite">
     <a href="javascript:void(0);" class="list-group-item list-group-item-action notHover">Reestr</a>
     <a href="<?= Url::to(['/company/index']) ?>" class="list-group-item list-group-item-action actived">Tashkilotlar ro'yxati</a>
-    <a href="<?= Url::to(['/caution/letters']) ?>" class="list-group-item list-group-item-action actived">Ogohlantirish xatlari</a>
-    <a href="<?= Url::to(['/caution/instruction-file']) ?>" class="list-group-item list-group-item-action actived">Xabarnomalar</a>
-    <a href="<?= Url::to(['/caution/instruction-file']) ?>" class="list-group-item list-group-item-action actived">Davlat nazorat dasturlari</a>
-    <a href="#" class="list-group-item list-group-item-action actived" 
+    <a href="<?= Url::to(['/caution/letters']) ?>" class="list-group-item list-group-item-action deactived">Ogohlantirish xatlari</a>
+    <a href="<?= Url::to(['/caution/instruction-file']) ?>" class="list-group-item list-group-item-action deactived">Xabarnomalar</a>
+    <a href="<?= Url::to(['/govcontrol/program/index']) ?>" class="list-group-item list-group-item-action actived">Davlat nazorat dasturlari</a>
+    <a href="#" class="list-group-item list-group-item-action deactived" 
     type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Ko'rsatmalar</a>
         
         <div class="dropdown-menu">

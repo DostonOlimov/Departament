@@ -2,6 +2,7 @@
 
 use common\models\Company;
 use common\models\govcontrol\Program;
+use frontend\widgets\StepsReestr;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -14,8 +15,14 @@ use yii\grid\GridView;
 $this->title = 'Tekshiruv dasturlari';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="program-index">
-
+<div class="program-index row">
+    <div class="col-3">
+        <?= StepsReestr::widget([
+            
+            ])?>
+    </div>
+    <div class="col-9">
+        <h3><?= $this->title ?></h3>
     <p>
         <?= Html::a('Yaratish', ['company-search'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -24,12 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'headerRowOptions' => ['style' => 'background-color: #0072B5'],       
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             // 'company_id',
+            [
+                'attribute' => 'status',
+                'value' => function(Program $model){
+                    return $model->getDocumentStatus($model->status);
+                }
+            ],
             [
                 'attribute' => 'company_id',
                 'value' => function(Program $model){
@@ -37,6 +51,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'class' => ActionColumn::class,
+                'template' => '{view}',
+                'buttonOptions' => [
+                    'class' => 'text-primary'
+                ],
+                'urlCreator' => function ($action, Program $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                 }
+                ],
+                [
                 'attribute' => 'company_type_id',
                 'value' => function(Program $model){
                     return $model->getCompanyType($model->company_type_id);
@@ -49,14 +73,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getGovcontrolType($model->gov_control_type);
                 }
             ],
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Program $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
         ],
     ]); ?>
 
 
+    </div>
 </div>

@@ -20,6 +20,7 @@ use Yii;
 class Program extends \common\models\LocalActiveRecord
 {
     public $company_name;
+    public $property;
     const DT  = 0;
     const DN  = 1;
 
@@ -39,11 +40,12 @@ class Program extends \common\models\LocalActiveRecord
      */
     public function rules()
     {
+        // debug(parent::scenarios());
         return [
-            [['company_id'], 'required'],
-            [['company_id', 'company_type_id', 'gov_control_type'], 'integer'],
+            [['company_id', 'property', 'company_type_id', 'gov_control_type'], 'required', 'on' => 'create'],
+            [['company_id', 'gov_control_type', 'company_type_id'], 'integer'],
             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::class, 'targetAttribute' => ['company_id' => 'id']],
-            [['company_name'], 'safe'],
+            // [['property'], 'safe'],
         ];
     }
 
@@ -58,6 +60,13 @@ class Program extends \common\models\LocalActiveRecord
             'company_name' => 'Tashkilot nomi',
             'company_type_id' => 'Faoliyat turi',
             'gov_control_type' => 'Tekshiruv turi',
+            'property' => 'Dastur ma\'lumotlari',
+            // 'property2' => 'Tashkilot to\'g\'risida dastlabki ma\'lumotlarni olish',
+            // 'property3' => 'Tekshirish maqsadi',
+            // 'property4' => 'Tekshirishda predmeti',
+            // 'property41' => 'Tekshirishda o\'rganib chiqiladigan masalalar',
+            // 'property5' => 'Tekshirish bo\'yicha dalolatnoma va ilovalari',
+            // 'property6' => 'Tekshirishda aniqlangan kamchiliklar bo\'yicha dalolatnomada yoritiladigan ma\'lumotlar va ilovalar',
         ];
     }
 

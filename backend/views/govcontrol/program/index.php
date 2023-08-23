@@ -50,6 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'status',
+                'value' => function(Program $model){
+                    return $model->getDocumentStatus($model->status);
+                }
+            ],
+            [
                 'class' => ActionColumn::class,
                 'urlCreator' => function ($action, Program $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);

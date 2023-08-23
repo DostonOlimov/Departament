@@ -231,7 +231,7 @@ input[name=panel-2]:checked ~ .accordionD__content.accordionD__content--large {
 
 
 form {
-    height: 60vh;
+    height: auto; 
     color: red ;
     
 }
@@ -281,10 +281,6 @@ form {
 .accordion-item {
     background-color: rgba(255, 255, 255, 0.534) !important ;
     border-radius:0 10px 10px 0 !important;
-}
-
-.btnColor{
-    /*background-color: #0d6efd;  primary */
 }
 
 .accordion-button {

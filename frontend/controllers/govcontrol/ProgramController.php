@@ -5,7 +5,14 @@ namespace frontend\controllers\govcontrol;
 use backend\models\CompanySearch;
 use common\models\Company;
 use common\models\govcontrol\Program;
+use common\models\govcontrol\ProgramData;
+use common\models\govcontrol\ProgramDataSearch;
+use common\models\govcontrol\ProgramProperty;
+use common\models\govcontrol\ProgramPropertySearch;
 use common\models\govcontrol\ProgramSearch;
+use common\models\User;
+use Exception;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -86,11 +93,65 @@ class ProgramController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $status = null)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        
+        // // debug($_POST);
+        // if ($model->load(Yii::$app->request->post())) {
+        //     debug($_POST);
+        //     if (isset($_POST['name'])) {
+        //     }
+        // }
+
+        if($status){
+            $model->status = $status;
+            $model->save();
+            return $this->redirect(['view', 'id' => $id]);
+        }
+        $company = Company::findOne($model->company_id);
+        $searchModel = new ProgramPropertySearch();
+        $searchModel->gov_control_program_id = $model->id;
+        $dataProviders = [];
+        foreach(ProgramData::getCategory() as $key => $value){
+            // debug($key);
+            $searchModel->category_id = $key;
+            // debug($searchModel);
+            $dataProviders[$key] = $searchModel->search($this->request->queryParams);
+            // $test = ProgramProperty::findAll();
+            // debug(
+            //     $dataProvider->getModels()
+            // );
+        }    
+        // $properties = ProgramProperty::find()
+        // ->where(['gov_control_program_id' => $model->id])
+        // ->joinWith('programData')
+        // ->all();
+        // debug($model);
+        // debug($dataProviders);
+        
+        
+        return $this->render('view', compact('model', 'company', 'searchModel','dataProviders'
+    ));
+    }
+    public function actionDocument($id)
+    {
+        $model = $this->findModel($id);
+        $company = Company::findOne($model->company_id);
+        $user = User::findOne(Yii::$app->user->id);
+        $searchModel = new ProgramPropertySearch();
+        $searchModel->gov_control_program_id = $model->id;
+        $dataProviders = [];
+        foreach(ProgramData::getCategory() as $key => $value){
+            // debug($key);
+            $searchModel->category_id = $key;
+            $dataProviders[$key] = $searchModel->search($this->request->queryParams);
+            
+
+        }   
+        // debug($dataProviders[1]->getModels()); 
+        return $this->render('document', compact('model', 'company', 'user', 'searchModel','dataProviders'
+    ));
     }
 
     /**
@@ -101,18 +162,53 @@ class ProgramController extends Controller
     public function actionCreate($company_id = null)
     {
         $model = new Program();
-        if($company_id){$model->company_id = $company_id;}
+        $model->scenario = 'create';
+        $model->company_id = $company_id;
+        $model->status = $model::DOCUMENT_STATUS_NEW;
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            
+            if ($model->load($this->request->post())) {
+                // debug($_POST);
+                if($model->validate())
+                    
+                    $transaction = Yii::$app->db->beginTransaction();
+                        try {
+                            // $model->company_id = $company_id;
+                            // debug($model);
+                            $model->save(false);
+                            if ($model->property) {
+                                // debug($model->property);
+                                foreach ($model->property as $properties) {
+                                    if($properties){
+                                        foreach ($properties as $property) {    
+                                            $program_property = new ProgramProperty();
+                                            $program_property->gov_control_program_id = $model->id;
+                                            $program_property->program_data_id = $property;
+                                            $program_property->save(false);
+                                        }
+                                    }
+                                }
+                            }
+                            $transaction->commit();
+                            // debug($transaction);
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        } 
+                   
+                        catch (Exception $e) {
+                        $transaction->rollBack();
+                        throw $e;
+                        }
+
+                        return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
-
+        $company = Company::findOne($model->company_id);
         return $this->render('create', [
             'model' => $model,
+            'company' => $company,
         ]);
     }
 

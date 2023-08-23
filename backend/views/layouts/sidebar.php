@@ -47,6 +47,7 @@ use common\models\User;
                 'items' => [
                     ['label' => 'Tekshiruv dasturlari', 'url' => ['govcontrol/program/index'], 'iconStyle' => 'far'],
                     ['label' => 'Tekshiruv buyrug\'lari', 'url' => ['govcontrol/order/index'], 'iconStyle' => 'far'],
+                    ['label' => 'Tekshiruv dasturi shabloni', 'url' => ['govcontrol/program-data/index'], 'iconStyle' => 'far'],
                 ]],
                 ['label' => 'Profilaktika', 'url' => ['profilactic/profilactic/index'], 'icon' => 'fa fa-address-book'],
                 ['label' => 'Nazorat xaridi', 'url' => ['shopping/shopping/index'], 'icon' => 'fa fa-university'],

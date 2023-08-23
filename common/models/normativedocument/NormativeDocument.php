@@ -23,6 +23,7 @@ class NormativeDocument extends \common\models\LocalActiveRecord
 {
 const TYPE_STANDARD = 0;
 const TYPE_TECHREG = 1;
+const TYPE_LAW = 2;
 
 const SECTION_STORAGE = 0;
 const SECTION_LABELING = 1;
@@ -87,6 +88,7 @@ const SECTION_TRANSPORTING = 3;
     public static function getNormativeDocumentType($type = null)
     {
         $arr = [
+            self::TYPE_LAW => 'O‘zbekiston Respublikasi Qonuni',
             self::TYPE_STANDARD => 'Standart',
             self::TYPE_TECHREG => 'Texnik reglament',
         ];
@@ -128,14 +130,17 @@ const SECTION_TRANSPORTING = 3;
             // debug($arr);
             return $arr;
     }
-    public static function getNormativeDocumentNames($nd_unset = null)
+    public static function getNormativeDocumentNames($nd_unset = null, $type = null)
     {
-
+        // debug($type);
         // debug($nd_unset);
-        $nd_unset = SelectedNormativeDocument::findAll(['identification_id' => $nd_unset]);
+    $nd_unset = SelectedNormativeDocument::findAll(['identification_id' => $nd_unset]);
         // debug($nd_unset);
         $result = [];
-        $nd = NormativeDocument::find()->all();
+        $nd = ($type)?
+        NormativeDocument::findAll(['category_id' => $type]):
+        NormativeDocument::find()->all();
+        // debug($nd);
         foreach ($nd as $one_nd){
             $result[$one_nd->id] = $one_nd->determination;
         }

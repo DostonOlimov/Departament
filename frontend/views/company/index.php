@@ -2,6 +2,7 @@
 
 use common\models\Company;
 use common\models\Region;
+use frontend\widgets\StepsReestr;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -14,8 +15,14 @@ use yii\grid\GridView;
 $this->title = 'Tashkilotlar ro\'yxati';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="company-index">
-
+<div class="company-index row">
+    <div class="col-3">
+        <?= StepsReestr::widget([
+            
+            ])?>
+    </div>
+    <div class="col-9">
+        <h3><?= $this->title?></h3>
     <p>
         <?= Html::a('Yaratish', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -69,4 +76,5 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
 
+    </div>
 </div>
