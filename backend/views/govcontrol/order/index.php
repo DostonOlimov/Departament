@@ -25,21 +25,48 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'parent_id',
+            // 'id',
+            [
+                'attribute' => 'id',
+                'value' => function($model){
+                    return 
+                    Html::a($model->id, 
+                    Url::to(['view', 'id' => $model->id]));
+                },
+                'format' => 'raw'
+            ],
             'gov_control_program_id',
+            [
+                'attribute' => 'order_number',
+                'value' => function($model){
+                    return($model->order_number) ? $model->getGovControlPrefix($model->order_prefix).'-'.$model->order_number : $model->order_number;
+                }
+            ],
+            // 'parent_id',
             'control_period_from',
             'control_period_to',
             //'control_date_from',
             //'control_date_to',
             //'ombudsman_code_date',
             //'ombudsman_code_number',
+            'created_at',
             [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Order $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'attribute' => 'status',
+                'value' => function($model){
+                    if($model->status){
+                        if($model->status){
+                            return $model->getStatusSpan($model->status);
+                        }
+                    }
+                },
+                'format' => 'raw',   
             ],
+            // [
+            //     'class' => ActionColumn::class,
+            //     'urlCreator' => function ($action, Order $model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'id' => $model->id]);
+            //      }
+            // ],
         ],
     ]); ?>
 

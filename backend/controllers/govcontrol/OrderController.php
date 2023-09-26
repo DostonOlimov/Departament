@@ -4,6 +4,10 @@ namespace backend\controllers\govcontrol;
 
 use common\models\govcontrol\Order;
 use common\models\govcontrol\OrderSearch;
+use common\models\govcontrol\Program;
+use Exception;
+use frontend\controllers\govcontrol\OrderController as GovcontrolOrderController;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -11,7 +15,7 @@ use yii\filters\VerbFilter;
 /**
  * OrderController implements the CRUD actions for Order model.
  */
-class OrderController extends Controller
+class OrderController extends GovcontrolOrderController
 {
     /**
      * @inheritDoc
@@ -53,37 +57,37 @@ class OrderController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+    // public function actionView($id)
+    // {
+    //     return $this->render('view', [
+    //         'model' => $this->findModel($id),
+    //     ]);
+    // }
 
     /**
      * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($gov_control_program_id = null)
-    {
-        $model = new Order();
-        if($gov_control_program_id){
-            $model->gov_control_program_id = $gov_control_program_id;
-        }
+    // public function actionCreate($gov_control_program_id = null)
+    // {
+    //     $model = new Order();
+    //     if($gov_control_program_id){
+    //         $model->gov_control_program_id = $gov_control_program_id;
+    //     }
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
+    //     if ($this->request->isPost) {
+    //         if ($model->load($this->request->post()) && $model->save()) {
+    //             return $this->redirect(['view', 'id' => $model->id]);
+    //         }
+    //     } else {
+    //         $model->loadDefaultValues();
+    //     }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
+    //     return $this->render('create', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
     /**
      * Updates an existing Order model.
@@ -92,15 +96,37 @@ class OrderController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionConfirm($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $program = Program::findOne(['id' => $model->gov_control_program_id]);
+        $model->order_prefix = 
+        ($program->gov_control_type === $program::getGovcontrolType($program::DN)) ?
+        $model::DN : $model::DT;
+        $model->status = $model::DOCUMENT_STATUS_CONFIRMED;
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                if($model->validate()){
+                    $transaction = Yii::$app->db->beginTransaction();
+                    try {
+                        $model->save(false);
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->id]);
+                        }
+                   
+                        catch (Exception $e) {
+                            $transaction->rollBack();
+                            throw $e;
+                        }
+                }
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } 
+        else {
+            $model->loadDefaultValues();
         }
 
-        return $this->render('update', [
+        return $this->render('confirm', [
             'model' => $model,
         ]);
     }
@@ -112,12 +138,12 @@ class OrderController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    //     return $this->redirect(['index']);
+    // }
 
     /**
      * Finds the Order model based on its primary key value.
@@ -126,12 +152,12 @@ class OrderController extends Controller
      * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
-        if (($model = Order::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
+    // protected function findModel($id)
+    // {
+    //     if (($model = Order::findOne(['id' => $id])) !== null) {
+    //         return $model;
+    //     }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
+    //     throw new NotFoundHttpException('The requested page does not exist.');
+    // }
 }

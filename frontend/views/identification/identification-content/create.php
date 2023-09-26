@@ -10,12 +10,14 @@ $this->title = 'Create Identification Content';
 $this->params['breadcrumbs'][] = ['label' => 'Identification Contents', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 // debug($model);
+// debug($dataProvider->getModels());
 ?>
 <?php $form = ActiveForm::begin(); ?>
 <div class="identification-content-create container">
-    <h3>Mahsulot: <?= $selected_product->name ?></h3>
+
+    <h3>Mahsulot: <?php echo $dataProvider->getModels()[0]->selectedProduct->name ?></h3>
     <br>
-    <h3>Me'yoriy hujjat: <?= $nd->determination.' - '.$nd->name ?></h3>
+    <h3>Me'yoriy hujjat: <?php echo $dataProvider->getModels()[0]->normativeDocument->determination ?></h3>
 
     <table class="table table-bordered">
         <thead>
@@ -29,14 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <tbody>
             <?php 
             foreach ( $model as $key => $value) :  ?>
-                <?= $form->field($value, "[{$key}]selected_normative_document_id")->hiddenInput()->label(false) ?>
-                <?= $form->field($value, "[{$key}]normative_document_content_id")->hiddenInput()->label(false) ?>
                 <!-- col-1 -->
-                    <th>
+                <th>
+                    <?= $form->field($value, "[{$key}]normative_document_content_id")->hiddenInput()->label(false) ?>
+                    <?= $form->field($value, "[{$key}]selected_normative_document_id")->hiddenInput()->label(false) ?>
                         <small>
                             <?= $value->section_name ?>
                         </small>
-                    </th>
+                </th>
                 <!-- col-2 -->
                 <th>
                     <small>

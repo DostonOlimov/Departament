@@ -39,13 +39,62 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'company_type_id',
+            [
+                'attribute' => 'company_type_id',
+                'value' => function($model){
+                    return $model->getCompanyField($model->company_type_id);
+                }
+            ],
             'gov_control_order_id',
             'real_control_date_from',
             'real_control_date_to',
-            'quality_management_system',
-            'product_exists',
-            'laboratory_exists',
+            [
+                'attribute' => 'quality_management_system',
+                'value' => function($model){
+                    return $model->getObjectQMS($model->quality_management_system);
+                }
+            ],
+            [
+                'attribute' => 'product_exists',
+                'value' => function($model){
+                    return $model->getObjectProduct($model->product_exists);
+                }
+            ],
+            [
+                'attribute' => 'laboratory_exists',
+                'value' => function($model){
+                    return $model->getObjectLaboratory($model->laboratory_exists);
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function($model){
+                        switch ($model->status) {
+                            
+                        case $model::DOCUMENT_STATUS_CONFIRMED:
+                            return '<span class="badge badge-pill badge-success">' . $model->getDocumentStatus($model->status) . '</span><br>';
+                            break;
+                                
+                        case $model::DOCUMENT_STATUS_INPROGRESS:
+                            return '<span class="badge badge-pill badge-secondary">' . $model->getDocumentStatus($model->status) . '</span><br>';
+                            break;
+                                    
+                        case $model::DOCUMENT_STATUS_NEW:
+                            return '<span class="badge badge-pill badge-warning">' . $model->getDocumentStatus($model->status) . '</span><br>';
+                            break;
+                                        
+                        default:
+                            return ($model->status) ? $model->getDocumentStatus($model->status) : $model->status;
+                                    }
+                },
+                'format' => 'raw',   
+            ],
+            [
+                'attribute' => 'measuring_and_testing_tools_exists',
+                'value' => function($model){
+                    return $model->getObjectMeasure($model->measuring_and_testing_tools_exists);
+                }
+            ],
             'last_gov_control_date',
             'last_gov_control_number',
             'comment:ntext',

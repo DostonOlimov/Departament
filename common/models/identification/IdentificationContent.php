@@ -79,66 +79,54 @@ class IdentificationContent extends \common\models\LocalActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getSelectedNormativeDocument()
-    {
-        return $this->hasOne(SelectedNormativeDocument::class, ['id' => 'selected_normative_document_id']);
-    }
     public function getConformity($type = null)
     {
         $arr = [self::CONFORM => 'Muvofiq',self::NONCONFORM => 'Nomuvofiq'];
         if ($type === null) {return $arr;}
         return $arr[$type];
     }
+
+
+
+    public function getSelectedNormativeDocument()
+    {
+        return $this->hasOne(SelectedNormativeDocument::class, ['id' => 'selected_normative_document_id']);
+    }
     public function getIdentification()
     {
-        return $this
-        ->hasone(Identification::class, ['id' => 'identification_id'])
-        ->via('selectedNormativeDocument');
+        return $this->hasone(Identification::class, ['id' => 'identification_id'])->via('selectedNormativeDocument');
     }
     public function getSelectedProduct()
     {
-        return $this
-        ->hasone(SelectedProduct::class, ['id' => 'selected_product_id'])
-        ->via('identification');
+        return $this->hasone(SelectedProduct::class, ['id' => 'selected_product_id'])->via('identification');
     }
     public function getActSelection()
     {
-        return $this
-        ->hasone(ActSelection::class, ['id' => 'act_selection_id'])
-        ->via('selectedProduct');
+        return $this->hasone(ActSelection::class, ['id' => 'act_selection_id'])->via('selectedProduct');
     }
     public function getGovControlOrder()
     {
-        return $this
-        ->hasone(Order::class, ['id' => 'gov_control_order_id'])
-        ->via('actSelection');
+        return $this->hasone(Order::class, ['id' => 'gov_control_order_id'])->via('actSelection');
     }
     public function getGovControlProgram()
     {
-        return $this
-        ->hasone(Program::class, ['id' => 'gov_control_program_id'])
-        ->via('govControlOrder');
+        return $this->hasone(Program::class, ['id' => 'gov_control_program_id'])->via('govControlOrder');
     }
     public function getCompany()
     {
-        return $this
-        ->hasone(Company::class, ['id' => 'company_id'])
-        ->via('govControlProgram');
+        return $this->hasone(Company::class, ['id' => 'company_id'])->via('govControlProgram');
     }
+    
     public function getNormativeDocumentContent()
     {
         return $this->hasOne(NormativeDocumentContent::class, ['id' => 'normative_document_content_id']);
     }
     public function getNormativeDocumentSection()
     {
-        return $this
-        ->hasOne(NormativeDocumentSection::class, ['id' => 'document_section_id'])
-        ->via('normativeDocumentContent');
+        return $this->hasOne(NormativeDocumentSection::class, ['id' => 'document_section_id'])->via('normativeDocumentContent');
     }
     public function getNormativeDocument()
     {
-        return $this
-        ->hasOne(NormativeDocument::class, ['id' => 'normative_document_id'])
-        ->via('normativeDocumentSection');
+        return $this->hasOne(NormativeDocument::class, ['id' => 'normative_document_id'])->via('normativeDocumentSection');
     }
 }

@@ -6,6 +6,7 @@ use backend\models\CompanySearch;
 use common\models\Company;
 use common\models\govcontrol\Program;
 use common\models\govcontrol\ProgramSearch;
+use frontend\controllers\govcontrol\ProgramController as GovcontrolProgramController;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,7 +14,7 @@ use yii\filters\VerbFilter;
 /**
  * ProgramController implements the CRUD actions for Program model.
  */
-class ProgramController extends Controller
+class ProgramController extends GovcontrolProgramController
 {
     /**
      * @inheritDoc
@@ -86,15 +87,15 @@ class ProgramController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $status = null)
-    {
-        $model = $this->findModel($id);
-        if($status){
-            $model->status = $status;
-            $model->save();
-        }
-        return $this->render('view', compact('model'));
-    }
+    // public function actionView($id, $status = null)
+    // {
+    //     $model = $this->findModel($id);
+    //     if($status){
+    //         $model->status = $status;
+    //         $model->save();
+    //     }
+    //     return $this->render('view', compact('model'));
+    // }
 
     /**
      * Creates a new Program model.

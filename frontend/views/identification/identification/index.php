@@ -1,6 +1,7 @@
 <?php
 
 use common\models\identification\Identification;
+use frontend\widgets\StepsGovControl;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -12,10 +13,16 @@ use yii\grid\GridView;
 
 $this->title = 'Identifications';
 $this->params['breadcrumbs'][] = $this->title;
+// debug($dataProvider->getModels());
 ?>
-<div class="identification-index">
+<div class="identification-index row">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="col-3 mt-5">
+            <?php echo StepsGovControl::widget([
+                'gov_control_order_id' => $gov_control_order_id
+                ])?>
+    </div>
+    <div class="col-5 mt-5">
 
     <p>
         <?= Html::a('Create Identification', ['create'], ['class' => 'btn btn-success']) ?>
@@ -25,20 +32,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        // 'filterModel' => $searchModel,
+        'headerRowOptions' => ['style' => 'background-color: #0072B5'], 
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'selected_product_id',
+            // 'status',
+            // 'actSelection.gov_control_order_id',
             [
-                'class' => ActionColumn::className(),
+                'attribute' => 'status',
+                'value' => function($model){
+                    if($model->status){
+                        return $model->getDocumentStatus($model->status);
+                    }
+                    return "No'malum";
+                }
+            ],
+            // 'selected_product_id',
+            'selectedProduct.name',
+            [
+                'class' => ActionColumn::class,
+                'template' => '{view}',
+                'buttonOptions' => ['class' => 'text-primary'],
                 'urlCreator' => function ($action, Identification $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
+                    // debug($model);
+                    if($model->status == $model::DOCUMENT_STATUS_INPROGRESS){
+                        return Url::toRoute(['identification-view', 'id' => $model->id]);
+                    }
+                    return '';
                  }
             ],
         ],
     ]); ?>
 
-
+    </div>
 </div>

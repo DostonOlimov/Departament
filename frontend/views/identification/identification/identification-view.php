@@ -17,8 +17,8 @@ use yii\grid\GridView;
 // debug($dataProvider->getModels());
 $this->title = 'Identification Contents';
 $this->params['breadcrumbs'][] = $this->title;
-// debug($dataProvider->getModels()[20]);
-// debug($this->identification_id);
+// debug($dataProvider);
+// debug($dataProvider->getModels()[0]->identification->id);
 ?>
 <div class="identification-view container">
 <style>
@@ -26,13 +26,28 @@ $this->params['breadcrumbs'][] = $this->title;
     text-align: center;
     }
 </style>
-<?= Html::a('Ortga', ['govcontrol/gov-control/identification', 'gov_control_order_id' => $dataProvider->getModels()[0]->govControlOrder->id], ['class' => 'btn btn-info']) ?>
+<?php 
+echo Html::a('Ortga', ['identification/identification/index', 'gov_control_order_id' => $dataProvider->getModels()[0]->govControlOrder->id], ['class' => 'btn btn-info']) 
+?>
+
+
+<h2>
+    <?= 
+    $dataProvider->getModels()[0]->company->company_name.
+    "dan sinash uchun olingan na`munalarni sezgi a'zolari orqali (tashqi ko‘rikdan o‘tkazish, tamg‘alash,  qadoqlash va saqlash) tekshirish
+<br>B A Y O N N O M A S I"
+?>
+    </h2>
     <h3>
-        Mahsulot nomi: <?= $dataProvider->getModels()[0]->selectedProduct->name?>
+        Mahsulot nomi: <?php 
+        echo $dataProvider->getModels()[0]->selectedProduct->name
+        ?>
         </h3>
         <br>
 
-    <?= Html::a('Yuklab olish', ['govcontrol/gov-control/identification-document', 'id' => $dataProvider->getModels()[0]->identification->id], ['class' => 'btn btn-info']) ?>
+    <?php 
+    echo Html::a('Yuklab olish', ['identification/identification/identification-document', 'id' => $dataProvider->getModels()[0]->identification->id], ['class' => 'btn btn-info']) 
+    ?>
 
     <p>
         <?php  // echo Html::a('Qo\'shish', ['create'], ['class' => 'btn btn-success']) ?>
@@ -42,37 +57,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        // 'filterModel' => $searchModel,
         'headerRowOptions' => ['style' => 'background-color: #0072B5'],  
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
-            [
-                'attribute' => 'selected_product_id',
-                'value' => 'selectedProduct.id',
-            ],
-            [
-                'attribute' => 'identification_id',
-                'value' => 'identification.id',
-            ],
-            // 'selected_normative_document_id',
+            'selectedNormativeDocument.id',
             [
                 'attribute' => 'selected_normative_document_id',
-                'value' => function($model){
-                    // debug($model->normativeDocument);
-
-                    if($model->normativeDocument){
-                        $result = $model->normativeDocument->determination;
-                        if($model->normativeDocumentSection){
-                            $result = $result.' '.$model->normativeDocumentSection->section_number.' '.
-                            $model->normativeDocumentSection->section_name;
-                        }
-                        return $result;
-                    }      
-                    else {
-                        return '';              
-                    }
+                'value' => function(IdentificationContent $model){
+                    // debug($model);
+                    $selected_normative_document = 
+                    SelectedNormativeDocument::findOne(['id' => $model->selected_normative_document_id]);
+                    $normative_document = NormativeDocument::findOne($selected_normative_document->normative_document_id);                
+                    $normative_document_content = 
+                    NormativeDocumentContent::findOne($model->normative_document_content_id);
+                    $normative_document_section = 
+                    NormativeDocumentSection::findOne($normative_document_content->document_section_id);                
+                    
+                    return $normative_document->determination.' '.$normative_document_section->section_number.' '.$normative_document_section->section_name;
                 }
                 ],
             // 'normative_document_content_id',
@@ -87,10 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'conformity',
                 'value' => function(IdentificationContent $model){
-                    if($model->conformity !== null){
-                        return $model->getConformity($model->conformity);
-                    }
-                    else return '';
+                    return $model->getConformity($model->conformity);
                 }
             ],
             [

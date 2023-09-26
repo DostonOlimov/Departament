@@ -1,6 +1,7 @@
 <?php
 
 use common\models\govcontrol\Order;
+use frontend\widgets\StepsReestr;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -12,8 +13,13 @@ use yii\grid\GridView;
 
 $this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
+// debug($cont);
 ?>
-<div class="order-index">
+<div class="order-index row">
+<div class="col-3">
+        <?= StepsReestr::widget([])?>
+    </div>
+    <div class="col-9">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -24,26 +30,39 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'headerRowOptions' => ['style' => 'background-color: #0072B5'],  
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'parent_id',
+            // 'parent_id',
+            [
+                'attribute' => 'status',
+                'value' => function($model){
+                    if($model->status){
+                        return $model->getStatusSpan($model->status);
+                    }
+                },
+                'format' => 'raw',   
+            ],
             'gov_control_program_id',
+            [
+                'class' => ActionColumn::class,
+                'buttonOptions' => ['class' => 'text-primary'],
+                'template' => '{view}',
+                'urlCreator' => function ( $action, Order $model) {
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                 }
+            ],
             'control_period_from',
             'control_period_to',
             //'control_date_from',
             //'control_date_to',
             //'ombudsman_code_date',
             //'ombudsman_code_number',
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Order $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
         ],
     ]); ?>
 
 
+</div>
 </div>

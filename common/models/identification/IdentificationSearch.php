@@ -11,6 +11,7 @@ use common\models\identification\Identification;
  */
 class IdentificationSearch extends Identification
 {
+    public $gov_control_order_id;
     /**
      * {@inheritdoc}
      */
@@ -18,6 +19,7 @@ class IdentificationSearch extends Identification
     {
         return [
             [['id', 'selected_product_id'], 'integer'],
+            [['gov_control_order_id'], 'safe'],
         ];
     }
 
@@ -39,7 +41,14 @@ class IdentificationSearch extends Identification
      */
     public function search($params)
     {
-        $query = Identification::find();
+        $query = Identification::find()
+        ->joinWith('selectedProduct')
+        ->joinWith('actSelection')
+        ->andWhere(['act_selection.gov_control_order_id' => $this->gov_control_order_id])
+        ;
+        // if($this->gov_control_order_id){
+        //     $query->where(['actSelection.gov_control_order_id' => $this->gov_control_order_id]);
+        // }
 
         // add conditions that should always apply here
 

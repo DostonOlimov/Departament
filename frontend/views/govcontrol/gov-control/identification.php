@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="selected-product-index row">
     
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
-$cont = 'actselection/selected-product/';
+// $cont = 'actselection/selected-product/';
 // debug($dataProvider->getModels()[0]);
 ?>
         <div class="col-3 mt-5">
@@ -32,6 +32,7 @@ $cont = 'actselection/selected-product/';
             <?php // echo Html::a('Mahsulot qo\'shish', ['actselection/selected-product/create', 'act_selection_id' => $model->id], ['class' => 'btn btn-success']) ?>
         </p>
         <h3>Tashqi ko'rinish bayonnomalari</h3>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -44,6 +45,18 @@ $cont = 'actselection/selected-product/';
             'name',
             'batch_number',
             'ctry_ogn_code',
+            [
+                'attribute' => 'identification.status',
+                'label' => false,
+                'value' => function($model){
+                    if($model->identification){
+                        if($model->identification->status){
+                            return $model->getStatusSpan($model->identification->status);
+                        }
+                    }
+                },
+                'format' => 'raw',   
+            ],
             //'mfr_name',
             //'mfr_id',
             //'mfrd_date',
@@ -60,16 +73,24 @@ $cont = 'actselection/selected-product/';
                 
                 'buttonOptions' => ['class' => 'text-primary'],
 
-                'template' => '{view}{update}',
-                'urlCreator' => function ($action, SelectedProduct $model) {
-                    // debug($model->status);
-                    $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->selectedNormativeDocuments[0]->id]);
+                'template' => '{view} {update}',
+                'urlCreator' => function ($action, $model) {
+                    $selected_normative_document_id = ($model->selectedNormativeDocuments)?$model->selectedNormativeDocuments[0]->id:null;
+
+                    // debug($selected_normative_document_id);
+
+                    $identification_content = IdentificationContent::find()->where(['selected_normative_document_id' => $selected_normative_document_id])->one();
                     // debug($identification_content);
+                    // debug($action);
+                    
                     if ($action === 'update') {
+                        // debug($action);
                         return Url::toRoute(['actselection/selected-product/view', 'id' => $model->id]);
                     }
                     if ($action === 'view') {
-                        return ($identification_content) ? Url::toRoute(['govcontrol/gov-control/identification-view', 'id' => $model->id]) : 
+                        // debug($action);
+                        return ($identification_content) ? 
+                            Url::toRoute(['identification/identification-content/index', 'identification_id' => $model->identification->id]) : 
                             Url::toRoute(['actselection/selected-product/view', 'id' => $model->id]);
                     }
                      }

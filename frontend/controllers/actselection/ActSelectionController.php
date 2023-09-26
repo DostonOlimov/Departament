@@ -92,6 +92,7 @@ class ActSelectionController extends OrderController
     {
         $model = new ActSelection();
         $model->gov_control_order_id = $gov_control_order_id;
+        $model->status = $model::DOCUMENT_STATUS_NEW;
         // debug($model);
         $models = [new SelectedProduct];
         if ($model->load(Yii::$app->request->post())) {
@@ -150,7 +151,7 @@ class ActSelectionController extends OrderController
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'gov_control_order_id' => $model->gov_control_order_id]);
         }
 
         return $this->render('update', [
@@ -171,6 +172,15 @@ class ActSelectionController extends OrderController
         $model->delete();
 
         return $this->redirect(['index', 'gov_control_order_id' => $model->gov_control_order_id]);
+    }
+
+    public function actionChangeStatus($id, $status)
+    {
+        $model = ActSelection::findOne(['id' => $id]);
+        $model->status = $status;
+        // $identification->selected_product_id = $identification->selected_product_id;
+        $model->save();
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**

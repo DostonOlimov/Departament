@@ -30,9 +30,20 @@ class ActSelection extends \common\models\LocalActiveRecord
     public function rules()
     {
         return [
-            [['gov_control_order_id'], 'integer'],
+            [['gov_control_order_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['warehouse_name', 'warehouse_address', 'created_at', 'updated_at'],'string'],
             [['gov_control_order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['gov_control_order_id' => 'id']],
         ];
+    }
+
+    public function attributeLabels()
+    {   
+        return array_merge(
+            parent::AttributeLabels(), 
+            [
+                'warehouse_name' => 'Ombor nomi',
+                'warehouse_address' => 'Ombor manzili',
+            ]);
     }
 
     /**
@@ -46,7 +57,7 @@ class ActSelection extends \common\models\LocalActiveRecord
      */
     public function getGovControlOrder()
     {
-        return $this->hasOne(Order::class, ['id' => 'gov_control_order_id'])->inverseOf('actSelections');
+        return $this->hasOne(Order::class, ['id' => 'gov_control_order_id']);
     }
 
     /**
@@ -56,6 +67,6 @@ class ActSelection extends \common\models\LocalActiveRecord
      */
     public function getSelectedProducts()
     {
-        return $this->hasMany(SelectedProduct::class, ['act_selection_id' => 'id'])->inverseOf('actSelection');
+        return $this->hasMany(SelectedProduct::class, ['act_selection_id' => 'id']);
     }
 }

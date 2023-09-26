@@ -14,13 +14,17 @@ use yii\grid\GridView;
 
 $this->title = 'Selected Normative Documents';
 $this->params['breadcrumbs'][] = $this->title;
-// debug(Identification::findOne($model->id));
+// debug($dataProvider);
 ?>
 <div class="selected-normative-document-index">
-
+    
+<?php if(isset($button)){
+    if($button <> $model::DOCUMENT_STATUS_CONFIRMED){?>
     <p>
         <?= Html::a('Me\'yoriy hujjat qo\'shish', ['/normativedocument/selected-normative-document/create', 'identification_id' => $identificationModel->id], ['class' => 'btn btn-primary']) ?>
-    </p>
+    </p>    
+<?php   }
+}?>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -42,25 +46,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'status',
+                'value' => function($model){
+                    if($model->status){
+                        return $model->getStatusSpan($model->status);
+                    }
+                },
+                'format' => 'raw',   
+            ],
+            [
                 'class' => ActionColumn::class,
-                'template' =>  
-                // '{update}',
-                // function (SelectedNormativeDocument $model) {
-                    // debug('test'),
-                    // $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->id]);
-                    // if($identification_content){
-                        // return 
-                        '{view}',
-                //     }
-                //     return '{update}';
-                // },
+                'template' => '{view}',
 
                 'buttonOptions' => ['class' => 'text-primary',],
                 
                 'urlCreator' => function ($action, SelectedNormativeDocument $model) {
                     $identification_content = IdentificationContent::findOne(['selected_normative_document_id' => $model->id]);
-                    // debug($model);
-                    // debug($identification_content);
                     if($identification_content){
                         return Url::toRoute(['identification/identification-content/index', 'id' => $model->id]);
                     }

@@ -35,7 +35,7 @@ use kartik\select2\Select2;
 </h3>
     <?= $form->field($model, 'company_id')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'company_type_id')->dropDownList($model->getCompanyType(), ['prompt' => '']) ?>
+    <?= $form->field($model, 'company_type_id')->dropDownList($model->getCompanyField(), ['prompt' => '']) ?>
 
     <?= $form->field($model, 'gov_control_type')->dropDownList($model->getGovcontrolType(), ['prompt' => '']) ?>
     <?php foreach(ProgramData::getCategory() as $key => $value) :?>

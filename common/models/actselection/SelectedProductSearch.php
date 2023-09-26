@@ -71,7 +71,7 @@ class SelectedProductSearch extends SelectedProduct
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'selected_product.id' => $this->id,
             'act_selection_id' => $this->act_selection_id,
             'ctry_ogn_code' => $this->ctry_ogn_code,
             'mfr_id' => $this->mfr_id,

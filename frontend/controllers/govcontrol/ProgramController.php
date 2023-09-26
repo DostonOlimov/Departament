@@ -246,6 +246,14 @@ class ProgramController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionChangeStatus($id, $status)
+    {
+        $model = $this->findModel($id);
+        $model->status = $status;
+        $model->save();
+        return $this->redirect(['view', 'id' => $id]);
+    }
+
     /**
      * Finds the Program model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

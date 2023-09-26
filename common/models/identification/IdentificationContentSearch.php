@@ -5,6 +5,7 @@ namespace common\models\identification;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\identification\IdentificationContent;
+use yii\db\ActiveQuery;
 
 /**
  * IdentificationContentSearch represents the model behind the search form of `common\models\identification\IdentificationContent`.
@@ -12,6 +13,7 @@ use common\models\identification\IdentificationContent;
 class IdentificationContentSearch extends IdentificationContent
 {
     public $selected_product_id;
+    public $identification_id;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +21,9 @@ class IdentificationContentSearch extends IdentificationContent
     {
         return [
             [['id', 'selected_normative_document_id', 'normative_document_content_id', 'conformity'], 'integer'],
-            [['comment'], 'safe'],
+            [['comment'], 'string'],
+            
+            [['identification_id', 'selected_product_id'], 'integer'],
         ];
     }
 
@@ -42,30 +46,24 @@ class IdentificationContentSearch extends IdentificationContent
     public function search($params)
     {
         $query = IdentificationContent::find();
-        if($this->selected_product_id!==null){
-            $query
-            ->joinWith('selectedNormativeDocument')
-            ->joinWith('identification')
-            ->joinWith('selectedProduct')
-            ->joinWith('actSelection')
-            ->joinWith('govControlOrder')
-            ->joinWith('govControlProgram')
-            ->joinWith('company')
-            // ->joinWith('normativeDocumentContent')
-            // ->joinWith('normativeDocumentSection')
-            // ->joinWith('normativeDocument')
-            // ->joinWith('normativeDocument')
-            ->where(['identification.selected_product_id' => $this->selected_product_id])
-            ;
-            // debug($query);
-        }
-        // debug($query);
-
-        // add conditions that should always apply here
+        $query->joinWith([
+            'selectedNormativeDocument', 
+            'identification', 
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => false,
         ]);
+
+        $dataProvider->sort->attributes['identification_id'] = [
+            'asc' => ['identification.id' => SORT_ASC],
+            'desc' => ['identification.id' => SORT_DESC],
+        ];
+        // $dataProvider->sort->attributes['selected_normative_document_id'] = [
+        //     'asc' => ['selectedNormativeDocument.id' => SORT_ASC],
+        //     'desc' => ['selectedNormativeDocument.id' => SORT_DESC],
+        // ];
 
         $this->load($params);
 
@@ -80,6 +78,7 @@ class IdentificationContentSearch extends IdentificationContent
             'id' => $this->id,
             'selected_normative_document_id' => $this->selected_normative_document_id,
             'normative_document_content_id' => $this->normative_document_content_id,
+            'identification.id' => $this->identification_id,
             'conformity' => $this->conformity,
         ]);
 

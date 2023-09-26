@@ -40,6 +40,7 @@ class ProgramSearch extends Program
     public function search($params)
     {
         $query = Program::find();
+        $query->joinWith('govControlOrders');
 
         // add conditions that should always apply here
 

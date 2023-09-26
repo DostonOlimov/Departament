@@ -39,9 +39,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'gov_control_order_id',
+            // 'gov_control_order_id',
+            'warehouse_name',
+            'warehouse_address',
+            [
+                'attribute' => 'status',
+                'value' => function($model){
+                    return $model->getStatusSpan($model->status);
+                },
+                'format' => 'raw',   
+            ],
             [
                 'class' => ActionColumn::class,
+                'template' => '{view}',
                 'buttonOptions' => ['class' => 'text-primary'],
                 'urlCreator' => function ($action, ActSelection $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);

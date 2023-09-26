@@ -40,11 +40,28 @@ class SelectedNormativeDocumentSearch extends SelectedNormativeDocument
     public function search($params)
     {
         $query = SelectedNormativeDocument::find();
+        $query->joinWith(
+            [
+                'identification', 
+                'selectedProduct', 
+                'actSelection', 
+                'govControlOrder', 
+                'govControlProgram', 
+                'company'
+            ]);
+        $query->joinWith(
+            [
+                'normativeDocument', 
+                'normativeDocumentSections', 
+                'normativeDocumentContents'
+            ]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => false,
+
         ]);
 
         $this->load($params);
@@ -57,9 +74,11 @@ class SelectedNormativeDocumentSearch extends SelectedNormativeDocument
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'selected_normative_document.id' => $this->id,
             'identification_id' => $this->identification_id,
             'normative_document_id' => $this->normative_document_id,
+            // 'normative_document_id' => $this->normative_document_id,
+            // 'selected_normative_document_id' => $this->selected_normative_document_id,
         ]);
 
         return $dataProvider;

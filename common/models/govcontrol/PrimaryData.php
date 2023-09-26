@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "{{%gov_control_primary_data}}".
  *
  * @property int $id
- * @property int|null $company_type_id
+ * @property string|null $company_type_id
  * @property int|null $gov_control_order_id
  * @property int|null $real_control_date_from
  * @property int|null $real_control_date_to
@@ -30,6 +30,7 @@ class PrimaryData extends \common\models\LocalActiveRecord
     const NO_LABORATORY = 0;
     const LABORATORY_EXISTS = 1;
     const LABORATORY_CONTRACTED = 2;
+    public $company_type_ids;
 
     public static function tableName()
     {
@@ -42,10 +43,11 @@ class PrimaryData extends \common\models\LocalActiveRecord
     public function rules()
     {
         return [
-            [['company_type_id', 'gov_control_order_id', 'quality_management_system', 'product_exists', 'laboratory_exists'], 'integer'],
-            [['comment', 'real_control_date_from', 'real_control_date_to', 'last_gov_control_date'], 'string'],
-            [['last_gov_control_number'], 'string', 'max' => 255],
+            [['gov_control_order_id', 'quality_management_system', 'product_exists', 'laboratory_exists', 'measuring_and_testing_tools_exists', 'created_by', 'updated_by', 'status'], 'integer'],
+            [['comment', 'real_control_date_from', 'real_control_date_to', 'last_gov_control_date', 'created_at', 'updated_at', 'last_gov_control_number'], 'string', 'max' => 255],
+            [['last_gov_control_number'], 'string'],
             [['gov_control_order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['gov_control_order_id' => 'id']],
+            [['company_type_id', 'company_type_ids'], 'safe']
         ];
     }
 
@@ -57,9 +59,10 @@ class PrimaryData extends \common\models\LocalActiveRecord
         $AttrLbl = [
             'quality_management_system' => 'Sifat menejment tizimi',
             'product_exists' => 'Mahsulot mavjudligi',
-            'laboratory_exists' => 'Sinov lanoratoriyasi',
-            'last_gov_control_date' => 'Avval o\'tkazilgan tekshruv sanasi',
-            'last_gov_control_number' => 'Avval o\'tkazilgan tekshruv raqami',
+            'laboratory_exists' => 'Sinov laboratoriyasi',
+            'last_gov_control_date' => 'Avval o\'tkazilgan tekshiruv sanasi',
+            'last_gov_control_number' => 'Avval o\'tkazilgan tekshiruv raqami',
+            'measuring_and_testing_tools_exists' => 'O\'lchov va sinov vositalari mavjudligi',
         ];
 
         return array_merge($ParentAttrLbl, $AttrLbl);
@@ -72,7 +75,7 @@ class PrimaryData extends \common\models\LocalActiveRecord
      */
     public function getDocumentStatuses()
     {
-        return $this->hasMany(DocumentStatus::class, ['gov_control_primary_data_id' => 'id'])->inverseOf('govControlPrimaryData');
+        return $this->hasMany(DocumentStatus::class, ['gov_control_primary_data_id' => 'id']);
     }
 
     /**
@@ -82,6 +85,60 @@ class PrimaryData extends \common\models\LocalActiveRecord
      */
     public function getGovControlOrder()
     {
-        return $this->hasOne(Order::class, ['id' => 'gov_control_order_id'])->inverseOf('primaryDatas');
+        return $this->hasOne(Order::class, ['id' => 'gov_control_order_id']);
+    }
+
+    public static function getObjectQMS($type = null)
+    {
+        $arr = [
+            self::OBJECT_DOESNT_EXIST => 'Joriy etilmagan',
+            self::OBJECT_EXISTS => 'Joriy etilgan',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+        
+        return $arr[$type];
+    }
+    public static function getObjectLaboratory($type = null)
+    {
+        $arr = [
+            self::OBJECT_DOESNT_EXIST => 'Mavjud emas',
+            self::OBJECT_EXISTS => 'Mavjud',
+            self::OBJECT_WITH_CONTRACT => 'Shartnoma asosida',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+        
+        return $arr[$type];
+    }
+    public static function getObjectProduct($type = null)
+    {
+        $arr = [
+            self::OBJECT_DOESNT_EXIST => 'Mavjud emas',
+            self::OBJECT_EXISTS => 'Mavjud',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+        
+        return $arr[$type];
+    }
+    public static function getObjectMeasure($type = null)
+    {
+        $arr = [
+            self::OBJECT_DOESNT_EXIST => 'Mavjud emas',
+            self::OBJECT_EXISTS => 'Mavjud',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+        
+        return $arr[$type];
     }
 }

@@ -16,6 +16,9 @@ use yii\widgets\ActiveForm;
         <div class="col-9">
             <?= $form->field($model, 'name')->textarea(['rows' => 2]) ?>
         </div>
+        <div class="col-3">
+            <?= $form->field($model, 'status')->dropDownList($model->getDocumentStatus(), ['prompt' => '']) ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-6">

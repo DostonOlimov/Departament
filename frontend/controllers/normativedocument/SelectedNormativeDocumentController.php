@@ -23,7 +23,7 @@ class SelectedNormativeDocumentController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -70,6 +70,7 @@ class SelectedNormativeDocumentController extends Controller
     {
         $model = new SelectedNormativeDocument();
         $model->identification_id = $identification_id;
+        $model->status = $model::DOCUMENT_STATUS_NEW;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -117,7 +118,19 @@ class SelectedNormativeDocumentController extends Controller
 
         return $this->redirect(['index']);
     }
+    public function actionChangeStatus($id , $status)
+    {
+        $selected_normative_document = $this->findModel($id);
+        $selected_normative_document->status = $status;
+        $selected_normative_document->identification_id = 
+        $selected_normative_document->identification_id;
+        $selected_normative_document->save();
+        // debug($selected_normative_document);
+        $identification = Identification::findOne($selected_normative_document->identification_id);
+        // debug($identification->selected_product_id);
 
+        return $this->redirect(['actselection/selected-product/view','id' => $identification->selected_product_id]);
+    }
     /**
      * Finds the SelectedNormativeDocument model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -6,11 +6,18 @@ use common\models\actselection\SelectedProduct;
 use common\models\identification\Identification;
 use common\models\identification\IdentificationContent;
 use common\models\identification\IdentificationContentSearch;
+use common\models\LocalActiveRecord;
 use common\models\Model;
 use common\models\normativedocument\NormativeDocument;
 use common\models\normativedocument\NormativeDocumentContent;
+use common\models\normativedocument\NormativeDocumentContentSearch;
 use common\models\normativedocument\NormativeDocumentSection;
+use common\models\normativedocument\NormativeDocumentSectionSearch;
 use common\models\normativedocument\SelectedNormativeDocument;
+use common\models\normativedocument\SelectedNormativeDocumentSearch;
+use common\models\User;
+use kartik\grid\EditableColumn;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -47,18 +54,68 @@ use yii\filters\VerbFilter;
      *
      * @return string
      */
-    public function actionIndex($id = null)
+    public function actionIndex($id = null, $identification_id = null)
     {
+        // debug($identification_id);
+        $selected_nd = SelectedNormativeDocument::findOne($id);
+        if($identification_id){
+            $identification = Identification::findOne($identification_id);
+        }
+        else{
+            $identification = Identification::findOne($selected_nd->identification_id);
+        }
+
         $searchModel = new IdentificationContentSearch();
         if($id){
             $searchModel->selected_normative_document_id = $id;
         }
+        if($identification_id){
+            $searchModel->identification_id = $identification_id;
+        }
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        // debug($dataProvider->getModels()[0]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'identification' => $identification,
         ]);
+    }
+    public function actionDocument($id)
+    {   
+        $user = User::findOne(Yii::$app->user->id);
+
+        $searchModel = new IdentificationContentSearch();
+        $searchModel->identification_id = $id;
+        
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        // debug($dataProvider->getModels());
+        return $this->render('document', compact(
+            'searchModel', 
+            'dataProvider', 
+            'user',
+        ));
+
+        // $model = $this->findModel($id);
+        // $company = Company::findOne($model->company_id);
+        // $user = User::findOne(['id' => $model->created_by]);
+        // $risks_criteria = new RisksCriteria();
+        // $sumscore = $risks_criteria->getCriteriaBall($id);
+        // // echo $sumscore;die;
+        // $score = RisksCriteria::find()
+        // ->select('criteria_id')
+        // ->Where(['risk_analisys_id' => $id])
+        // ->asArray()
+        // ->all();
+        // $comment = RisksCriteria::find()
+        // ->select('comment')
+        // ->Where(['risk_analisys_id' => $id])
+        // ->asArray()
+        // ->all();
+
+
+        // return $this->render('document', 
+        // compact('model', 'company', 'user', 'score','sumscore', 'comment'));
     }
 
     /**
@@ -80,86 +137,50 @@ use yii\filters\VerbFilter;
      * @return string|\yii\web\Response
      */
     public function actionCreate($id)
-    {   $this->model_key;
-        // $this->model_key = 0;
-        // debug($id);
-        $selected_nd = SelectedNormativeDocument::findOne($id);
-        // debug($selected_nd);
-        $nd = NormativeDocument::findOne($selected_nd->normative_document_id);
-        // debug($nd);
-        $identification = Identification::findOne($selected_nd->identification_id); 
-        // debug($identification);
-        $selected_product = SelectedProduct::findOne($identification->selected_product_id);
-        // debug($selected_product);
+    {   
+        $searchModel = new SelectedNormativeDocumentSearch();
+        $searchModel->id = $id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
-        // $criteria = NormativeDocumentContent::find()
-        // ->where(['normative_document_section.normative_document_id' => $selected_nd->normative_document_id])
-        // ->orderBy(['position' => SORT_ASC, 'content' => SORT_ASC,])
-        // ->joinWith('documentSection')
-        // ->all();
-        $criteria = NormativeDocumentSection::find()
-        ->joinWith('normativeDocumentContents')
-        // ->orderBy([
-            
-        //     // 'content' => SORT_ASC,
-        //     ])
-            ->orderBy([
-                // 'normative_document_content.position' => SORT_DESC, 
-                'position' => SORT_ASC, ])
-        // ->select('section_number')
-        // ->select('normativeDocumentContents')
-        ->where(['normative_document_id' => $selected_nd->normative_document_id])
-        // ->where(['id' => 1])
-        ->all()
-        ;
-        // debug($criteria[1]);
-        foreach ($criteria as $criterion)
+        $identification = Identification::findOne($dataProvider->getModels()[0]->identification->id);
+        $identification->status = LocalActiveRecord::DOCUMENT_STATUS_INPROGRESS;
+
+        $selected_nd = SelectedNormativeDocument::findOne($dataProvider->getModels()[0]->id);
+        $selected_nd->status = LocalActiveRecord::DOCUMENT_STATUS_INPROGRESS;
+
+        foreach ($dataProvider->models[0]->normativeDocumentContents as $key => $criterion)
             {
-
-                // $criterion_contents = $criteria[1]->normativeDocumentContents;
-                $criterion_contents = $criterion->normativeDocumentContents;
-                // debug($criterion_contents);
-                // debug($criterion->section_name);
-                foreach ($criterion_contents as $criterion_content)
-                {
-                    // debug($criterion_content);
-                    // debug($this->model_key);
-                    // debug($criterion->section_name);
-                    $model[$this->model_key] = new IdentificationContent();
-                    $model[$this->model_key]['section_name'] = $criterion->section_number.' '.$criterion->section_name;
-                    $model[$this->model_key]['selected_normative_document_id'] = $id;
-                    $model[$this->model_key]['normative_document_content_id'] = $criterion_content->id;
-                    $model[$this->model_key]['name'] = $criterion_content->content;
-                    $this->model_key ++;
-                }
-
+                $ndSection = NormativeDocumentSection::findOne(['id' => $criterion->document_section_id]);
+                    $model[$key] = new IdentificationContent();
+                    $model[$key]['section_name'] = $ndSection->section_number.' '.$ndSection->section_name;
+                    $model[$key]['selected_normative_document_id'] = $dataProvider->models[0]->id;
+                    $model[$key]['normative_document_content_id'] = $criterion->id;
+                    $model[$key]['name'] = $criterion->content;
             }
-            // debug($model);
+
         if ($this->request->isPost) {
 
             $model = Model::createMultiple(IdentificationContent::class);
             Model::loadMultiple($model, $this->request->post());
-
             $valid = Model::validateMultiple($model);
-            
             if ($valid) {
-                foreach ($model as $value) 
+                $identification->save(false);
+                $selected_nd->save(false);
+                foreach ($model as $value)
                     {
                         if($value->status == 1){
-                            $identification = new IdentificationContent();
-                            $identification->selected_normative_document_id = $value->selected_normative_document_id;
-                            $identification->normative_document_content_id = $value->normative_document_content_id;
-                            $identification->comment = $value->comment;
-                            $identification->conformity = $value->conformity;
-                            
-                            $identification->save();
+                            $identification_content = new IdentificationContent();
+                            $identification_content->selected_normative_document_id = $value->selected_normative_document_id;
+                            $identification_content->normative_document_content_id = $value->normative_document_content_id;
+                            $identification_content->comment = $value->comment;
+                            $identification_content->conformity = $value->conformity;
+                            $identification_content->save();
                         }
                     }
-                return $this->redirect(['index', 'id' => $selected_nd->id]);
+                return $this->redirect(['index', 'identification_id' => $identification->id]);
             }
         } 
-
-        return $this->render('create',compact('model', 'criteria','nd', 'selected_product'));
+        return $this->render('create',compact('model', 'dataProvider'));
     }
 
     /**
@@ -174,7 +195,7 @@ use yii\filters\VerbFilter;
         $model = $this->findModel($id);
         // debug($model);
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['govcontrol/gov-control/identification-view', 'id' => $model->selected_normative_document_id]);
+            return $this->redirect(['identification/identification-content/index', 'id' => $model->selected_normative_document_id]);
         }
 
         return $this->render('update', [

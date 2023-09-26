@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'company_type_id')->dropDownList($model->getActivity()) ?>
 
-    <?= $form->field($model, 'gov_control_order_id')->textInput() ?>
+    <?= $form->field($model, 'gov_control_order_id')->textInput(['readonly' => true]) ?>
 
     <?= $form->field($model, 'real_control_date_from')->widget(DatePicker::class,['pluginOptions' => [
         'autoclose' => true,
@@ -27,11 +27,13 @@ use yii\widgets\ActiveForm;
         'format' => 'dd.mm.yyyy'
     ]]) ?>
 
-    <?= $form->field($model, 'quality_management_system')->textInput() ?>
+    <?= $form->field($model, 'quality_management_system')->dropDownList($model->getObjectQMS(), ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'product_exists')->textInput() ?>
+    <?= $form->field($model, 'product_exists')->dropDownList($model->getObjectProduct(), ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'laboratory_exists')->textInput() ?>
+    <?= $form->field($model, 'laboratory_exists')->dropDownList($model->getObjectLaboratory(), ['prompt' => '']) ?>
+
+    <?= $form->field($model, 'measuring_and_testing_tools_exists')->dropDownList($model->getObjectMeasure(), ['prompt' => '']) ?>
 
     <?= $form->field($model, 'last_gov_control_date')->widget(DatePicker::className(),['pluginOptions' => [
         'autoclose' => true,
@@ -43,7 +45,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Saqlash', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

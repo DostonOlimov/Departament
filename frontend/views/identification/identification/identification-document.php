@@ -21,6 +21,7 @@ use yii\web;
 
 // variables
     // debug($dataProvider->getModels());
+    $key = NULL;
 
 
     $user_position = UserPosition::findOne(['id' => $user->position_id])->alias;
@@ -256,7 +257,7 @@ use yii\web;
                 // col 5
                 $textrun5 = $comment->addTextRun();
                     $textrun5->addText($oneModel->comment, $fStyle5, $pStyle5);
-                    if($oneModel->conformity === 0){
+                    if($oneModel->conformity == 0){
                     $textrun5->addText(' ('. $oneModel->getConformity($oneModel->conformity). ')', $fStyle5, $pStyle5);
                     }
                     else{
@@ -278,7 +279,7 @@ use yii\web;
                     $comment->addText($oneModel->comment, $fStyle5, $pStyle5);
                 // col 6
                 $conformity = $table->addCell(null, $fStyle6, $pStyle6);
-                if($oneModel->conformity === 0){
+                if($oneModel->conformity == 0){
                     $conformity->addText($oneModel->getConformity($oneModel->conformity), $fStyle6, $pStyle6);
                 }
                 else{
@@ -299,7 +300,7 @@ use yii\web;
                     $comment->addText($oneModel->comment, $fStyle5, $pStyle5);
                 // col 6
                 $conformity = $table->addCell();
-                if($oneModel->conformity === 0){
+                if($oneModel->conformity == 0){
                     $conformity->addText($oneModel->getConformity($oneModel->conformity), $fStyle6, $pStyle6);
                 }
                 else{

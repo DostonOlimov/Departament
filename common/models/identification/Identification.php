@@ -2,6 +2,9 @@
 
 namespace common\models\identification;
 
+use common\models\actselection\ActSelection;
+use common\models\actselection\SelectedProduct;
+use common\models\User;
 use Yii;
 
 /**
@@ -30,9 +33,11 @@ class Identification extends \common\models\LocalActiveRecord
     public function rules()
     {
         return [
-            [['selected_product_id'], 'integer'],
+            [['selected_product_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['selected_normative_documents'], 'safe'],
-
+            [['created_at', 'updated_at'], 'string'],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
             [['selected_product_id'], 'exist', 'skipOnError' => true, 'targetClass' => SelectedProduct::class, 'targetAttribute' => ['selected_product_id' => 'id']],
         ];
     }
@@ -53,6 +58,16 @@ class Identification extends \common\models\LocalActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
+    public function getSelectedProduct()
+    {
+        return $this->hasOne(SelectedProduct::class, ['id' => 'selected_product_id']);
+    }
+    public function getActSelection()
+    {
+        return $this->hasOne(ActSelection::class, ['id' => 'act_selection_id'])->via('selectedProduct');
+    }
+
+    
     public function getSelectedNormativeDocuments()
     {
         return $this->hasMany(SelectedNormativeDocument::class, ['identification_id' => 'id']);
@@ -68,8 +83,4 @@ class Identification extends \common\models\LocalActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getSelectedProduct()
-    {
-        return $this->hasOne(SelectedProduct::class, ['id' => 'selected_product_id']);
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace common\models\normativedocument;
 
+use common\models\LocalActiveRecord;
 use Yii;
 
 /**
@@ -43,8 +44,8 @@ const SECTION_TRANSPORTING = 3;
     public function rules()
     {
         return [
-            [['category_id'], 'integer'],
-            [['name', 'activation_info', 'deactivation_info', 'activation_date', 'deactivation_date'], 'string'],
+            [['category_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['name', 'activation_info', 'deactivation_info', 'activation_date', 'deactivation_date', 'created_at', 'updated_at'], 'string'],
             [['determination'], 'string', 'max' => 255],
         ];
     }
@@ -138,8 +139,8 @@ const SECTION_TRANSPORTING = 3;
         // debug($nd_unset);
         $result = [];
         $nd = ($type)?
-        NormativeDocument::findAll(['category_id' => $type]):
-        NormativeDocument::find()->all();
+        NormativeDocument::findAll(['category_id' => $type, 'status' => LocalActiveRecord::DOCUMENT_STATUS_CONFIRMED]):
+        NormativeDocument::findAll(['status' => LocalActiveRecord::DOCUMENT_STATUS_CONFIRMED]);
         // debug($nd);
         foreach ($nd as $one_nd){
             $result[$one_nd->id] = $one_nd->determination;

@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             )?>
     </div>
         <div class="col-6 mt-5">
-            <?= $this->render('_form', [
+            <?= $this->render('_form1', [
             'model' => $model,
         ]) ?>
 

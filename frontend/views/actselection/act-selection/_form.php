@@ -21,6 +21,18 @@ $date_pluginOptions =['pluginOptions' => ['autoclose' => true,'format' => 'dd.mm
         <div class="col-sm-6">
             <?= $form->field($model, 'gov_control_order_id')->textInput(['maxlength' => true, 'readonly' => true]) ?>
         </div>
+        <div class="col-sm-6">
+            <div class="form-group field-actselection-gov_control_order_id">
+                <label class="control-label" for="actselection-gov_control_order_id">Holati</label>
+                <input class="form-control" value=<?= $model->getDocumentStatus($model->status) ?> readonly="">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'warehouse_name')->textInput() ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'warehouse_address')->textInput() ?>
+        </div>
     </div>
 
     <div class="panel panel-default">
@@ -117,7 +129,7 @@ $date_pluginOptions =['pluginOptions' => ['autoclose' => true,'format' => 'dd.mm
                                 <?= $form->field($modelProduct, "[{$i}]xtra_value")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($modelProduct, "[{$i}]xtra_unit_om")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelProduct, "[{$i}]xtra_unit_om")->dropDownList($model->getListOfUnitOfMeasurement(), ['prompt' => '']) ?>
                             </div>
                             <div class="col-sm-3">
                                 <?= $form->field($modelProduct, "[{$i}]cnfea_code")->widget(MaskedInput::class, ['mask' => '9999999999']) ?>

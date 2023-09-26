@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var common\models\identification\IdentificationSearch $model */
 /** @var yii\widgets\ActiveForm $form */
+// debug($model);
 ?>
 
 <div class="identification-search">

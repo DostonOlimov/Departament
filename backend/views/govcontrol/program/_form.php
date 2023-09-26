@@ -24,7 +24,7 @@ use common\models\Company;
         ]
             ) ?>
 
-    <?= $form->field($model, 'company_type_id')->dropDownList($model->getCompanyType()) ?>
+    <?= $form->field($model, 'company_type_id')->dropDownList($model->getCompanyField()) ?>
 
     <?= $form->field($model, 'gov_control_type')->dropDownList($model->getGovcontrolType()) ?>
 

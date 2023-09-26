@@ -33,6 +33,7 @@ class LocalActiveRecord extends ActiveRecord
     const DOCUMENT_STATUS_CONFIRMED = 5;
     const DOCUMENT_STATUS_READ = 6;
     const DOCUMENT_STATUS_NOTREAD = 7;
+    const DOCUMENT_STATUS_INPROGRESS = 8;
 
 
     const ALL_ACTIVITY = 0;
@@ -49,12 +50,37 @@ class LocalActiveRecord extends ActiveRecord
     const ACCREDITATION_FIELD = 4;
     const MASS_MEDIA_FIELD = 5;
 
+    const OBJECT_DOESNT_EXIST = 0;
+    const OBJECT_EXISTS = 1;
+    const OBJECT_WITH_CONTRACT = 2;
+    
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        if ($this->hasAttribute('created_at') && $this->hasAttribute('updated_at')) {
+            $behaviors['timestamp'] = [
+                'class' => \yii\behaviors\TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+            ];
+        }
+        if ($this->hasAttribute('created_by') && $this->hasAttribute('updated_by')) {
+            $behaviors['blameable'] = [
+                'class' => \yii\behaviors\BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ];
+        }
+        return $behaviors;
+    }
+
     public function AttributeLabels()
     {
         return [
             //Common
             'id' => 'ID',
-            'status' => 'Status',
+            'status' => 'Holati',
             'created_by' => 'Yaratgan foydalanuvchi',
             'updated_by' => 'Yangilagan foydalanuvchi',
             'created_at' => 'Yaratilgan sana',
@@ -63,8 +89,8 @@ class LocalActiveRecord extends ActiveRecord
             'company_type_id' => 'Tashkilot faoliyat turi',
             'company_id' => 'Tashkilot nomi',
             'gov_control_order_id' => 'Tekshiruv raqami',
-            'real_control_date_from' => 'Haqiqatda tekshiriv boshlanish sanasi',
-            'real_control_date_to' => 'Haqiqatda tekshiriv tugash sanasi',
+            'real_control_date_from' => 'Haqiqatda tekshirish boshlanish sanasi',
+            'real_control_date_to' => 'Haqiqatda tekshirish tugash sanasi',
             'act_selection_id' => 'Namuna tanlab olish dalolatnomasi raqami',
             'summary_user_id' => 'Umumlashtiruvchi',
             //RiskAnalisys
@@ -105,7 +131,7 @@ class LocalActiveRecord extends ActiveRecord
             self::IYUN_UZ => 'iyun',
             self::IYUL_UZ => 'iyul',
             self::AVGUST_UZ => 'avgust',
-            self::SENTABR_UZ => 'senrtabr',
+            self::SENTABR_UZ => 'sentabr',
             self::OKTABR_UZ => 'oktabr',
             self::NOYABR_UZ => 'noyabr',
             self::DEKABR_UZ => 'dekabr',
@@ -127,6 +153,21 @@ class LocalActiveRecord extends ActiveRecord
             self::DOCUMENT_STATUS_CONFIRMED => 'Tasdiqlangan',
             self::DOCUMENT_STATUS_READ => 'O\'qilgan',
             self::DOCUMENT_STATUS_NOTREAD => 'O\'qilmagan',
+            self::DOCUMENT_STATUS_INPROGRESS => 'Jarayonda',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+        
+        return $arr[$type];
+    }
+    public static function getObject($type = null)
+    {
+        $arr = [
+            self::OBJECT_DOESNT_EXIST => 'Mavjud emas',
+            self::OBJECT_EXISTS => 'Mavjud',
+            self::OBJECT_WITH_CONTRACT => 'Shartnoma asosida',
         ];
 
         if ($type === null) {
@@ -297,6 +338,184 @@ class LocalActiveRecord extends ActiveRecord
         }
     
         return $arr[$type];
+    }
+    public static function getCompanyField($type = null)
+    {
+        $arr = [
+            self::PRODUCTION_ACTIVITY => "Ishlab chiqaruvchi",
+            self::SERVICE_ACTIVITY => "Xizmat ko'rsatuvchi",
+            self::TRADE_ACTIVITY => 'Savdo',
+            self::IMPORT_ACTIVITY => "Importyor",
+            self::SERTIFICATION_ACTIVITY => 'Sertifikatlashtirish organi',
+            self::TESTING_ACTIVITY => 'Sinov laboratoriyasi',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
+    }
+
+    public static function getStatusSpan($status)
+    {
+        $class = 'secondary';
+                switch ($status) {
+
+                    case self::DOCUMENT_STATUS_CONFIRMED:
+                        $class = 'success';
+                        break;
+                    
+                    case self::DOCUMENT_STATUS_INPROGRESS:
+                        $class = 'secondary';
+                        break;
+                        
+                    case self::DOCUMENT_STATUS_NEW:
+                        $class = 'warning';
+                        break;
+                    case self::DOCUMENT_STATUS_SENT:
+                        $class = 'info';
+                        break;                        
+                }
+        return '<span class="badge badge-pill badge-' . $class . '">' . self::getDocumentStatus($status) . '</span><br>';
+
+    }
+    public static function getPermissionAdmin($action, $status)
+    {
+        $permission = [
+                            'update' => false,
+                            'create_order' => false,
+                            'confirm' => false,
+                            'return' => false,
+                            'deny' => false,
+                            'delete' => false,
+                        ];
+
+                switch ($status) {
+
+                    case self::DOCUMENT_STATUS_NEW:
+                        $permission['delete'] = true;
+                        break;
+
+                    case self::DOCUMENT_STATUS_SENT:
+                        // $permission['delete'] = true;
+                        $permission['deny'] = true;
+                        $permission['return'] = true;
+                        $permission['update'] = true;
+                        $permission['confirm'] = true;
+                        break;    
+
+                    case self::DOCUMENT_STATUS_CONFIRMED:
+                        $permission['update'] = true;
+                        break;
+                    
+                    case self::DOCUMENT_STATUS_INPROGRESS:
+                        $permission['delete'] = true;
+                        $permission['update'] = true;
+                        break;
+                    case self::DOCUMENT_STATUS_RETURNED:
+                        $permission['update'] = true;
+                        $permission['delete'] = true;
+                        $permission['confirm'] = true;
+
+                        break;
+                        
+                }
+
+                return $permission[$action];
+
+    }
+
+    public static function getPermissionInspector($action, $status)
+    {
+        $permission = [
+                            'update' => false,
+                            'create_order' => false,
+                            'confirm' => false,
+                            'send' => false,
+                            'delete' => false,
+                            'download' => false,
+                        ];
+
+                switch ($status) {
+
+                    case self::DOCUMENT_STATUS_NEW:
+                        $permission['send'] = true;
+                        $permission['delete'] = true;
+                        $permission['update'] = true;
+                        break;
+
+                    case self::DOCUMENT_STATUS_SENT:
+
+                        break;    
+
+                    case self::DOCUMENT_STATUS_CONFIRMED:
+                        $permission['download'] = true;
+                        $permission['create_order'] = true;
+                        break;
+                    
+                    case self::DOCUMENT_STATUS_INPROGRESS:
+                        $permission['delete'] = true;
+                        $permission['update'] = true;
+                        break;
+
+                    case self::DOCUMENT_STATUS_RETURNED:
+                        $permission['send'] = true;
+                        $permission['delete'] = true;
+                        $permission['update'] = true;
+                        break;
+
+                    case self::DOCUMENT_STATUS_DENIED:
+                        $permission['delete'] = true;
+                        break;
+                        
+                }
+
+                return $permission[$action];
+
+    }
+    public function getUserPosition()
+    {
+        return $this->hasOne(UserPosition::class, ['id' => 'position_id']);
+    }
+
+    public static function getUserFormated($user_id, $format = 'name surname', $upper_case = false)
+    {
+        $user = User::find()->joinWith('userPosition')->where(['user.id' => $user_id])->one();
+
+        $name = !empty($user->name) ? $user->name : '';
+        $sname = !empty($user->surname) ? $user->surname : '';
+        $fname = !empty($user->fathers_name) ? $user->surname : '';
+        
+        if($upper_case === true){
+            $name = strtoupper($name);
+            $sname = strtoupper($sname);
+            $fname = strtoupper($fname);
+        }
+            switch($format){
+                case 'name surname' :               return $name.' '.$sname; break;
+                case 'n. surname' :                 return substr($name, 0, 1).' '.$sname; break;
+                case 'name surname fathers_name' :  return $name.' '.$sname.' '.$fname; break;
+                case 'n. s. fathers_name' :         return substr($name, 0, 1).' '.substr($sname, 0, 1).' '.$fname; break;
+                case 'name' :                       return  $name; break;
+                case 'username' :                   return $user->username; break;
+            }
+    }
+
+    public function getListOfUnitOfMeasurement($value = null){
+        $arr = [
+            100 => 'm',
+            101 => 'm2',
+            102 => 'm3',
+            200 => 'kg',
+            300 => 'dona',
+            301 => 'qadoq',
+
+        ];
+        if($value){
+            return $arr[$value];
+        }
+        return $arr;
     }
 }
 

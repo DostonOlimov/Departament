@@ -14,6 +14,7 @@ use yii\grid\GridView;
 
 $this->title = 'Tekshiruv dasturlari';
 $this->params['breadcrumbs'][] = $this->title;
+// debug($dataProvider->getModels()[3]);
 ?>
 <div class="program-index row">
     <div class="col-3">
@@ -39,10 +40,20 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'id',
             // 'company_id',
             [
-                'attribute' => 'status',
-                'value' => function(Program $model){
-                    return $model->getDocumentStatus($model->status);
+                'attribute' => 'govControlOrders',
+                'label' => 'Buyruqlar soni',
+                'value' => function($model){
+                    return count($model->govControlOrders);
                 }
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function($model){
+                    if($model->status){
+                        return $model->getStatusSpan($model->status);
+                    }
+                },
+                'format' => 'raw',   
             ],
             [
                 'attribute' => 'company_id',
@@ -53,9 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => ActionColumn::class,
                 'template' => '{view}',
-                'buttonOptions' => [
-                    'class' => 'text-primary'
-                ],
+                'buttonOptions' => ['class' => 'text-primary'],
                 'urlCreator' => function ($action, Program $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
@@ -63,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                 'attribute' => 'company_type_id',
                 'value' => function(Program $model){
-                    return $model->getCompanyType($model->company_type_id);
+                    return $model->getCompanyField($model->company_type_id);
                 }
             ],
             

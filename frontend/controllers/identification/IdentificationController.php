@@ -2,9 +2,13 @@
 
 namespace frontend\controllers\identification;
 
+use common\models\actselection\ActSelection;
+use common\models\actselection\SelectedProduct;
 use common\models\identification\Identification;
+use common\models\identification\IdentificationContentSearch;
 use common\models\identification\IdentificationSearch;
 use common\models\normativedocument\SelectedNormativeDocument;
+use common\models\User;
 use Exception;
 use Yii;
 use yii\web\Controller;
@@ -26,7 +30,7 @@ class IdentificationController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -40,13 +44,16 @@ class IdentificationController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($gov_control_order_id = null, $identification_id = null)
     {
         $searchModel = new IdentificationSearch();
+        $searchModel->gov_control_order_id = $gov_control_order_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider->getModels()[0]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'gov_control_order_id' => $gov_control_order_id,
         ]);
     }
 
@@ -62,6 +69,60 @@ class IdentificationController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    public function actionIdentificationView($id)
+    {
+        $searchModel = new IdentificationContentSearch();
+        $searchModel->identification_id = $id;
+        // debug($searchModel);
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider);
+
+        return $this->render('identification-view', compact(
+            'searchModel', 
+            'dataProvider', 
+            // 'orderModel',
+            // 'act_selection',
+            // 'company',
+            // 'product',
+        ));
+    }
+    public function actionIdentificationDocument($id)
+    {   
+        // debug('test');
+        $user = User::findOne(Yii::$app->user->id);
+        $searchModel = new IdentificationContentSearch();
+        $searchModel->identification_id = $id;
+        // debug($searchModel);
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider->getModels());
+
+        return $this->render('identification-document', compact(
+            'searchModel', 
+            'dataProvider', 
+            'user',
+        ));
+
+        // $model = $this->findModel($id);
+        // $company = Company::findOne($model->company_id);
+        // $user = User::findOne(['id' => $model->created_by]);
+        // $risks_criteria = new RisksCriteria();
+        // $sumscore = $risks_criteria->getCriteriaBall($id);
+        // // echo $sumscore;die;
+        // $score = RisksCriteria::find()
+        // ->select('criteria_id')
+        // ->Where(['risk_analisys_id' => $id])
+        // ->asArray()
+        // ->all();
+        // $comment = RisksCriteria::find()
+        // ->select('comment')
+        // ->Where(['risk_analisys_id' => $id])
+        // ->asArray()
+        // ->all();
+
+
+        // return $this->render('document', 
+        // compact('model', 'company', 'user', 'score','sumscore', 'comment'));
+    }
 
     /**
      * Creates a new Identification model.
@@ -70,26 +131,12 @@ class IdentificationController extends Controller
      */
     public function actionCreate($selected_product_id)
     {
-        // $model = new Identification();
-
-        // if ($this->request->isPost) {
-        //     if ($model->load($this->request->post()) && $model->save()) {
-        //         return $this->redirect(['view', 'id' => $model->id]);
-        //     }
-        // } else {
-        //     $model->loadDefaultValues();
-        // }
-
-        // return $this->render('create', [
-        //     'model' => $model,
-        // ]);
-
-
-        //
 
         $model = new Identification();
         $model->selected_product_id = $selected_product_id;
-        // debug($model);
+        $model->status = $model::DOCUMENT_STATUS_NEW;
+        $act_selection = ActSelection::findOne(['id' => SelectedProduct::findOne(['id' => $selected_product_id])->act_selection_id ]);
+        $act_selection->status = $model::DOCUMENT_STATUS_INPROGRESS;
         if ($model->load($this->request->post()) ) {
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
@@ -98,8 +145,10 @@ class IdentificationController extends Controller
                         foreach ($model->selected_normative_documents as $selected_nd) {
                             $model_nd = new SelectedNormativeDocument();
                             $model_nd->identification_id = $model->id;
+                            $model_nd->status = $model::DOCUMENT_STATUS_NEW;
                             $model_nd->normative_document_id = $selected_nd;
                             $model_nd->save(false);
+                            $act_selection->save(false);
                     }
                 }
                 $transaction->commit();
@@ -150,6 +199,8 @@ class IdentificationController extends Controller
 
         return $this->redirect(['index']);
     }
+
+
 
     /**
      * Finds the Identification model based on its primary key value.

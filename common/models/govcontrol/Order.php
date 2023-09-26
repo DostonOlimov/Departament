@@ -2,6 +2,8 @@
 
 namespace common\models\govcontrol;
 
+use common\models\AttachedExecutor;
+use common\models\LocalActiveRecord;
 use Yii;
 
 /**
@@ -25,8 +27,11 @@ use Yii;
  * @property Order[] $orders
  * @property Order $parent
  */
-class Order extends \common\models\LocalActiveRecord
+class Order extends LocalActiveRecord
 {
+    const DT = 0;
+    const DN = 1;
+    public $executors;
     /**
      * {@inheritdoc}
      */
@@ -41,11 +46,13 @@ class Order extends \common\models\LocalActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'gov_control_program_id'], 'integer'],
+            [['parent_id', 'gov_control_program_id', 'created_by', 'updated_by', 'status', 'order_prefix', 'order_number'], 'integer'],
             [['control_days_number'], 'integer', 'max' => 10],
-            [['ombudsman_code_number', 'control_period_from', 'control_period_to', 'control_date_from', 'control_date_to', 'ombudsman_code_date'], 'string', 'max' => 255],
+            [['ombudsman_code_number', 'control_period_from', 'control_period_to', 'control_date_from', 'control_date_to', 'ombudsman_code_date', 'created_at', 'updated_at'], 'string', 'max' => 255],
+            [['comment'], 'string', 'max' => 511],
             [['gov_control_program_id'], 'exist', 'skipOnError' => true, 'targetClass' => Program::class, 'targetAttribute' => ['gov_control_program_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['parent_id' => 'id']],
+            [['executors'], 'safe'],
         ];
     }
 
@@ -53,10 +60,11 @@ class Order extends \common\models\LocalActiveRecord
      * {@inheritdoc}
      */
     public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
+    {   $ParentAttrLbl = parent::AttributeLabels();
+        $AttrLbl = [
             'parent_id' => 'Buyruq turi',
+            'order_prefix' => 'Tekshiruv turi',
+            'order_number' => 'Buyruq raqami',
             'gov_control_program_id' => 'Tekshiruv dasturi ID',
             'control_period_from' => 'Tekshiruv davri boshi',
             'control_period_to' => 'Tekshiruv davri oxiri',
@@ -65,9 +73,11 @@ class Order extends \common\models\LocalActiveRecord
             'ombudsman_code_number' => 'Biznes Ombudsman kodi',
             'ombudsman_code_date' => 'Kod olingan sana',
             'control_days_number' => 'Tekshiruv kuni',
+            'executors' => 'Ijrochilar'
         ];
-    }
 
+        return array_merge($ParentAttrLbl, $AttrLbl);
+    }
     /**
      * Gets query for [[ActSelections]].
      *
@@ -85,7 +95,7 @@ class Order extends \common\models\LocalActiveRecord
      */
     public function getAttachedExecutors()
     {
-        return $this->hasMany(AttachedExecutor::class, ['gov_control_order_id' => 'id'])->inverseOf('govControlOrder');
+        return $this->hasMany(AttachedExecutor::class, ['gov_control_order_id' => 'id']);
     }
 
     /**
@@ -136,5 +146,19 @@ class Order extends \common\models\LocalActiveRecord
     public function getParent()
     {
         return $this->hasOne(Order::class, ['id' => 'parent_id'])->inverseOf('orders');
+    }
+
+    public static function getGovControlPrefix($type = null)
+    {
+        $arr = [
+            self::DT => 'DT',
+            self::DN => 'DN',
+        ];
+
+        if ($type === null) {
+            return $arr;
+        }
+
+        return $arr[$type];
     }
 }

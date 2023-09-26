@@ -4,7 +4,9 @@ namespace frontend\controllers\govcontrol;
 
 use common\models\govcontrol\PrimaryData;
 use common\models\govcontrol\PrimaryDataSearch;
-use frontend\controllers\govcontrol\GovControlController;
+use Exception;
+// use frontend\controllers\govcontrol\GovControlController;
+use Yii;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -74,17 +76,34 @@ class PrimaryDataController extends GovControlController
     {
         $model = new PrimaryData();
         $model->gov_control_order_id = $gov_control_order_id;
-        // $order = Parent::findModel($gov_control_order_id);
-
+        $model->status = $model::DOCUMENT_STATUS_NEW;
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                if($model->validate()){
+                    $transaction = Yii::$app->db->beginTransaction();
+                        try {
+                            // if ($model->company_type_ids) {
+                            //     $model->company_type_id = implode(', ', $model->company_type_ids);
+                            //     }
+                                // debug($model);
+                                $model->save(false);
+                            $transaction->commit();
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        }
+                   
+                        catch (Exception $e) {
+                            $transaction->rollBack();
+                            throw $e;
+                        }
+                }
+                $model->loadDefaultValues();
             }
-        } else {
+        } 
+        else {
             $model->loadDefaultValues();
         }
 
-        return $this->render('create',compact('model'));
+        return $this->render('create', compact('model'));
     }
 
     /**

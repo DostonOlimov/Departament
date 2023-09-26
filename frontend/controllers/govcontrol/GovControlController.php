@@ -50,19 +50,17 @@ class GovControlController extends Controller
     public function actionIndex()
     {
         $searchModel = new OrderSearch();
+        $searchModel->executor_id = Yii::$app->user->id;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index', compact('searchModel', 'dataProvider'));
     }
     public function actionIdentification($gov_control_order_id)
     {
         $searchModel = new SelectedProductSearch();
         $searchModel->gov_control_order_id = $gov_control_order_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
-        // debug($dataProvider->getModels());
+        // debug($dataProvider);
 
         return $this->render('identification', compact('searchModel', 'dataProvider', 'gov_control_order_id'));
 
@@ -76,8 +74,9 @@ class GovControlController extends Controller
         // $IdenticationModel = Identification::findOne(['selected_product_id' => $id]);
         
         $searchModel = new IdentificationContentSearch();
-        $searchModel->selected_product_id = $id;
+        $searchModel->identification_id = $id;
         $dataProvider = $searchModel->search($this->request->queryParams);
+        // debug($dataProvider->getModels());
 
         return $this->render('identification-view', compact(
             'searchModel', 
@@ -100,9 +99,10 @@ class GovControlController extends Controller
     {
         $model = $this->findModel($id);
         $company = $this->findCompany($id);
+        $program = $this->findProgram($id);
         // debug($program);
         // debug($company);
-        return $this->render('view', compact('model','company'));
+        return $this->render('view', compact('model','company', 'program'));
     }
     public function actionViewCompany($id)
     {
@@ -175,10 +175,13 @@ class GovControlController extends Controller
     public function actionIdentificationDocument($id)
     {   
         $user = User::findOne(Yii::$app->user->id);
+
         $searchModel = new IdentificationContentSearch();
-        $searchModel->selected_product_id = $id;
+        $searchModel->identification_id = $id;
+        
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        // debug($dataProvider->getModels());
         return $this->render('identification-document', compact(
             'searchModel', 
             'dataProvider', 
@@ -234,6 +237,16 @@ class GovControlController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    protected function findProgram($id)
+    {
+        if (($model = Order::findOne($id)) !== null) {
+            if (($program = Program::findOne($model->gov_control_program_id)) !== null) {
+                    return $program;
+            }
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 
     protected function findActSelection($id)
     {
@@ -251,6 +264,16 @@ class GovControlController extends Controller
     {
             if (($model = SelectedProduct::findOne($id)) !== null) {
                 return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findSelectedNormativeDocument($id)
+    {
+            if ($model = $this->findProduct($id)) {
+                if ($model = $this->findProduct($id)) {
+                    return $model;
+            }
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

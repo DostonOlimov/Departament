@@ -38,11 +38,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getNormativeDocumentType($model->category_id);
                 }
             ],
+            [
+                'attribute' => 'status',
+                'value' => function(NormativeDocument $model){
+                    switch ($model->status) {
+
+                        case $model::DOCUMENT_STATUS_CONFIRMED:
+                            return '<span class="badge badge-pill badge-success">' . $model->getDocumentStatus($model->status) . '</span><br>';
+                            break;
+                        
+                        case $model::DOCUMENT_STATUS_INPROGRESS:
+                            return '<span class="badge badge-pill badge-secondary">' . $model->getDocumentStatus($model->status) . '</span><br>';
+                            break;
+                            
+                        case $model::DOCUMENT_STATUS_NEW:
+                            return '<span class="badge badge-pill badge-warning">' . $model->getDocumentStatus($model->status) . '</span><br>';
+                            break;
+                            
+                        default:
+                            return ($model->status) ? $model->getDocumentStatus($model->status) : $model->status;
+                    }
+                },
+                'format' => 'raw',   
+            ],
             'determination',
             'name:ntext',
             'activation_date',
             'activation_info:ntext',
-            'deactivation_date',
+            [
+                'attribute' => 'deactivation_date',
+                'value' => function($model){
+                    return ($model->deactivation_date) ? '<span class="badge badge-pill badge-danger">' . $model->deactivation_date . '</span><br>': 
+                    ($model->deactivation_date);
+                },
+                'format' => 'raw',
+            ],
             'deactivation_info:ntext',
         ],
     ]) ?>

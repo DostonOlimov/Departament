@@ -33,20 +33,36 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'parent_id',
             'gov_control_program_id',
             'control_period_from',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttonOptions' => ['class' => 'text-primary'],
+                'urlCreator' => function ($action, Order $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                 }
+            ],
+            [
+                'attribute' => 'order_number',
+                'value' => function($model){
+                    return($model->order_number) ? $model->getGovControlPrefix($model->order_prefix).'-'.$model->order_number : $model->order_number;
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function($model){
+                    if($model->status){
+                        if($model->status){
+                            return $model->getStatusSpan($model->status);
+                        }
+                    }
+                },
+                'format' => 'raw',   
+            ],
             'control_period_to',
             'control_date_from',
             'control_date_to',
             'ombudsman_code_date',
             'ombudsman_code_number',
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'buttonOptions' => [
-                    'class' => 'text-primary'
-                ],
-                'urlCreator' => function ($action, Order $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
         ],
     ]); ?>
 

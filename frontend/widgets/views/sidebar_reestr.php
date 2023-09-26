@@ -9,6 +9,7 @@ use yii\helpers\Url;?>
     <a href="<?= Url::to(['/caution/letters']) ?>" class="list-group-item list-group-item-action deactived">Ogohlantirish xatlari</a>
     <a href="<?= Url::to(['/caution/instruction-file']) ?>" class="list-group-item list-group-item-action deactived">Xabarnomalar</a>
     <a href="<?= Url::to(['/govcontrol/program/index']) ?>" class="list-group-item list-group-item-action actived">Davlat nazorat dasturlari</a>
+    <a href="<?= Url::to(['/govcontrol/order/index']) ?>" class="list-group-item list-group-item-action actived">Davlat nazorat buyrug'lari</a>
     <a href="#" class="list-group-item list-group-item-action deactived" 
     type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Ko'rsatmalar</a>
         

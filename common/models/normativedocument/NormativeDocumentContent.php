@@ -2,6 +2,8 @@
 
 namespace common\models\normativedocument;
 
+use common\models\actselection\SelectedProduct;
+use common\models\identification\Identification;
 use Yii;
 
 /**
@@ -67,7 +69,26 @@ class NormativeDocumentContent extends NormativeDocumentSection
      */
     public function getDocumentSection()
     {
-        return $this->hasOne(NormativeDocumentSection::class, ['id' => 'document_section_id'])->inverseOf('normativeDocumentContents');
+        return $this->hasOne(NormativeDocumentSection::class, ['id' => 'document_section_id']);
+    }
+    public function getNormativeDocument()
+    {
+        return $this->hasOne(NormativeDocument::class, ['id' => 'normative_document_id'])->via('documentSection');
+    }
+
+    public function getSelectedNormativeDocument()
+    {
+        return $this->hasOne(SelectedNormativeDocument::class, ['normative_document_id' => 'id'])->via('normativeDocument');
+    }
+
+    public function getIdentification()
+    {
+        return $this->hasOne(Identification::class, ['id' => 'identification_id'])->via('selectedNormativeDocument');
+    }
+
+    public function getSelectedProduct()
+    {
+        return $this->hasOne(SelectedProduct::class, ['id' => 'selected_product_id'])->via('identification');
     }
 
     /**
@@ -77,7 +98,7 @@ class NormativeDocumentContent extends NormativeDocumentSection
      */
     public function getIdentificationContents()
     {
-        return $this->hasMany(IdentificationContent::class, ['normative_document_content_id' => 'id'])->inverseOf('normativeDocumentContent');
+        return $this->hasMany(IdentificationContent::class, ['normative_document_content_id' => 'id']);
     }
 
     /**
@@ -87,7 +108,7 @@ class NormativeDocumentContent extends NormativeDocumentSection
      */
     public function getNormativeDocumentContents()
     {
-        return $this->hasMany(NormativeDocumentContent::class, ['parent_id' => 'id'])->inverseOf('parent');
+        return $this->hasMany(NormativeDocumentContent::class, ['parent_id' => 'id']);
     }
 
     /**
@@ -97,6 +118,6 @@ class NormativeDocumentContent extends NormativeDocumentSection
      */
     public function getParent()
     {
-        return $this->hasOne(NormativeDocumentContent::class, ['id' => 'parent_id'])->inverseOf('normativeDocumentContents');
+        return $this->hasOne(NormativeDocumentContent::class, ['id' => 'parent_id']);
     }
 }

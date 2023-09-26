@@ -33,15 +33,25 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'company_id',
                 'value' => function(Program $model){
-                    return Company::findOne($model->company_id)->company_name;
-                }
+                    return 
+                    Html::a(Company::findOne($model->company_id)->company_name, 
+                    Url::to(['view', 'id' => $model->id]));
+                },
+                'format' => 'raw'
             ],
             [
                 'attribute' => 'company_type_id',
                 'value' => function(Program $model){
-                    return $model->getCompanyType($model->company_type_id);
-                }
+                    return $model->getCompanyField($model->company_type_id);
+                },
             ],
+            // [
+            //     'class' => ActionColumn::class,
+            //     'template' => '{view}',
+            //     'urlCreator' => function ($action, Program $model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'id' => $model->id]);
+            //      }
+            // ],
             
             [
                 'attribute' => 'gov_control_type',
@@ -51,15 +61,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
-                'value' => function(Program $model){
-                    return $model->getDocumentStatus($model->status);
-                }
-            ],
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, Program $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'value' => function($model){
+                    if($model->status){
+                        if($model->status){
+                            return $model->getStatusSpan($model->status);
+                        }
+                    }
+                },
+                'format' => 'raw',   
             ],
         ],
     ]); ?>

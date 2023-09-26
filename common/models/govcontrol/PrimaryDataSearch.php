@@ -17,7 +17,8 @@ class PrimaryDataSearch extends PrimaryData
     public function rules()
     {
         return [
-            [['id', 'company_type_id', 'gov_control_order_id', 'real_control_date_from', 'real_control_date_to', 'quality_management_system', 'product_exists', 'laboratory_exists', 'last_gov_control_date'], 'integer'],
+            [['id', 'gov_control_order_id', 'real_control_date_from', 'real_control_date_to', 'quality_management_system', 'product_exists', 'laboratory_exists', 'last_gov_control_date'], 'integer'],
+            [['company_type_id'], 'string'],
             [['last_gov_control_number', 'comment'], 'safe'],
         ];
     }
@@ -59,7 +60,6 @@ class PrimaryDataSearch extends PrimaryData
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'company_type_id' => $this->company_type_id,
             'gov_control_order_id' => $this->gov_control_order_id,
             'real_control_date_from' => $this->real_control_date_from,
             'real_control_date_to' => $this->real_control_date_to,
@@ -70,7 +70,8 @@ class PrimaryDataSearch extends PrimaryData
         ]);
 
         $query->andFilterWhere(['like', 'last_gov_control_number', $this->last_gov_control_number])
-            ->andFilterWhere(['like', 'comment', $this->comment]);
+        ->andFilterWhere(['like', 'comment', $this->comment])
+        ->andFilterWhere(['like', 'company_type_id', $this->company_type_id]);
 
         return $dataProvider;
     }
