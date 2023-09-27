@@ -35,7 +35,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw'
             ],
-            'gov_control_program_id',
+            [
+                'attribute' => 'gov_control_program_id',
+                'value' => function($model){
+                    return 
+                    Html::a($model->gov_control_program_id, 
+                    Url::to(['govcontrol/program/view', 'id' => $model->gov_control_program_id]));
+                },
+                'format' => 'raw'
+            ],
+            // 'gov_control_program_id',
             [
                 'attribute' => 'order_number',
                 'value' => function($model){
@@ -52,6 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at',
             [
                 'attribute' => 'status',
+                'filter' => $searchModel->getDocumentStatus(null),
                 'value' => function($model){
                     if($model->status){
                         if($model->status){

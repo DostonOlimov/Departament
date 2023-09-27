@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'parent_id',
             [
                 'attribute' => 'status',
+                'filter' => $searchModel->getDocumentStatus(null),
                 'value' => function($model){
                     if($model->status){
                         return $model->getStatusSpan($model->status);

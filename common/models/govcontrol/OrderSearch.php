@@ -45,10 +45,11 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
+            
         $query = Order::find()->joinWith('attachedExecutors');
 
         // add conditions that should always apply here
-
+        // debug($this->status);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -73,7 +74,7 @@ class OrderSearch extends Order
             'ombudsman_code_date' => $this->ombudsman_code_date,
             'control_days_number' => $this->ombudsman_code_date,
             'attached_executor.user_id' => $this->executor_id,
-            'gov_control_order.status' => $this::DOCUMENT_STATUS_CONFIRMED,
+            'gov_control_order.status' => $this->status,
             // 'created_at' => Yii::$app->user->id,
             // 'updated_at' => Yii::$app->user->id,
             

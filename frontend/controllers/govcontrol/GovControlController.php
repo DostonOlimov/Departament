@@ -50,7 +50,10 @@ class GovControlController extends Controller
     public function actionIndex()
     {
         $searchModel = new OrderSearch();
+        $searchModel->status = $searchModel::DOCUMENT_STATUS_CONFIRMED;
         $searchModel->executor_id = Yii::$app->user->id;
+        // debug($this->request->queryParams);
+        // debug($searchModel);
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', compact('searchModel', 'dataProvider'));

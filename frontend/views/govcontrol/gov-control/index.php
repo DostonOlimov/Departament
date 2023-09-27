@@ -47,17 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return($model->order_number) ? $model->getGovControlPrefix($model->order_prefix).'-'.$model->order_number : $model->order_number;
                 }
             ],
-            [
-                'attribute' => 'status',
-                'value' => function($model){
-                    if($model->status){
-                        if($model->status){
-                            return $model->getStatusSpan($model->status);
-                        }
-                    }
-                },
-                'format' => 'raw',   
-            ],
+            // [
+            //     'attribute' => 'status',
+            //     'value' => function($model){
+            //         if($model->status){
+            //             if($model->status){
+            //                 return $model->getStatusSpan($model->status);
+            //             }
+            //         }
+            //     },
+            //     'format' => 'raw',   
+            // ],
             'control_period_to',
             'control_date_from',
             'control_date_to',

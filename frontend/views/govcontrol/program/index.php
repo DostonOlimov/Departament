@@ -48,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
+                'filter' => $searchModel->getDocumentStatus(null),
                 'value' => function($model){
                     if($model->status){
                         return $model->getStatusSpan($model->status);
@@ -71,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                 'attribute' => 'company_type_id',
+                'filter' => $searchModel->getCompanyField(),
                 'value' => function(Program $model){
                     return $model->getCompanyField($model->company_type_id);
                 }
@@ -78,6 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'attribute' => 'gov_control_type',
+                'filter' => $searchModel->getGovcontrolType(),
                 'value' => function(Program $model){
                     return $model->getGovcontrolType($model->gov_control_type);
                 }

@@ -17,7 +17,7 @@ class ProgramSearch extends Program
     public function rules()
     {
         return [
-            [['id', 'company_id', 'company_type_id', 'gov_control_type'], 'integer'],
+            [['id', 'company_id', 'company_type_id', 'gov_control_type', 'status'], 'integer'],
         ];
     }
 
@@ -58,10 +58,11 @@ class ProgramSearch extends Program
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'gov_control_program.id' => $this->id,
             'company_id' => $this->company_id,
             'company_type_id' => $this->company_type_id,
             'gov_control_type' => $this->gov_control_type,
+            'gov_control_program.status' => $this->status,
         ]);
 
         return $dataProvider;
