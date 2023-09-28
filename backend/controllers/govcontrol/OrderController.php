@@ -100,9 +100,7 @@ class OrderController extends GovcontrolOrderController
     {
         $model = $this->findModel($id);
         $program = Program::findOne(['id' => $model->gov_control_program_id]);
-        $model->order_prefix = 
-        ($program->gov_control_type === $program::getGovcontrolType($program::DN)) ?
-        $model::DN : $model::DT;
+        $model->order_prefix = ($program->gov_control_type == $model::DN) ? $model::DN : $model::DT;
         $model->status = $model::DOCUMENT_STATUS_CONFIRMED;
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
