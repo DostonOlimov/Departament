@@ -28,6 +28,11 @@ $class_act_selection = ($controller == 'actselection/act-selection')?'active':''
 $href_identification = Url::to(['govcontrol/gov-control/identification', 'gov_control_order_id' => $gov_control_order_id]);
 $class_identification = ($current_page == 'govcontrol/gov-control/identification') ? 'active': '';
 
+$href_laboratory = Url::to(['govcontrol/gov-control/laboratory-protocol', 'gov_control_order_id' => $gov_control_order_id]);
+$class_laboratory = ($current_page == 'govcontrol/gov-control/laboratory-protocol') ? 'active': '';
+
+$href_guidelines = '';
+$class_guidelines = '';
 ?>
 
 
@@ -58,6 +63,10 @@ $class_identification = ($current_page == 'govcontrol/gov-control/identification
             <!-- li-5 -->
             <a href="<?= $href_identification ?>" class="list-group-item list-group-item-action <?= $class_identification?>">
                 Tashqi ko'rinish bayonnomalari
+            </a>
+            <!-- li-6 -->
+            <a href="<?= $href_laboratory ?>" class="list-group-item list-group-item-action <?= $class_laboratory?>">
+                Sinov bayonnomalari
             </a>
         </ul>
 </div>

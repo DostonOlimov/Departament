@@ -50,6 +50,7 @@ class SelectedProductSearch extends SelectedProduct
             $query->joinWith('identification');
             $query->joinWith('actSelection');
             $query->joinWith('selectedNormativeDocuments');
+            $query->joinwith('laboratoryProtocol');
             // debug($this->gov_control_order_id);
             if($this->gov_control_order_id){
                 $query->where(['gov_control_order_id' => $this->gov_control_order_id]);
@@ -81,6 +82,8 @@ class SelectedProductSearch extends SelectedProduct
             'prod_netto' => $this->prod_netto,
             'xtra_value' => $this->xtra_value,
             'xtra_unit_om' => $this->xtra_unit_om,
+            'xtra_value_identification' => $this->xtra_value_identification,
+            'xtra_value_laboratory' => $this->xtra_value_laboratory,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

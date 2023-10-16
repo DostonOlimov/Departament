@@ -1,7 +1,9 @@
 <?php
 
 use common\models\Countries;
+use common\models\UnitOfMeasure;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -81,21 +83,31 @@ use PhpUnitsOfMeasure\PhysicalQuantity\Length;
             <?= $form->field($model, 'xtra_value')->textInput() ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'xtra_unit_om')->dropDownList($model->getListOfUnitOfMeasurement(), ['prompt' => '']) ?>
+            <?= $form->field($model, 'xtra_unit_om')->widget(Select2::class, [
+                'data' => ArrayHelper::map(UnitOfMeasure::find()->all(),'id', 'code' ),
+                'language' => 'uz',
+                'options' => ['multiple' => false, 'prompt' => ''],
+                'showToggleAll' => false,
+            ]) ?>
         </div>
-
         <div class="col-sm-3">
             <?= $form->field($model, 'cnfea_code')->widget(MaskedInput::class, [
                 'mask' => '9999999999'
-            ])?>
+                ])?>
         </div>
-    </div><!-- .row -->
+
     <div class="row">
+        <div class="col-sm-3">
+            <?= $form->field($model, "xtra_value_identification")->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-sm-3">
+            <?= $form->field($model, "xtra_value_laboratory")->textInput(['maxlength' => true]) ?>
+        </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'bar_code')->textInput(['maxlength' => true]) ?>
         </div>
     </div><!-- .row -->
-
+    
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

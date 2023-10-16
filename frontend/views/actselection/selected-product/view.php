@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
     if($nd_status == false){
     ?>
         <p>
-            <?= Html::a('Normativ hujjatlarni biriktirish', ['identification/identification/create', 'selected_product_id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Normativ hujjatlarni biriktirish', ['identification/identification/create-multiple', 'selected_product_id' => $model->id], ['class' => 'btn btn-success']) ?>
         <p>
     <?php }
     else {

@@ -80,7 +80,7 @@ class RiskAnalisysCriteria extends LocalActiveRecord
     {
         return [
             [
-                'class' => TimesTampBehavior::className(),
+                'class' => TimesTampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),

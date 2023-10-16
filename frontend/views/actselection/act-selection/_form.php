@@ -1,7 +1,9 @@
 <?php
 
 use common\models\Countries;
+use common\models\UnitOfMeasure;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -60,6 +62,8 @@ $date_pluginOptions =['pluginOptions' => ['autoclose' => true,'format' => 'dd.mm
                     'imptr_id',
                     'prod_netto',
                     'xtra_value',
+                    'xtra_value_identification',
+                    'xtra_value_laboratory',
                     'xtra_unit_om',
                     'cnfea_code',
                 ],
@@ -129,10 +133,16 @@ $date_pluginOptions =['pluginOptions' => ['autoclose' => true,'format' => 'dd.mm
                                 <?= $form->field($modelProduct, "[{$i}]xtra_value")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-3">
-                                <?= $form->field($modelProduct, "[{$i}]xtra_unit_om")->dropDownList($model->getListOfUnitOfMeasurement(), ['prompt' => '']) ?>
+                                <?= $form->field($modelProduct, "[{$i}]xtra_unit_om")->dropDownList($model->getListOfUnitOfMeasure(), ['prompt' => ''])?>
                             </div>
                             <div class="col-sm-3">
                                 <?= $form->field($modelProduct, "[{$i}]cnfea_code")->widget(MaskedInput::class, ['mask' => '9999999999']) ?>
+                            </div>
+                            <div class="col-sm-3">
+                                <?= $form->field($modelProduct, "[{$i}]xtra_value_identification")->textInput(['maxlength' => true]) ?>
+                            </div>
+                            <div class="col-sm-3">
+                                <?= $form->field($modelProduct, "[{$i}]xtra_value_laboratory")->textInput(['maxlength' => true]) ?>
                             </div>
                         </div><!-- .row -->
                     </div>

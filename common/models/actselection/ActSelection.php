@@ -30,6 +30,7 @@ class ActSelection extends \common\models\LocalActiveRecord
     public function rules()
     {
         return [
+            [['warehouse_name', 'warehouse_address',], 'required'],
             [['gov_control_order_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['warehouse_name', 'warehouse_address', 'created_at', 'updated_at'],'string'],
             [['gov_control_order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['gov_control_order_id' => 'id']],

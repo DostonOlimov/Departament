@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\actselection\ActSelection $model */
 
-$this->title = 'Create Act Selection';
+$this->title = 'Namuna tanlab olish dalolatnomasi yaratish';
 $this->params['breadcrumbs'][] = ['label' => 'Act Selections', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs(

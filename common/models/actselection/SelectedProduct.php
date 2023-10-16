@@ -3,6 +3,8 @@
 namespace common\models\actselection;
 
 use common\models\identification\Identification;
+use common\models\identification\LaboratoryProtocol;
+use common\models\identification\LaboratoryProtocolContent;
 use common\models\normativedocument\SelectedNormativeDocument;
 use Yii;
 
@@ -31,6 +33,8 @@ use Yii;
  */
 class SelectedProduct extends \common\models\LocalActiveRecord
 {
+    public $normative_documents;
+    public $indicators;
     /**
      * {@inheritdoc}
      */
@@ -45,8 +49,9 @@ class SelectedProduct extends \common\models\LocalActiveRecord
     public function rules()
     {
         return [
+            [['name', 'xtra_value_identification', 'xtra_value_laboratory', 'xtra_unit_om'], 'required'],
             [['act_selection_id', 'ctry_ogn_code', 'mfr_id', 'exptr_ctry_code', 'imptr_id', 'xtra_unit_om'], 'integer'],
-            [['prod_netto', 'xtra_value'], 'number'],
+            [['prod_netto', 'xtra_value', 'xtra_value_identification', 'xtra_value_laboratory'], 'number'],
             [['name', 'batch_number', 'mfr_name', 'imptr_name', 'mfrd_date', 'cnfea_code', 'bar_code'], 'string', 'max' => 255],
             [['act_selection_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActSelection::class, 'targetAttribute' => ['act_selection_id' => 'id']],
         ];
@@ -71,9 +76,13 @@ class SelectedProduct extends \common\models\LocalActiveRecord
             'imptr_id' => 'Importyor STIRi',
             'prod_netto' => 'Mahsulot netto og\'irligi',
             'xtra_value' => 'Qo\'shimcha o\'lchov birligidagi qiymat',
+            'xtra_value_identification' => 'Sezgi a’zolari orqali (tashqi ko‘rinishini) tekshirish uchun',
+            'xtra_value_laboratory' => 'Sinash uchun',
             'xtra_unit_om' => 'O\'lchov birligi',
             'cnfea_code' => 'TIF TN kodi',
             'bar_code' => 'Shtrix kodi',
+            'normative_documents' => 'Me\'yoriy hujjatlar',
+            'indicators' => 'Ko\'rsatkichlar',
         ];
 
         return array_merge($ParentAttrLbl, $AttrLbl);
@@ -101,6 +110,16 @@ class SelectedProduct extends \common\models\LocalActiveRecord
     public function getSelectedNormativeDocuments()
     {
         return $this->hasMany(SelectedNormativeDocument::class, ['identification_id' => 'id'])->via('identification');
+    }
+
+    public function getLaboratoryProtocol()
+    {
+        return $this->hasOne(LaboratoryProtocol::class, ['selected_product_id' => 'id']);
+    }
+
+    public function getLaboratoryProtocolContents()
+    {
+        return $this->hasMany(LaboratoryProtocolContent::class, ['laboratory_protocol_id' => 'id'])->via('laboratoryProtocol');
     }
 
 }

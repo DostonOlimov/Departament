@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\actselection\SelectedProduct $model */
+/** @var common\models\UnitOfMeasure $model */
 
-$this->title = 'Mahsulot qo\'shish';
-$this->params['breadcrumbs'][] = ['label' => 'Selected Products', 'url' => ['index']];
+$this->title = 'Create Unit Of Measure';
+$this->params['breadcrumbs'][] = ['label' => 'Unit Of Measures', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="selected-product-create">
+<div class="unit-of-measure-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

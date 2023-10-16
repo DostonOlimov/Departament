@@ -190,27 +190,15 @@ class GovControlController extends Controller
             'dataProvider', 
             'user',
         ));
+    }
+    public function actionLaboratoryProtocol($gov_control_order_id = null)
+    {
+        $searchModel = new SelectedProductSearch();
+        $searchModel->gov_control_order_id = $gov_control_order_id;
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
-        // $model = $this->findModel($id);
-        // $company = Company::findOne($model->company_id);
-        // $user = User::findOne(['id' => $model->created_by]);
-        // $risks_criteria = new RisksCriteria();
-        // $sumscore = $risks_criteria->getCriteriaBall($id);
-        // // echo $sumscore;die;
-        // $score = RisksCriteria::find()
-        // ->select('criteria_id')
-        // ->Where(['risk_analisys_id' => $id])
-        // ->asArray()
-        // ->all();
-        // $comment = RisksCriteria::find()
-        // ->select('comment')
-        // ->Where(['risk_analisys_id' => $id])
-        // ->asArray()
-        // ->all();
+        return $this->render('laboratory-protocol', compact('searchModel', 'dataProvider', 'gov_control_order_id'));
 
-
-        // return $this->render('document', 
-        // compact('model', 'company', 'user', 'score','sumscore', 'comment'));
     }
 
     /**
