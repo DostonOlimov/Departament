@@ -24,7 +24,7 @@
         "yiisoft/yii2-bootstrap4": "^2.0",
         "kartik-v/yii2-widget-datepicker": "1.4.x-dev",
         "phpoffice/phpspreadsheet": "^1.8",
-        "almasaeed2010/adminlte": "dev-master",
+        "almasaeed2010/adminlte": "dev-dependabot/npm_and_yarn/rollup-2.58.0",
         "kartik-v/yii2-date-range": "dev-master",
         "kartik-v/yii2-widget-depdrop": "dev-master",
         "kartik-v/yii2-money": "*",

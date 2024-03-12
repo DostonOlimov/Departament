@@ -53,7 +53,7 @@ class NormativeDocumentContentSearch extends NormativeDocumentContent
             $query->joinWith('selectedNormativeDocument');
     }
         else{
-            $query->where(['parent_id' => $this->parent_id]);
+            $query->where(['normative_document_content.parent_id' => $this->parent_id]);
         }
         // debug($this->parent_id);
 
@@ -74,8 +74,8 @@ class NormativeDocumentContentSearch extends NormativeDocumentContent
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
+            'normative_document_content.id' => $this->id,
+            'normative_document_content.parent_id' => $this->parent_id,
             'document_section_id' => $this->document_section_id,
             'position' => $this->position,
             // 'selectedNormativeDocument.id' => $this->selected_normative_document_id,

@@ -4,6 +4,7 @@ namespace common\models\normativedocument;
 
 use common\models\actselection\SelectedProduct;
 use common\models\identification\Identification;
+use common\models\identification\IdentificationContent;
 use Yii;
 
 /**
